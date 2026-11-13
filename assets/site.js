@@ -35,10 +35,9 @@ const SECTIONS = [
     ]
   },
   {
-    label: "運営・補足",
+    label: "参加前の確認",
     entries: [
-      { path: "DECISIONS.md", label: "決定事項と未決事項", kicker: "SYSTEM / 01", summary: "開始レベルや種族など、まだ決まっていないこと" },
-      { path: "CONTRIBUTING.md", label: "設定の運用方針", kicker: "SYSTEM / 02", summary: "作者設定とセッション設定の扱い" }
+      { path: "DECISIONS.md", label: "決定事項と未決事項", kicker: "SYSTEM / 01", summary: "開始レベルや種族など、まだ決まっていないこと" }
     ]
   }
 ];
