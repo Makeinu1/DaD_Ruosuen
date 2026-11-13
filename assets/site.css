@@ -1,0 +1,182 @@
+:root {
+  color-scheme: dark;
+  --bg: #091217;
+  --bg-deep: #050b0f;
+  --surface: #111f24;
+  --surface-2: #17272c;
+  --border: #334347;
+  --ink: #f0eee5;
+  --muted: #a7b5b3;
+  --quiet: #81938f;
+  --gold: #e1bd7d;
+  --mint: #91d5c4;
+  --page-width: 1190px;
+  font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", system-ui, sans-serif;
+  font-synthesis: none;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; min-height: 100vh; overflow-x: hidden;
+  background: radial-gradient(ellipse 100% 720px at 80% -5%, #193632 0%, transparent 62%),
+              radial-gradient(ellipse 720px 580px at -15% 34%, #13272e 0%, transparent 72%),
+              var(--bg);
+  color: var(--ink); line-height: 1.8; letter-spacing: .018em;
+}
+a { color: inherit; }
+a:focus-visible, button:focus-visible { outline: 3px solid var(--mint); outline-offset: 4px; }
+.skip-link { position: absolute; top: -60px; left: 10px; padding: 8px 14px; background: var(--gold); color: #081316; z-index: 99; }
+.skip-link:focus { top: 12px; }
+.container { max-width: var(--page-width); padding-inline: 30px; margin: auto; }
+.site-header {
+  position: sticky; top: 0; z-index: 20; border-bottom: 1px solid #31434290;
+  background: #091519eb; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+}
+.header-inner { display: flex; justify-content: space-between; align-items: center; height: 77px; gap: 20px; }
+.brand { display: inline-flex; align-items: center; gap: 13px; text-decoration: none; min-width: 0; }
+.brand-mark { width: 43px; height: 43px; border: 1px solid var(--gold); border-radius: 50%; display: grid; place-items: center; position: relative; color: var(--gold); font-family: Georgia,serif; font-size: 20px; }
+.brand-mark::after { content: ""; position: absolute; inset: 6px; border: 1px solid #e1bd7d55; transform: rotate(45deg); }
+.brand-name { display: block; font-size: 18px; font-weight: 750; letter-spacing: .12em; line-height: 1.2; }
+.brand-latin { display: block; margin-top: 2px; color: var(--gold); letter-spacing: .26em; font-family: Georgia, serif; font-size: 10px; }
+.top-nav { display: flex; align-items: center; gap: 28px; font-size: 13px; font-weight: 650; }
+.top-nav a { color: #c5d0cb; text-decoration: none; white-space: nowrap; transition: color .18s; }
+.top-nav a:hover { color: var(--gold); }
+.top-nav .nav-start { padding: 8px 16px; border: 1px solid #c69e657c; border-radius: 999px; color: var(--gold); }
+.eyebrow { color: var(--gold); font-family: Georgia, serif; text-transform: uppercase; letter-spacing: .28em; font-size: 12px; font-weight: 650; }
+.hero { position: relative; padding: clamp(55px, 9vw, 120px) 0 89px; overflow: hidden; border-bottom: 1px solid #33434762; }
+.hero::before {
+  content: ""; position: absolute; right: -7%; top: 0; width: min(72vw, 920px); height: 100%;
+  opacity: .45; pointer-events: none;
+  background: repeating-radial-gradient(ellipse at 58% 54%, transparent 0 36px, #74aba019 37px 38px, transparent 39px 73px);
+  -webkit-mask-image: linear-gradient(to left, #000, transparent);
+  mask-image: linear-gradient(to left, #000, transparent);
+}
+.hero-inner { position: relative; }
+.hero h1 { margin: 15px 0 3px; font-size: clamp(46px, 9.5vw, 100px); line-height: 1.2; letter-spacing: .14em; font-family: "Yu Mincho", "Hiragino Mincho ProN", "Noto Serif JP", serif; font-weight: 700; text-shadow: 0 5px 36px #0009; }
+.hero .roman { display: block; color: var(--gold); font-family: Georgia,serif; letter-spacing: .56em; font-size: clamp(13px, 2.7vw, 22px); font-weight: 400; margin-top: 11px; }
+.hero-tagline { margin: 40px 0 15px; font-family: "Yu Mincho", "Hiragino Mincho ProN", serif; font-size: clamp(25px, 4vw, 35px); font-weight: 650; letter-spacing: .07em; }
+.hero-copy { max-width: 615px; color: #c4d0c9; font-size: 15px; line-height: 2.2; }
+.hero-actions { display: flex; gap: 12px; margin-top: 32px; flex-wrap: wrap; }
+.cta { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 49px; padding: 9px 22px; border-radius: 6px; text-decoration: none; font-weight: 750; font-size: 14px; }
+.cta-primary { background: var(--gold); color: #162226; }
+.cta-secondary { border: 1px solid #7e9994; color: var(--ink); }
+.cta:hover { filter: brightness(1.1); }
+.hero-index { display: flex; flex-wrap: wrap; gap: 21px; color: #a4bdb2; font-size: 12px; margin-top: 56px; letter-spacing: .04em; }
+.hero-index span::before { content:"◆"; color: var(--gold); font-size: 7px; margin-right: 8px; vertical-align: middle; }
+.section { padding-block: 62px 76px; }
+.section-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 25px; }
+.section-head h2 { margin: 8px 0 0; font-family: "Yu Mincho", "Hiragino Mincho ProN", serif; font-size: 30px; font-weight: 650; }
+.section-head p { max-width: 440px; margin: 0; color: var(--muted); font-size: 13px; }
+.card-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 15px; }
+.home-card { position: relative; display: block; background: linear-gradient(160deg,#17282b,#101b20); border: 1px solid #344649; border-radius: 10px; padding: 28px 25px; text-decoration: none; min-height: 232px; transition: border-color .18s,transform .18s,background .18s; }
+.home-card:hover { transform: translateY(-3px); border-color: var(--gold); }
+.card-number { font-family: Georgia,serif; color: var(--gold); font-size: 12px; letter-spacing: .13em; }
+.home-card h3 { margin: 27px 0 9px; font-size: 19px; }
+.home-card p { font-size: 12px; line-height: 1.9; margin: 0; color: var(--muted); }
+.card-arrow { position: absolute; right: 22px; top: 22px; font-family: Georgia,serif; color: var(--gold); font-size: 20px; }
+.feature { display: grid; grid-template-columns: 1fr 1fr; margin-top: 35px; border: 1px solid #3b5151; border-radius: 9px; overflow: hidden; background: #152627; }
+.feature-copy { padding: 33px 34px; }
+.feature h3 { margin: 8px 0 14px; font-size: 21px; }
+.feature p { color: var(--muted); margin: 0 0 18px; font-size: 13px; }
+.feature a { color: var(--gold); font-weight: 700; text-underline-offset: 4px; }
+.feature-art { min-height: 215px; display:grid; place-items:center; position: relative; overflow:hidden; background: radial-gradient(circle at 55% 50%,#4b6656 0%,#233d3f 25%,#0c191e 64%); }
+.feature-art::before { content:""; position:absolute; width:270px; height:270px; border: 2px solid #d8bd794a; border-radius:50%; box-shadow: 0 0 0 34px #d8bd7918,0 0 0 74px #d8bd790b; }
+.feature-art::after { content:"✦"; position:absolute; color:var(--gold); font-size: 116px; font-family:Georgia,serif; text-shadow:0 0 43px #f1b86277; }
+.reader-layout { display:grid; grid-template-columns: 256px minmax(0,1fr); gap: 42px; padding-block: 43px 105px; align-items: start; }
+.sidebar { position:sticky; top:99px; max-height: calc(100vh - 120px); overflow-y:auto; padding-right: 18px; scrollbar-color: #5b706d transparent; }
+.sidebar-title { font-family:Georgia,serif; font-size: 11px; letter-spacing: .23em; color:var(--gold); margin: 5px 0 17px; text-transform:uppercase; }
+.side-group { margin-bottom: 20px; }
+.side-group-title { margin:0 0 7px; font-size:11px; color:var(--quiet); font-weight:800; letter-spacing:.09em; }
+.side-link { display:block; padding: 8px 10px 8px 12px; border-left:2px solid transparent; color:#b8c7c3; text-decoration:none; font-size:13px; line-height:1.45; border-radius: 0 5px 5px 0; }
+.side-link:hover { background: #ffffff09; color:#fff; }
+.side-link[aria-current="page"] { background: #d7b77916; color:var(--gold); border-left-color:var(--gold); font-weight:750; }
+.reader { min-width:0; }
+.reader-breadcrumbs { font-size:12px; color:var(--quiet); margin: 0 0 8px; }
+.reader-breadcrumbs a { color:var(--muted); text-decoration:none; }
+.article-hero { padding: 12px 0 23px; border-bottom: 1px solid var(--border); margin-bottom: 32px; }
+.article-label { font-family: Georgia,serif; color:var(--gold); font-size: 11px; letter-spacing:.2em; }
+.article-hero h1 { line-height:1.42; font-family:"Yu Mincho","Hiragino Mincho ProN",serif; font-size:clamp(29px,4vw,44px); margin: 12px 0; }
+.article-summary { color:var(--muted); font-size:14px; margin:0; }
+.article-body { color:#d9e2df; font-size: 15px; line-height:2; overflow-wrap:anywhere; }
+.article-body h1 { font-family:"Yu Mincho","Hiragino Mincho ProN",serif; font-size:28px; margin:0 0 24px; }
+.article-body h2 { font-size:23px; font-weight:750; color:var(--ink); margin:42px 0 17px; padding-left:14px; border-left:3px solid var(--gold); line-height:1.5; }
+.article-body h3 { font-size:17px; color:#e6d6b7; margin:31px 0 13px; }
+.article-body h4 { font-size:15px; color:var(--ink); margin:25px 0 8px; }
+.article-body h2, .article-body h3, .article-body h4 { scroll-margin-top:100px; }
+.article-body p { margin: 0 0 21px; }
+.article-body strong { color: #f1dfb7; font-weight:750; }
+.article-body a { color:#a9dec9; text-decoration-thickness:1px; text-underline-offset:3px; }
+.article-body a:hover { color:#d0f5e9; }
+.article-body ul,.article-body ol { padding-left:26px; margin:0 0 23px; }
+.article-body li { margin: 7px 0; }
+.article-body li::marker { color:var(--gold); }
+.article-body blockquote { border-left:3px solid var(--gold); padding:13px 20px; margin:15px 0 27px; color:#d2dfd7; background:#ffffff08; }
+.article-body blockquote p:last-child { margin:0; }
+.article-body code { font-family:ui-monospace,Menlo,monospace; font-size: .87em; background:#2a3b3f; color:#f5e1ad; padding:3px 5px; border-radius:4px; overflow-wrap:anywhere; }
+.article-body pre { overflow-x:auto; padding:18px; border:1px solid var(--border); border-radius:5px; background:#071116; line-height:1.65; }
+.article-body pre code { background:none; padding:0; }
+.article-body .table-wrap { overflow-x:auto; margin: 21px 0 28px; border: 1px solid var(--border); border-radius:7px; }
+.article-body table { width:100%; min-width:490px; border-collapse:collapse; font-size:13px; line-height:1.8; }
+.article-body th { background:#223337; color:var(--gold); font-weight:750; text-align:left; }
+.article-body th,.article-body td { padding:12px 14px; border-bottom:1px solid #314247; vertical-align:top; }
+.article-body tr:last-child td { border-bottom:0; }
+.article-body hr { border:0; border-top:1px solid var(--border); margin:36px 0; }
+.reader-bottom { margin-top:55px; padding-top:20px; border-top:1px solid var(--border); display:flex; gap:14px; flex-wrap:wrap; }
+.reader-bottom a { color:var(--gold); text-decoration:none; font-size:13px; }
+.reader-bottom a:hover { text-decoration:underline; }
+.mobile-categories { display: none; }
+.footer { padding:32px 0 46px; border-top: 1px solid #33434788; color:var(--quiet); font-size:12px; }
+.footer-inner { display:flex; justify-content:space-between; gap:15px; flex-wrap:wrap; }
+.footer a { color:#b2cbbd; }
+.loading { color:var(--muted); padding:35px 0; }
+.hidden { display:none !important; }
+@media (max-width: 900px) {
+  .container { padding-inline:22px; }
+  .top-nav { gap:17px; font-size:12px; }
+  .reader-layout { gap:20px; grid-template-columns:212px minmax(0,1fr); }
+  .card-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .home-card { min-height:205px; }
+}
+@media (max-width: 700px) {
+  .container { padding-inline:18px; }
+  .header-inner { height:67px; }
+  .brand-mark { width:36px; height:36px; font-size:17px; }
+  .brand-name { font-size:16px; }
+  .top-nav { gap:12px; }
+  .top-nav a:not(.nav-start) { display:none; }
+  .top-nav .nav-start { padding:8px 12px; font-size:11px; }
+  .hero { padding:62px 0 56px; }
+  .hero h1 { letter-spacing:.1em; font-size: clamp(45px, 13.8vw, 76px); }
+  .hero .roman { letter-spacing:.39em; font-size:13px; }
+  .hero-tagline { margin-top:35px; font-size:25px; }
+  .hero-copy { font-size:13px; }
+  .hero-index { margin-top:42px; gap:11px 17px; font-size:11px; }
+  .section { padding-block:44px 54px; }
+  .section-head { display:block; }
+  .section-head h2 { font-size:25px; }
+  .section-head p { margin-top:9px; }
+  .card-grid { grid-template-columns:1fr; gap:12px; }
+  .home-card { min-height:0; padding:19px 20px 22px; }
+  .home-card h3 { margin:14px 0 5px; font-size:18px; }
+  .feature { grid-template-columns:1fr; }
+  .feature-copy { padding:26px 24px; }
+  .feature-art { min-height:145px; grid-row:1; }
+  .feature-art::before { width:160px; height:160px; }
+  .feature-art::after { font-size:75px; }
+  .reader-layout { display:block; padding-top:10px; padding-bottom:70px; }
+  .sidebar { display:none; }
+  .mobile-categories { display:flex; position:sticky; z-index:8; top:67px; gap:8px; overflow-x:auto; padding:12px 18px; margin:0 -18px 15px; border-bottom:1px solid #35474a; background:#0b1b1df6; scrollbar-width:none; }
+  .mobile-categories::-webkit-scrollbar { display:none; }
+  .mobile-categories a { flex:0 0 auto; padding:9px 12px; border:1px solid var(--border); border-radius:100px; font-size:11px; text-decoration:none; color:#c1cfca; white-space:nowrap; min-height:40px; display:flex; align-items:center; }
+  .mobile-categories a[aria-current="page"] { border-color:var(--gold); background:#b993601d; color:var(--gold); }
+  .reader-breadcrumbs { font-size:11px; }
+  .article-hero { padding-top:15px; }
+  .article-hero h1 { font-size:29px; }
+  .article-body { font-size:14px; line-height:1.95; }
+  .article-body h2 { font-size:19px; margin-top:34px; }
+  .article-body h3 { font-size:16px; }
+  .article-body table { min-width:450px; }
+  .article-body th,.article-body td { padding:10px 12px; }
+  .footer-inner { display:block; }
+}
+@media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } .home-card,.top-nav a { transition:none; } }
