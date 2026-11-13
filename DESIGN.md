@@ -12,16 +12,16 @@ This is a **player-facing invitation to an unknown world**, not a lore encyclope
 
 - Hero: one bespoke SVG illustration (assets/ruosuen-depths.svg) of a huge underground arch, an unknown destination, and small explorers. No borrowed game artwork.
 - Scale: a cinematic full-screen introduction, then chapter-like sections, and finally a practical archive.
-- Palette: obsidian (#080c12), abyss blue (#101923), parchment (#e9ddc4), old gold (#dcb884), ink (#29241e).
+- Palette (2026-11-13 revised by user request): **cave black** (#030810), **deep abyss navy** (#071625), **stone blue** (#173a55), **mana blue** (#80bbde), and **blue-white mana glow** (#e3f8ff). Avoid gold, copper, brown, warm cream and parchment as theme colors. The physical cave should absorb light; manastone, the deep gate, active headings and CTAs should appear softly luminous.
 - Typography: Japanese literary serif (*Noto Serif JP*) and Cinzel on Latin display words. System fallbacks if fonts do not load.
 - Player-safe content order: experience the setting → encounter the unknown → choose a personal motive → read lore → create a character.
 
 ## Pages and implementation
 
 - `index.html`: public marketing/introductory homepage + original Markdown reader DOM.
-- `assets/site.css`: responsive design, including warm paper-like document reader.
+- `assets/site.css`: responsive design. The document reader uses a restrained midnight-blue journal palette with high-contrast ice-white copy instead of warm parchment. The mobile navigation remains readable over the dark background.
 - `assets/site.js`: existing dependency-free Markdown viewer and document navigation. Routes `#world` and `#guide` are in-page anchors, while `#/docs/...` and `#/players/...` open the Markdown reader.
-- `assets/ruosuen-depths.svg`: custom original visual. No external image dependencies.
+- `assets/ruosuen-depths.svg`: custom original visual. Its cave artwork is color-graded **in CSS** using a cool hue shift so the warm light reads as blue-white mana. No external image dependencies. The standalone SVG used as the Open Graph social preview still has its original warm colors; it is not the live-page grade.
 - `docs/**` and `players/**`: untouched canonical player guides.
 
 ## Installed project skills
