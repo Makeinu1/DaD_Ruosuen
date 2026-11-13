@@ -161,11 +161,11 @@ function renderNav(activePath) {
   const active = $("mobile-categories").querySelector('[aria-current="page"]');
   if (active) { $("mobile-categories").scrollLeft = Math.max(0, active.offsetLeft - 35); }
 }
-function showHome() {
-  document.title = "ルオスエン | 地図の外側へ";
+function showHome(scrollTop = true) {
+  document.title = "RUOSUEN｜ルオスエン — 地図の外側へ";
   $("home-view").classList.remove("hidden");
   $("reader-view").classList.add("hidden");
-  window.scrollTo({top: 0, behavior: "instant"});
+  if (scrollTop) window.scrollTo({top: 0, behavior: "instant"});
 }
 async function showDoc(path) {
   const meta = BY_PATH.get(path);
@@ -200,7 +200,10 @@ function currentPath() {
 function onRoute() {
   const path = currentPath();
   if (!path) showHome();
-  else showDoc(path);
+  else if (["world", "domains", "guide"].includes(path)) {
+    showHome(false);
+    requestAnimationFrame(() => document.getElementById(path)?.scrollIntoView({behavior:"smooth",block:"start"}));
+  } else showDoc(path);
 }
 window.addEventListener("hashchange", onRoute);
 onRoute();
