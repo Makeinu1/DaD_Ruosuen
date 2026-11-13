@@ -21,6 +21,7 @@ const SECTIONS = [
       { path: "docs/02_迷宮と探索.md", label: "迷宮と探索", kicker: "WORLD / 02", summary: "未踏の通路、領域主、描きかけの地図" },
       { path: "docs/03_魔石と魔術.md", label: "魔石と魔術", kicker: "WORLD / 03", summary: "文明を動かすマナと魔石" },
       { path: "docs/04_自由迷宮都市と組織.md", label: "自由迷宮都市と組織", kicker: "WORLD / 04", summary: "五大国、ギルド、商人、探索者" },
+      { path: "docs/08_街角の風景.md", label: "街角の風景", kicker: "ART / 01", summary: "市場、酒場、荷役場、夜の橋。四つの画風で見る自由都市" },
       { path: "docs/05_歴史と伝承.md", label: "歴史と伝承", kicker: "WORLD / 05", summary: "過去の繁栄、変わりゆく大地、不確かな噂" },
       { path: "docs/06_種族と信仰.md", label: "種族と信仰", kicker: "WORLD / 06", summary: "この世界で生きる人々と信念" }
     ]
@@ -123,9 +124,9 @@ function markdownToHtml(markdown, sourcePath) {
         if (allowed) {
           const img = new URL(raw, new URL(sourcePath, document.baseURI));
           if (img.origin === location.origin && img.pathname.startsWith(new URL("assets/", document.baseURI).pathname)) {
-            html.push('<figure class="article-map"><a href="' + escapeHtml(img.href) + '" target="_blank" rel="noopener noreferrer" aria-label="地図を拡大表示">' +
+            html.push('<figure class="article-map"><a href="' + escapeHtml(img.href) + '" target="_blank" rel="noopener noreferrer" aria-label="画像を拡大表示">' +
               '<img src="' + escapeHtml(img.href) + '" alt="' + escapeHtml(match[1]) + '" loading="eager" decoding="async">' +
-              '</a><figcaption>地図を選択すると別画面で拡大できます。</figcaption></figure>');
+              '</a><figcaption>画像を選択すると別画面で拡大できます。</figcaption></figure>');
           }
         }
       }
