@@ -316,3 +316,260 @@ a{touch-action:manipulation;-webkit-tap-highlight-color:#dcb88430}
 @supports(padding:max(0px)){
  .header-inner{padding-left:max(clamp(22px,4.4vw,56px),env(safe-area-inset-left));padding-right:max(clamp(22px,4.4vw,56px),env(safe-area-inset-right))}
 }
+/* Ruosuen visual theme v2: midnight cave / blue-white mana.
+   Stone absorbs light; only mana and navigational accents emit it.
+   Deliberately replace gold/sepia surfaces throughout the portal and archive. */
+:root{
+  --night:#030810;
+  --ink:#0b1828;
+  --abyss:#071625;
+  --slate:#112b40;
+  --gold:#9cdfff;
+  --pale-gold:#e3f7ff;
+  --ivory:#102338;
+  --paper:#0e2032;
+  --muted:#b5cbd9;
+  --stone:#050e19;
+  --mana:#a6e8ff;
+  --mana-bright:#e3f8ff;
+  --mana-muted:#80bbde;
+  --ice-line:#4d89a7;
+}
+body{background:#030810;color:#eaf4fb}
+a:focus-visible,button:focus-visible{outline-color:#b2ecff}
+::selection{background:#427a9a;color:#fff}
+.skip-link{background:#c9f0ff;color:#091b2a}
+.site-header{
+  background:rgba(3,9,18,.94);
+  border-bottom-color:#85c7ec36;
+  box-shadow:0 5px 35px #02071073;
+}
+.brand-mark{border-color:#81cde9;box-shadow:0 0 22px #55baf922}
+.brand-mark:before{border-color:#8ad8f154}
+.brand-mark-inner{color:#bcf0ff;text-shadow:0 0 15px #80ddff}
+.brand-word{color:#e5f8ff}
+.brand-word small{color:#9fc2d6}
+.top-nav a{color:#d5e8f3}
+.top-nav a:hover{color:#b8ecff}
+.top-nav .nav-start{border-color:#83c6e990;color:#d0f2ff;background:#0c273546}
+.top-nav .nav-start:hover{background:#1b496275}
+.hero{background:#020711;border-bottom-color:#6dcaff4d}
+.hero-art{
+  filter:hue-rotate(168deg) saturate(1.35) brightness(.91) contrast(1.09);
+}
+.hero-shade{
+  background:
+    radial-gradient(ellipse 35% 42% at 76% 45%,#9dddff2a 0%,#2e83b715 43%,transparent 78%),
+    linear-gradient(90deg,#020610fb 0%,#030914ec 25%,#05121ecc 47%,#0718273b 79%),
+    linear-gradient(0deg,#020610fa 0%,transparent 38%,#02091372 100%);
+}
+.hero:after{
+  background:repeating-linear-gradient(90deg,transparent 0,transparent calc(25% - 1px),#88d2fa16 25%);
+}
+.hero-frame{border-color:#91d5f95c;color:#b5e6ffa6}
+.hero-prelude{color:#b9eaff}
+.hero-title-jp{color:#edfaff;text-shadow:0 2px 30px #86ddfa24,0 7px 34px #000b}
+.hero-title-en{color:#b8edff;text-shadow:0 0 22px #80d8ff7a}
+.hero-declaration{color:#f1faff}
+.hero-declaration em{color:#d0f5ff;text-shadow:0 0 24px #82d4fa42}
+.hero-copy{color:#d2e3f0}
+.cta-primary{background:#bfedff;color:#071826;box-shadow:0 0 0 1px #e0f7ff5c,0 0 30px #58bde535}
+.cta-primary:hover{background:#e0f8ff;box-shadow:0 0 36px #6dcdf17a}
+.cta-secondary{border-color:#84bedca6;color:#e8f5fc;background:#081e30a6}
+.cta-secondary:hover{border-color:#bceeff;background:#15425c99}
+.hero-bottom{color:#a9cbdb}
+.scroll-line{background:#98d8f5}
+.scroll-line:after{border-color:#98d8f5}
+.hero-side-note{color:#afd8ed9c}
+
+/* The prologue is a cavern wall illuminated by distant mana, not parchment. */
+.overture{
+  background:
+    radial-gradient(ellipse 53% 82% at 91% 31%,#28547a4a 0%,transparent 77%),
+    linear-gradient(122deg,#040b15 0%,#091a2b 58%,#0a1b2b 100%);
+  color:#e9f5fc;
+  border-bottom:1px solid #6bacca29;
+}
+.overture:before{
+  background:
+    repeating-linear-gradient(8deg,#9ccce507 0 1px,transparent 1px 57px),
+    radial-gradient(ellipse 34% 63% at 87% 35%,#7cccfa13,transparent);
+}
+.overture-mark{color:#9cdfff13;text-shadow:0 0 55px #8adfff1a}
+.overture-side{border-top-color:#77b9da80;color:#97bdd5}
+.overture-side span:first-child{color:#c7edff}
+.overture-copy h2{color:#f0faff}
+.overture-echo{color:#a9e8ff}
+.overture-copy>p:not(.overture-echo){color:#c8dce8}
+.text-link{color:#bceeff;border-bottom-color:#7abbdc}
+.text-link:hover{color:#fff;border-bottom-color:#dcf8ff}
+.panorama{background:#040b14}
+.panorama-art{filter:hue-rotate(168deg) saturate(1.3) brightness(.9) contrast(1.12)}
+.panorama:after{
+  background:linear-gradient(90deg,#020814ee 0%,#071b2999 58%,transparent 93%),
+    linear-gradient(0deg,#020813e8,transparent 60%);
+}
+.panorama-index{color:#afe5ff}
+.panorama p{color:#e8f7ff;text-shadow:0 0 38px #81d5ff50,0 2px 20px #000}
+.domains{background:linear-gradient(180deg,#060f1b,#071624 68%,#081726);color:#ecf7ff}
+.section-lead{color:#9edfff}
+.domains-heading p{color:#a9c4d5}
+.domain-tile{background:#0b1e2c;border-color:#89c9eb38;box-shadow:inset 0 0 0 1px #000a}
+.domain-tile:focus-visible{outline-color:#c0eeff}
+.domain-tile:after{background:linear-gradient(0deg,#030912 0%,#04121df4 26%,#071b2baa 58%,#07182822 100%)}
+.domain-art-maze{
+  background:
+    radial-gradient(ellipse 64% 55% at 50% 24%,#a4e8ffad,transparent 72%),
+    linear-gradient(155deg,#243c50,#081a2c 50%,#030b13);
+}
+.maze-arch{
+  border-color:#0b1b2b;
+  box-shadow:0 0 0 5px #84d7ff6f,0 0 0 28px #04101d,0 0 0 31px #93d4ff68,
+    0 0 0 60px #112b43,0 0 0 65px #90d5f929,
+    inset 0 0 46px #b9efff9c,inset 0 -150px 105px #041019;
+}
+.maze-arch:after{border-color:#c5f3ff8c;box-shadow:0 0 74px #8adfff8a}
+.domain-art-city{
+  background:
+    radial-gradient(ellipse at 40% 26%,#8bcaf785,transparent 49%),
+    linear-gradient(145deg,#182d43,#10273c 54%,#030c16);
+}
+.city-silhouette{
+  background:linear-gradient(0deg,#030914 0 18%,transparent 18%),
+   repeating-linear-gradient(90deg,transparent 0 6%,#07121f 6% 13%,transparent 13% 18%);
+}
+.domain-art-crystal{
+  background:radial-gradient(ellipse 42% 52% at 50% 35%,#8bdfffc4,transparent 100%),
+    linear-gradient(140deg,#174a64,#0b263d 56%,#030d19);
+}
+.crystal-shard{
+  background:linear-gradient(117deg,#1b4c65 0 28%,#dcfaff 29% 31%,#5497bd 32% 48%,
+    #f0fcff 49% 50%,#3479aa 51% 70%,#123a53 71%);
+  filter:drop-shadow(0 0 44px #92e0ff);
+}
+.crystal-shard:before{background:#c4f3ff91}
+.domain-overlay small{color:#b1e7ff}
+.domain-overlay strong{color:#f1f9ff}
+.domain-desc{color:#d4e6f0}
+.domain-visit{color:#bdefff;border-bottom-color:#83cbedc9}
+.domain-footnote{color:#9dbccd}
+
+/* The invitation is where mana illuminates a little more of the stone. */
+.summons{
+  background:
+    radial-gradient(ellipse 72% 137% at 96% 85%,#1a5676 0%,#0a2235 45%,#030b16 100%);
+  color:#ebf8ff;
+  border-top:1px solid #8bc9e437;
+  border-bottom:1px solid #8bc9e437;
+}
+.summons:before{border-color:#8ecfeb52}
+.summons:after{
+  background:repeating-radial-gradient(circle at 72% 50%,transparent 0 34px,#a2e5ff38 35px 36px,transparent 37px 75px);
+}
+.summons-deco{color:#85cef711}
+.summons-overline{color:#a7e0fa}
+.summons-head h2{color:#f1faff}
+.summons-head>p:last-child{color:#bfd7e6}
+.motives{border-top-color:#7ab4d458;border-left-color:#7ab4d458}
+.motives span{border-right-color:#7ab4d458;border-bottom-color:#7ab4d458;color:#e8f4fd}
+.motives span:before{color:#a8e9ff}
+.summons-button{
+  background:#c1efff;color:#0a2234;box-shadow:0 0 30px #6dd4f12b;
+}
+.summons-button:hover{background:#e6faff;box-shadow:0 0 37px #6dd4f170}
+.summons-note{color:#abc8dc}
+
+/* Archive: slightly lighter blue stone keeps longer prose readable. */
+.field-guide{
+  background:linear-gradient(155deg,#0b1e30,#102c42 55%,#0a2033);
+  color:#e7f5ff;
+}
+.guide-small{color:#90cfed}
+.guide-heading h2{color:#effaff}
+.guide-heading p{color:#b4cada}
+.guide-list{border-top-color:#70a9c275}
+.guide-list a{border-bottom-color:#6c9ebb6b}
+.guide-list a:hover{background:#65b5e01b}
+.guide-num{color:#8bd0ef}
+.guide-name{color:#ebf6fc}
+.guide-desc{color:#9ebcce}
+.guide-arrow{color:#b1e6ff}
+.guide-more a{color:#c7eefe}
+.guide-more a:hover{color:#fff}
+.footer{background:#020711;border-top-color:#6fa8cc36;color:#9cbaca}
+.footer-logo{color:#d8f5ff}
+.footer-logo span{color:#8eb3c8}
+.footer a{color:#b9eaff}
+
+/* Archive reader and mobile selector must remain on the same blue-black theme. */
+#reader-view{
+  background:
+    radial-gradient(ellipse 79% 700px at 90% 0%,#1e49644a,transparent 72%),
+    #091b2b;
+  color:#e4f2fa;
+}
+.reader-masthead{
+  background:linear-gradient(95deg,#030d19,#173a55);
+  color:#a6dffa;
+}
+.sidebar{border-right-color:#6489a269}
+.sidebar-title{color:#97d4f5}
+.side-group-title{color:#83a6bd}
+.side-link{color:#b8cbd9}
+.side-link:hover{background:#86d6ff12;color:#eefaff}
+.side-link[aria-current="page"]{border-left-color:#87d9ff;color:#d4f4ff;background:#72c5ed1f}
+.reader-breadcrumbs{color:#9ab7c7}
+.reader-breadcrumbs a{color:#c3e8ff}
+.article-hero{border-bottom-color:#6f9eb57a}
+.article-label{color:#8bcfe9}
+.article-hero h1{color:#effaff}
+.article-summary{color:#adcadc}
+.article-body{color:#dcebf4}
+.article-body h1{color:#f0faff}
+.article-body h2{border-bottom-color:#518aaa8c;color:#eaf8ff}
+.article-body h3{color:#b3e8ff}
+.article-body h4{color:#eaf6fc}
+.article-body strong{color:#dcf6ff}
+.article-body a{color:#9ee4ff}
+.article-body a:hover{color:#e3f9ff}
+.article-body li::marker{color:#8dd4f3}
+.article-body blockquote{border-left-color:#92d8f7;background:#5fafd712;color:#c9e6f6}
+.article-body code{background:#1c4156;color:#d8f4ff}
+.article-body pre{background:#03101a;color:#e7f7ff;border:1px solid #5a9dbc66}
+.article-body pre code{background:transparent;color:inherit}
+.article-body .table-wrap{border-color:#6e9bb479}
+.article-body table{color:#dcebf4}
+.article-body th,.article-body td{border-bottom-color:#6b97af73}
+.article-body th{background:#1b425c;color:#d3f3ff}
+.article-body hr{border-top-color:#6b9dbc73}
+.reader-bottom{border-top-color:#709eb675}
+.reader-bottom a{color:#aee7ff}
+.reader-bottom a:hover{color:#f4fbff}
+.loading{color:#aacbde}
+.mobile-categories{
+  background:#081b2cf5;
+  border-bottom-color:#5984a2;
+}
+.mobile-categories a{
+  border-color:#5a849d;
+  color:#bbd7e8;
+  background:#0b273b;
+}
+.mobile-categories a[aria-current="page"]{
+  color:#e3f8ff;
+  border-color:#9edfff;
+  background:#195071;
+}
+a{-webkit-tap-highlight-color:#9fe4ff38}
+@media(max-width:720px){
+  .hero-art{filter:hue-rotate(168deg) saturate(1.42) brightness(.99) contrast(1.09)}
+  .hero-shade{
+    background:
+      radial-gradient(ellipse 58% 38% at 78% 38%,#a3e7ff32,transparent 75%),
+      linear-gradient(90deg,#020712f5,#041120c4 63%,#05203865),
+      linear-gradient(0deg,#020811ed 0%,transparent 72%);
+  }
+  .hero-frame{border-color:#91d5f95c}
+  .mobile-categories{background:#081b2cf5;border-bottom-color:#5984a2}
+}
+
