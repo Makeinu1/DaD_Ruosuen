@@ -574,7 +574,7 @@ a{-webkit-tap-highlight-color:#9fe4ff38}
 }
 
 
-/* Illustrated monochrome city atlas within the canonical Markdown reader. */
+/* Illustrated assets in the canonical Markdown reader: preserve the artwork's native palette. */
 .article-map {
   margin: 1.8rem -0.6rem 2rem;
   padding: 0;
@@ -590,7 +590,6 @@ a{-webkit-tap-highlight-color:#9fe4ff38}
   height: auto;
   max-width: none;
   background: #f3f0e8;
-  filter: grayscale(1);
 }
 .article-map figcaption {
   margin: 0;
