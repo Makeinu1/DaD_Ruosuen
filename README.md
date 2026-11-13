@@ -12,13 +12,14 @@
 
 **このリポジトリが、ルオスエン世界の設定を記録する基本の場所です。** 参加者がスマホで読むWebサイトは、ここから**プレイヤー向けに選んだ資料だけ**を案内します。
 
+- **[notes/](notes/README.md)：** 自由なメモ帳。思いつき、質問、検討前の案を残す場所（正式設定ではない）。
 - **[world/](world/README.md)：** 世界の基本法則・歴史・社会など、世界設定の正本。未決事項も確定と区別して記録。
 - **[docs/](docs/01_プレイヤー向け世界観.md)：** プレイヤーの知識として説明してよい世界観。
 - **[players/](players/キャラクター作成ガイド.md)：** キャラクター作成と参加の手引き。
-- **[GitHub Pages](https://makeinu1.github.io/DaD_Ruosuen/)：** プレイヤーに読んでほしい内容だけを厳選したWeb版。
+- **[GitHub Pages](https://makeinu1.github.io/DaD_Ruosuen/)：** 公開原稿のMarkdownを**直接読み込んで表示**するWeb版。別のPages専用原稿は作らない。
 - **[WORLD_POLICY.md](WORLD_POLICY.md)：** 正本・公開範囲・変更管理の正式規約。エージェントも必読。
 
-**注意：このGitHubリポジトリはPublicです。Pagesに載せない `world/` の資料もGitHub上では閲覧できます。秘密のシナリオやDM専用設定は置きません。**
+**注意：このGitHubリポジトリはPublicです。Pagesに載せない `notes/` や `world/` の資料もGitHub上では閲覧できます。秘密のシナリオやDM専用設定は置きません。**
 
 ## 最初に読む3つのページ
 
