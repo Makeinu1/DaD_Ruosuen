@@ -1,0 +1,22 @@
+name: Verify Pages source consistency
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  source-consistency:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate reader JavaScript syntax
+        run: node --check assets/site.js
+      - name: Validate curated Pages source paths
+        run: node scripts/verify-public-sources.mjs
