@@ -1,6 +1,6 @@
 # RUOSUEN Web — visual identity and release notes
 
-Last revised: 2026-11-13
+Last revised: 2026-11-14
 
 ## Purpose
 
@@ -15,6 +15,25 @@ This is a **player-facing invitation to an unknown world**, not a lore encyclope
 - Palette (2026-11-13 revised by user request): **cave black** (#030810), **deep abyss navy** (#071625), **stone blue** (#173a55), **mana blue** (#80bbde), and **blue-white mana glow** (#e3f8ff). Avoid gold, copper, brown, warm cream and parchment as theme colors. The physical cave should absorb light; manastone, the deep gate, active headings and CTAs should appear softly luminous.
 - Typography: Japanese literary serif (*Noto Serif JP*) and Cinzel on Latin display words. System fallbacks if fonts do not load.
 - Player-safe content order: experience the setting → encounter the unknown → choose a personal motive → read lore → create a character.
+
+## Four core illustration styles (adopted 2026-11-14)
+
+The following **four art directions are the default options for future Ruosuen concept art**. These are not four separate canonical worlds: an illustrator may use different media to portray the same city, preserving geography, history, and social logic.
+
+| Style | Primary use | Art direction |
+|---|---|---|
+| **1. Watercolor / 水彩画風** | Arrival scenes, hills, city panoramas and travel | Light washes and pencil/pen linework; paper-white breathing room; distant aerial perspective, asymmetry, lived-in architecture and natural light. |
+| **2. Copperplate etching / 銅版画風** | City maps, historical surveys, engraved records and guide illustrations | Mostly white paper, precise but uneven ink hatching and limited stains; reduce the size and contrast of labels so the **image** is primary. Keep monochrome as part of the artwork, not a site-wide image filter. |
+| **3. Nocturne fantasy painting / 夜景・幻想画風** | Evening city, abyss and underground world, faint mana light | Painterly shadow and restrained blue-white light against dark stone; isolated sources of illumination and a true sense of the unknown, without excessive glowing crystals. |
+| **4. Gouache / ガッシュ・不透明水彩画風** | Markets, alleys, workshops, people at work and daily life | Opaque pigment, confident brush shapes, selective detail, tactile masonry and ordinary human activity; an illustration, not an overly polished fantasy render. |
+
+### Image publication and anti-generic-art direction
+
+- **Preserve the original colors for styles 1, 3 and 4 on GitHub Pages.** Do **not** automatically grayscale, desaturate or recolor concept-art images in the Markdown article reader. Full-color gouache, watercolor and nocturnes should stay in color; authors can explicitly choose a monochrome work on a case-by-case basis.
+- For **style 2 (copperplate)**, keep the pale monochrome artwork, white page and subtle physical wear that the author approved. Do not force other images into that style. The article interface may be deep navy while the artwork itself remains white or colorful: these are complementary layers, not a contradiction.
+- Favor visual hierarchy and credible world-building over generic AI fantasy: avoid repetitive identical towers, random ornaments, perfectly symmetrical concentric cities, huge royal castles without political rationale, and excessive magic glow. Include working logistics, regional history, imperfect repairs, people and spacious areas where the eye can rest.
+- The four style names are production guidelines, **not an instruction to make every illustration into a four-panel comparison board**. After exploring styles, prefer a strong standalone image for Pages unless a comparative sheet is explicitly desired.
+- Each art asset is a depiction or proposal, not an automatic canon decision. National names, architectural styles and maps still require explicit approval under `WORLD_POLICY.md`.
 
 ## Pages and implementation
 
