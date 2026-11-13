@@ -309,3 +309,10 @@ a:focus-visible,button:focus-visible{outline:3px solid #f3d099;outline-offset:5p
  html{scroll-behavior:auto}
  .cta,.domain-art,.guide-list a,.summons-button,.top-nav a{transition:none}
 }
+
+/* Final accessibility and touch refinements */
+a{touch-action:manipulation;-webkit-tap-highlight-color:#dcb88430}
+.hero-declaration,.overture-copy h2,.domains-heading h2,.summons-head h2,.guide-heading h2,.article-hero h1{text-wrap:balance}
+@supports(padding:max(0px)){
+ .header-inner{padding-left:max(clamp(22px,4.4vw,56px),env(safe-area-inset-left));padding-right:max(clamp(22px,4.4vw,56px),env(safe-area-inset-right))}
+}
