@@ -4,7 +4,7 @@ Last revised: 2026-11-13
 
 ## Purpose
 
-This is a **player-facing invitation to an unknown world**, not a lore encyclopedia or a DM rulebook. Four D&D players should feel curious enough to make their own characters after visiting on a phone. The repository's player-safe Markdown documents remain the canonical source for text; the author's confidential lore stays in Notion and must not be copied to this public repository.
+This is a **player-facing invitation to an unknown world**, not a lore encyclopedia or a DM rulebook. Four D&D players should feel curious enough to make their own characters after visiting on a phone. GitHub `world/` is the canonical source for world rules; `docs/` and `players/` are the **player-facing edition** derived from it. The author's confidential lore must not be copied to this public repository, regardless of where it is stored. See `WORLD_POLICY.md`.
 
 ## Visual direction
 
@@ -22,7 +22,8 @@ This is a **player-facing invitation to an unknown world**, not a lore encyclope
 - `assets/site.css`: responsive design. The document reader uses a restrained midnight-blue journal palette with high-contrast ice-white copy instead of warm parchment. The mobile navigation remains readable over the dark background.
 - `assets/site.js`: existing dependency-free Markdown viewer and document navigation. Routes `#world` and `#guide` are in-page anchors, while `#/docs/...` and `#/players/...` open the Markdown reader.
 - `assets/ruosuen-depths.svg`: custom original visual. Its cave artwork is color-graded **in CSS** using a cool hue shift so the warm light reads as blue-white mana. No external image dependencies. The standalone SVG used as the Open Graph social preview still has its original warm colors; it is not the live-page grade.
-- `docs/**` and `players/**`: untouched canonical player guides.
+- `world/**`: maintained world-setting canon (not automatically displayed on Pages).
+- `docs/**` and `players/**`: public player guides curated for Pages.
 
 ## Installed project skills
 
@@ -41,4 +42,4 @@ Before sharing broadly:
 
 ## Project decisions
 
-A gorgeous hero is an invitation, not license to invent canon. Do not expose metaphysical truths from the author's Notion settings, assign names to currently unnamed nations, or treat D&D level 3 / official rules options as settled when they are still proposals. The player-facing site should remain source-compatible with Markdown edits, and the primary link remains character creation.
+A gorgeous hero is an invitation, not license to invent canon. Do not expose author-only metaphysical truths or spoilers in the player-facing website, assign names to currently unnamed nations, or treat D&D level 3 / official rules options as settled when they are still proposals. The player-facing site should remain source-compatible with Markdown edits, and the primary link remains character creation.
