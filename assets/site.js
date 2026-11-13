@@ -91,6 +91,7 @@ function markdownToHtml(markdown, sourcePath) {
   const isRule = x => /^\s*[-*_]{3,}\s*$/.test(x);
   const isHeading = x => /^#{1,6}\s+/.test(x);
   const isList = x => /^\s*(?:[-*+]\s+|\d+\.\s+)/.test(x);
+  const isImage = line => /^!\[[^\]]*\]\([^)]+\)\s*$/.test(line.trim());
   const isTable = (line, next) => /^\s*\|.+\|\s*$/.test(line) && /^\s*\|[\s:|\-]+\|\s*$/.test(next || "") && /---/.test(next);
   const cells = line => line.trim().replace(/^\|/,"").replace(/\|$/,"").split("|").map(x => x.trim());
   while (i < lines.length) {
@@ -111,6 +112,22 @@ function markdownToHtml(markdown, sourcePath) {
       if (level !== 1 || headingCount > 0) {
         const id = "section-" + (headingCount++);
         html.push("<h" + level + ' id="' + id + '">' + inlineMarkdown(title, sourcePath) + "</h" + level + ">");
+      }
+      i++; continue;
+    }
+    if (isImage(l)) {
+      const match = l.trim().match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
+      if (match) {
+        const raw = match[2].trim();
+        const allowed = /^\.\.\/assets\/[a-z0-9-]+\.(?:svg|png|webp|avif|jpe?g)$/i.test(raw);
+        if (allowed) {
+          const img = new URL(raw, new URL(sourcePath, document.baseURI));
+          if (img.origin === location.origin && img.pathname.startsWith(new URL("assets/", document.baseURI).pathname)) {
+            html.push('<figure class="article-map"><a href="' + escapeHtml(img.href) + '" target="_blank" rel="noopener noreferrer" aria-label="地図を拡大表示">' +
+              '<img src="' + escapeHtml(img.href) + '" alt="' + escapeHtml(match[1]) + '" loading="eager" decoding="async">' +
+              '</a><figcaption>地図を選択すると別画面で拡大できます。</figcaption></figure>');
+          }
+        }
       }
       i++; continue;
     }
@@ -143,7 +160,7 @@ function markdownToHtml(markdown, sourcePath) {
     }
     const paragraph = [l.trim()]; i++;
     while (i < lines.length && !isBlank(lines[i]) && !isHeading(lines[i]) && !isRule(lines[i]) &&
-      !isList(lines[i]) && !/^\s*>/.test(lines[i]) && !/^\s*\`\`\`/.test(lines[i]) && !isTable(lines[i],lines[i+1])) {
+      !isList(lines[i]) && !isImage(lines[i]) && !/^\s*>/.test(lines[i]) && !/^\s*\`\`\`/.test(lines[i]) && !isTable(lines[i],lines[i+1])) {
       paragraph.push(lines[i++].trim());
     }
     html.push("<p>" + inlineMarkdown(paragraph.join(" "),sourcePath) + "</p>");
