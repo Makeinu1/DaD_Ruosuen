@@ -7,6 +7,7 @@
 - Read the [Agent Operating Guide](https://app.notion.com/p/40f0691fc97a81f0bd7ac9dacddfa963) before project changes where Notion is available.
 - Read [DESIGN.md](DESIGN.md) for design direction and the release checklist.
 - Read [DECISIONS.md](DECISIONS.md) for player-facing canon versus tentative session rules.
+- Scratch work belongs in `notes/**`; proposals there are NOT canon and are NOT Pages content. See `notes/README.md`.
 - **Canonical world settings live in `world/**` on GitHub.** Read `world/README.md` and relevant source files before changing world lore.
 - `docs/**` and `players/**` are **player-facing adaptations** of the GitHub world canon. Pages selects only player-relevant documents; do not automatically expose everything from `world/`.
 - The former extensive Notion world draft remains migration/reference material for items not yet transferred, NOT a second independently maintained canonical copy.
@@ -26,6 +27,8 @@ Changes should retain mobile-first legibility, semantic links, visible focus, re
 
 ## Publishing
 
-Before adding any article to `assets/site.js` `SECTIONS`, confirm it is intended for players and does not reveal spoilers. An article living under `world/` is not automatically eligible for Pages navigation.
+**Do not create a second manually maintained Pages copy of a Markdown article.** The Pages reader fetches Markdown directly from repository paths; edit the source file to change published prose. After deployment, check that the rendered article matches the source in meaning.
+
+Before adding any article to `assets/site.js` `SECTIONS`, confirm it is intended for players and does not reveal spoilers. Never register paths under `notes/` or `world/` without explicit review (default: do not register them). An article living under `world/` is not automatically eligible for Pages navigation.
 
 GitHub Pages uses the repository `main` / root when configured. The intended public URL is https://makeinu1.github.io/DaD_Ruosuen/ . Do not report live deployment or device testing as complete without evidence.
