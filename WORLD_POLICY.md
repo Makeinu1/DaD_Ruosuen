@@ -59,7 +59,7 @@ AIの提案や会話内の思いつきは、作者が承認するまで**採用�
 - 公開文を修正するときはまずGitHubの元Markdownを編集する。Webの表示側に文章を直書きして内容の二重管理をしない（トップページの演出・紹介コピーを除く）。
 - **同じデプロイ版の原稿と表示は同一ソースになる**。ただしGitHub `main` 更新直後からPagesのデプロイが完了するまでには時間差がある。新バージョンの公開を確認した後に参加者へ案内する。
 - Markdownのレンダリング上、見た目はGitHubのMarkdown表示と完全一致とは限らない。対応外のMarkdown構文は修正・表示実装の改善で対処する。
-- リポジトリの公開資料の参照先が存在することは、可能な限り自動検証する。
+- 公開対象の参照先や二重登録は [`.github/workflows/verify-pages-sources.yml`](.github/workflows/verify-pages-sources.yml) で検証し、`scripts/verify-public-sources.mjs` を実行する（Actionsが有効な場合）。これは**GitHub上の原稿とPagesの構造的一元化**の検査であり、公開後の目視確認やデプロイ成功そのものを保証するものではない。
 
 ## 6. 最重要：公開リポジトリと秘密情報
 
