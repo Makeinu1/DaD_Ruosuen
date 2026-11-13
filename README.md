@@ -6,7 +6,7 @@
 
 ## スマホから読む
 
-📱 **[ルオスエン Web版（GitHub Pages）](https://makeinu1.github.io/DaD_Ruosuen/)** から、世界観とキャラクター作成ガイドをスマートフォン向けの表示で閲覧できます。**公開開始には管理者による初回のPages設定が必要**です。詳しくは [Web版の公開設定手順](WEB_SETUP.md) を参照してください。
+📱 **[ルオスエン Web版（GitHub Pages）](https://makeinu1.github.io/DaD_Ruosuen/)** を公開中です。スマートフォンで巨大な迷宮のビジュアルから世界へ入り、世界観を読んでキャラクター作成へ進めます。元の設定資料は従来どおりMarkdownで管理し、Web版に反映されます。更新や公開元の詳細は [Web版の公開設定手順](WEB_SETUP.md) を参照してください。
 
 ## 最初に読む3つのページ
 
