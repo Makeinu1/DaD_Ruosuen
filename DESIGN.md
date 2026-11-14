@@ -54,11 +54,43 @@ Last revised: 2026-11-14
 
 フックは世界の広がりを示すものと、次回実際に関わる導入を区別して扱う。すべてのフックが次の1セッションで訪問・解決できると約束する表現は避ける。
 
+## Concept-film presentation — 作者指定の見せ方（2026-11-14）
+
+**作者の指示：コンセプトムービーのように、世界の魅力を語るPagesにする。** 情景と言葉の連なりで世界への期待を育て、自分のキャラクターで冒険したい気持ちへつなぐ。詳しい資料は関心に応じて読めるように置く。
+
+惹句には、まずそれ自体の強さ・憧れ・恐ろしさ・驚きが必要。その魅力の周囲に、まだ見えていない存在や歴史、関係を想像できる余白を残す。数字や序列はその手段の一つであり、数の挿入や未知の存在証明を目的にしない。単発の珍しい人物や矛盾した品物を並べるだけでは、世界への憧れにつながらない。
+
+### 今回の改修案
+
+既存の静的サイトとMarkdownリーダーを活かし、トップを次のシーンで構成する。
+
+1. 夜の裂谷都市と「この街の下には、まだ世界がある。」という導入。
+2. 新しく開いた道から、長い時間を重ねた地下世界への期待。
+3. 五大国が交わる都市、市場・酒場・荷役場に生きる人々。
+4. 巨大な迷宮の情景と、地形・生態・交易が重なる世界の広がり。
+5. 魔石・領域主・五大国・地図という、採用済み設定からの冒険への手がかり。
+6. 四人で一つの依頼を引き受ける短編への招待と、人物像を考える問い。
+7. 作成ガイドへの導線と、任意で開く詳細資料の一覧。
+
+全画面に近い情景、短い字幕のような文章、静かな場面転換でリズムを作る。閲覧者のスクロールで読み進められ、演出の待ち時間や自動再生を必須にしない。画像は既存作品を使い、カラーの原色を保つ。既存の資料URLとMarkdown本文の一元管理を維持する。
+
+### この改修案に含めない未決内容
+
+会話中に出された新しい固有名・勢力・怪物の惹句は、作者がまだ採用していない。ページ上で世界の事実として公開しない。次回固有の導入、開始レベル、初回構想も未決。現段階は**情景の構成と閲覧導線を具体化した案**であり、強い固有フックの選定や次回冒険の予告原稿が完成したことを意味しない。
+
+### 改修案の検証記録（2026-11-14）
+
+- ローカルのヘッドレスChromiumで1440・768・390・320px幅を確認。ページ全体の横はみ出しなし。
+- 全情景画像の読み込みと、カラー画像に色変換フィルターがないことを確認。
+- 世界・迷宮・次の冒険・資料一覧への移動、キーボードによる資料一覧の開閉、既存14資料の読み込みを確認。
+- reduced-motion時の即時移動、ブラウザー例外なし・リクエスト失敗なしを確認。
+- 公開原稿参照の検査とJavaScript構文検査が成功。実機スマートフォン検証・改修版の本番公開確認は未実施。
+
 ## Visual direction
 
 **The Uncharted World / 未踏の世界への招待状**. Reference: the theatrical urgency and strong character of Seikaisha's original *Red Dragon* special website, not its copyrighted artwork or layout.
 
-- Hero: one bespoke SVG illustration (assets/ruosuen-depths.svg) of a huge underground arch, an unknown destination, and small explorers. No borrowed game artwork.
+- Concept-film opening: the original night-city painting (assets/ruosuen-street-night-oil.webp). The bespoke underground SVG appears in the later descent scene. No borrowed game artwork.
 - Scale: a cinematic full-screen introduction, then chapter-like sections, and finally a practical archive.
 - Palette (2026-11-13 revised by user request): **cave black** (#030810), **deep abyss navy** (#071625), **stone blue** (#173a55), **mana blue** (#80bbde), and **blue-white mana glow** (#e3f8ff). Avoid gold, copper, brown, warm cream and parchment as theme colors. The physical cave should absorb light; manastone, the deep gate, active headings and CTAs should appear softly luminous.
 - Typography: Japanese literary serif (*Noto Serif JP*) and Cinzel on Latin display words. System fallbacks if fonts do not load.
@@ -86,9 +118,10 @@ The following **four art directions are the default options for future Ruosuen c
 ## Pages and implementation
 
 - `index.html`: public marketing/introductory homepage + original Markdown reader DOM.
-- `assets/site.css`: responsive design. The document reader uses a restrained midnight-blue journal palette with high-contrast ice-white copy instead of warm parchment. The mobile navigation remains readable over the dark background.
+- `assets/concept.css`: homepage concept-film sequence, responsive still-image scenes and quiet typographic cuts. No required autoplay or animation.
+- `assets/site.css`: responsive reader and shared header/footer design. The document reader uses a restrained midnight-blue journal palette with high-contrast ice-white copy instead of warm parchment. The mobile navigation remains readable over the dark background.
 - `assets/site.js`: existing dependency-free Markdown viewer and document navigation. Routes `#world` and `#guide` are in-page anchors, while `#/docs/...` and `#/players/...` open the Markdown reader.
-- `assets/ruosuen-depths.svg`: custom original visual. Its cave artwork is color-graded **in CSS** using a cool hue shift so the warm light reads as blue-white mana. No external image dependencies. The standalone SVG used as the Open Graph social preview still has its original warm colors; it is not the live-page grade.
+- `assets/ruosuen-depths.svg`: custom original visual. Its cave artwork is color-graded **in CSS** using a cool hue shift so the warm light reads as blue-white mana. No external image dependencies. The Open Graph social preview uses the night-city painting, matching the opening scene.
 - `world/**`: maintained world-setting canon (not automatically displayed on Pages).
 - `docs/**` and `players/**`: public player guides curated for Pages.
 
