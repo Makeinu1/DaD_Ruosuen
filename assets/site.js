@@ -217,9 +217,9 @@ function currentPath() {
 function onRoute() {
   const path = currentPath();
   if (!path) showHome();
-  else if (["world", "domains", "guide"].includes(path)) {
+  else if (["world", "domains", "guide", "depths", "next"].includes(path)) {
     showHome(false);
-    requestAnimationFrame(() => document.getElementById(path)?.scrollIntoView({behavior:"smooth",block:"start"}));
+    requestAnimationFrame(() => document.getElementById(path)?.scrollIntoView({behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth", block:"start"}));
   } else showDoc(path);
 }
 window.addEventListener("hashchange", onRoute);
