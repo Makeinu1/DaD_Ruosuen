@@ -33,7 +33,7 @@ Last revised: 2026-11-14
 
 ## Editorial plan — 情報と見せ方の検討案
 
-**以下は上記目的を実現するための提案。具体的な掲載順・コピー・フック・改修は未採用・未実装。** 既存の美術方針や世界設定、卓の未決事項を自動的に変更するものではない。
+以下は目的を実現するための初期検討案。今回採用した構成とコピーの判断は、下の「Concept-film presentation」に記録する。新しい固有フックや卓の未決事項は、この表だけで採用扱いにしない。
 
 | 情報 | 見せ方の案 | 読者に起きてほしいこと |
 | --- | --- | --- |
@@ -60,23 +60,30 @@ Last revised: 2026-11-14
 
 惹句には、まずそれ自体の強さ・憧れ・恐ろしさ・驚きが必要。その魅力の周囲に、まだ見えていない存在や歴史、関係を想像できる余白を残す。数字や序列はその手段の一つであり、数の挿入や未知の存在証明を目的にしない。単発の珍しい人物や矛盾した品物を並べるだけでは、世界への憧れにつながらない。
 
-### 今回の改修案
+### 今回採用する構成
 
 既存の静的サイトとMarkdownリーダーを活かし、トップを次のシーンで構成する。
 
 1. 夜の裂谷都市と「この街の下には、まだ世界がある。」という導入。
-2. 新しく開いた道から、長い時間を重ねた地下世界への期待。
-3. 五大国が交わる都市、市場・酒場・荷役場に生きる人々。
+2. 「古い地層に、新しい道がひらく。」という、地下世界へ向かう期待。
+3. 異国の言葉や未踏の噂が集まる都市、市場・酒場・荷役場に生きる人々。
 4. 巨大な迷宮の情景と、地形・生態・交易が重なる世界の広がり。
-5. 魔石・領域主・五大国・地図という、採用済み設定からの冒険への手がかり。
+5. 暮らしを支える魔石・領域主・異国の探索者・地図という、今ある情景からの冒険への手がかり。
 6. 四人で一つの依頼を引き受ける短編への招待と、人物像を考える問い。
 7. 作成ガイドへの導線と、任意で開く詳細資料の一覧。
 
 全画面に近い情景、短い字幕のような文章、静かな場面転換でリズムを作る。閲覧者のスクロールで読み進められ、演出の待ち時間や自動再生を必須にしない。画像は既存作品を使い、カラーの原色を保つ。既存の資料URLとMarkdown本文の一元管理を維持する。
 
-### この改修案に含めない未決内容
+### 見出しで約束する面白さ（2026-11-14 作者確認）
 
-会話中に出された新しい固有名・勢力・怪物の惹句は、作者がまだ採用していない。ページ上で世界の事実として公開しない。次回固有の導入、開始レベル、初回構想も未決。現段階は**情景の構成と閲覧導線を具体化した案**であり、強い固有フックの選定や次回冒険の予告原稿が完成したことを意味しない。
+- 「百万年」は魔石の成熟や古い地層に関係する設定。現時点で太古の秘密を扱う冒険の中身まで用意したわけではないため、「百万年の地下世界」「百万年を掘り当てる」をトップの惹句として使わない。元の設定は詳しい資料で保持する。
+- 五大国が存在し、地下の資源や交通路を巡って活動する骨格は保持する。各国の個性や文化差が未決の段階では「五大国が、この迷宮で交わる」「五大国、その思惑」を強い見出しにしない。まず異国の人々・品物・噂が街へ集まる情景を伝える。
+- 今後は、文化・技術・価値観の違いがキャラクターの背景や探索での選択につながる場面を育てられる。新しい具体案の採用は作者と検討する。
+- 余白を残しても、その言葉でどんな驚きや関わりを期待させるかは考える。設定上の根拠だけで大きな惹句を正当化しない。
+
+### 今回の公開内容に含めない未決内容
+
+会話中に出された新しい固有名・勢力・怪物の惹句は、作者がまだ採用していない。ページ上で世界の事実として公開しない。次回固有の導入、開始レベル、初回構想も未決。今回の公開は**情景から世界への期待とキャラクター作成へつなぐ構成**であり、強い固有フックの選定や次回冒険の予告原稿が完成したことを意味しない。
 
 ### 改修案の検証記録（2026-11-14）
 
@@ -94,7 +101,7 @@ Last revised: 2026-11-14
 - Scale: a cinematic full-screen introduction, then chapter-like sections, and finally a practical archive.
 - Palette (2026-11-13 revised by user request): **cave black** (#030810), **deep abyss navy** (#071625), **stone blue** (#173a55), **mana blue** (#80bbde), and **blue-white mana glow** (#e3f8ff). Avoid gold, copper, brown, warm cream and parchment as theme colors. The physical cave should absorb light; manastone, the deep gate, active headings and CTAs should appear softly luminous.
 - Typography: Japanese literary serif (*Noto Serif JP*) and Cinzel on Latin display words. System fallbacks if fonts do not load.
-- Content hierarchy follows the approved Pages purpose above. The concrete editorial structure is under discussion; optional deeper lore should support curiosity and character creation.
+- Content hierarchy follows the approved Pages purpose and concept-film structure above; optional deeper lore supports curiosity and character creation.
 
 ## Four core illustration styles (adopted 2026-11-14)
 
