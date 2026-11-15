@@ -14,6 +14,20 @@
 .film-home section { scroll-margin-top: 16px; }
 .film-home img { display: block; max-width: 100%; }
 .film-home a { touch-action: manipulation; }
+.film-story-hud { display: none; }
+.film-montage-shot {
+  position: relative;
+  isolation: isolate;
+  min-height: 650px;
+  display: flex;
+  align-items: center;
+}
+.film-montage-shot .film-caption { position: relative; z-index: 1; padding-block: 110px; }
+.film-shot-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #030810df, #0308101a 90%), linear-gradient(0deg, #030810, transparent 25%, transparent 75%, #030810);
+}
 .film-home a:focus-visible,
 .film-home summary:focus-visible {
   outline: 3px solid var(--film-mana);
@@ -237,6 +251,7 @@ img.film-city-image { width: 100%; height: auto; aspect-ratio: 1 / 1.05; object-
 .film-depths-copy .film-text-link { margin-top: 24px; }
 .film-possibilities { padding-block: clamp(100px, 12vw, 170px); }
 .film-possibilities > .film-title { max-width: 17em; }
+.film-possibilities > .film-caption > .film-title { max-width: 17em; }
 .film-horizons {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -254,6 +269,7 @@ img.film-city-image { width: 100%; height: auto; aspect-ratio: 1 / 1.05; object-
 }
 .film-horizons span { display: block; max-width: 27em; color: var(--film-muted); font-size: 14px; line-height: 2.1; }
 .film-possibilities > .film-text-link { margin-top: 32px; }
+.film-possibilities > .film-caption > .film-text-link { margin-top: 32px; }
 .film-invitation { min-height: 760px; display: flex; align-items: center; }
 .film-invitation .film-image img,
 .film-invitation img.film-image { object-position: 62% center; }
@@ -371,4 +387,161 @@ img.film-city-image { width: 100%; height: auto; aspect-ratio: 1 / 1.05; object-
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .film-home *, .film-home *::before, .film-home *::after { animation: none !important; transition: none !important; }
+}
+
+/* Enhanced only after the complete sequence fits the viewport. The same
+   sections remain a normal document without JS, with reduced motion, or
+   when a short viewport / large text needs more reading space. */
+.is-scroll-story {
+  --film-header-height: 78px;
+  --film-travel: 0px;
+  height: calc(100svh - var(--film-header-height) + var(--film-travel));
+}
+.is-scroll-story .film-stage {
+  position: sticky;
+  top: var(--film-header-height);
+  height: calc(100svh - var(--film-header-height));
+  overflow: hidden;
+  background: #030810;
+  isolation: isolate;
+}
+.is-scroll-story .film-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  max-width: none;
+  margin: 0;
+  padding: 32px 0 104px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+}
+.is-scroll-story .film-frame:first-child { opacity: 1; visibility: visible; }
+.is-scroll-story .film-frame .film-caption {
+  position: relative;
+  z-index: 3;
+  width: min(100%, var(--max));
+  max-width: var(--max);
+  min-height: 0;
+  height: auto;
+  margin: 0 auto;
+  padding: 0 clamp(22px, 4.4vw, 54px);
+  opacity: var(--scene-caption, 1);
+  transform: translate3d(0, var(--scene-caption-y, 0px), 0);
+}
+.is-scroll-story .film-frame .film-image,
+.is-scroll-story .film-city > img.film-city-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  margin: 0;
+  object-fit: cover;
+  transform: translate3d(0, var(--scene-pan, 0px), 0) scale(var(--scene-zoom, 1.12));
+}
+.is-scroll-story .is-scene-visible .film-image,
+.is-scroll-story .is-scene-visible .film-city-image { will-change: transform; }
+.is-scroll-story .film-city > img.film-city-image { object-position: 65% center; }
+.is-scroll-story .film-city::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(90deg, #030810ef 0%, #030810c9 34%, #03081014 85%);
+}
+.is-scroll-story .film-city-copy .film-copy { max-width: 28em; }
+.is-scroll-story .film-city-copy .film-copy + .film-copy { margin-top: 18px; }
+.is-scroll-story .film-opening-bottom { display: none; }
+.is-scroll-story .film-intertitle { background: #030810; }
+.is-scroll-story .film-intertitle-title { font-size: clamp(28px, 3.8vw, 56px); }
+.is-scroll-story .film-montage-shot .film-title { font-size: clamp(32px, 4.5vw, 66px); }
+.is-scroll-story .film-montage-shot .film-text-link { margin-top: 24px; }
+.is-scroll-story #cargo .film-image { object-position: 68% center; }
+.is-scroll-story #cargo .film-shot-shade { background: linear-gradient(90deg, #030810ed, #030810c4 32%, #0308100a 85%); }
+.is-scroll-story .film-horizons { margin-top: 32px; gap: 24px 72px; }
+.is-scroll-story .film-horizons strong { font-size: clamp(23px, 2.6vw, 36px); margin-bottom: 8px; }
+.is-scroll-story .film-horizons span { font-size: 13px; }
+.is-scroll-story .film-possibilities .film-text-link { margin-top: 24px; }
+.is-scroll-story .film-invitation .film-title { line-height: 1.45; font-size: clamp(28px, 3.2vw, 46px); }
+.is-scroll-story .film-invitation .film-copy { margin-top: 22px; }
+.is-scroll-story .film-session-note { margin-top: 22px; }
+.is-scroll-story .film-story-hud {
+  position: absolute;
+  inset: auto clamp(18px, 4.4vw, 54px) 18px;
+  z-index: 5;
+  display: block;
+  max-width: 1132px;
+  margin-inline: auto;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.film-story-hint { display: flex; justify-content: space-between; gap: 20px; color: #b8ccd9; font-size: 11px; line-height: 1.8; }
+.film-scene-nav { display: flex; justify-content: space-between; gap: 4px; }
+.film-scene-nav a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 6px;
+  color: #a8c1d1;
+  font-size: 11px;
+  line-height: 1.5;
+  text-decoration: none;
+}
+.film-scene-nav a:hover,
+.film-scene-nav a[aria-current="step"] { color: #e3f8ff; text-decoration: underline; text-underline-offset: 5px; }
+.film-story-progress { height: 1px; background: #e3f8ff33; }
+.film-story-progress span { display: block; width: 100%; height: 100%; background: #80bbde; transform: scaleX(0); transform-origin: left center; }
+.film-story-hud::before {
+  content: "";
+  position: absolute;
+  inset: -22px -54px -24px;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(0deg, #030810ed, #0308109c 70%, transparent);
+}
+
+@media (max-width: 650px) {
+  .is-scroll-story .film-frame { padding-block: 20px 112px; }
+  .is-scroll-story .film-frame .film-caption { padding-inline: 24px; }
+  .is-scroll-story .film-opening-title { font-size: clamp(26px, 7.4vw, 36px); line-height: 1.75; }
+  .is-scroll-story .film-worldname { margin-bottom: 24px; }
+  .is-scroll-story .film-opening-actions { margin-top: 24px; }
+  .is-scroll-story .film-city > img.film-city-image { object-position: 58% center; }
+  .is-scroll-story .film-city::after { background: linear-gradient(90deg, #030810e0 0%, #03081087 100%); }
+  .is-scroll-story .film-title { font-size: clamp(24px, 6.8vw, 32px); line-height: 1.55; }
+  .is-scroll-story .film-city-copy .film-title { font-size: clamp(24px, 6.8vw, 32px); }
+  .is-scroll-story .film-copy { font-size: 12px; line-height: 1.95; margin-top: 18px; }
+  .is-scroll-story .film-kicker { font-size: 11px; margin-bottom: 14px; }
+  .is-scroll-story .film-intertitle-title { font-size: clamp(26px, 7vw, 34px); }
+  .is-scroll-story .film-intertitle-copy { font-size: 12px; margin-top: 22px; }
+  .is-scroll-story .film-horizons { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 24px; margin-top: 26px; }
+  .is-scroll-story .film-horizons strong { font-size: 20px; line-height: 1.65; letter-spacing: .02em; }
+  .is-scroll-story .film-horizons span { font-size: 12px; line-height: 1.9; }
+  .is-scroll-story .film-invitation .film-title { font-size: clamp(24px, 6.8vw, 31px); line-height: 1.5; }
+  .is-scroll-story .film-session-note { font-size: 10px; line-height: 1.9; margin-top: 18px; }
+  .is-scroll-story .film-story-hud { inset-inline: 12px; bottom: 16px; }
+  .film-story-hint { padding-inline: 8px; font-size: 10px; gap: 10px; }
+  .film-scene-nav { overflow-x: auto; gap: 0; scrollbar-width: none; }
+  .film-scene-nav::-webkit-scrollbar { display: none; }
+  .film-scene-nav a { flex: 1 0 44px; position: relative; padding: 0; }
+  .film-scene-nav a::after { content: ""; width: 5px; height: 5px; border-radius: 50%; background: #89b4ce80; }
+  .film-scene-nav a[aria-current="step"]::after { background: #e3f8ff; box-shadow: 0 0 12px #80bbde90; }
+  .film-scene-nav a span { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+}
+
+@media (max-height: 750px) {
+  .is-scroll-story .film-title,
+  .is-scroll-story .film-city-copy .film-title,
+  .is-scroll-story .film-invitation .film-title { font-size: clamp(23px, 4.5vh, 34px); line-height: 1.45; }
+  .is-scroll-story .film-copy { font-size: 12px; line-height: 1.9; margin-top: 14px; }
+  .is-scroll-story .film-horizons { margin-top: 18px; gap: 14px 22px; }
+  .is-scroll-story .film-horizons strong { font-size: 18px; line-height: 1.5; }
+  .is-scroll-story .film-horizons span { font-size: 12px; line-height: 1.75; }
+  .is-scroll-story .film-possibilities .film-text-link { margin-top: 16px; }
 }
