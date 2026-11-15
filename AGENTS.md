@@ -21,7 +21,9 @@
 ## Web architecture
 
 A minimal dependency-free static GitHub Pages site:
-`index.html` (intro and reader frame), `assets/site.css` (styles), `assets/site.js` (Markdown viewer/router), `assets/ruosuen-depths.svg` (original key art). `#/docs/...` and `#/players/...` open documents. `#world` and `#guide` navigate to home sections.
+`index.html` (intro and reader frame), `assets/site.css` (reader/shared styles), `assets/concept.css` (homepage/scenes), `assets/site.js` (Markdown viewer/router), `assets/scroll-story.mjs` (scroll-driven scene controller), `assets/ruosuen-depths.svg` (original key art). `#/docs/...` and `#/players/...` open documents. `#world` and `#guide` navigate to home sections.
+
+Scene anchors within the enhanced sticky stage must use `RuosuenStory.goTo` through the existing router; normal `scrollIntoView` cannot select an overlaid scene. Preserve the normal-document fallback for reduced motion, small viewports, large text, unsupported browsers and JavaScript-disabled reading. Run `node --test tests/scroll-story.test.mjs` after changes to progression.
 
 Changes should retain mobile-first legibility, semantic links, visible focus, reduced-motion support, and deep links. Validate on a browser and a phone when one is available; source checks alone are not evidence of a successful visual test.
 

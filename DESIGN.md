@@ -1,6 +1,6 @@
 # RUOSUEN Web — visual identity and release notes
 
-Last revised: 2026-11-14
+Last revised: 2026-11-15
 
 ## Purpose — Pagesの目的（2026-11-14 作者確認）
 
@@ -72,7 +72,7 @@ Last revised: 2026-11-14
 6. 四人で一つの依頼を引き受ける短編への招待と、人物像を考える問い。
 7. 作成ガイドへの導線と、任意で開く詳細資料の一覧。
 
-全画面に近い情景、短い字幕のような文章、静かな場面転換でリズムを作る。閲覧者のスクロールで読み進められ、演出の待ち時間や自動再生を必須にしない。画像は既存作品を使い、カラーの原色を保つ。既存の資料URLとMarkdown本文の一元管理を維持する。
+全画面に近い情景と短い字幕を、スクロール量に連動して転換する。2026-11-15の追加指示により、画面固定・背景のズームと移動・クロスフェード・字幕切替を実装する。閲覧者が止めれば演出も止まり、逆スクロールで巻き戻る。演出の待ち時間や自動再生を必須にしない。画像は既存作品を使い、カラーの原色を保つ。既存の資料URLとMarkdown本文の一元管理を維持する。
 
 ### 見出しで約束する面白さ（2026-11-14 作者確認）
 
@@ -92,6 +92,21 @@ Last revised: 2026-11-14
 - 世界・迷宮・次の冒険・資料一覧への移動、キーボードによる資料一覧の開閉、既存14資料の読み込みを確認。
 - reduced-motion時の即時移動、ブラウザー例外なし・リクエスト失敗なしを確認。
 - 公開原稿参照の検査とJavaScript構文検査が成功。実機スマートフォン検証・改修版の本番公開確認は未実施。
+
+## Scroll-driven scenes — スクロールで場面を転換する（2026-11-15）
+
+作者の追加指示：スクロールエフェクトを活用し、スクロールすると場面が転換していくサイトにする。
+
+- 夜の都市 → 地図の先 → 自由迷宮都市 → 帰還の灯り → 荷役場 → 地下世界 → 冒険の可能性 → 次の冒険、の8場面を一時的に固定した画面で見せる。
+- スクロール量に合わせて背景のズーム・移動・クロスフェードと字幕の切替を行う。字幕は重ねず、背景の転換を挟んで切り替える。一定のスクロール区間を各場面の読書時間として確保する。
+- マウスホイール、タッチ、PageDown等の通常操作を使う。スクロールを奪う処理やタイマー再生は使わない。画面下の場面リンクと既存のURLで、途中からも入れる。
+- 資料を開いて戻ってきた場合も、指定された場面を表示する。最後の場面からは通常のスクロールでキャラクター作成・詳細資料へ進む。
+- 動きを減らす設定、短い画面、拡大した文字が収まらない場合、必要な機能を持たないブラウザーでは通常の縦読みへ切り替える。JavaScriptなしでも本文は読める。
+- 既存の色・画像・採用済みコピーを活かす。新しい世界設定や固有フックは追加しない。「百万年」「五大国」を強調しない判断も維持する。
+
+実装はネイティブのsticky配置とrequestAnimationFrameを使い、実行時ライブラリを追加しない。場面の進行計算は純粋関数にし、`node --test tests/scroll-story.test.mjs`で読書区間・切替・巻き戻し・最終場面・境界条件を検証する。
+
+ローカルChromiumで1440×900、768×1024、390×844、375×667の画面固定・全8場面・切替途中・逆スクロールを確認。320×568では読みやすさを優先して縦読みへ戻ること、動きを減らす設定の切替、途中のURLからの表示、資料からの戻り、JavaScriptなしの本文、既存14資料も確認した。実機スマートフォンでは未検証。
 
 ## Visual direction
 
@@ -125,9 +140,10 @@ The following **four art directions are the default options for future Ruosuen c
 ## Pages and implementation
 
 - `index.html`: public marketing/introductory homepage + original Markdown reader DOM.
-- `assets/concept.css`: homepage concept-film sequence, responsive still-image scenes and quiet typographic cuts. No required autoplay or animation.
+- `assets/concept.css`: responsive homepage and progressively enhanced pinned scenes. The document remains readable without animation.
 - `assets/site.css`: responsive reader and shared header/footer design. The document reader uses a restrained midnight-blue journal palette with high-contrast ice-white copy instead of warm parchment. The mobile navigation remains readable over the dark background.
-- `assets/site.js`: existing dependency-free Markdown viewer and document navigation. Routes `#world` and `#guide` are in-page anchors, while `#/docs/...` and `#/players/...` open the Markdown reader.
+- `assets/scroll-story.mjs`: reversible scroll progression, scene blending, accessible scene selection and reading-mode fallback.
+- `assets/site.js`: existing dependency-free Markdown viewer and document navigation; delegates scene anchors to the scroll controller. Routes `#world` and `#guide` are in-page anchors, while `#/docs/...` and `#/players/...` open the Markdown reader.
 - `assets/ruosuen-depths.svg`: custom original visual. Its cave artwork is color-graded **in CSS** using a cool hue shift so the warm light reads as blue-white mana. No external image dependencies. The Open Graph social preview uses the night-city painting, matching the opening scene.
 - `world/**`: maintained world-setting canon (not automatically displayed on Pages).
 - `docs/**` and `players/**`: public player guides curated for Pages.

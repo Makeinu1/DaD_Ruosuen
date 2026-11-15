@@ -18,5 +18,7 @@ jobs:
           node-version: '22'
       - name: Validate reader JavaScript syntax
         run: node --check assets/site.js
+      - name: Test reversible scroll scene transitions
+        run: node --test tests/scroll-story.test.mjs
       - name: Validate curated Pages source paths
         run: node scripts/verify-public-sources.mjs

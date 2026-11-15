@@ -182,6 +182,7 @@ function showHome(scrollTop = true) {
   document.title = "RUOSUEN｜ルオスエン — 地図の外側へ";
   $("home-view").classList.remove("hidden");
   $("reader-view").classList.add("hidden");
+  window.RuosuenStory?.refresh();
   if (scrollTop) window.scrollTo({top: 0, behavior: "instant"});
 }
 async function showDoc(path) {
@@ -217,10 +218,15 @@ function currentPath() {
 function onRoute() {
   const path = currentPath();
   if (!path) showHome();
-  else if (["world", "domains", "guide", "depths", "next"].includes(path)) {
+  else if (["opening", "overture", "world", "tavern", "cargo", "domains", "guide", "depths", "next", "characters"].includes(path)) {
     showHome(false);
-    requestAnimationFrame(() => document.getElementById(path)?.scrollIntoView({behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth", block:"start"}));
+    requestAnimationFrame(() => {
+      if (!window.RuosuenStory?.goTo(path)) {
+        document.getElementById(path)?.scrollIntoView({behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth", block:"start"});
+      }
+    });
   } else showDoc(path);
 }
 window.addEventListener("hashchange", onRoute);
+window.addEventListener("ruosuen:story-ready", onRoute);
 onRoute();
