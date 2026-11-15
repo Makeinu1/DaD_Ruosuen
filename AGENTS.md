@@ -21,9 +21,11 @@
 ## Web architecture
 
 A minimal dependency-free static GitHub Pages site:
-`index.html` (intro and reader frame), `assets/site.css` (reader/shared styles), `assets/concept.css` (homepage/scenes), `assets/site.js` (Markdown viewer/router), `assets/scroll-story.mjs` (scroll-driven scene controller), `assets/ruosuen-depths.svg` (original key art). `#/docs/...` and `#/players/...` open documents. `#world` and `#guide` navigate to home sections.
+`index.html` (intro and reader frame), `assets/site.css` (reader/shared styles), `assets/concept.css` (homepage/scenes), `assets/site.js` (Markdown viewer/router), `assets/scroll-story.mjs` (scroll-driven scene controller), `assets/ruosuen-underground-world.webp` (underground scene painting). `#/docs/...` and `#/players/...` open documents. `#world` and `#guide` navigate to home sections.
 
-Scene anchors within the enhanced sticky stage must use `RuosuenStory.goTo` through the existing router; normal `scrollIntoView` cannot select an overlaid scene. Preserve the normal-document fallback for reduced motion, small viewports, large text, unsupported browsers and JavaScript-disabled reading. Run `node --test tests/scroll-story.test.mjs` after changes to progression.
+Scene anchors within the enhanced sticky stage must await `RuosuenStory.goTo` through the existing router; normal `scrollIntoView` cannot select an overlaid scene. The router keeps an in-memory snapshot for each browser-history entry. `RuosuenStory.capture` / asynchronous `restore` preserve the scene and fractional scroll position, while the router preserves article scroll and the original departure point through related articles. Every route cancels stale image-waiting selections with `cancelPending`. Do not replace the return action with a fixed opening link or a blind `history.back()`.
+
+Keep the movie first: `.is-watching-film` hides the header menu until the last scene or the preparation/archive area. This is presentation, not a watched-cookie gate. Preserve the normal-document fallback for reduced motion, small viewports, large text, unsupported browsers and JavaScript-disabled reading. Run `node --test tests/scroll-story.test.mjs` after changes to progression. With Playwright and a local server on port 8819, `node tests/navigation.browser.cjs` checks actual scroll/history restoration and the mobile grouped contents; `RUOSUEN_BASE_URL` can target Pages.
 
 Changes should retain mobile-first legibility, semantic links, visible focus, reduced-motion support, and deep links. Validate on a browser and a phone when one is available; source checks alone are not evidence of a successful visual test.
 

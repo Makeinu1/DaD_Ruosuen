@@ -99,8 +99,8 @@ Last revised: 2026-11-15
 
 - 夜の都市 → 地図の先 → 自由迷宮都市 → 帰還の灯り → 荷役場 → 地下世界 → 冒険の可能性 → 次の冒険、の8場面を一時的に固定した画面で見せる。
 - スクロール量に合わせて背景のズーム・移動・クロスフェードと字幕の切替を行う。字幕は重ねず、背景の転換を挟んで切り替える。一定のスクロール区間を各場面の読書時間として確保する。
-- マウスホイール、タッチ、PageDown等の通常操作を使う。スクロールを奪う処理やタイマー再生は使わない。画面下の場面リンクと既存のURLで、途中からも入れる。
-- 資料を開いて戻ってきた場合も、指定された場面を表示する。最後の場面からは通常のスクロールでキャラクター作成・詳細資料へ進む。
+- マウスホイール、タッチ、PageDown等の通常操作を使う。スクロールを奪う処理やタイマー再生は使わない。画面下の前後操作と既存のURLで、途中からも入れる。
+- 資料を開いて戻ってきた場合も、離れた場面の途中位置を表示する。最後の場面からは通常のスクロールでキャラクター作成・詳細資料へ進む。
 - 動きを減らす設定、短い画面、拡大した文字が収まらない場合、必要な機能を持たないブラウザーでは通常の縦読みへ切り替える。JavaScriptなしでも本文は読める。
 - 既存の色・画像・採用済みコピーを活かす。新しい世界設定や固有フックは追加しない。「百万年」「五大国」を強調しない判断も維持する。
 
@@ -108,11 +108,24 @@ Last revised: 2026-11-15
 
 ローカルChromiumで1440×900、768×1024、390×844、375×667の画面固定・全8場面・切替途中・逆スクロールを確認。320×568では読みやすさを優先して縦読みへ戻ること、動きを減らす設定の切替、途中のURLからの表示、資料からの戻り、JavaScriptなしの本文、既存14資料も確認した。実機スマートフォンでは未検証。
 
+## Movie-first navigation — 細部の改修（2026-11-15 作者確認）
+
+- 入口はコンセプトムービーにする。当面は利便性より最初に見てもらう体験を優先し、途中のヘッダーから作成や資料へ飛ぶメニューを隠す。閲覧済みの記録や強制視聴の仕組みは設けない。ロゴは初めから見る操作とする。
+- 冒頭の「物語を始める」は直後の場面へ。進行表示の8つの点は装飾とし、操作は「前の場面」「次の場面」に絞る。最後の場面で主導線「キャラクターをつくる」、副導線「もっと世界を知る」を示す。
+- 資料から「物語の続きへ」で戻ると、離れた場面とその途中位置を復元する。資料同士を読み進めても最初の寄り道先を保持する。ブラウザーの戻る・進むでは記事の読書位置も復元する。ムービー後の資料一覧等から来た場合は「元の場所へ戻る」とする。
+- 字幕の重複や役割の薄い小見出しを削り、荷役場は「地上と地下を、人の手がつなぐ。」とする。卓の暫定ルールと未決事項は、終幕の余韻からキャラクター準備欄へ移す。
+- 地下世界には、巨大な空洞、地下河川、植生、小さな探索者、交易の気配を描いた新しい絵 `assets/ruosuen-underground-world.webp` を置く。カラーを変えず、モバイルの切り抜き位置と字幕用の暗部を調整する。素早い場面移動でも空の背景を見せないよう、表示前に画像をデコードする。
+- モバイルの資料目次は、14枚の横タブから開閉式の縦目次へ。世界・準備・記録のグループに整理する。末尾は関連する資料や作成の次の手順に進め、一律の循環する「次に読む」をやめる。内部の進行は→、外部へは↗の意味を揃える。
+
+履歴はブラウザーの各エントリーに対応するメモリー内の位置情報で管理する。URLからの直接閲覧も維持する。再読み込み後まで読了状況を保存する仕様ではない。
+
+改修版をローカルChromiumで1440・768・390・375・320px幅で確認。全8場面、クロスフェード、逆スクロール、縦読みへの切替、JavaScriptなしの本文、既存14資料を確認した。`tests/navigation.browser.cjs`は1440・390px幅でブラウザーの戻る・進む、場面の途中位置と記事の読書位置、関連記事からの復帰、資料一覧の開閉状態、目次14件・3グループ、直リンク、reduced-motion時の復帰を検証して成功。遅延画像の完了後に古い移動を再実行しないこと、読み込み中の動作設定変更にも追従することを追加確認した。構文検査・場面進行の5テスト・公開原稿参照検査も成功。実機スマートフォンは未検証。
+
 ## Visual direction
 
 **The Uncharted World / 未踏の世界への招待状**. Reference: the theatrical urgency and strong character of Seikaisha's original *Red Dragon* special website, not its copyrighted artwork or layout.
 
-- Concept-film opening: the original night-city painting (assets/ruosuen-street-night-oil.webp). The bespoke underground SVG appears in the later descent scene. No borrowed game artwork.
+- Concept-film opening: the original night-city painting (assets/ruosuen-street-night-oil.webp). The new underground river painting appears in the later descent scene. No borrowed game artwork.
 - Scale: a cinematic full-screen introduction, then chapter-like sections, and finally a practical archive.
 - Palette (2026-11-13 revised by user request): **cave black** (#030810), **deep abyss navy** (#071625), **stone blue** (#173a55), **mana blue** (#80bbde), and **blue-white mana glow** (#e3f8ff). Avoid gold, copper, brown, warm cream and parchment as theme colors. The physical cave should absorb light; manastone, the deep gate, active headings and CTAs should appear softly luminous.
 - Typography: Japanese literary serif (*Noto Serif JP*) and Cinzel on Latin display words. System fallbacks if fonts do not load.
@@ -143,8 +156,8 @@ The following **four art directions are the default options for future Ruosuen c
 - `assets/concept.css`: responsive homepage and progressively enhanced pinned scenes. The document remains readable without animation.
 - `assets/site.css`: responsive reader and shared header/footer design. The document reader uses a restrained midnight-blue journal palette with high-contrast ice-white copy instead of warm parchment. The mobile navigation remains readable over the dark background.
 - `assets/scroll-story.mjs`: reversible scroll progression, scene blending, accessible scene selection and reading-mode fallback.
-- `assets/site.js`: existing dependency-free Markdown viewer and document navigation; delegates scene anchors to the scroll controller. Routes `#world` and `#guide` are in-page anchors, while `#/docs/...` and `#/players/...` open the Markdown reader.
-- `assets/ruosuen-depths.svg`: custom original visual. Its cave artwork is color-graded **in CSS** using a cool hue shift so the warm light reads as blue-white mana. No external image dependencies. The Open Graph social preview uses the night-city painting, matching the opening scene.
+- `assets/site.js`: dependency-free Markdown viewer and history-aware navigation; awaits scene selection and restoration from the scroll controller. Routes `#world` and `#guide` are in-page anchors, while `#/docs/...` and `#/players/...` open the Markdown reader.
+- `assets/ruosuen-underground-world.webp`: underground scene painting, published in its original colors. The earlier `assets/ruosuen-depths.svg` is retained as an unused previous visual. The Open Graph social preview uses the night-city painting, matching the opening scene.
 - `world/**`: maintained world-setting canon (not automatically displayed on Pages).
 - `docs/**` and `players/**`: public player guides curated for Pages.
 
@@ -159,7 +172,7 @@ Before sharing broadly:
 
 1. Open `https://makeinu1.github.io/DaD_Ruosuen/` in a real browser and check desktop, a narrow phone screen, and reduced-motion preference.
 2. Confirm the header, hero CTAs, world/guide anchors, all six world guide links, and character-creation links work.
-3. Confirm the markdown reader loads Japanese document file names, cross-document links, tables, and the bottom-next navigation.
+3. Confirm the markdown reader loads Japanese document file names, cross-document links, tables and intentional related links. Check movie return, browser back/forward, article scroll restoration and grouped mobile contents.
 4. Check focus visibility, text readability, horizontal overflow, loading errors, and network failure copy.
 5. Check the repository's Pages deployment status for current `main`. The source-level consistency checks ran on 2026-11-13; **real-device visual verification was not available in the editing context**.
 

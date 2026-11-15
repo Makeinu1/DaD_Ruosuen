@@ -20,19 +20,25 @@
   <script src="assets/site.js" defer></script>
   <script type="module" src="assets/scroll-story.mjs"></script>
 </head>
-<body>
+<body class="is-watching-film">
 <a class="skip-link" href="#main">本文へ移動</a>
 <header class="site-header">
   <div class="header-inner">
-    <a class="brand" href="#/" aria-label="ルオスエン トップページ">
+    <a class="brand" href="#/" aria-label="物語を初めから見る">
       <span class="brand-mark" aria-hidden="true"><span class="brand-mark-inner">✦</span></span>
       <span class="brand-word">RUOSUEN<small>ルオスエン</small></span>
     </a>
     <nav class="top-nav" aria-label="メインメニュー">
-      <a href="#world">この世界</a>
-      <a href="#next">次の冒険</a>
-      <a href="#guide">探索者の手引き</a>
-      <a class="nav-start" href="#/players/キャラクター作成ガイド.md">冒険者になる <span aria-hidden="true">↗</span></a>
+      <a class="header-desktop-link" data-return-to-story href="#/">物語を見る</a>
+      <a class="header-desktop-link" href="#guide">世界を詳しく知る</a>
+      <details class="header-menu">
+        <summary>メニュー</summary>
+        <div class="header-menu-links">
+          <a data-return-to-story href="#/">物語を見る</a>
+          <a href="#guide">世界を詳しく知る</a>
+        </div>
+      </details>
+      <a class="nav-start" href="#/players/キャラクター作成ガイド.md">キャラクターをつくる</a>
     </nav>
   </div>
 </header>
@@ -48,8 +54,7 @@
       <h1 id="film-title" class="film-opening-title"><span>この街の下には、</span><span>まだ世界がある。</span></h1>
       <p class="film-opening-intro">地図にない道を、君たちの物語に。</p>
       <div class="film-opening-actions">
-        <a class="film-primary" href="#world">この世界へ踏み込む <span aria-hidden="true">↓</span></a>
-        <a class="film-text-link" href="#next">次の冒険へ</a>
+        <a class="film-primary" href="#overture">物語を始める <span aria-hidden="true">→</span></a>
       </div>
     </div>
     <p class="film-opening-bottom">四人で始める、短編ダンジョン探索。</p>
@@ -65,9 +70,8 @@
   <section class="film-city film-frame" id="world" data-film-scene="自由迷宮都市" tabindex="-1" aria-labelledby="film-city-title">
     <img class="film-city-image" src="assets/ruosuen-street-market-gouache.webp" width="1536" height="1024" alt="自由迷宮都市の市場。異国の商人、旅人、荷役人が行き交い、遠くには裂谷を渡る橋が見える" loading="lazy" decoding="async">
     <div class="film-city-copy film-caption" data-film-caption>
-      <p class="film-kicker">自由迷宮都市</p>
       <h2 class="film-title" id="film-city-title"><span>異国の言葉も、</span><span>未踏の噂も、</span><span>この街へ。</span></h2>
-      <p class="film-copy">遠い国の言葉。<br>魔導具を直す槌音。<br>帰還を待つ、酒場の灯り。</p>
+      <p class="film-copy">魔導具を直す槌音。<br>帰還を待つ、酒場の灯り。</p>
       <p class="film-copy">地下を結ぶ道に、人が集まる。<br>商人も、職人も、探索者も。<br>それぞれの理由を、この街に持ち寄って。</p>
       <a class="film-text-link" href="#/docs/04_自由迷宮都市と組織.md">この街を、もっと知る</a>
     </div>
@@ -82,29 +86,26 @@
     </div>
   </section>
 
-  <section class="film-montage-shot film-frame" id="cargo" data-film-scene="地下へ続く仕事" tabindex="-1" aria-labelledby="film-cargo-title">
+  <section class="film-montage-shot film-frame" id="cargo" data-film-scene="地上と地下をつなぐ" tabindex="-1" aria-labelledby="film-cargo-title">
     <img class="film-image" src="assets/ruosuen-street-cargo-etching.webp" width="1536" height="1024" alt="崖に設けられた貨物昇降場。荷役人たちが地上と地下をつなぐ" loading="lazy" decoding="async">
     <div class="film-shot-shade" aria-hidden="true"></div>
     <div class="film-caption container" data-film-caption>
-      <h2 class="film-title" id="film-cargo-title"><span>地下へ続く、</span><span>仕事がある。</span></h2>
+      <h2 class="film-title" id="film-cargo-title"><span>地上と地下を、</span><span>人の手がつなぐ。</span></h2>
     </div>
   </section>
 
   <section class="film-depths film-frame" id="depths" data-film-scene="地下世界" tabindex="-1" aria-labelledby="film-depths-title">
-    <img class="film-image" src="assets/ruosuen-depths.svg" width="1600" height="1050" alt="巨大な地下空間に立つ小さな探索者たち。その先には、暗闇に開く大きな道がある" loading="lazy" decoding="async">
+    <img class="film-image" src="assets/ruosuen-underground-world.webp" width="1672" height="941" alt="地下河川と多様な生態系が奥へ続く巨大な地下世界。小さな探索者と交易船が見える" loading="lazy" decoding="async">
     <div class="film-depths-shade" aria-hidden="true"></div>
     <div class="film-depths-copy container film-caption" data-film-caption>
-      <p class="film-kicker">その下に、広がるもの</p>
       <h2 class="film-title" id="film-depths-title"><span>迷宮は、</span><span>ひとつの世界だ。</span></h2>
       <p class="film-copy">岩の向こうに、川がある。<br>道がある。生き物がいる。<br>交易があり、誰かの暮らしがある。</p>
-      <p class="film-copy">古い地層と、新しい裂け目。<br>いくつもの時間が重なる、その先へ。</p>
       <a class="film-text-link" href="#/docs/02_迷宮と探索.md">迷宮のことを、もっと知る</a>
     </div>
   </section>
 
   <section class="film-possibilities film-frame" id="domains" data-film-scene="冒険の可能性" tabindex="-1" aria-labelledby="film-possibilities-title">
     <div class="container film-caption" data-film-caption>
-    <p class="film-kicker">まだ、描ききれない世界</p>
     <h2 class="film-title" id="film-possibilities-title"><span>その先で、</span><span>何を見つけるだろう。</span></h2>
     <ul class="film-horizons">
       <li><strong>魔石が、暮らしを灯す。</strong><span>地下から運ばれた力が、遠い街の灯りになる。</span></li>
@@ -120,25 +121,30 @@
     <img class="film-image" src="assets/ruosuen-street-tavern-watercolor.webp" width="1536" height="1024" alt="探索の仕事が集まり、帰還した者たちを迎える夕暮れの酒場" loading="lazy" decoding="async">
     <div class="film-invitation-shade" aria-hidden="true"></div>
     <div class="film-invitation-copy container film-caption" data-film-caption>
-      <p class="film-kicker">次の冒険へ</p>
       <h2 class="film-title" id="film-next-title"><span>四人の探索者。</span><span>ひとつの依頼。</span><span>その先は、</span><span>君たちが決める。</span></h2>
       <p class="film-copy">この都市を拠点に、迷宮へ。<br>救助、調査、探索。引き受けた仕事を果たして、帰ってくる。<br>ひとつの冒険が終わっても、世界の先は続いている。</p>
-      <p class="film-session-note">4人のプレイヤー ／ 1〜2回で完結する短編<br>D&amp;D 2024年版を暫定採用。次回の導入・開始条件は相談中です。</p>
-      <a class="film-text-link" href="#/docs/07_短編セッションの進め方.md">セッションの進め方を読む</a>
+      <div class="film-invitation-actions">
+        <a class="film-primary" href="#/players/キャラクター作成ガイド.md">キャラクターをつくる</a>
+        <a class="film-text-link" href="#guide">もっと世界を知る</a>
+      </div>
     </div>
   </section>
 
     <div class="film-story-hud">
       <div class="film-story-hint"><span class="film-current-scene">都市の夜</span><span aria-hidden="true">スクロールして、その先へ ↓</span></div>
-      <nav class="film-scene-nav" aria-label="場面を選ぶ">
-        <a href="#opening" aria-label="都市の夜"><span>都市の夜</span></a>
-        <a href="#overture" aria-label="地図の先へ"><span>地図の先へ</span></a>
-        <a href="#world" aria-label="自由迷宮都市"><span>自由迷宮都市</span></a>
-        <a href="#tavern" aria-label="帰還の灯り"><span>帰還の灯り</span></a>
-        <a href="#cargo" aria-label="地下へ続く仕事"><span>地下へ続く仕事</span></a>
-        <a href="#depths" aria-label="地下世界"><span>地下世界</span></a>
-        <a href="#domains" aria-label="冒険の可能性"><span>冒険の可能性</span></a>
-        <a href="#next" aria-label="次の冒険"><span>次の冒険</span></a>
+      <div class="film-scene-steps" aria-hidden="true">
+        <span data-scene-step="opening" class="is-current"></span>
+        <span data-scene-step="overture"></span>
+        <span data-scene-step="world"></span>
+        <span data-scene-step="tavern"></span>
+        <span data-scene-step="cargo"></span>
+        <span data-scene-step="depths"></span>
+        <span data-scene-step="domains"></span>
+        <span data-scene-step="next"></span>
+      </div>
+      <nav class="film-story-controls" aria-label="物語を進める">
+        <a id="film-prev" href="#opening" hidden>前の場面</a>
+        <a id="film-next" href="#overture">次の場面</a>
       </nav>
       <div class="film-story-progress" aria-hidden="true"><span></span></div>
     </div>
@@ -151,14 +157,15 @@
       <p class="film-copy">財宝。知識。誰かとの約束。<br>その理由が、この世界で生きる君の始まりになる。</p>
     </div>
     <ul class="film-character-questions">
-      <li><span>まず、ひとつ</span><strong>何を探しに行く？</strong></li>
-      <li><span>そして</span><strong>誰と、つながっている？</strong></li>
-      <li><span>共に歩くために</span><strong>なぜ、共に歩く？</strong></li>
+      <li><strong>何を探しに行く？</strong></li>
+      <li><strong>誰と、つながっている？</strong></li>
+      <li><strong>なぜ、共に歩く？</strong></li>
     </ul>
     <div class="film-character-action">
-      <a class="film-primary" href="#/players/キャラクター作成ガイド.md">キャラクターをつくる <span aria-hidden="true">↗</span></a>
+      <a class="film-primary" href="#/players/キャラクター作成ガイド.md">キャラクターをつくる</a>
       <p>まずは人物像から。数値の作成条件には、まだ未決の項目があります。</p>
     </div>
+    <p class="film-session-note">4人のプレイヤー ／ 1〜2回で完結する短編<br>D&amp;D 2024年版を暫定採用。次回の導入・開始条件は相談中です。<br><a class="film-text-link" href="#/DECISIONS.md">決定事項と未決事項を確かめる</a></p>
   </section>
 
   <section class="film-archive container" id="guide" aria-labelledby="film-guide-title">
@@ -192,8 +199,11 @@
   <div class="container reader-layout">
     <aside class="sidebar" id="sidebar" aria-label="資料の目次"></aside>
     <div class="reader">
-      <nav class="mobile-categories" id="mobile-categories" aria-label="資料を切り替える"></nav>
-      <div class="reader-breadcrumbs"><a href="#/">ルオスエン</a> / 探索者の手引き</div>
+      <details class="reader-toc">
+        <summary>資料の目次</summary>
+        <nav class="mobile-categories" id="mobile-categories" aria-label="資料の目次"></nav>
+      </details>
+      <div class="reader-breadcrumbs"><a href="#guide">世界の資料</a> / 探索者の手引き</div>
       <header class="article-hero">
         <div id="article-label" class="article-label"></div>
         <h1 id="article-title"></h1>

@@ -22,7 +22,9 @@ function initStory() {
   const stage = sequence.querySelector('.film-stage');
   const home = document.getElementById('home-view');
   const frames = [...sequence.querySelectorAll('[data-film-scene]')];
-  const links = [...sequence.querySelectorAll('.film-scene-nav a')];
+  const steps = [...sequence.querySelectorAll('[data-scene-step]')];
+  const previousLink = document.getElementById('film-prev');
+  const nextLink = document.getElementById('film-next');
   const label = sequence.querySelector('.film-current-scene');
   const progress = sequence.querySelector('.film-story-progress span');
   const media = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -34,6 +36,49 @@ function initStory() {
   let active = 0;
   let scheduled = 0;
   let lastValue = NaN;
+  let end = 0;
+  let headerHeight = 0;
+  let flowFrames = [];
+  let selection = 0;
+  const readyImages = new WeakSet();
+  const imageRequests = new WeakMap();
+
+  function prepare(index) {
+    const frame = frames[index];
+    if (!frame) return Promise.resolve();
+    if (!imageRequests.has(frame)) {
+      const images = [...frame.querySelectorAll('img')];
+      images.forEach(image => { image.loading = 'eager'; });
+      const pending = Promise.all(images.map(image => image.decode().catch(() => {}))).then(() => {
+        readyImages.add(frame);
+        requestRender();
+      });
+      imageRequests.set(frame, pending);
+    }
+    return imageRequests.get(frame);
+  }
+
+  function updateControls(index) {
+    const watching = !home.classList.contains('hidden') && index < frames.length - 1 && window.scrollY < end;
+    document.body.classList.toggle('is-watching-film', watching);
+    steps.forEach((step, i) => step.classList.toggle('is-current', i === index));
+    if (previousLink) {
+      previousLink.hidden = index === 0;
+      previousLink.href = '#' + frames[Math.max(0, index - 1)].id;
+      previousLink.setAttribute('aria-label', '前の場面：' + frames[Math.max(0, index - 1)].dataset.filmScene);
+    }
+    if (nextLink) {
+      nextLink.hidden = index === frames.length - 1;
+      nextLink.href = '#' + frames[Math.min(frames.length - 1, index + 1)].id;
+      nextLink.setAttribute('aria-label', '次の場面：' + frames[Math.min(frames.length - 1, index + 1)].dataset.filmScene);
+    }
+  }
+
+  function flowIndex() {
+    const midpoint = window.scrollY + (window.innerHeight + headerHeight) / 2;
+    const found = flowFrames.findIndex(bounds => bounds.top <= midpoint && bounds.bottom > midpoint);
+    return found >= 0 ? found : window.scrollY >= end ? frames.length - 1 : 0;
+  }
 
   function reset() {
     sequence.classList.remove('is-scroll-story');
@@ -43,16 +88,24 @@ function initStory() {
       frame.classList.remove('is-scene-visible');
       frame.removeAttribute('style');
     });
-    links.forEach(link => link.removeAttribute('aria-current'));
     enabled = false;
     lastValue = NaN;
   }
 
   function render() {
     scheduled = 0;
-    if (!enabled || home.classList.contains('hidden')) return;
+    if (home.classList.contains('hidden')) {
+      document.body.classList.remove('is-watching-film');
+      return;
+    }
+    if (!enabled) { updateControls(flowIndex()); return; }
     const state = sceneAt((window.scrollY - start) / step, frames.length);
     if (state.value === lastValue) return;
+    prepare(state.from);
+    prepare(state.to);
+    // Keep the previous painted scene until the incoming image can actually
+    // be painted. A fast scene jump must not expose an empty black frame.
+    if (!readyImages.has(frames[state.from]) || (state.mix > 0 && !readyImages.has(frames[state.to]))) return;
     lastValue = state.value;
     active = state.active;
     frames.forEach((frame, index) => {
@@ -73,24 +126,21 @@ function initStory() {
       frame.inert = index !== active || caption < 0.2;
       frame.classList.toggle('is-scene-visible', opacity > 0.001);
     });
-    links.forEach((link, index) => {
-      if (index === active) link.setAttribute('aria-current', 'step');
-      else link.removeAttribute('aria-current');
-    });
+    updateControls(active);
     label.textContent = frames[active].dataset.filmScene;
     progress.style.transform = `scaleX(${state.progress})`;
     sequence.dataset.activeScene = frames[active].id;
   }
 
   function requestRender() {
-    if (!scheduled && enabled) scheduled = requestAnimationFrame(render);
+    if (!scheduled) scheduled = requestAnimationFrame(render);
   }
 
   function refresh() {
     if (home.classList.contains('hidden')) return;
     const wasEnabled = enabled;
     const previous = frames[active];
-    const headerHeight = header.getBoundingClientRect().height;
+    headerHeight = header.getBoundingClientRect().height;
     const oldPosition = enabled ? (window.scrollY - start) / step : null;
     const wasInside = enabled && oldPosition >= 0 && window.scrollY <= start + travel;
     // Keep the same place when changing between normal flow and the pinned
@@ -105,6 +155,12 @@ function initStory() {
         !CSS.supports('position', 'sticky') || !('inert' in HTMLElement.prototype)) {
       reset();
       if (wasEnabled) previous.scrollIntoView({behavior:'instant', block:'start'});
+      flowFrames = frames.map(frame => {
+        const bounds = frame.getBoundingClientRect();
+        return {top: bounds.top + window.scrollY, bottom: bounds.bottom + window.scrollY, height: bounds.height};
+      });
+      end = sequence.getBoundingClientRect().bottom + window.scrollY;
+      updateControls(flowIndex());
       return;
     }
 
@@ -115,12 +171,19 @@ function initStory() {
     if (!fits) {
       reset();
       if (wasEnabled) previous.scrollIntoView({behavior:'instant', block:'start'});
+      flowFrames = frames.map(frame => {
+        const bounds = frame.getBoundingClientRect();
+        return {top: bounds.top + window.scrollY, bottom: bounds.bottom + window.scrollY, height: bounds.height};
+      });
+      end = sequence.getBoundingClientRect().bottom + window.scrollY;
+      updateControls(flowIndex());
       return;
     }
     start = sequence.getBoundingClientRect().top + window.scrollY;
     step = Math.max(480, height * 0.95);
     travel = (frames.length - 1 + 0.65) * step;
     sequence.style.setProperty('--film-travel', `${travel}px`);
+    end = start + travel + height;
     enabled = true;
     lastValue = NaN;
     if (wasInside) window.scrollTo({top: start + oldPosition * step, behavior:'instant'});
@@ -128,13 +191,18 @@ function initStory() {
     // The stacked frames share a viewport, so request their images before a
     // fast scroll can reach them. Raster colors remain entirely untouched.
     frames.forEach(frame => frame.querySelectorAll('img').forEach(img => { img.loading = 'eager'; }));
+    prepare(sceneAt((window.scrollY - start) / step, frames.length).active);
     render();
   }
 
-  function goTo(id) {
+  async function goTo(id) {
     if (!enabled) return false;
     const index = frames.findIndex(frame => frame.id === id);
     if (index < 0) return false;
+    const token = ++selection;
+    await prepare(index);
+    if (token !== selection || home.classList.contains('hidden')) return true;
+    if (!enabled) return false;
     // A scene link selects a scene directly instead of rapidly scrubbing
     // through every intervening scene. Ordinary scrolling remains native.
     window.scrollTo({top: start + index * step, behavior:'instant'});
@@ -144,7 +212,45 @@ function initStory() {
     return true;
   }
 
-  window.RuosuenStory = {refresh, goTo};
+  function capture() {
+    if (home.classList.contains('hidden')) return null;
+    if (enabled) {
+      if (window.scrollY > start + travel) return null;
+      return {kind:'scroll', position:sceneAt((window.scrollY - start) / step, frames.length).value};
+    }
+    if (window.scrollY >= end) return null;
+    const index = flowIndex();
+    const bounds = flowFrames[index];
+    return bounds ? {kind:'flow', scene:frames[index].id, fraction:(window.scrollY + headerHeight - bounds.top) / bounds.height} : null;
+  }
+
+  async function restore(snapshot) {
+    if (!snapshot) return false;
+    const token = ++selection;
+    const index = snapshot.kind === 'scroll' ? sceneAt(snapshot.position, frames.length).active : frames.findIndex(frame => frame.id === snapshot.scene);
+    if (index < 0) return false;
+    const position = snapshot.kind === 'scroll' ? snapshot.position : index + clamp(snapshot.fraction, 0, 0.55);
+    const state = sceneAt(position, frames.length);
+    if (enabled) {
+      await Promise.all([prepare(state.from), prepare(state.to)]);
+      if (token !== selection || home.classList.contains('hidden')) return true;
+    }
+    if (enabled) {
+      window.scrollTo({top:start + state.value * step, behavior:'instant'});
+      lastValue = NaN;
+      render();
+      frames[index].focus({preventScroll:true});
+    } else {
+      const bounds = flowFrames[index];
+      const fraction = snapshot.kind === 'flow' ? snapshot.fraction : snapshot.position - Math.floor(snapshot.position);
+      window.scrollTo({top:bounds.top + fraction * bounds.height - headerHeight, behavior:'instant'});
+      updateControls(index);
+      frames[index].focus({preventScroll:true});
+    }
+    return true;
+  }
+
+  window.RuosuenStory = {refresh, goTo, capture, restore, cancelPending:() => { selection++; }};
   window.addEventListener('scroll', requestRender, {passive:true});
   window.addEventListener('resize', refresh, {passive:true});
   media.addEventListener('change', refresh);
