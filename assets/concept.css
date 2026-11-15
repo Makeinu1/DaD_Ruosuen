@@ -248,27 +248,42 @@ img.film-city-image { width: 100%; height: auto; aspect-ratio: 1 / 1.05; object-
 .film-depths-copy .film-title { max-width: 13em; }
 .film-depths-copy .film-copy { max-width: 29em; }
 .film-depths-copy .film-text-link { margin-top: 24px; }
-.film-possibilities { padding-block: clamp(100px, 12vw, 170px); }
-.film-possibilities > .film-title { max-width: 17em; }
-.film-possibilities > .film-caption > .film-title { max-width: 17em; }
-.film-horizons {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 64px clamp(30px, 10vw, 150px);
-  margin: 65px 0 0;
-  padding: 0;
-  list-style: none;
+.film-hook-intro,
+.film-hook {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  padding-block: clamp(64px, 10svh, 110px);
 }
-.film-horizons li { min-width: 0; }
-.film-horizons strong {
-  display: block;
-  margin-bottom: 16px;
-  font: 500 clamp(25px, 2.7vw, 38px)/1.65 var(--serif);
-  letter-spacing: .07em;
+.film-hook-intro { min-height: 45svh; text-align: center; }
+.film-hook-intro .film-title { margin-inline: auto; }
+.film-hook { min-height: 55svh; }
+.film-hook .film-caption { position: relative; z-index: 2; }
+.film-hook .film-title { font-size: clamp(27px, 3.4vw, 48px); line-height: 1.7; }
+.film-hook .film-copy { max-width: 34em; margin-top: 24px; text-wrap: pretty; }
+.film-hook-shade { position: absolute; z-index: 1; inset: 0; pointer-events: none; }
+.film-hook-lights { text-align: center; }
+.film-hook-lights .film-copy { margin-inline: auto; }
+.film-hook-lights .film-image { object-position: 76% 64%; }
+.film-hook-lights .film-hook-shade {
+  background: radial-gradient(ellipse at center, #030810b8, #0308104d 75%),
+    linear-gradient(0deg, #030810c9, #03081000 50%, #03081066);
 }
-.film-horizons span { display: block; max-width: 27em; color: var(--film-muted); font-size: 14px; line-height: 2.1; }
-.film-possibilities > .film-text-link { margin-top: 32px; }
-.film-possibilities > .film-caption > .film-text-link { margin-top: 32px; }
+.film-hook-territory .film-image { object-position: 28% center; }
+.film-hook-territory .film-hook-shade {
+  background: linear-gradient(90deg, #030810d9, #0308108a 40%, #0308100a 85%);
+}
+.film-hook-explorers { text-align: right; }
+.film-hook-explorers .film-copy { margin-left: auto; }
+.film-hook-explorers .film-image { object-position: 36% center; }
+.film-hook-explorers .film-hook-shade {
+  background: linear-gradient(270deg, #030810e0, #0308109c 38%, #03081008 90%);
+}
+.film-hook-map .film-image { object-position: 65% center; }
+.film-hook-map .film-hook-shade {
+  background: linear-gradient(90deg, #030810f2, #030810ba 36%, #03081014 90%);
+}
 .film-invitation { min-height: 760px; display: flex; align-items: center; }
 .film-invitation .film-image img,
 .film-invitation img.film-image { object-position: 62% center; }
@@ -360,10 +375,12 @@ img.film-city-image { width: 100%; height: auto; aspect-ratio: 1 / 1.05; object-
   .film-depths-shade { background: linear-gradient(90deg, #030810c9 0%, #03081054 65%, #03081022 100%), linear-gradient(0deg, #030810d9 0%, #03081000 24%, #03081000 80%, #03081066 100%); }
   .film-depths-copy { padding-block: 115px; }
   .film-depths-copy .film-copy { max-width: 23em; }
-  .film-possibilities { padding-block: 95px; }
-  .film-horizons { gap: 38px; margin-top: 45px; grid-template-columns: 1fr; }
-  .film-horizons strong { font-size: clamp(23px, 6.9vw, 27px); margin-bottom: 10px; }
-  .film-horizons span { font-size: 13px; max-width: 29em; }
+  .film-hook-intro, .film-hook { padding-block: 64px; }
+  .film-hook .film-title { font-size: clamp(25px, 6.8vw, 34px); }
+  .film-hook .film-copy { margin-top: 20px; font-size: 13px; line-height: 2.1; }
+  .film-hook-explorers .film-image { object-position: 29% center; }
+  .film-hook-explorers .film-hook-shade { background: linear-gradient(270deg, #030810cf, #0308109c 65%, #03081042); }
+  .film-hook-map .film-hook-shade { background: linear-gradient(90deg, #030810e8, #030810ad 65%, #03081066); }
   .film-invitation { min-height: 760px; }
   .film-invitation .film-image img, .film-invitation img.film-image { object-position: 40% center; }
   .film-invitation-shade { background: linear-gradient(90deg, #030810de 0%, #0308108c 100%), linear-gradient(0deg, #030810, #03081000 30%, #03081000 70%, #030810aa); }
@@ -459,12 +476,9 @@ img.film-city-image { width: 100%; height: auto; aspect-ratio: 1 / 1.05; object-
 .is-scroll-story .film-intertitle-title { font-size: clamp(28px, 3.8vw, 56px); }
 .is-scroll-story .film-montage-shot .film-title { font-size: clamp(32px, 4.5vw, 66px); }
 .is-scroll-story .film-montage-shot .film-text-link { margin-top: 24px; }
+.is-scroll-story .film-hook .film-copy { font-size: clamp(14px, 1.1vw, 16px); line-height: 2; }
 .is-scroll-story #cargo .film-image { object-position: 68% center; }
 .is-scroll-story #cargo .film-shot-shade { background: linear-gradient(90deg, #030810ed, #030810c4 32%, #0308100a 85%); }
-.is-scroll-story .film-horizons { margin-top: 32px; gap: 24px 72px; }
-.is-scroll-story .film-horizons strong { font-size: clamp(23px, 2.6vw, 36px); margin-bottom: 8px; }
-.is-scroll-story .film-horizons span { font-size: 13px; }
-.is-scroll-story .film-possibilities .film-text-link { margin-top: 24px; }
 .is-scroll-story .film-invitation .film-title { line-height: 1.45; font-size: clamp(28px, 3.2vw, 46px); }
 .is-scroll-story .film-invitation .film-copy { margin-top: 22px; }
 .is-scroll-story .film-invitation-actions { margin-top: 24px; }
@@ -524,9 +538,6 @@ img.film-city-image { width: 100%; height: auto; aspect-ratio: 1 / 1.05; object-
   .is-scroll-story .film-kicker { font-size: 11px; margin-bottom: 14px; }
   .is-scroll-story .film-intertitle-title { font-size: clamp(26px, 7vw, 34px); }
   .is-scroll-story .film-intertitle-copy { font-size: 12px; margin-top: 22px; }
-  .is-scroll-story .film-horizons { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 24px; margin-top: 26px; }
-  .is-scroll-story .film-horizons strong { font-size: 20px; line-height: 1.65; letter-spacing: .02em; }
-  .is-scroll-story .film-horizons span { font-size: 12px; line-height: 1.9; }
   .is-scroll-story .film-invitation .film-title { font-size: clamp(24px, 6.8vw, 31px); line-height: 1.5; }
   .is-scroll-story .film-session-note { font-size: 10px; line-height: 1.9; margin-top: 18px; }
   .is-scroll-story .film-story-hud { inset-inline: 12px; bottom: 16px; }
@@ -610,8 +621,4 @@ img.film-city-image { width: 100%; height: auto; aspect-ratio: 1 / 1.05; object-
   .is-scroll-story .film-city-copy .film-title,
   .is-scroll-story .film-invitation .film-title { font-size: clamp(23px, 4.5vh, 34px); line-height: 1.45; }
   .is-scroll-story .film-copy { font-size: 12px; line-height: 1.9; margin-top: 14px; }
-  .is-scroll-story .film-horizons { margin-top: 18px; gap: 14px 22px; }
-  .is-scroll-story .film-horizons strong { font-size: 18px; line-height: 1.5; }
-  .is-scroll-story .film-horizons span { font-size: 12px; line-height: 1.75; }
-  .is-scroll-story .film-possibilities .film-text-link { margin-top: 16px; }
 }

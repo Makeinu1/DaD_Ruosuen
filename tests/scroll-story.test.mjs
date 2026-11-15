@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {sceneAt} from '../assets/scroll-story.mjs';
+import {sceneAt, createTimeline} from '../assets/scroll-story.mjs';
 
 test('the first scene is readable before the opening transition', () => {
   for (const position of [-100, 0, 0.2, 0.58]) {
@@ -44,4 +44,28 @@ test('a single scene and restored invalid positions have safe bounds', () => {
   assert.equal(sceneAt(0.5, 1).active, 0);
   assert.equal(sceneAt(NaN, 8).value, 0);
   assert.throws(() => sceneAt(0, 0), RangeError);
+});
+
+test('short hook scenes use half the distance without changing earlier scenes', () => {
+  const timeline = createTimeline([1, 1, 1, 1, 1, 1, 0.35, 0.5, 0.5, 0.5, 0.5, 1]);
+  assert.equal(timeline.distanceAt(5.27), 5.27);
+  assert.ok(Math.abs(timeline.distanceAt(8) - timeline.distanceAt(7) - 0.5) < 1e-10);
+  assert.ok(Math.abs(timeline.distanceAt(7) - timeline.distanceAt(6) - 0.35) < 1e-10);
+  assert.ok(Math.abs(timeline.travel - 9) < 1e-10);
+  assert.equal(timeline.positionAt(-10), 0);
+  assert.ok(Math.abs(timeline.positionAt(100) - 11.65) < 1e-10);
+});
+
+test('weighted progression and saved scene positions round-trip in both directions', () => {
+  const timeline = createTimeline([1, 0.35, 0.5, 0.5, 1]);
+  for (const position of [0, 0.79, 1, 1.27, 1.79, 2, 2.79, 3.2, 4, 4.65]) {
+    assert.ok(Math.abs(timeline.positionAt(timeline.distanceAt(position)) - position) < 1e-10);
+  }
+  const boundary = timeline.distanceAt(2);
+  assert.equal(sceneAt(timeline.positionAt(boundary), 5).active, 2);
+  assert.ok(sceneAt(timeline.positionAt(boundary - 0.001), 5).mix > 0.99);
+  assert.equal(timeline.distanceAt(NaN), 0);
+  assert.throws(() => createTimeline([]), RangeError);
+  assert.throws(() => createTimeline([1, 0]), RangeError);
+  assert.throws(() => createTimeline([Infinity]), RangeError);
 });
