@@ -189,7 +189,7 @@ const RELATED = {
   "players/characters/README.md": ["players/キャラクター提出テンプレート.md", "players/探索パーティ結成.md"],
   "adventures/README.md": ["docs/07_短編セッションの進め方.md", "players/キャラクター作成ガイド.md"]
 };
-const HOME_ANCHORS = new Set(['opening','overture','world','tavern','cargo','depths','domains','next','characters','guide']);
+const HOME_ANCHORS = new Set([...document.querySelectorAll('[data-film-scene]')].map(frame => frame.id).concat('characters','guide'));
 const visits = new Map();
 let entrySequence = 0;
 let activeKey = '';

@@ -104,16 +104,45 @@
     </div>
   </section>
 
-  <section class="film-possibilities film-frame" id="domains" data-film-scene="冒険の可能性" tabindex="-1" aria-labelledby="film-possibilities-title">
+  <section class="film-hook-intro film-frame" id="domains" data-film-scene="冒険の可能性" data-film-pace="0.35" tabindex="-1" aria-labelledby="film-possibilities-title">
     <div class="container film-caption" data-film-caption>
-    <h2 class="film-title" id="film-possibilities-title"><span>その先で、</span><span>何を見つけるだろう。</span></h2>
-    <ul class="film-horizons">
-      <li><strong>魔石が、暮らしを灯す。</strong><span>地下から運ばれた力が、遠い街の灯りになる。</span></li>
-      <li><strong>領域主の縄張りへ。</strong><span>そこに生きるものを、君たちはまだ知らない。</span></li>
-      <li><strong>異国の探索者たち。</strong><span>出身も目的も違う者たちが、この都市に集まる。</span></li>
-      <li><strong>地図が、宝になる。</strong><span>君たちが見つけた道が、誰かの明日をつなぐかもしれない。</span></li>
-    </ul>
-    <a class="film-text-link" href="#guide">気になった世界を、深く読む</a>
+      <h2 class="film-title" id="film-possibilities-title"><span>その先で、</span><span>何を見つけるだろう。</span></h2>
+    </div>
+  </section>
+
+  <section class="film-hook film-hook-lights film-frame" id="manastone" data-film-scene="魔石と暮らし" data-film-pace="0.5" tabindex="-1" aria-labelledby="film-manastone-title">
+    <img class="film-image" src="assets/ruosuen-street-night-oil.webp" width="1672" height="941" alt="夜の迷宮都市に連なる魔導灯と、人々の暮らす街並み" loading="lazy" decoding="async">
+    <div class="film-hook-shade" aria-hidden="true"></div>
+    <div class="container film-caption" data-film-caption>
+      <h2 class="film-title" id="film-manastone-title">魔石が、暮らしを灯す。</h2>
+      <p class="film-copy">地下から運ばれた力が、遠い街の灯りになる。</p>
+    </div>
+  </section>
+
+  <section class="film-hook film-hook-territory film-frame" id="territory" data-film-scene="領域主の縄張り" data-film-pace="0.5" tabindex="-1" aria-labelledby="film-territory-title">
+    <img class="film-image" src="assets/ruosuen-underground-world.webp" width="1672" height="941" alt="岩壁と地下河川の向こうに、生き物の暮らす広大な地下世界が続く" loading="lazy" decoding="async">
+    <div class="film-hook-shade" aria-hidden="true"></div>
+    <div class="container film-caption" data-film-caption>
+      <h2 class="film-title" id="film-territory-title">領域主の縄張りへ。</h2>
+      <p class="film-copy">そこに生きるものを、君たちはまだ知らない。</p>
+    </div>
+  </section>
+
+  <section class="film-hook film-hook-explorers film-frame" id="explorers" data-film-scene="異国の探索者" data-film-pace="0.5" tabindex="-1" aria-labelledby="film-explorers-title">
+    <img class="film-image" src="assets/ruosuen-street-market-gouache.webp" width="1536" height="1024" alt="異国の旅人や探索者、商人たちが行き交う自由迷宮都市の市場" loading="lazy" decoding="async">
+    <div class="film-hook-shade" aria-hidden="true"></div>
+    <div class="container film-caption" data-film-caption>
+      <h2 class="film-title" id="film-explorers-title">異国の探索者たち。</h2>
+      <p class="film-copy">出身も目的も違う者たちが、この都市に集まる。</p>
+    </div>
+  </section>
+
+  <section class="film-hook film-hook-map film-frame" id="map" data-film-scene="地図という宝" data-film-pace="0.5" tabindex="-1" aria-labelledby="film-map-title">
+    <img class="film-image" src="assets/free-city-map-white.webp" width="1536" height="1024" alt="裂谷を渡る橋や街路、地上と地下を結ぶ道を描いた白地の構想地図" loading="lazy" decoding="async">
+    <div class="film-hook-shade" aria-hidden="true"></div>
+    <div class="container film-caption" data-film-caption>
+      <h2 class="film-title" id="film-map-title">地図が、宝になる。</h2>
+      <p class="film-copy">君たちが見つけた道が、誰かの明日をつなぐかもしれない。</p>
     </div>
   </section>
 
@@ -140,6 +169,10 @@
         <span data-scene-step="cargo"></span>
         <span data-scene-step="depths"></span>
         <span data-scene-step="domains"></span>
+        <span data-scene-step="manastone"></span>
+        <span data-scene-step="territory"></span>
+        <span data-scene-step="explorers"></span>
+        <span data-scene-step="map"></span>
         <span data-scene-step="next"></span>
       </div>
       <nav class="film-story-controls" aria-label="物語を進める">

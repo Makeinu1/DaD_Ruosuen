@@ -16,12 +16,41 @@ export function sceneAt(position, count) {
   return {from, to, mix, active: mix >= 0.5 ? to : from, value, progress: value / travel};
 }
 
+// Scene coordinates stay stable for links and history. A shorter pace only
+// changes the native scroll distance needed to move through that scene.
+export function createTimeline(paces) {
+  if (!paces.length || paces.some(pace => !Number.isFinite(pace) || pace <= 0)) {
+    throw new RangeError('Scene paces must be positive finite numbers');
+  }
+  const starts = [0];
+  for (let i = 1; i < paces.length; i++) starts.push(starts[i - 1] + paces[i - 1]);
+  const travel = starts.at(-1) + paces.at(-1) * 0.65;
+  return {
+    travel,
+    positionAt(distance) {
+      const value = clamp(Number.isFinite(distance) ? distance : 0, 0, travel);
+      let index = 0;
+      while (index < paces.length - 1 && value >= starts[index + 1]) index++;
+      return index + (value - starts[index]) / paces[index];
+    },
+    distanceAt(position) {
+      const value = sceneAt(position, paces.length).value;
+      const index = Math.floor(value);
+      return starts[index] + (value - index) * paces[index];
+    }
+  };
+}
+
 function initStory() {
   const sequence = document.querySelector('.film-sequence');
   if (!sequence) return;
   const stage = sequence.querySelector('.film-stage');
   const home = document.getElementById('home-view');
   const frames = [...sequence.querySelectorAll('[data-film-scene]')];
+  const timeline = createTimeline(frames.map(frame => {
+    const pace = Number(frame.dataset.filmPace);
+    return pace > 0 && Number.isFinite(pace) ? pace : 1;
+  }));
   const steps = [...sequence.querySelectorAll('[data-scene-step]')];
   const previousLink = document.getElementById('film-prev');
   const nextLink = document.getElementById('film-next');
@@ -99,7 +128,7 @@ function initStory() {
       return;
     }
     if (!enabled) { updateControls(flowIndex()); return; }
-    const state = sceneAt((window.scrollY - start) / step, frames.length);
+    const state = sceneAt(timeline.positionAt((window.scrollY - start) / step), frames.length);
     if (state.value === lastValue) return;
     prepare(state.from);
     prepare(state.to);
@@ -128,7 +157,7 @@ function initStory() {
     });
     updateControls(active);
     label.textContent = frames[active].dataset.filmScene;
-    progress.style.transform = `scaleX(${state.progress})`;
+    progress.style.transform = `scaleX(${timeline.distanceAt(state.value) / timeline.travel})`;
     sequence.dataset.activeScene = frames[active].id;
   }
 
@@ -181,17 +210,17 @@ function initStory() {
     }
     start = sequence.getBoundingClientRect().top + window.scrollY;
     step = Math.max(480, height * 0.95);
-    travel = (frames.length - 1 + 0.65) * step;
+    travel = timeline.travel * step;
     sequence.style.setProperty('--film-travel', `${travel}px`);
     end = start + travel + height;
     enabled = true;
     lastValue = NaN;
     if (wasInside) window.scrollTo({top: start + oldPosition * step, behavior:'instant'});
-    else if (!wasEnabled && staticIndex >= 0) window.scrollTo({top: start + staticIndex * step, behavior:'instant'});
+    else if (!wasEnabled && staticIndex >= 0) window.scrollTo({top: start + timeline.distanceAt(staticIndex) * step, behavior:'instant'});
     // The stacked frames share a viewport, so request their images before a
     // fast scroll can reach them. Raster colors remain entirely untouched.
     frames.forEach(frame => frame.querySelectorAll('img').forEach(img => { img.loading = 'eager'; }));
-    prepare(sceneAt((window.scrollY - start) / step, frames.length).active);
+    prepare(sceneAt(timeline.positionAt((window.scrollY - start) / step), frames.length).active);
     render();
   }
 
@@ -205,7 +234,7 @@ function initStory() {
     if (!enabled) return false;
     // A scene link selects a scene directly instead of rapidly scrubbing
     // through every intervening scene. Ordinary scrolling remains native.
-    window.scrollTo({top: start + index * step, behavior:'instant'});
+    window.scrollTo({top: start + timeline.distanceAt(index) * step, behavior:'instant'});
     lastValue = NaN;
     render();
     frames[index].focus({preventScroll:true});
@@ -216,7 +245,7 @@ function initStory() {
     if (home.classList.contains('hidden')) return null;
     if (enabled) {
       if (window.scrollY > start + travel) return null;
-      return {kind:'scroll', position:sceneAt((window.scrollY - start) / step, frames.length).value};
+      return {kind:'scroll', position:timeline.positionAt((window.scrollY - start) / step)};
     }
     if (window.scrollY >= end) return null;
     const index = flowIndex();
@@ -236,7 +265,7 @@ function initStory() {
       if (token !== selection || home.classList.contains('hidden')) return true;
     }
     if (enabled) {
-      window.scrollTo({top:start + state.value * step, behavior:'instant'});
+      window.scrollTo({top:start + timeline.distanceAt(state.value) * step, behavior:'instant'});
       lastValue = NaN;
       render();
       frames[index].focus({preventScroll:true});

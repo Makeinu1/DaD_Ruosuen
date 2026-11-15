@@ -27,6 +27,8 @@ Scene anchors within the enhanced sticky stage must await `RuosuenStory.goTo` th
 
 Keep the movie first: `.is-watching-film` hides the header menu until the last scene or the preparation/archive area. This is presentation, not a watched-cookie gate. Preserve the normal-document fallback for reduced motion, small viewports, large text, unsupported browsers and JavaScript-disabled reading. Run `node --test tests/scroll-story.test.mjs` after changes to progression. With Playwright and a local server on port 8819, `node tests/navigation.browser.cjs` checks actual scroll/history restoration and the mobile grouped contents; `RUOSUEN_BASE_URL` can target Pages.
 
+The hook sequence uses short intervals via `data-film-pace` (default 1; intro 0.35; hooks 0.5). `createTimeline` maps native scroll distance to stable scene coordinates so history and links retain their meaning. Derive routes and scene controls from the frame DOM rather than maintaining a second list of scene IDs.
+
 Changes should retain mobile-first legibility, semantic links, visible focus, reduced-motion support, and deep links. Validate on a browser and a phone when one is available; source checks alone are not evidence of a successful visual test.
 
 ## Publishing

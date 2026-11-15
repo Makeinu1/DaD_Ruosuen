@@ -29,17 +29,29 @@ async function openMovie(page) {
   await paint(page);
 }
 
-async function seekByScrolling(page, position) {
+async function seekByScrolling(page, sceneId, fraction=0.27) {
   // Geometry is the only connection to the controller: this deliberately
   // scrolls the document without using goTo(), setting a hash, or its state.
-  await page.evaluate(position => {
+  await page.evaluate(({sceneId, fraction}) => {
     const sequence = document.querySelector('.film-sequence');
-    const count = sequence.querySelectorAll('[data-film-scene]').length;
-    const step = parseFloat(sequence.style.getPropertyValue('--film-travel')) / (count - 1 + 0.65);
+    const frames = [...sequence.querySelectorAll('[data-film-scene]')];
+    const index = frames.findIndex(frame => frame.id === sceneId);
+    if (index < 0) throw new Error('Unknown scene: '+sceneId);
+    const paces = frames.map(frame => Number(frame.dataset.filmPace) || 1);
+    const prefix = paces.slice(0,index).reduce((sum,pace) => sum+pace,0);
+    const total = paces.slice(0,-1).reduce((sum,pace) => sum+pace,0)+0.65;
+    const step = parseFloat(sequence.style.getPropertyValue('--film-travel')) / total;
     const start = sequence.getBoundingClientRect().top + scrollY;
-    scrollTo({top:start + position * step, behavior:'instant'});
-  }, position);
+    const local = index === frames.length-1 ? Math.min(fraction,0.65) : fraction*paces[index];
+    scrollTo({top:start + (prefix+local)*step, behavior:'instant'});
+  }, {sceneId,fraction});
   await paint(page);
+}
+
+async function waitForScene(page, sceneId) {
+  await page.waitForFunction(sceneId =>
+    document.querySelector('.film-sequence').dataset.activeScene === sceneId,
+  sceneId, {timeout:7000});
 }
 
 async function waitForMoviePosition(page, scene, expectedY) {
@@ -82,6 +94,78 @@ async function waitForReadingPosition(page, expectedY) {
     expectedY, {timeout:7000});
 }
 
+async function checkHookScenes(page,width) {
+  await openMovie(page);
+  const scenes = page.locator('.film-sequence [data-film-scene]');
+  const ids = await scenes.evaluateAll(elements => elements.map(element => element.id));
+  assert.equal(ids.length,12);
+  const hooks = [
+    ['manastone','魔石が、暮らしを灯す。','地下から運ばれた力が、遠い街の灯りになる。'],
+    ['territory','領域主の縄張りへ。','そこに生きるものを、君たちはまだ知らない。'],
+    ['explorers','異国の探索者たち。','出身も目的も違う者たちが、この都市に集まる。'],
+    ['map','地図が、宝になる。','君たちが見つけた道が、誰かの明日をつなぐかもしれない。']
+  ];
+  const shortIds = ['domains',...hooks.map(([id]) => id)];
+  assert.deepEqual(ids.slice(ids.indexOf('domains'),ids.indexOf('domains')+5),shortIds);
+  assert.equal(await page.locator('#domains h2').count(),1);
+  assert.equal((await page.locator('#domains h2').textContent()).replace(/\s+/g,''),
+    'その先で、何を見つけるだろう。');
+  for (const [id,heading,description] of hooks) {
+    const frame = page.locator('#'+id);
+    assert.equal(await frame.locator('h2').count(),1);
+    assert.equal((await frame.locator('h2').textContent()).replace(/\s+/g,''),heading);
+    assert.equal(await frame.locator('p').count(),1);
+    assert.equal((await frame.locator('p').textContent()).replace(/\s+/g,''),description);
+    const occurrences = await page.locator('.film-stage').evaluate((stage,{heading,description}) => {
+      const equals = (element,text) => element.textContent.replace(/\s+/g,'') === text;
+      return {
+        heading:[...stage.querySelectorAll('h1,h2')].filter(element => equals(element,heading)).length,
+        description:[...stage.querySelectorAll('p')].filter(element => equals(element,description)).length
+      };
+    },{heading,description});
+    assert.deepEqual(occurrences,{heading:1,description:1});
+  }
+  const hookCopy = await page.locator(shortIds.map(id => '#'+id).join(',')).allTextContents();
+  assert.ok(!hookCopy.join('').includes('百万年'));
+  assert.ok(!hookCopy.join('').includes('五大国'));
+
+  // A half-length hook must use half the scroll distance, rather than only
+  // showing a shorter block of text inside an unchanged reading interval.
+  const positions = {};
+  for (const id of ['opening','overture',...shortIds,'next']) {
+    assert.equal(await page.evaluate(id => window.RuosuenStory.goTo(id),id),true);
+    await waitForScene(page,id);
+    positions[id] = await page.evaluate(() => scrollY);
+  }
+  const normalDistance = positions.overture-positions.opening;
+  assert.ok(normalDistance >= 480);
+  for (let index=0; index<shortIds.length; index++) {
+    const id = shortIds[index];
+    const nextId = shortIds[index+1] || 'next';
+    const ratio = id === 'domains' ? 0.35 : 0.5;
+    assert.ok(Math.abs((positions[nextId]-positions[id])-normalDistance*ratio) <= 2,
+      id+' should occupy '+ratio+' of a normal scene scroll distance');
+
+    await seekByScrolling(page,id,0.2);
+    await waitForScene(page,id);
+    assert.ok(await page.locator('#'+id+' h2').isVisible());
+    const sceneIndex = ids.indexOf(id);
+    assert.equal(await page.locator('#film-prev').getAttribute('href'),'#'+ids[sceneIndex-1]);
+    assert.equal(await page.locator('#film-next').getAttribute('href'),'#'+ids[sceneIndex+1]);
+    await page.locator('#film-next').click();
+    await waitForScene(page,ids[sceneIndex+1]);
+    await page.locator('#film-prev').click();
+    await waitForScene(page,id);
+  }
+  for (const [id] of hooks) {
+    await page.goto(base+'#'+id);
+    await waitForScene(page,id);
+    assert.ok(await page.locator('#'+id+' h2').isVisible());
+  }
+  console.log(JSON.stringify({check:'individual hooks and weighted scroll',width,scenes:12,
+    normalDistance,shortScenes:shortIds,deepLinks:hooks.map(([id]) => id)}));
+}
+
 async function checkReadingHistory(page, width) {
   // The first visit has no scene hash. This catches restoring the opening
   // instead of the actual movie position reached by ordinary scrolling.
@@ -90,7 +174,7 @@ async function checkReadingHistory(page, width) {
   const headerCreation = page.locator('.site-header a').filter({hasText:/冒険者になる|キャラクターをつくる/});
   for (const link of await headerCreation.all()) assert.equal(await link.isVisible(), false);
 
-  await seekByScrolling(page, 5.27);
+  await seekByScrolling(page, 'depths');
   await page.waitForFunction(() => document.querySelector('.film-sequence').dataset.activeScene === 'depths');
   const movieY = await page.evaluate(() => scrollY);
   await page.locator('#depths a').filter({hasText:/迷宮/}).click();
@@ -132,7 +216,7 @@ async function checkReadingHistory(page, width) {
 
 async function checkMobileContents(page) {
   await openMovie(page);
-  await seekByScrolling(page, 5.27);
+  await seekByScrolling(page, 'depths');
   await page.locator('#depths a').filter({hasText:/迷宮/}).click();
   await articleReady(page, depthsPath);
   const contents = page.locator('details.reader-toc');
@@ -170,6 +254,8 @@ async function waitForHomePosition(page, expectedY) {
 
 async function checkArchiveOrigin(page,width) {
   await openMovie(page);
+  await page.goto(base+'#map');
+  await waitForScene(page,'map');
   await page.goto(base+'#guide');
   const archive = page.locator('.film-archive-disclosure');
   await page.waitForFunction(() => document.querySelector('.film-archive-disclosure').open &&
@@ -255,12 +341,14 @@ async function checkReducedMotionReturn(browser) {
       await page.getByRole('link', {name:'物語を始める',exact:true}).click();
       await page.waitForFunction(() => document.querySelector('.film-sequence').dataset.activeScene === 'overture');
       await checkReadingHistory(page,width);
+      await checkHookScenes(page,width);
 
       await page.goto(base+'#next');
       await page.waitForFunction(() => document.querySelector('.film-sequence').dataset.activeScene === 'next');
-      assert.ok(await page.locator('#next').getByRole('link', {name:'キャラクターをつくる',exact:true}).isVisible());
-      assert.ok(!(await page.locator('.film-horizons').textContent()).includes('百万年'));
-      assert.ok(!(await page.locator('.film-horizons').textContent()).includes('五大国'));
+      const invitation = page.locator('#next').getByRole('link', {name:'キャラクターをつくる',exact:true});
+      assert.ok(await invitation.isVisible());
+      await invitation.click();
+      await articleReady(page,'players/キャラクター作成ガイド.md');
       if (width === 390) await checkMobileContents(page);
       await checkArchiveOrigin(page,width);
       await page.goto(base+'#/DECISIONS.md');
@@ -273,7 +361,8 @@ async function checkReducedMotionReturn(browser) {
     assert.deepEqual(errors,[],'Unexpected browser errors');
     console.log(JSON.stringify({result:'PASS',viewports:[1440,390],bareUrlReturn:true,
       historyForward:true,articleHistory:true,relatedArticleReturn:true,groupedContents:true,
-      archiveOrigin:true,archiveOpenState:true,directArticle:true,reducedMotionReturn:true,errors}));
+      archiveOrigin:true,archiveOpenState:true,directArticle:true,reducedMotionReturn:true,
+      individualHooks:true,weightedScroll:true,hookDeepLinks:true,creationInvitation:true,errors}));
   } finally {
     await browser.close();
   }
