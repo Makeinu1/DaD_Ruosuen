@@ -8,25 +8,25 @@
  */
 const SECTIONS = [
   {label:"この街から", entries:[
-    {path:"docs/01_プレイヤー向け世界観.md",label:"レウナの世界",kicker:"この街を支える世界",summary:"人々は、なぜ地下へ向かうのか。",layout:"story"},
-    {path:"docs/04_自由迷宮都市と組織.md",label:"ルオスエンを歩く",kicker:"六つの施設と街角",summary:"訪ねたい場所を、見つけに。",layout:"story",chapters:true},
+    {path:"docs/01_プレイヤー向け世界観.md",label:"この世界と、ルオスエンの始まり",kicker:"世界を知る",summary:"魔石が築いた文明から、自由迷宮都市の誕生へ。",layout:"story",book:true},
+    {path:"docs/04_自由迷宮都市と組織.md",label:"ルオスエンを歩く",kicker:"街と人々を知る",summary:"六つの場所から、君の人物の居場所を探して。",layout:"story",book:true,chapters:true},
     {path:"adventures/次の冒険.md",label:"次の冒険の始まり",kicker:"次は、君たちの話を",summary:"導入と開始条件は、準備中です。",layout:"story"}
   ]},
   {label:"冒険の準備",entries:[
-    {path:"players/キャラクター作成ガイド.md",label:"この世界で冒険する",kicker:"君は、何を求めてルオスエンへ？",summary:"人物像から、四人で歩き出す準備へ。"},
-    {path:"players/キャラクター提出テンプレート.md",label:"キャラクターを共有する",kicker:"君の人物を、DMへ",summary:"未定のところは、相談しながら。"}
+    {path:"players/キャラクター作成ガイド.md",label:"この世界で冒険する",kicker:"君は、何を求めてルオスエンへ？",summary:"この街での暮らしと、地下へ向かう理由から。"}
   ]}
 ];
 // Public bookmarks survive the consolidation; editor-only pages stay unregistered.
 const ROUTE_ALIASES = {
   "docs/02_迷宮と探索.md":"docs/01_プレイヤー向け世界観.md",
   "docs/03_魔石と魔術.md":"docs/01_プレイヤー向け世界観.md",
-  "docs/05_歴史と伝承.md":"docs/04_自由迷宮都市と組織.md",
+  "docs/05_歴史と伝承.md":"docs/01_プレイヤー向け世界観.md",
   "docs/06_種族と信仰.md":"players/キャラクター作成ガイド.md",
   "docs/07_短編セッションの進め方.md":"players/キャラクター作成ガイド.md",
   "docs/08_街角の風景.md":"docs/04_自由迷宮都市と組織.md",
   "players/探索パーティ結成.md":"players/キャラクター作成ガイド.md",
-  "players/characters/README.md":"players/キャラクター提出テンプレート.md",
+  "players/characters/README.md":"players/キャラクター作成ガイド.md",
+  "players/キャラクター提出テンプレート.md":"players/キャラクター作成ガイド.md",
   "adventures/README.md":"adventures/次の冒険.md",
   overture:"vista", world:"vista", domains:"territory", manastone:"cargo", map:"depths", characters:"guide"
 };
@@ -135,7 +135,7 @@ function markdownToHtml(markdown, sourcePath) {
     if (/^\s*>\s?/.test(l)) {
       const parts = [];
       while (i < lines.length && /^\s*>\s?/.test(lines[i])) parts.push(lines[i++].replace(/^\s*>\s?/,""));
-      html.push("<blockquote><p>"+inlineMarkdown(parts.join(" "),sourcePath)+"</p></blockquote>");
+      html.push("<blockquote>"+parts.join("\n").split(/\n\s*\n/).filter(p=>p.trim()).map(p=>"<p>"+inlineMarkdown(p.replace(/\n/g," "),sourcePath)+"</p>").join("")+"</blockquote>");
       continue;
     }
     if (isList(l)) {
@@ -169,10 +169,9 @@ function renderNav(activePath) {
 // Deliberate neighbors rather than a circular tour of every document.
 const RELATED = {
   "docs/01_プレイヤー向け世界観.md":["docs/04_自由迷宮都市と組織.md"],
-  "docs/04_自由迷宮都市と組織.md":["adventures/次の冒険.md"],
+  "docs/04_自由迷宮都市と組織.md":["players/キャラクター作成ガイド.md"],
   "adventures/次の冒険.md":["players/キャラクター作成ガイド.md"],
-  "players/キャラクター作成ガイド.md":["players/キャラクター提出テンプレート.md"],
-  "players/キャラクター提出テンプレート.md":["players/キャラクター作成ガイド.md"]
+  "players/キャラクター作成ガイド.md":["adventures/次の冒険.md"]
 };
 
 // Keep the Markdown source readable on GitHub: heading + image + quotation.
@@ -188,6 +187,8 @@ function fitStoryCaptions() {
 function composeStory(meta) {
   captionObserver?.disconnect();
   const article = $("article-content");
+  article.classList.toggle("storybook",Boolean(meta.book));
+  article.classList.toggle("storybook-walk",Boolean(meta.chapters));
   if (meta.layout === 'story') {
     for (const heading of [...article.children]) {
       if (!/^H[23]$/.test(heading.tagName)) continue;
@@ -207,7 +208,7 @@ function composeStory(meta) {
       // The optional opening emphasis is the short hook, before the explanation.
       const paragraph = quote.querySelector('p');
       const lead = paragraph?.firstChild;
-      if (lead?.nodeType === Node.ELEMENT_NODE && lead.tagName === 'STRONG') {
+      if (!meta.book && lead?.nodeType === Node.ELEMENT_NODE && lead.tagName === 'STRONG') {
         const hook = document.createElement('p');
         hook.className = 'story-hook';
         hook.append(lead);

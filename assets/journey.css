@@ -5,7 +5,6 @@
 #territory .film-image { object-position: 76% center; }
 #depths .film-image { object-position: 30% center; }
 #next .film-title { font-size: clamp(30px, 4.4vw, 64px); }
-.film-archive-links a:last-child { grid-column: 1 / -1; }
 .journey-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 24px; padding: 22px 24px; border-bottom: 1px solid #aa987d55; background: #071625; }
 .journey-nav a { display: inline-flex; align-items: center; min-height: 44px; font: 13px/1.7 var(--serif); color: #b8ccd9; text-decoration: none; text-underline-offset: 7px; }
 .journey-nav a:hover,.journey-nav a[aria-current] { color: #fff; text-decoration: underline; }
@@ -140,4 +139,21 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .film-scroll-cue svg { animation: none; }
+}
+
+/* Storybook pages: let every painting be seen, then give its story room to read. */
+.story-layout .storybook { max-width: 1160px; margin-inline: auto; }
+.storybook .story-panel { margin-bottom: clamp(56px, 8vw, 112px); }
+.storybook .story-caption { position: relative; padding: 30px clamp(24px, 5vw, 72px) 0; text-shadow: none; pointer-events: auto; }
+.storybook .story-caption::before { display: none; }
+.article-body.storybook .story-caption h2 { color: #e3f8ff; font-size: clamp(23px, 2.7vw, 36px); margin-bottom: 20px; }
+.article-body.storybook .story-caption p { color: #d0dfe9; max-width: 44em; font-size: clamp(15px, 1.3vw, 18px); line-height: 2; margin-bottom: 12px; }
+.article-body.storybook-walk .story-caption p:last-child { color: #a9c6d7; font-size: clamp(14px, 1.15vw, 16px); margin-top: 20px; }
+.story-layout .article-body.storybook > p { max-width: 44em; margin: 24px auto; padding-inline: 24px; }
+.story-layout .article-body.storybook > p:last-child { margin-top: 40px; }
+.storybook .story-art a:focus-visible { outline: 3px solid #80bbde; outline-offset: 4px; }
+@media (max-width: 700px) {
+  .storybook .story-caption { padding: 24px 24px 0; }
+  .article-body.storybook .story-caption h2 { font-size: 24px; }
+  .story-layout .article-body.storybook > p { max-width: 100%; margin-inline: 0; }
 }
