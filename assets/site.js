@@ -7,40 +7,35 @@
  * safe Markdown subset needed by these documents.
  */
 const SECTIONS = [
-  {
-    label: "世界を知る",
-    entries: [
-      { path: "docs/01_プレイヤー向け世界観.md", label: "レウナの世界", kicker: "WORLD / 01", summary: "地下へ広がる世界と冒険者たちの物語" },
-      { path: "docs/02_迷宮と探索.md", label: "迷宮と探索", kicker: "WORLD / 02", summary: "未踏の通路、領域主、描きかけの地図" },
-      { path: "docs/03_魔石と魔術.md", label: "魔石と魔術", kicker: "WORLD / 03", summary: "使えば減る力。地下から届く魔石が、人々の暮らしを支える" },
-      { path: "docs/04_自由迷宮都市と組織.md", label: "ルオスエンの街を歩く", kicker: "WORLD / 04", summary: "円環商館、石工房、地図院。二つの港のあいだに、君の居場所を探す" },
-      { path: "docs/08_街角の風景.md", label: "街角の風景", kicker: "ART / 01", summary: "市場、酒場、荷役場、夜の橋。四つの画風で見る自由都市" },
-      { path: "docs/05_歴史と伝承.md", label: "歴史と伝承", kicker: "WORLD / 05", summary: "停船の夜、最初の帰還者、失われた聖路" },
-      { path: "docs/06_種族と信仰.md", label: "種族と信仰", kicker: "WORLD / 06", summary: "この世界で生きる人々と信念" },
-      { path: "docs/07_短編セッションの進め方.md", label: "冒険の進め方", kicker: "PLAY / 01", summary: "1〜2回で完結する短編の冒険" }
-    ]
-  },
-  {
-    label: "冒険の準備",
-    entries: [
-      { path: "players/キャラクター作成ガイド.md", label: "キャラクター作成", kicker: "PLAYER / 01", summary: "4人の冒険に参加するためのPC作成案内" },
-      { path: "players/探索パーティ結成.md", label: "パーティー結成", kicker: "PLAY / 02", summary: "4人が共に冒険する理由を作ろう" },
-      { path: "players/キャラクター提出テンプレート.md", label: "キャラクター提出", kicker: "PLAYER / 02", summary: "自分のキャラクター像を書き出す" },
-      { path: "players/characters/README.md", label: "PC登録について", kicker: "PLAY / 03", summary: "キャラクター設定の共有方法" }
-    ]
-  },
-  {
-    label: "冒険の記録",
-    entries: [
-      { path: "adventures/README.md", label: "冒険の記録", kicker: "PLAY / 04", summary: "これから増えていく冒険の足跡" }
-    ]
-  }
+  {label:"この街から", entries:[
+    {path:"docs/01_プレイヤー向け世界観.md",label:"レウナの世界",kicker:"この街を支える世界",summary:"人々は、なぜ地下へ向かうのか。",layout:"story"},
+    {path:"docs/04_自由迷宮都市と組織.md",label:"ルオスエンを歩く",kicker:"六つの施設と街角",summary:"訪ねたい場所を、見つけに。",layout:"story",chapters:true},
+    {path:"adventures/次の冒険.md",label:"次の冒険の始まり",kicker:"次は、君たちの話を",summary:"導入と開始条件は、準備中です。",layout:"story"}
+  ]},
+  {label:"冒険の準備",entries:[
+    {path:"players/キャラクター作成ガイド.md",label:"この世界で冒険する",kicker:"君は、何を求めてルオスエンへ？",summary:"人物像から、四人で歩き出す準備へ。"},
+    {path:"players/キャラクター提出テンプレート.md",label:"キャラクターを共有する",kicker:"君の人物を、DMへ",summary:"未定のところは、相談しながら。"}
+  ]}
 ];
+// Public bookmarks survive the consolidation; editor-only pages stay unregistered.
+const ROUTE_ALIASES = {
+  "docs/02_迷宮と探索.md":"docs/01_プレイヤー向け世界観.md",
+  "docs/03_魔石と魔術.md":"docs/01_プレイヤー向け世界観.md",
+  "docs/05_歴史と伝承.md":"docs/04_自由迷宮都市と組織.md",
+  "docs/06_種族と信仰.md":"players/キャラクター作成ガイド.md",
+  "docs/07_短編セッションの進め方.md":"players/キャラクター作成ガイド.md",
+  "docs/08_街角の風景.md":"docs/04_自由迷宮都市と組織.md",
+  "players/探索パーティ結成.md":"players/キャラクター作成ガイド.md",
+  "players/characters/README.md":"players/キャラクター提出テンプレート.md",
+  "adventures/README.md":"adventures/次の冒険.md",
+  overture:"world", domains:"territory", manastone:"cargo", map:"depths", characters:"guide"
+};
+const resolvePath = path => ROUTE_ALIASES[path] || path;
 const ALL = SECTIONS.flatMap(section => section.entries.map(item => ({...item, group: section.label})));
 const BY_PATH = new Map(ALL.map(item => [item.path, item]));
 const $ = id => document.getElementById(id);
 
-function docUrl(path) { return "#/" + encodeURIComponent(path); }
+function docUrl(path) { return "#/" + encodeURIComponent(resolvePath(path)); }
 function escapeHtml(value) {
   return String(value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
     .replace(/"/g,"&quot;").replace(/'/g,"&#39;");
@@ -55,7 +50,7 @@ function safeUrl(url, sourcePath) {
     const link = new URL(raw, new URL(sourcePath, document.baseURI));
     const base = new URL(".", document.baseURI);
     const file = decodeURIComponent(link.pathname).slice(decodeURIComponent(base.pathname).length);
-    if (link.origin === base.origin && BY_PATH.has(file)) return {href: docUrl(file), external: false};
+    if (link.origin === base.origin && BY_PATH.has(resolvePath(file))) return {href: docUrl(file), external: false};
   } catch (_) { /* invalid URL, omit link */ }
   return null;
 }
@@ -119,7 +114,7 @@ function markdownToHtml(markdown, sourcePath) {
           const img = new URL(raw, new URL(sourcePath, document.baseURI));
           if (img.origin === location.origin && img.pathname.startsWith(new URL("assets/", document.baseURI).pathname)) {
             html.push('<figure class="article-map"><a href="' + escapeHtml(img.href) + '" target="_blank" rel="noopener noreferrer" aria-label="画像を拡大表示">' +
-              '<img src="' + escapeHtml(img.href) + '" alt="' + escapeHtml(match[1]) + '" loading="eager" decoding="async">' +
+              '<img src="' + escapeHtml(img.href) + '" alt="' + escapeHtml(match[1]) + '" width="' + (/ruosuen-(underground-world|street-night-oil)\.webp$/.test(raw) ? 1672 : 1536) + '" height="' + (/ruosuen-(underground-world|street-night-oil)\.webp$/.test(raw) ? 941 : 1024) + '" loading="lazy" decoding="async">' +
               '</a><figcaption>画像を選択すると別画面で拡大できます。</figcaption></figure>');
           }
         }
@@ -173,20 +168,72 @@ function renderNav(activePath) {
 
 // Deliberate neighbors rather than a circular tour of every document.
 const RELATED = {
-  "docs/01_プレイヤー向け世界観.md": ["docs/02_迷宮と探索.md", "docs/04_自由迷宮都市と組織.md"],
-  "docs/02_迷宮と探索.md": ["docs/03_魔石と魔術.md", "docs/07_短編セッションの進め方.md"],
-  "docs/03_魔石と魔術.md": ["docs/02_迷宮と探索.md", "docs/04_自由迷宮都市と組織.md"],
-  "docs/04_自由迷宮都市と組織.md": ["docs/08_街角の風景.md", "docs/06_種族と信仰.md"],
-  "docs/08_街角の風景.md": ["docs/04_自由迷宮都市と組織.md", "docs/06_種族と信仰.md"],
-  "docs/05_歴史と伝承.md": ["docs/01_プレイヤー向け世界観.md", "docs/06_種族と信仰.md"],
-  "docs/06_種族と信仰.md": ["docs/04_自由迷宮都市と組織.md", "docs/05_歴史と伝承.md"],
-  "docs/07_短編セッションの進め方.md": ["players/キャラクター作成ガイド.md", "players/探索パーティ結成.md"],
-  "players/キャラクター作成ガイド.md": ["players/探索パーティ結成.md", "players/キャラクター提出テンプレート.md"],
-  "players/探索パーティ結成.md": ["players/キャラクター提出テンプレート.md", "players/キャラクター作成ガイド.md"],
-  "players/キャラクター提出テンプレート.md": ["players/characters/README.md"],
-  "players/characters/README.md": ["players/キャラクター提出テンプレート.md", "players/探索パーティ結成.md"],
-  "adventures/README.md": ["docs/07_短編セッションの進め方.md", "players/キャラクター作成ガイド.md"]
+  "docs/01_プレイヤー向け世界観.md":["docs/04_自由迷宮都市と組織.md"],
+  "docs/04_自由迷宮都市と組織.md":["adventures/次の冒険.md"],
+  "adventures/次の冒険.md":["players/キャラクター作成ガイド.md"],
+  "players/キャラクター作成ガイド.md":["players/キャラクター提出テンプレート.md"],
+  "players/キャラクター提出テンプレート.md":["players/キャラクター作成ガイド.md"]
 };
+
+// Keep the Markdown source readable on GitHub: heading + image + quotation.
+// Only curated story pages opt into the scenic presentation.
+let captionObserver;
+function fitStoryCaptions() {
+  for (const panel of document.querySelectorAll('.story-panel')) {
+    const caption = panel.querySelector('.story-caption');
+    const image = panel.querySelector('img');
+    panel.classList.toggle('caption-below', caption.scrollHeight > image.clientHeight * 0.6);
+  }
+}
+function composeStory(meta) {
+  captionObserver?.disconnect();
+  const article = $("article-content");
+  if (meta.layout === 'story') {
+    for (const heading of [...article.children]) {
+      if (!/^H[23]$/.test(heading.tagName)) continue;
+      const figure = heading.nextElementSibling;
+      const quote = figure?.nextElementSibling;
+      if (!figure?.matches('figure.article-map') || quote?.tagName !== 'BLOCKQUOTE') continue;
+      const panel = document.createElement('section');
+      panel.className = 'story-panel' + (heading.tagName === 'H3' ? ' story-corner' : '');
+      panel.setAttribute('aria-labelledby', heading.id);
+      heading.before(panel);
+      const caption = document.createElement('div');
+      caption.className = 'story-caption';
+      figure.className = 'story-art';
+      figure.querySelector('figcaption')?.remove();
+      panel.append(figure, caption);
+      caption.append(heading);
+      // The optional opening emphasis is the short hook, before the explanation.
+      const paragraph = quote.querySelector('p');
+      const lead = paragraph?.firstChild;
+      if (lead?.nodeType === Node.ELEMENT_NODE && lead.tagName === 'STRONG') {
+        const hook = document.createElement('p');
+        hook.className = 'story-hook';
+        hook.append(lead);
+        caption.append(hook);
+      }
+      // Blockquotes remain normal readable Markdown outside the Pages viewer.
+      quote.querySelectorAll('p').forEach(p => caption.append(p));
+      quote.remove();
+    }
+  }
+  if (meta.layout === 'story' && window.ResizeObserver) {
+    captionObserver = new ResizeObserver(fitStoryCaptions);
+    article.querySelectorAll('.story-caption, .story-art img').forEach(e => captionObserver.observe(e));
+  }
+  const chapters = $("story-chapters");
+  chapters.replaceChildren();
+  chapters.hidden = !meta.chapters;
+  if (meta.chapters) {
+    for (const heading of article.querySelectorAll('.story-panel h2')) {
+      const link = document.createElement('a');
+      link.href = '#' + heading.id;
+      link.textContent = heading.textContent;
+      chapters.append(link);
+    }
+  }
+}
 const HOME_ANCHORS = new Set([...document.querySelectorAll('[data-film-scene]')].map(frame => frame.id).concat('characters','guide'));
 const visits = new Map();
 let entrySequence = 0;
@@ -199,7 +246,7 @@ let pendingScroll = 0;
 history.scrollRestoration = 'manual';
 
 function currentPath() {
-  try { return decodeURIComponent(location.hash.replace(/^#\/?/,'')); }
+  try { return resolvePath(decodeURIComponent(location.hash.replace(/^#\/?/,''))); }
   catch (_) { return ''; }
 }
 function newKey() { return Date.now().toString(36) + '-' + (++entrySequence); }
@@ -233,14 +280,16 @@ function updateReturnLinks(entry) {
 function renderRelated(path) {
   const prep = BY_PATH.get(path).group === '冒険の準備' || path === 'docs/07_短編セッションの進め方.md';
   const links = (RELATED[path] || []).map(p => '<a href="'+docUrl(p)+'">'+escapeHtml(BY_PATH.get(p).label)+' <span aria-hidden="true">→</span></a>').join('');
-  $("reader-bottom").innerHTML = '<div class="reader-related"><p>'+(prep?'冒険の準備を進める':'あわせて読む')+'</p>'+links+'</div>' +
+  $("reader-bottom").innerHTML = '<div class="reader-related"><p>'+(prep?'冒険の準備を進める':'この先へ')+'</p>'+links+'</div>' +
     '<a class="reader-return" data-return-to-story href="#/">物語を見る</a>' +
-    '<a class="reader-return" href="#guide">世界の資料一覧 <span aria-hidden="true">→</span></a>';
+    '<a class="reader-return" href="#guide">街から冒険へ <span aria-hidden="true">→</span></a>';
 }
 const nextPaint = () => new Promise(resolve => requestAnimationFrame(resolve));
 
 async function showHome(entry, token) {
-  document.title = 'RUOSUEN｜ルオスエン — 地図の外側へ';
+  document.title = 'RUOSUEN｜ルオスエン — 地の底に、空がある。';
+  document.body.classList.remove('story-layout','reading-layout');
+  captionObserver?.disconnect();
   $("home-view").classList.remove('hidden');
   $("reader-view").classList.add('hidden');
   const archive = document.querySelector('.film-archive-disclosure');
@@ -265,6 +314,10 @@ async function showHome(entry, token) {
 async function showDoc(path, entry, token) {
   const meta = BY_PATH.get(path);
   document.title = meta.label + ' | ルオスエン';
+  document.body.classList.toggle('story-layout',meta.layout === 'story');
+  document.body.classList.toggle('reading-layout',meta.layout !== 'story');
+  $("journey-nav").innerHTML = ALL.map(e => '<a href="'+docUrl(e.path)+'"'+(e.path===path?' aria-current="page"':'')+'>'+escapeHtml(e.label)+'</a>').join('');
+  $("story-chapters").hidden = true;
   document.body.classList.remove('is-watching-film');
   $("home-view").classList.add('hidden');
   $("reader-view").classList.remove('hidden');
@@ -273,6 +326,7 @@ async function showDoc(path, entry, token) {
   $("article-title").textContent = meta.label;
   $("article-summary").textContent = meta.summary;
   $("article-content").setAttribute('aria-busy','true');
+  delete $("article-content").dataset.source;
   $("article-content").innerHTML = '<p class="loading" role="status">資料を読み込んでいます…</p>';
   renderRelated(path);
   updateReturnLinks(entry);
@@ -283,15 +337,22 @@ async function showDoc(path, entry, token) {
     const text = await response.text();
     if (token !== routing) return;
     $("article-content").innerHTML = markdownToHtml(text, path);
-    // Image layout must settle before restoring a reading position below it.
-    await Promise.all([...$("article-content").querySelectorAll('img')].map(image => image.decode().catch(() => {})));
+    composeStory(meta);
+    $("article-content").dataset.source = path;
+    // Dimensions reserve the artwork's space. Decode only the opening image and
+    // images above a restored position; the rest load as the visitor approaches.
+    const images = [...$("article-content").querySelectorAll('img')];
+    await Promise.all(images.filter((image,index) => index === 0 ||
+      (entry.saved && image.getBoundingClientRect().top + scrollY <= entry.y + innerHeight))
+      .map(image => { image.loading = 'eager'; return image.decode().catch(() => {}); }));
   } catch (_) {
     if (token !== routing) return;
     $("article-content").innerHTML = '<p>資料を読み込めませんでした。接続を確認して再読み込みするか、' +
-      '<a href="https://github.com/Makeinu1/DaD_Ruosuen/blob/main/'+encodeURI(path)+'" target="_blank" rel="noopener noreferrer">GitHubの元資料 ↗</a>をご覧ください。</p>';
+      '<a href="'+docUrl(path)+'">もう一度読み込む</a>。</p>';
   }
   await nextPaint();
   if (token !== routing) return;
+  fitStoryCaptions();
   if (entry.saved) window.scrollTo({top:entry.y,behavior:'instant'});
   $("article-title").setAttribute('tabindex','-1');
   $("article-title").focus({preventScroll:true});
@@ -319,7 +380,7 @@ async function onRoute() {
 function navigate(hash, snapshot) {
   savePlace();
   const previous = visits.get(activeKey);
-  const path = decodeURIComponent(hash.replace(/^#\/?/,''));
+  const path = resolvePath(decodeURIComponent(hash.replace(/^#\/?/,'')));
   const key = newKey();
   const entry = snapshot ? {...snapshot} : {
     kind:BY_PATH.has(path)?'doc':'home', path, y:0,
@@ -336,7 +397,7 @@ document.addEventListener('click', event => {
   if (!link || link.target || link.hasAttribute('download')) return;
   const hash = link.getAttribute('href');
   let path;
-  try { path = decodeURIComponent(hash.replace(/^#\/?/,'')); } catch (_) { return; }
+  try { path = resolvePath(decodeURIComponent(hash.replace(/^#\/?/,''))); } catch (_) { return; }
   if (path && !BY_PATH.has(path) && !HOME_ANCHORS.has(path)) {
     const target = document.getElementById(path);
     if (target && !target.closest('.hidden')) {

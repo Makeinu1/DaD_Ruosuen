@@ -1,0 +1,69 @@
+/* A film, then an illustrated walk. Reading and preparation keep their own pace. */
+.film-start-action { margin-top: 28px; }
+.film-frame .film-title { max-width: 22em; text-wrap: balance; }
+#opening .film-title { font-size: clamp(42px, 7vw, 92px); line-height: 1.55; }
+#territory .film-image { object-position: 76% center; }
+#depths .film-image { object-position: 30% center; }
+#next .film-title { font-size: clamp(30px, 4.4vw, 64px); }
+.film-archive-links a:last-child { grid-column: 1 / -1; }
+.journey-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 24px; padding: 22px 24px; border-bottom: 1px solid #aa987d55; background: #071625; }
+.journey-nav a { display: inline-flex; align-items: center; min-height: 44px; font: 13px/1.7 var(--serif); color: #b8ccd9; text-decoration: none; text-underline-offset: 7px; }
+.journey-nav a:hover,.journey-nav a[aria-current] { color: #fff; text-decoration: underline; }
+.journey-nav a:focus-visible,.story-chapters a:focus-visible { outline: 2px solid #80bbde; outline-offset: 4px; }
+#reader-view .reader-layout { display: block; }
+#reader-view .sidebar,#reader-view .reader-toc { display: none; }
+.reading-layout .reader-layout { max-width: 960px; }
+.story-layout { background: #030810; }
+.story-layout #reader-view { background: #030810; color: #e3f8ff; }
+.story-layout .reader-layout { width: min(100%, 1500px); max-width: 1500px; padding-top: 36px; padding-inline: clamp(16px, 4vw, 54px); }
+.story-layout .reader-breadcrumbs a { color: #b8ccd9; }
+.story-layout .article-hero { padding: 28px 0 36px; border: 0; margin: 0; }
+.story-layout .article-hero h1 { color: #e3f8ff; font-size: clamp(30px, 4vw, 52px); }
+.story-layout .article-label { color: #80bbde; font: 13px/1.7 var(--serif); letter-spacing: .08em; }
+.story-layout .article-summary { color: #b8ccd9; }
+.story-layout .article-body { color: #c8d9e5; }
+.story-layout .article-body > p { max-width: 44em; margin: 16px 0 32px; }
+.story-layout .article-body strong { color: inherit; }
+.story-layout .article-body a { color: #c0e1f1; }
+.story-chapters { display: flex; flex-wrap: wrap; gap: 6px 22px; padding: 10px 0 26px; }
+.story-chapters[hidden] { display: none; }
+.story-chapters a { color: #c0e1f1; min-height: 44px; display: inline-flex; align-items: center; font-size: 13px; text-underline-offset: 6px; }
+.story-panel { position: relative; isolation: isolate; margin: 0 0 64px; scroll-margin-top: 105px; }
+.story-art { margin: 0; }
+.story-art a { display: block; }
+.story-art img { display: block; width: 100%; height: auto; }
+.story-caption { position: absolute; z-index: 1; bottom: 0; left: 0; right: 0; padding: clamp(24px, 4vw, 58px); pointer-events: none; color: #fff; text-shadow: 0 1px 7px #000; }
+.story-caption::before { content: ''; position: absolute; z-index: -1; inset: -80px 0 0; background: linear-gradient(0deg, #030810eb, #03081099 60%, transparent); }
+.article-body .story-caption h2,.article-body .story-caption h3 { margin: 0 0 14px; padding: 0; border: 0; color: #fff; font: 600 clamp(22px, 2.4vw, 34px)/1.65 var(--serif); text-wrap: balance; }
+.article-body .story-caption p { max-width: 42em; margin: 0; font-size: clamp(14px, 1.2vw, 17px); line-height: 2; }
+.story-corner .story-caption { padding: 28px 36px; }
+.story-corner .story-caption h3 { font-size: 15px; font-weight: 400; color: #d9e5ec; margin-bottom: 8px; }
+.story-corner .story-caption p { font-size: clamp(20px, 2.3vw, 30px); }
+.story-layout .reader-bottom { border-color: #24445b; margin-top: 44px; }
+.story-layout .reader-bottom a { color: #c0e1f1; min-height: 44px; display: inline-flex; align-items: center; }
+.story-layout .reader-related p { color: #b8ccd9; }
+.story-layout .article-body > p:last-child > a { display: inline-flex; min-height: 48px; align-items: center; padding: 14px 22px; border: 1px solid #80bbde; text-decoration: none; }
+.story-layout .article-body > p:last-child > a:hover { background: #173a55; }
+.story-layout .table-wrap { color: #34332d; }
+@media (max-width: 700px) {
+  .journey-nav { justify-content: flex-start; gap: 0 18px; padding: 12px 20px; }
+  .journey-nav a { font-size: 12px; }
+  .story-layout .reader-layout { padding-inline: 0; }
+  .story-layout .article-hero,.story-layout .reader-breadcrumbs,.story-chapters,.story-layout .article-body > p,.story-layout .reader-bottom { margin-inline: 24px; }
+  .story-layout .article-hero { padding-top: 18px; padding-bottom: 20px; }
+  .story-layout .article-hero h1 { font-size: 30px; }
+  .story-panel { margin-bottom: 40px; }
+  .story-caption { position: relative; padding: 24px; text-shadow: none; }
+  .story-caption::before { display: none; }
+  .article-body .story-caption h2 { font-size: 24px; }
+  .article-body .story-caption p { font-size: 14px; line-height: 2.05; color: #c8d9e5; }
+  .story-corner .story-caption { padding: 18px 24px; }
+  .story-corner .story-caption p { font-size: 19px; color: #e3f8ff; }
+  .story-layout .article-body > p { max-width: calc(100% - 48px); }
+}
+.story-layout .reader { max-width: none; width: 100%; }
+.article-hero h1:focus { outline: none; }
+.story-panel.caption-below .story-caption { position: relative; text-shadow: none; }
+.story-panel.caption-below .story-caption::before { display: none; }
+
+.article-body .story-caption .story-hook { margin-bottom: 8px; font-size: clamp(16px, 1.6vw, 22px); color: #fff; }

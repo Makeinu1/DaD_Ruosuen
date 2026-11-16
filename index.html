@@ -4,19 +4,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#030810">
-  <meta name="description" content="ルオスエン。地図にない道を、君たちの物語に。4人の冒険者が挑むD&D短編迷宮探索の世界観・キャラクター作成ガイド。">
+  <meta name="description" content="地の底に、空がある。自由迷宮都市ルオスエンから始まる、四人の冒険。">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="RUOSUEN｜ルオスエン — 地図の外側へ">
-  <meta property="og:description" content="世界の果ては、まだ描かれていない。四人で始める、短編ダンジョン探索。">
+  <meta property="og:title" content="RUOSUEN｜ルオスエン — 地の底に、空がある。">
+  <meta property="og:description" content="地の底に、空がある。魔導船の行き交う街から、まだ地図にない道へ。">
   <meta property="og:image" content="https://makeinu1.github.io/DaD_Ruosuen/assets/ruosuen-street-night-oil.webp">
   <meta property="og:url" content="https://makeinu1.github.io/DaD_Ruosuen/">
-  <title>RUOSUEN｜ルオスエン — 地図の外側へ</title>
+  <title>RUOSUEN｜ルオスエン — 地の底に、空がある。</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Noto+Serif+JP:wght@400;500;600;700;900&display=swap" rel="stylesheet">
   <link rel="preload" href="assets/ruosuen-street-night-oil.webp" as="image" type="image/webp">
   <link rel="stylesheet" href="assets/site.css">
   <link rel="stylesheet" href="assets/concept.css">
+  <link rel="stylesheet" href="assets/journey.css">
   <script src="assets/site.js" defer></script>
   <script type="module" src="assets/scroll-story.mjs"></script>
 </head>
@@ -24,263 +25,112 @@
 <a class="skip-link" href="#main">本文へ移動</a>
 <header class="site-header">
   <div class="header-inner">
-    <a class="brand" href="#/" aria-label="物語を初めから見る">
-      <span class="brand-mark" aria-hidden="true"><span class="brand-mark-inner">✦</span></span>
-      <span class="brand-word">RUOSUEN<small>ルオスエン</small></span>
-    </a>
+    <a class="brand" href="#/" aria-label="ルオスエンの物語を初めから見る"><span class="brand-mark" aria-hidden="true"><span class="brand-mark-inner">✦</span></span><span class="brand-word">RUOSUEN<small>ルオスエン</small></span></a>
     <nav class="top-nav" aria-label="メインメニュー">
       <a class="header-desktop-link" data-return-to-story href="#/">物語を見る</a>
-      <a class="header-desktop-link" href="#guide">世界を詳しく知る</a>
-      <details class="header-menu">
-        <summary>メニュー</summary>
-        <div class="header-menu-links">
-          <a data-return-to-story href="#/">物語を見る</a>
-          <a href="#guide">世界を詳しく知る</a>
-        </div>
-      </details>
-      <a class="nav-start" href="#/players/キャラクター作成ガイド.md">キャラクターをつくる</a>
+      <a class="header-desktop-link" href="#/docs/01_プレイヤー向け世界観.md">世界を知る</a>
+      <a class="header-desktop-link" href="#/docs/04_自由迷宮都市と組織.md">街を歩く</a>
+      <details class="header-menu"><summary>メニュー</summary><div class="header-menu-links">
+        <a data-return-to-story href="#/">物語を見る</a>
+        <a href="#/docs/01_プレイヤー向け世界観.md">世界を知る</a>
+        <a href="#/docs/04_自由迷宮都市と組織.md">街を歩く</a>
+        <a href="#/adventures/次の冒険.md">次の冒険</a>
+        <a href="#/players/キャラクター提出テンプレート.md">人物を共有する</a>
+      </div></details>
+      <a class="nav-start" href="#/players/キャラクター作成ガイド.md">キャラクターを考える</a>
     </nav>
   </div>
 </header>
 <main id="main">
 <div id="home-view" class="film-home">
-  <div class="film-sequence">
-  <div class="film-stage">
-  <section class="film-opening film-frame" id="opening" data-film-scene="都市の夜" tabindex="-1" aria-labelledby="film-title">
-    <img class="film-image" src="assets/ruosuen-street-night-oil.webp" width="1672" height="941" alt="夜の裂谷都市。いくつもの橋と街並みが重なり、その灯りが地下深くへ続いている" fetchpriority="high" decoding="async">
-    <div class="film-opening-shade" aria-hidden="true"></div>
-    <div class="film-opening-copy container film-caption" data-film-caption>
-      <p class="film-worldname">RUOSUEN / ルオスエン</p>
-      <h1 id="film-title" class="film-opening-title"><span>この街の下には、</span><span>まだ世界がある。</span></h1>
-      <p class="film-opening-intro">地図にない道を、君たちの物語に。</p>
-      <div class="film-opening-actions">
-        <a class="film-primary" href="#overture">物語を始める <span aria-hidden="true">→</span></a>
-      </div>
-    </div>
-    <p class="film-opening-bottom">四人で始める、短編ダンジョン探索。</p>
-  </section>
-
-  <section class="film-intertitle film-frame" id="overture" data-film-scene="地図の先へ" tabindex="-1" aria-labelledby="film-overture">
-    <img class="film-image" src="assets/ruosuen-underground-world.webp" width="1672" height="941" alt="岩の奥に広がる地下世界の情景" loading="lazy" decoding="async">
-    <div class="film-shot-shade" aria-hidden="true"></div>
-    <div class="container film-caption" data-film-caption>
-    <h2 class="film-intertitle-title" id="film-overture"><span>古い地層に、</span><span>新しい道がひらく。</span></h2>
-    <p class="film-intertitle-copy">岩壁の向こうへ。</p>
-    </div>
-  </section>
-
-  <section class="film-city film-frame" id="world" data-film-scene="自由迷宮都市" tabindex="-1" aria-labelledby="film-city-title">
-    <img class="film-city-image" src="assets/ruosuen-street-market-gouache.webp" width="1536" height="1024" alt="自由迷宮都市の市場。異国の商人、旅人、荷役人が行き交い、遠くには裂谷を渡る橋が見える" loading="lazy" decoding="async">
-    <div class="film-city-copy film-caption" data-film-caption>
-      <h2 class="film-title" id="film-city-title"><span>異国の言葉も、</span><span>未踏の噂も、</span><span>この街へ。</span></h2>
-      <p class="film-copy">川港の賑わい。工房の槌音。</p>
-      <a class="film-text-link" href="#/docs/04_自由迷宮都市と組織.md">この街を、もっと知る</a>
-    </div>
-  </section>
-
-  <section class="film-montage-shot film-frame" id="tavern" data-film-scene="帰還の灯り" tabindex="-1" aria-labelledby="film-tavern-title">
-    <img class="film-image" src="assets/ruosuen-street-tavern-watercolor.webp" width="1536" height="1024" alt="日暮れの酒場通りで、探索者を迎える人々" loading="lazy" decoding="async">
-    <div class="film-shot-shade" aria-hidden="true"></div>
-    <div class="film-caption container" data-film-caption>
-      <h2 class="film-title" id="film-tavern-title"><span>帰ってくる</span><span>場所がある。</span></h2>
-      <a class="film-text-link" href="#/docs/08_街角の風景.md">街角の風景を読む</a>
-    </div>
-  </section>
-
-  <section class="film-montage-shot film-frame" id="cargo" data-film-scene="地上と地下をつなぐ" tabindex="-1" aria-labelledby="film-cargo-title">
-    <img class="film-image" src="assets/ruosuen-street-cargo-etching.webp" width="1536" height="1024" alt="崖に設けられた貨物昇降場。荷役人たちが地上と地下をつなぐ" loading="lazy" decoding="async">
-    <div class="film-shot-shade" aria-hidden="true"></div>
-    <div class="film-caption container" data-film-caption>
-      <h2 class="film-title" id="film-cargo-title"><span>地上と地下を、</span><span>人の手がつなぐ。</span></h2>
-      <p class="film-copy">この下に、魔導船の港がある。</p>
-    </div>
-  </section>
-
-  <section class="film-depths film-frame" id="depths" data-film-scene="地下世界" tabindex="-1" aria-labelledby="film-depths-title">
-    <img class="film-image" src="assets/ruosuen-underground-world.webp" width="1672" height="941" alt="地下河川と多様な生態系が奥へ続く巨大な地下世界。小さな探索者と交易船が見える" loading="lazy" decoding="async">
-    <div class="film-depths-shade" aria-hidden="true"></div>
-    <div class="film-depths-copy container film-caption" data-film-caption>
-      <h2 class="film-title" id="film-depths-title"><span>迷宮は、</span><span>ひとつの世界だ。</span></h2>
-      <p class="film-copy">川も、道も、まだ見ぬ暮らしも。</p>
-      <a class="film-text-link" href="#/docs/02_迷宮と探索.md">迷宮のことを、もっと知る</a>
-    </div>
-  </section>
-
-  <section class="film-hook-intro film-frame" id="domains" data-film-scene="冒険の可能性" data-film-pace="0.35" tabindex="-1" aria-labelledby="film-possibilities-title">
-    <img class="film-image" src="assets/ruosuen-concept-city-03.webp" width="1536" height="1024" alt="岩壁に重なる街並みと、橋で結ばれる都市の構想画" loading="lazy" decoding="async">
-    <div class="film-shot-shade" aria-hidden="true"></div>
-    <div class="container film-caption" data-film-caption>
-      <h2 class="film-title" id="film-possibilities-title"><span>その先で、</span><span>何を見つけるだろう。</span></h2>
-    </div>
-  </section>
-
-  <section class="film-hook film-hook-lights film-frame" id="manastone" data-film-scene="魔石と暮らし" data-film-pace="0.5" tabindex="-1" aria-labelledby="film-manastone-title">
-    <img class="film-image" src="assets/ruosuen-street-night-oil.webp" width="1672" height="941" alt="夜の迷宮都市に連なる魔導灯と、人々の暮らす街並み" loading="lazy" decoding="async">
-    <div class="film-hook-shade" aria-hidden="true"></div>
-    <div class="container film-caption" data-film-caption>
-      <h2 class="film-title" id="film-manastone-title">魔石が、暮らしを灯す。</h2>
-      <p class="film-copy">使えば減る、魔法の燃料。<br>地下の魔石が、街の灯りになる。</p>
-      <a class="film-text-link" href="#/docs/03_魔石と魔術.md">魔石を知る</a>
-    </div>
-  </section>
-
-  <section class="film-hook film-hook-territory film-frame" id="territory" data-film-scene="領域主の縄張り" data-film-pace="0.5" tabindex="-1" aria-labelledby="film-territory-title">
-    <img class="film-image" src="assets/ruosuen-underground-world.webp" width="1672" height="941" alt="岩壁と地下河川の向こうに、生き物の暮らす広大な地下世界が続く" loading="lazy" decoding="async">
-    <div class="film-hook-shade" aria-hidden="true"></div>
-    <div class="container film-caption" data-film-caption>
-      <h2 class="film-title" id="film-territory-title">領域主の縄張りへ。</h2>
-      <p class="film-copy">そこに生きるものを、君たちはまだ知らない。</p>
-    </div>
-  </section>
-
-  <section class="film-hook film-hook-explorers film-frame" id="explorers" data-film-scene="商館と市場" data-film-pace="0.5" tabindex="-1" aria-labelledby="film-explorers-title">
-    <img class="film-image" src="assets/ruosuen-street-market-gouache.webp" width="1536" height="1024" alt="異国の旅人や探索者、商人たちが行き交う自由迷宮都市の市場" loading="lazy" decoding="async">
-    <div class="film-hook-shade" aria-hidden="true"></div>
-    <div class="container film-caption" data-film-caption>
-      <h2 class="film-title" id="film-explorers-title">発見を、この街へ。</h2>
-      <p class="film-copy">商館で仕事を。市場で商いを。<br>酒場では、帰還の祝いを。</p>
-      <a class="film-text-link" href="#/docs/04_自由迷宮都市と組織.md">円環商館と街を歩く</a>
-    </div>
-  </section>
-
-  <section class="film-hook film-hook-map film-frame" id="map" data-film-scene="地図という宝" data-film-pace="0.5" tabindex="-1" aria-labelledby="film-map-title">
-    <img class="film-image" src="assets/free-city-map-white.webp" width="1536" height="1024" alt="裂谷を渡る橋や街路、地上と地下を結ぶ道を描いた白地の構想地図" loading="lazy" decoding="async">
-    <div class="film-hook-shade" aria-hidden="true"></div>
-    <div class="container film-caption" data-film-caption>
-      <h2 class="film-title" id="film-map-title">地図が、宝になる。</h2>
-      <p class="film-copy">君たちの足跡が、次の誰かの道になる。</p>
-    </div>
-  </section>
-
-  <section class="film-invitation film-frame" id="next" data-film-scene="次の冒険" tabindex="-1" aria-labelledby="film-next-title">
-    <img class="film-image" src="assets/ruosuen-street-tavern-watercolor.webp" width="1536" height="1024" alt="探索の仕事が集まり、帰還した者たちを迎える夕暮れの酒場" loading="lazy" decoding="async">
-    <div class="film-invitation-shade" aria-hidden="true"></div>
-    <div class="film-invitation-copy container film-caption" data-film-caption>
-      <h2 class="film-title" id="film-next-title"><span>四人の探索者。</span><span>ひとつの依頼。</span><span>その先は、</span><span>君たちが決める。</span></h2>
-      <p class="film-copy">救助、調査、探索。<br>帰ってきたら、また次の冒険へ。</p>
-      <div class="film-invitation-actions">
-        <a class="film-primary" href="#/players/キャラクター作成ガイド.md">キャラクターをつくる</a>
-        <a class="film-text-link" href="#guide">もっと世界を知る</a>
-      </div>
-    </div>
-  </section>
-
-    <div class="film-story-hud">
-      <div class="film-story-hint"><span class="film-current-scene">都市の夜</span><span aria-hidden="true">スクロールして、その先へ ↓</span></div>
-      <div class="film-scene-steps" aria-hidden="true">
-        <span data-scene-step="opening" class="is-current"></span>
-        <span data-scene-step="overture"></span>
-        <span data-scene-step="world"></span>
-        <span data-scene-step="tavern"></span>
-        <span data-scene-step="cargo"></span>
-        <span data-scene-step="depths"></span>
-        <span data-scene-step="domains"></span>
-        <span data-scene-step="manastone"></span>
-        <span data-scene-step="territory"></span>
-        <span data-scene-step="explorers"></span>
-        <span data-scene-step="map"></span>
-        <span data-scene-step="next"></span>
-      </div>
-      <nav class="film-story-controls" aria-label="物語を進める">
-        <a id="film-prev" href="#opening" hidden>前の場面</a>
-        <a id="film-next" href="#overture">次の場面</a>
-      </nav>
-      <div class="film-story-progress" aria-hidden="true"><span></span></div>
-    </div>
+<div class="film-sequence"><div class="film-stage">
+<section class="film-frame film-montage-shot film-opening" id="opening" data-film-scene="地の底の空" tabindex="-1" aria-labelledby="film-opening-title">
+  <img class="film-image" src="assets/ruosuen-street-night-oil.webp" width="1672" height="941" alt="魔導灯と橋が連なる自由迷宮都市の夜" fetchpriority="high" decoding="async">
+  <div class="film-shot-shade" aria-hidden="true"></div>
+  <div class="film-caption container" data-film-caption>
+    <h1 class="film-title" id="film-opening-title">地の底に、<br>空がある。</h1>
+    <p class="film-copy">自由迷宮都市ルオスエン。</p>
+    <a class="film-primary film-start-action" href="#world">物語を始める <span aria-hidden="true">→</span></a>
   </div>
+</section>
+<section class="film-frame film-montage-shot" id="world" data-film-scene="川と空の港" tabindex="-1" aria-labelledby="film-world-title">
+  <img class="film-image" src="assets/ruosuen-street-market-gouache.webp" width="1536" height="1024" alt="市場に集まる商人、旅人、日々の食料" loading="lazy" decoding="async">
+  <div class="film-shot-shade" aria-hidden="true"></div>
+  <div class="film-caption container" data-film-caption>
+    <h2 class="film-title" id="film-world-title">川の港と、<br>空の港。</h2>
+    <p class="film-copy">そのあいだに、人が暮らす街がある。</p>
   </div>
-
-  <section class="film-artwalk container" aria-labelledby="artwalk-title">
-    <h2 id="artwalk-title">この街で、冒険を待つ。</h2>
-    <div class="film-artwalk-grid">
-      <figure class="film-artwalk-wide">
-        <img src="assets/ruosuen-concept-city-03.webp" width="1536" height="1024" alt="岩壁の街区と橋、市場や建物が重なる都市の構想画" loading="lazy" decoding="async">
-        <figcaption>裂谷の街</figcaption>
-      </figure>
-      <figure>
-        <img src="assets/ruosuen-street-market-gouache.webp" width="1536" height="1024" alt="商人、旅人、荷車が行き交う市場のガッシュ画" loading="lazy" decoding="async">
-        <figcaption>市場の声</figcaption>
-      </figure>
-      <figure>
-        <img src="assets/ruosuen-street-cargo-etching.webp" width="1536" height="1024" alt="岩壁の昇降場で荷を運ぶ人々を描いた銅版画" loading="lazy" decoding="async">
-        <figcaption>地上と地下のあいだ</figcaption>
-      </figure>
-      <figure>
-        <img src="assets/ruosuen-street-tavern-watercolor.webp" width="1536" height="1024" alt="日暮れの酒場通りに集まる人々の水彩画" loading="lazy" decoding="async">
-        <figcaption>帰還の灯り</figcaption>
-      </figure>
-      <figure>
-        <img src="assets/ruosuen-underground-world.webp" width="1672" height="941" alt="地下河川と植生が奥へ続く巨大空洞の情景画" loading="lazy" decoding="async">
-        <figcaption>まだ、その先へ</figcaption>
-      </figure>
-    </div>
-    <p class="film-artwalk-note">街の情景を描いた構想画。<a class="film-text-link" href="#/docs/08_街角の風景.md">街角をもっと見る</a></p>
-  </section>
-
-  <section class="film-character container" id="characters" aria-labelledby="film-character-title">
-    <div class="film-character-heading">
-      <h2 class="film-title" id="film-character-title"><span>君は、何を求めて</span><span>迷宮へ行く？</span></h2>
-      <p class="film-copy">財宝。知識。誰かとの約束。</p>
-    </div>
-    <ul class="film-character-questions">
-      <li><strong>何を探しに行く？</strong></li>
-      <li><strong>誰と、つながっている？</strong></li>
-      <li><strong>なぜ、共に歩く？</strong></li>
-    </ul>
-    <div class="film-character-action">
-      <a class="film-primary" href="#/players/キャラクター作成ガイド.md">キャラクターをつくる</a>
-      <p>迷宮へ行く理由が、ひとつあればいい。</p>
-    </div>
-    <p class="film-session-note">4人のプレイヤー ／ 1〜2回で完結する短編<br>D&amp;D 2024年版を暫定採用。次回の導入・開始条件は相談中です。<br><a class="film-text-link" href="#/players/キャラクター作成ガイド.md">参加前に確かめること</a></p>
-  </section>
-
-  <section class="film-archive container" id="guide" aria-labelledby="film-guide-title">
-    <h2 id="film-guide-title">もっと、この世界へ。</h2>
-    <p>気になるところだけ、読んでみよう。</p>
-    <details class="film-archive-disclosure">
-      <summary>探索者の手引きをひらく</summary>
-      <div class="film-archive-links">
-        <a href="#/docs/01_プレイヤー向け世界観.md"><strong>レウナの世界</strong><span>地上の暮らしと、地下へ向かう理由</span></a>
-        <a href="#/docs/02_迷宮と探索.md"><strong>迷宮と探索</strong><span>地形、生態系、地図と情報</span></a>
-        <a href="#/docs/03_魔石と魔術.md"><strong>魔石と魔術</strong><span>使えば減る力と、それを求める暮らし</span></a>
-        <a href="#/docs/04_自由迷宮都市と組織.md"><strong>ルオスエンの街を歩く</strong><span>円環商館、石工房、地図院、二つの港</span></a>
-        <a href="#/docs/08_街角の風景.md"><strong>街角の風景</strong><span>市場、酒場、荷役場、夜の橋</span></a>
-        <a href="#/docs/05_歴史と伝承.md"><strong>歴史と伝承</strong><span>停船の夜、最初の帰還者、失われた聖路</span></a>
-        <a href="#/docs/06_種族と信仰.md"><strong>種族と信仰</strong><span>この世界で生きる人物を考える</span></a>
-        <a href="#/docs/07_短編セッションの進め方.md"><strong>セッションの進め方</strong><span>短編の冒険を、四人で</span></a>
-        <a href="#/players/キャラクター作成ガイド.md"><strong>キャラクター作成</strong><span>人物像と、暫定の作成条件</span></a>
-        <a href="#/players/キャラクター提出テンプレート.md"><strong>キャラクター提出</strong><span>君の人物像を書き出す</span></a>
-        <a href="#/players/探索パーティ結成.md"><strong>パーティー結成</strong><span>四人が共に歩く理由</span></a>
-        <a href="#/players/characters/README.md"><strong>PC登録について</strong><span>人物像の共有方法</span></a>
-        <a href="#/adventures/README.md"><strong>冒険の記録</strong><span>これから残していく足跡</span></a>
-      </div>
-    </details>
-  </section>
-</div>
-
-
+</section>
+<section class="film-frame film-montage-shot" id="cargo" data-film-scene="地下から届くもの" tabindex="-1" aria-labelledby="film-cargo-title">
+  <img class="film-image" src="assets/ruosuen-street-cargo-etching.webp" width="1536" height="1024" alt="荷を上げ下げする崖の貨物昇降場" loading="lazy" decoding="async">
+  <div class="film-shot-shade" aria-hidden="true"></div>
+  <div class="film-caption container" data-film-caption>
+    <h2 class="film-title" id="film-cargo-title">地下から届くものを、<br>地上で待つ人がいる。</h2>
+  </div>
+</section>
+<section class="film-frame film-montage-shot" id="depths" data-film-scene="知る人と、造る人" tabindex="-1" aria-labelledby="film-depths-title">
+  <img class="film-image" src="assets/ruosuen-underground-world.webp" width="1672" height="941" alt="道と植生、地下河川が遠く続く巨大空洞" loading="lazy" decoding="async">
+  <div class="film-shot-shade" aria-hidden="true"></div>
+  <div class="film-caption container" data-film-caption>
+    <h2 class="film-title" id="film-depths-title">道を描く者。船を造る者。<br>地下へ塔を伸ばした者。</h2>
+  </div>
+</section>
+<section class="film-frame film-montage-shot" id="territory" data-film-scene="最下層の噂" tabindex="-1" aria-labelledby="film-territory-title">
+  <img class="film-image" src="assets/ruosuen-underground-world.webp" width="1672" height="941" alt="遠い暗がりへ続き、果ての見えない地下世界" loading="lazy" decoding="async">
+  <div class="film-shot-shade" aria-hidden="true"></div>
+  <div class="film-caption container" data-film-caption>
+    <h2 class="film-title" id="film-territory-title">迷宮の最下層に辿り着けば、<br>願いが叶うという。</h2>
+  </div>
+</section>
+<section class="film-frame film-montage-shot" id="explorers" data-film-scene="違う願いで" tabindex="-1" aria-labelledby="film-explorers-title">
+  <img class="film-image" src="assets/ruosuen-street-market-gouache.webp" width="1536" height="1024" alt="異なる出自の人々が行き交う街" loading="lazy" decoding="async">
+  <div class="film-shot-shade" aria-hidden="true"></div>
+  <div class="film-caption container" data-film-caption>
+    <h2 class="film-title" id="film-explorers-title">同じ入口から、<br>違う願いで。</h2>
+    <p class="film-copy">富を求める者。失われた道を探す者。</p>
+  </div>
+</section>
+<section class="film-frame film-montage-shot" id="tavern" data-film-scene="帰還を迎える街" tabindex="-1" aria-labelledby="film-tavern-title">
+  <img class="film-image" src="assets/ruosuen-street-tavern-watercolor.webp" width="1536" height="1024" alt="日暮れの酒場通りで語り合う帰還者たち" loading="lazy" decoding="async">
+  <div class="film-shot-shade" aria-hidden="true"></div>
+  <div class="film-caption container" data-film-caption>
+    <h2 class="film-title" id="film-tavern-title">ここで出会い、地下へ向かい、<br>また帰る。</h2>
+  </div>
+</section>
+<section class="film-frame film-montage-shot film-invitation" id="next" data-film-scene="君の探すもの" tabindex="-1" aria-labelledby="film-next-title">
+  <img class="film-image" src="assets/ruosuen-street-night-oil.webp" width="1672" height="941" alt="夜も人と荷の往来が続く都市" loading="lazy" decoding="async">
+  <div class="film-shot-shade" aria-hidden="true"></div>
+  <div class="film-caption container" data-film-caption>
+    <h2 class="film-title" id="film-next-title">君は、この街から<br>何を探しに行く？</h2>
+    <p class="film-copy">自由迷宮都市ルオスエン。</p>
+    <a class="film-primary film-start-action" href="#/docs/01_プレイヤー向け世界観.md">レウナの世界を知る <span aria-hidden="true">→</span></a>
+  </div>
+</section>
+<div class="film-story-hud"><div class="film-story-hint"><span class="film-current-scene">地の底の空</span><span aria-hidden="true">スクロールして、その先へ ↓</span></div>
+<div class="film-scene-steps" aria-hidden="true"><span data-scene-step="opening"></span><span data-scene-step="world"></span><span data-scene-step="cargo"></span><span data-scene-step="depths"></span><span data-scene-step="territory"></span><span data-scene-step="explorers"></span><span data-scene-step="tavern"></span><span data-scene-step="next"></span></div>
+<nav class="film-story-controls" aria-label="物語を進める"><a id="film-prev" href="#opening" hidden>前の場面</a><a id="film-next" href="#world">次の場面</a></nav><div class="film-story-progress" aria-hidden="true"><span></span></div></div>
+</div></div>
+<section class="film-archive container" id="guide" aria-labelledby="film-guide-title">
+<h2 id="film-guide-title">この街の、その先へ。</h2><p>世界を知り、街を歩き、君の人物を考える。</p>
+<details class="film-archive-disclosure"><summary>気になるところから訪ねる</summary><div class="film-archive-links">
+<a href="#/docs/01_プレイヤー向け世界観.md"><strong>レウナの世界</strong><span>マナ、魔石、大転流。人々が地下へ向かう理由</span></a>
+<a href="#/docs/04_自由迷宮都市と組織.md"><strong>ルオスエンを歩く</strong><span>六つの施設と、街角の風景</span></a>
+<a href="#/adventures/次の冒険.md"><strong>次の冒険の始まり</strong><span>次回の導入は準備中です</span></a>
+<a href="#/players/キャラクター作成ガイド.md"><strong>この世界で冒険する</strong><span>人物像から、四人で歩き出す準備へ</span></a>
+<a href="#/players/キャラクター提出テンプレート.md"><strong>キャラクターを共有する</strong><span>考えた人物を、DMへ</span></a>
+</div></details></section></div>
 <div id="reader-view" class="hidden">
-  <div class="reader-masthead" aria-hidden="true"><span>THE EXPLORER'S ARCHIVE</span><span>RUOSUEN</span></div>
-  <div class="container reader-layout">
-    <aside class="sidebar" id="sidebar" aria-label="資料の目次"></aside>
-    <div class="reader">
-      <details class="reader-toc">
-        <summary>資料の目次</summary>
-        <nav class="mobile-categories" id="mobile-categories" aria-label="資料の目次"></nav>
-      </details>
-      <div class="reader-breadcrumbs"><a href="#guide">世界の資料</a> / 探索者の手引き</div>
-      <header class="article-hero">
-        <div id="article-label" class="article-label"></div>
-        <h1 id="article-title"></h1>
-        <p id="article-summary" class="article-summary"></p>
-      </header>
-      <article id="article-content" class="article-body" aria-live="polite" aria-busy="false"></article>
-      <nav id="reader-bottom" class="reader-bottom" aria-label="関連資料"></nav>
-    </div>
-  </div>
-</div>
-<noscript><div class="container no-script">このWeb版ではJavaScriptを使用します。無効の場合は<a href="https://github.com/Makeinu1/DaD_Ruosuen">GitHubの資料</a>をご覧ください。</div></noscript>
-</main>
-<footer class="footer"><div class="container footer-inner"><div class="footer-logo">RUOSUEN<span>地図の外側へ。</span></div><div>世界はまだ、描きかけだ。<br>情景画は、世界の構想を描いたものです。<br><a href="https://github.com/Makeinu1/DaD_Ruosuen" target="_blank" rel="noopener noreferrer">GitHubで元資料を見る ↗</a></div></div></footer>
-</body>
-</html>
+<nav id="journey-nav" class="journey-nav" aria-label="街から冒険へ"></nav>
+<div class="container reader-layout">
+<aside class="sidebar" id="sidebar" aria-label="ページの案内"></aside>
+<div class="reader">
+<details class="reader-toc"><summary>ページの案内</summary><nav class="mobile-categories" id="mobile-categories" aria-label="ページの案内"></nav></details>
+<div class="reader-breadcrumbs"><a href="#guide">ルオスエンの入口</a></div>
+<header class="article-hero"><div id="article-label" class="article-label"></div><h1 id="article-title"></h1><p id="article-summary" class="article-summary"></p></header>
+<nav id="story-chapters" class="story-chapters" aria-label="街の行き先" hidden></nav>
+<article id="article-content" class="article-body" aria-live="polite" aria-busy="false"></article>
+<nav id="reader-bottom" class="reader-bottom" aria-label="次の行き先"></nav>
+</div></div></div>
+<noscript><div class="container no-script">世界の案内と街歩きを開くには、JavaScriptを有効にしてください。上の物語はそのまま読めます。</div></noscript>
+</main><footer class="footer"><div class="container footer-inner"><div class="footer-logo">RUOSUEN<span>地の底に、空がある。</span></div><div>情景画は、世界の構想を描いたものです。</div></div></footer>
+</body></html>

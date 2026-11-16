@@ -46,6 +46,20 @@ for (const p of publicDocs) {
   if (!read(p).trim().startsWith("#")) fail("Markdown article missing heading: " + p);
 }
 
+// Story artwork is part of the published source, not a separately maintained copy.
+for (const p of publicDocs) {
+  if (!fs.existsSync(file(p))) continue;
+  for (const match of read(p).matchAll(/!\[[^\]]*\]\(([^)]+)\)/g)) {
+    const imagePath = path.resolve(path.dirname(file(p)), match[1]);
+    if (!imagePath.startsWith(file("assets") + path.sep) || !fs.existsSync(imagePath)) {
+      fail("Missing or unsafe article artwork in " + p + ": " + match[1]);
+    }
+  }
+}
+for (const match of html.matchAll(/<img[^>]+src="(assets\/[^"?#]+)"/g)) {
+  if (!fs.existsSync(file(match[1]))) fail("Missing film artwork: " + match[1]);
+}
+
 if (!/fetch\(new URL\(path,\s*document\.baseURI\)/.test(js)) {
   fail("Pages reader no longer fetches the declared Markdown path directly");
 }
