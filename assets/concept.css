@@ -546,7 +546,8 @@ img.film-city-image { width: 100%; height: auto; aspect-ratio: 1 / 1.05; object-
 }
 
 /* Navigation stays quiet while the story is being watched. */
-.is-watching-film .top-nav { display: none; }
+.is-watching-film .top-nav { display: flex; }
+.is-watching-film .header-desktop-link[data-return-to-story] { display: none; }
 .header-inner { position: relative; }
 .brand { min-width: 44px; min-height: 44px; }
 .top-nav > .header-desktop-link { display: inline-flex; align-items: center; min-height: 44px; }

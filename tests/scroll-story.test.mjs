@@ -2,16 +2,18 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {sceneAt, createTimeline} from '../assets/scroll-story.mjs';
 
-test('the first scene is readable before the opening transition', () => {
-  for (const position of [-100, 0, 0.2, 0.58]) {
+test('the opening is readable at rest and responds to a small scroll', () => {
+  for (const position of [-100, 0]) {
     const state = sceneAt(position, 8);
     assert.equal(state.active, 0);
     assert.equal(state.mix, 0);
   }
+  assert.ok(sceneAt(0.12,8).mix > 0.04);
+  assert.equal(sceneAt(0.12,8).active,0);
 });
 
 test('a dissolve has exactly two adjacent scenes and ends on the next scene', () => {
-  const middle = sceneAt(2.79, 8);
+  const middle = sceneAt(2.43, 8);
   assert.equal(middle.from, 2);
   assert.equal(middle.to, 3);
   assert.ok(Math.abs(middle.mix - 0.5) < 1e-10);

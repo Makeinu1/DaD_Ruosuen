@@ -28,7 +28,7 @@ const ROUTE_ALIASES = {
   "players/探索パーティ結成.md":"players/キャラクター作成ガイド.md",
   "players/characters/README.md":"players/キャラクター提出テンプレート.md",
   "adventures/README.md":"adventures/次の冒険.md",
-  overture:"world", domains:"territory", manastone:"cargo", map:"depths", characters:"guide"
+  overture:"vista", world:"vista", domains:"territory", manastone:"cargo", map:"depths", characters:"guide"
 };
 const resolvePath = path => ROUTE_ALIASES[path] || path;
 const ALL = SECTIONS.flatMap(section => section.entries.map(item => ({...item, group: section.label})));

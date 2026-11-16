@@ -4,7 +4,7 @@ const smoothstep = (start, end, value) => {
   return t * t * (3 - 2 * t);
 };
 
-// A full reading interval precedes each dissolve. Moving backwards samples
+// Dissolve starts with the first scroll movement. Moving backwards samples
 // exactly the same state; no timer, wheel interception, or animation queue.
 export function sceneAt(position, count) {
   if (!Number.isInteger(count) || count < 1) throw new RangeError('A story needs at least one scene');
@@ -12,7 +12,7 @@ export function sceneAt(position, count) {
   const value = clamp(Number.isFinite(position) ? position : 0, 0, travel);
   const from = Math.min(Math.floor(value), count - 1);
   const to = Math.min(from + 1, count - 1);
-  const mix = from === to ? 0 : smoothstep(0.58, 1, value - from);
+  const mix = from === to ? 0 : smoothstep(0, 0.86, value - from);
   return {from, to, mix, active: mix >= 0.5 ? to : from, value, progress: value / travel};
 }
 
@@ -210,7 +210,7 @@ function initStory() {
       return;
     }
     start = sequence.getBoundingClientRect().top + window.scrollY;
-    step = Math.max(480, height * 0.95);
+    step = Math.max(300, height * 0.62);
     travel = timeline.travel * step;
     sequence.style.setProperty('--film-travel', `${travel}px`);
     end = start + travel + height;
