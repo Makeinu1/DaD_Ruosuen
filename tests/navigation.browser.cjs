@@ -15,7 +15,7 @@ const scenes=['opening','vista','trail','cargo','depths','explorers','territory'
 const worldArtwork=Array.from({length:10},(_,index)=>'reuna-turn-'+String(index+1).padStart(2,'0')+'.webp');
 const historyChapters=['魔石とは','大転流','大断裂の谷','ルオスエン'];
 const historyPhases=['rise','fall','renewal','city'];
-const institutions=['円環商館の酒場','セレド王立地図院','底空船廠','伽藍の塔','聖路教会','深青の石工房'];
+const institutions=['円環商館のまわり','セレド王立地図院','底空船廠','伽藍の塔','聖路教会','深青の石工房'];
 const errors=[];
 const url=path=>base+'#/'+encodeURIComponent(path);
 async function clickVisible(page,link) {
@@ -24,7 +24,12 @@ async function clickVisible(page,link) {
   await page.mouse.click(box.x+box.width/2,box.y+box.height/2);
 }
 async function clickWorld(page) {
-  await clickVisible(page,page.getByRole('link',{name:'世界を知る',exact:true}));
+  const links=await page.getByRole('link',{name:'世界を知る',exact:true}).all();
+  for (const link of links) {
+    const box=await link.boundingBox();
+    if (box&&box.y>=0&&box.y+box.height<=900) return clickVisible(page,link);
+  }
+  throw new Error('No accessible world-history navigation in viewport');
 }
 const paint=page=>page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
 async function ready(page,path) {
@@ -160,7 +165,8 @@ async function checkJourney(page,width) {
   assert.deepEqual(await page.locator('.film-sequence [data-film-scene]').evaluateAll(es=>es.map(e=>e.id)),scenes);
   const artwork=await page.locator('[data-film-scene] img').evaluateAll(es=>es.map(e=>e.getAttribute('src')));
   assert.equal(new Set(artwork).size,9,'Every film scene needs distinct artwork');
-  assert.equal(await page.locator('.film-story-hint,.film-scene-steps,.film-story-progress').count(),0);
+  assert.equal(await page.locator('.film-story-hint,.film-scene-steps').count(),0);
+  assert.equal(await page.locator('.film-story-progress').count(),1);
   assert.equal(await page.locator('.brand-city-name').innerText(),'ルオスエン');
   assert.equal(await page.locator('#opening h1').textContent(),'自由迷宮都市ルオスエン');
   assert.equal(await page.locator('#vista h2').textContent(),'この街の下には、まだ世界がある。');
@@ -213,11 +219,11 @@ async function checkJourney(page,width) {
   await page.locator('#article-content > p:last-child a').scrollIntoViewIfNeeded();await paint(page);
   const departWorldY=await page.evaluate(()=>scrollY);
   await page.locator('#article-content > p:last-child a').click();await ready(page,CITY);
-  assert.equal(await page.locator('.story-panel').count(),6);
-  assert.deepEqual(await page.locator('#story-chapters a').allTextContents(),institutions);
-  for(const caption of await page.locator('.storybook .story-caption').all()) {
-    assert.equal(await caption.locator('p').count(),3,'Each institution includes explanation and a character connection');
-    assert.equal(await caption.locator('.story-hook').count(),0,'Organization names stay inside explanatory prose');
+  assert.equal(await page.locator('.story-panel').count(),9);
+  assert.deepEqual(await page.locator('#story-chapters a').allTextContents(),['街の下へ',...institutions]);
+  for(const [index,caption] of (await page.locator('.storybook .story-caption').all()).entries()) {
+    assert.equal(await caption.locator('p').count(),index<3?2:3,'Labyrinth scenes have two paragraphs; institutions have three');
+    assert.equal(await caption.locator('.story-hook').count(),0,'Place names remain in explanatory prose');
   }
   assert((await page.locator('#article-content').innerText()).includes('ほんの入口'));
 
@@ -235,8 +241,8 @@ async function checkJourney(page,width) {
   await page.goBack();await ready(page,WORLD);await atY(page,departWorldY);
   await page.goForward();await ready(page,CITY);await atY(page,cityY);
   await page.locator('#reader-bottom [data-return-to-story]').click();await restored(page,'next',movieY);
-  // World and city lead directly to creation; next-session details remain optional.
-  for(const [path,following] of [[WORLD,CITY],[CITY,PREP],[NEXT,PREP],[PREP,NEXT]]) {
+  // First-time reader journey: city → possible adventures → character, then optional history.
+  for(const [path,following] of [[WORLD,CITY],[CITY,NEXT],[NEXT,PREP],[PREP,WORLD]]) {
     await page.goto(url(path));await ready(page,path);
     const onward=page.locator('#reader-bottom .reader-related a').first();
     await onward.scrollIntoViewIfNeeded();await paint(page);
