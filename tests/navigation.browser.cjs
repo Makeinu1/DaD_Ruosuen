@@ -12,6 +12,7 @@ const NEXT='adventures/次の冒険.md';
 const PREP='players/キャラクター作成ガイド.md';
 const OLD_SHARE='players/キャラクター提出テンプレート.md';
 const scenes=['opening','vista','trail','cargo','depths','explorers','territory','tavern','next'];
+const worldArtwork=['life','shortage','discovery','frontier'].map(scene=>'ruosuen-manastone-'+scene+'.webp');
 const institutions=['円環商館の酒場','セレド王立地図院','底空船廠','伽藍の塔','聖路教会','深青の石工房'];
 const errors=[];
 const url=path=>base+'#/'+encodeURIComponent(path);
@@ -63,6 +64,58 @@ async function readAt(page,y=420) {
   const actual = await page.evaluate(y=>{scrollTo({top:y,behavior:'instant'});return scrollY},y);
   await paint(page);
   return actual;
+}
+async function checkWorldPanels(page) {
+  const panels=page.locator('#article-content .story-panel');
+  assert.equal(await panels.count(),4);
+  assert.deepEqual(await panels.locator('img').evaluateAll(images=>
+    images.map(image=>new URL(image.currentSrc||image.src).pathname.split('/').pop())),worldArtwork);
+  for (const panel of await panels.all()) {
+    const image=panel.locator('img');
+    await image.scrollIntoViewIfNeeded();
+    await image.evaluate(image=>image.decode());
+    await paint(page);
+    const actual=await panel.evaluate(panel=>{
+      const image=panel.querySelector('img');
+      const art=panel.querySelector('.story-art');
+      const caption=panel.querySelector('.story-caption');
+      const filters=[];
+      for(let element=image;element;element=element.parentElement) {
+        filters.push(getComputedStyle(element).filter);
+        if(element.id==='article-content')break;
+      }
+      return {naturalWidth:image.naturalWidth,naturalHeight:image.naturalHeight,
+        width:image.getAttribute('width'),height:image.getAttribute('height'),
+        alt:image.alt,filters,captionPosition:getComputedStyle(caption).position,
+        followsArtwork:art.nextElementSibling===caption,
+        artBottom:art.getBoundingClientRect().bottom,captionTop:caption.getBoundingClientRect().top,
+        paragraphCount:caption.querySelectorAll('p').length};
+    });
+    assert.equal(actual.naturalWidth,1672);
+    assert.equal(actual.naturalHeight,941);
+    assert.equal(actual.width,'1672');
+    assert.equal(actual.height,'941');
+    assert(actual.alt.trim().length>10,'Each painting needs a meaningful description');
+    assert(actual.filters.every(filter=>filter==='none'),'World artwork must keep its original colors');
+    assert.equal(actual.captionPosition,'relative');
+    assert(actual.followsArtwork&&actual.captionTop>=actual.artBottom-1,
+      'World explanations must flow below the full painting');
+    assert.equal(actual.paragraphCount,2,'World scenes must preserve explanatory paragraphs');
+  }
+  const causalTerms=[['使えば消耗','灯り','工房'],['大転流','新しい供給源'],
+    ['高純度の魔石','道を拓く仕事'],['人が集まり','仕事が生まれ','いまのルオスエン']];
+  for(let index=0;index<causalTerms.length;index++) {
+    const text=await panels.nth(index).innerText();
+    for(const term of causalTerms[index])assert(text.includes(term),'World scene '+(index+1)+' needs '+term);
+  }
+  const worldText=await page.locator('#article-content').innerText();
+  for(const term of ['レウナ','マナ','魔石','大転流','約三十年','大断裂','地下','ルオスエン'])assert(worldText.includes(term));
+  assert.equal((worldText.match(/君は、何を求めて、この街へ？/g)||[]).length,1);
+  const question=page.locator('#article-content > p').filter({hasText:'君は、何を求めて、この街へ？'});
+  assert.equal(await question.innerText(),'君は、何を求めて、この街へ？');
+  assert(await question.evaluate(element=>element.previousElementSibling.matches('.story-panel')),
+    'The world story should end by inviting the reader to imagine their character');
+  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
 }
 async function checkJourney(page,width) {
   await page.goto(base,{waitUntil:'networkidle'});
@@ -116,14 +169,7 @@ async function checkJourney(page,width) {
   assert.equal(await page.locator('#next a').count(),0);
   if(await menu.isVisible()) await clickVisible(page,menu);
   await clickWorld(page);await ready(page,WORLD);
-  assert.equal(await page.locator('.story-panel').count(),4);
-  assert.equal(await page.locator('.storybook .story-caption').count(),4);
-  for(const caption of await page.locator('.storybook .story-caption').all()) {
-    assert.equal(await caption.locator('p').count(),2,'World scenes preserve explanatory paragraphs');
-    assert.equal(await caption.evaluate(e=>getComputedStyle(e).position),'relative');
-  }
-  const worldText=await page.locator('#article-content').innerText();
-  for(const term of ['レウナ','マナ','魔石','大転流','大断裂','約三十年','いまのルオスエン'])assert(worldText.includes(term));
+  await checkWorldPanels(page);
   const readingY=await readAt(page);
   assert(readingY>100);
   await page.goBack();await restored(page,'next',movieY);

@@ -8,7 +8,7 @@
  */
 const SECTIONS = [
   {label:"この街から", entries:[
-    {path:"docs/01_プレイヤー向け世界観.md",label:"世界を知る",kicker:"魔石の文明と、大転流",summary:"かつての文明から、大地の変化を経て、いまのルオスエンへ。",layout:"story",book:true},
+    {path:"docs/01_プレイヤー向け世界観.md",label:"世界を知る",kicker:"魔石から始まる、街の物語",summary:"暮らしを支える石と、地下での発見。ルオスエンに人が集まるまで。",layout:"story",book:true},
     {path:"docs/04_自由迷宮都市と組織.md",label:"ルオスエンを歩く",kicker:"街と人々を知る",summary:"六つの場所から、君の人物の居場所を探して。",layout:"story",book:true,chapters:true},
     {path:"adventures/次の冒険.md",label:"次の冒険の始まり",kicker:"次は、君たちの話を",summary:"導入と開始条件は、準備中です。",layout:"story"}
   ]},
@@ -113,8 +113,9 @@ function markdownToHtml(markdown, sourcePath) {
         if (allowed) {
           const img = new URL(raw, new URL(sourcePath, document.baseURI));
           if (img.origin === location.origin && img.pathname.startsWith(new URL("assets/", document.baseURI).pathname)) {
+            const wide = /ruosuen-(underground-world|street-night-oil|manastone-(life|shortage|discovery|frontier))\.webp$/.test(raw);
             html.push('<figure class="article-map"><a href="' + escapeHtml(img.href) + '" target="_blank" rel="noopener noreferrer" aria-label="画像を拡大表示">' +
-              '<img src="' + escapeHtml(img.href) + '" alt="' + escapeHtml(match[1]) + '" width="' + (/ruosuen-(underground-world|street-night-oil)\.webp$/.test(raw) ? 1672 : 1536) + '" height="' + (/ruosuen-(underground-world|street-night-oil)\.webp$/.test(raw) ? 941 : 1024) + '" loading="lazy" decoding="async">' +
+              '<img src="' + escapeHtml(img.href) + '" alt="' + escapeHtml(match[1]) + '" width="' + (wide ? 1672 : 1536) + '" height="' + (wide ? 941 : 1024) + '" loading="lazy" decoding="async">' +
               '</a><figcaption>画像を選択すると別画面で拡大できます。</figcaption></figure>');
           }
         }
