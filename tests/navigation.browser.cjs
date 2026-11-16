@@ -100,10 +100,10 @@ async function checkHookScenes(page,width) {
   const ids = await scenes.evaluateAll(elements => elements.map(element => element.id));
   assert.equal(ids.length,12);
   const hooks = [
-    ['manastone','魔石が、暮らしを灯す。','魔石は、マナを蓄えた燃料だ。使えば減る力を、人々は地下に求める。持ち帰った石が、遠い街の灯りになる。'],
+    ['manastone','魔石が、暮らしを灯す。','使えば減る、魔法の燃料。地下の魔石が、街の灯りになる。'],
     ['territory','領域主の縄張りへ。','そこに生きるものを、君たちはまだ知らない。'],
-    ['explorers','発見を、この街へ。','商館には買付人と、仕事を探す人々。市場を抜ければ、酒場で誰かが帰還を祝う。次の道へ向かう前に、この街で出会う人がいる。'],
-    ['map','地図が、宝になる。','水場の位置。荷が通れる橋。帰り道。君たちが確かめたことを、次に進む誰かが待っている。']
+    ['explorers','発見を、この街へ。','商館で仕事を。市場で商いを。酒場では、帰還の祝いを。'],
+    ['map','地図が、宝になる。','君たちの足跡が、次の誰かの道になる。']
   ];
   const shortIds = ['domains',...hooks.map(([id]) => id)];
   assert.deepEqual(ids.slice(ids.indexOf('domains'),ids.indexOf('domains')+5),shortIds);

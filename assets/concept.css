@@ -622,3 +622,22 @@ img.film-city-image { width: 100%; height: auto; aspect-ratio: 1 / 1.05; object-
   .is-scroll-story .film-invitation .film-title { font-size: clamp(23px, 4.5vh, 34px); line-height: 1.45; }
   .is-scroll-story .film-copy { font-size: 12px; line-height: 1.9; margin-top: 14px; }
 }
+
+/* Art-first pauses: retain the same palette and native scene navigation. */
+.film-intertitle { position: relative; isolation: isolate; }
+.film-intertitle > .film-image,
+.film-hook-intro > .film-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+.film-intertitle .film-caption,
+.film-hook-intro .film-caption { position: relative; z-index: 2; }
+.film-artwalk { padding-block: clamp(60px, 9vw, 120px); }
+.film-artwalk > h2 { margin: 0 0 32px; font: 500 clamp(22px, 3vw, 36px)/1.7 var(--serif); text-wrap: balance; }
+.film-artwalk-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 28px; align-items: start; }
+.film-artwalk figure { margin: 0; min-width: 0; }
+.film-artwalk-wide { grid-column: 1 / -1; }
+.film-artwalk img { width: 100%; height: auto; }
+.film-artwalk figcaption { margin-top: 12px; color: var(--film-muted); font: 13px/1.8 var(--serif); }
+.film-artwalk-note { margin: 28px 0 0; color: var(--film-muted); font-size: 12px; }
+.film-artwalk-note a { margin-left: 12px; }
+@media (max-width: 600px) {
+  .film-artwalk-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+}
