@@ -17,8 +17,8 @@
   <link rel="preload" href="assets/ruosuen-street-night-oil.webp" as="image" type="image/webp">
   <link rel="stylesheet" href="assets/site.css">
   <link rel="stylesheet" href="assets/concept.css?v=20261116-four-scenes">
-  <link rel="stylesheet" href="assets/journey.css?v=20261117-turning-points">
-  <script src="assets/site.js?v=20261117-turning-points" defer></script>
+  <link rel="stylesheet" href="assets/journey.css?v=20261117-visitor-journey">
+  <script src="assets/site.js?v=20261117-visitor-journey" defer></script>
   <script type="module" src="assets/scroll-story.mjs?v=20261116-four-scenes"></script>
   <script type="module" src="assets/scroll-effects.mjs?v=20261116-four-scenes"></script>
 </head>
@@ -29,13 +29,13 @@
     <a class="brand brand-city" href="#/" aria-label="自由迷宮都市ルオスエン、物語の初めへ"><span class="brand-city-kind">自由迷宮都市</span><span class="brand-city-name">ルオスエン</span></a>
     <nav class="top-nav" aria-label="メインメニュー">
       <a class="header-desktop-link" data-return-to-story href="#/">物語を見る</a>
-      <a class="header-desktop-link" href="#/docs/01_プレイヤー向け世界観.md">世界を知る</a>
       <a class="header-desktop-link" href="#/docs/04_自由迷宮都市と組織.md">街を歩く</a>
+      <a class="header-desktop-link" href="#/adventures/次の冒険.md">冒険を知る</a>
       <details class="header-menu"><summary>メニュー</summary><div class="header-menu-links">
         <a data-return-to-story href="#/">物語を見る</a>
-        <a href="#/docs/01_プレイヤー向け世界観.md">世界を知る</a>
         <a href="#/docs/04_自由迷宮都市と組織.md">街を歩く</a>
-        <a href="#/adventures/次の冒険.md">次の冒険</a>
+        <a href="#/adventures/次の冒険.md">この街で冒険する</a>
+        <a href="#/docs/01_プレイヤー向け世界観.md">世界を知る</a>
         <a href="#/players/キャラクター作成ガイド.md">キャラクターを考える</a>
       </div></details>
       <a class="nav-start" href="#/players/キャラクター作成ガイド.md">キャラクターを考える</a>
@@ -112,15 +112,16 @@
   </div>
 </section>
 <div class="film-story-hud">
+<div class="film-story-status" aria-hidden="true"><span class="film-current-scene">自由迷宮都市ルオスエン</span><div class="film-story-progress"><span></span></div></div>
 <nav class="film-story-controls" aria-label="場面の移動"><a id="film-prev" href="#opening" aria-label="前の場面" hidden><span aria-hidden="true">←</span></a><a id="film-next" href="#vista" aria-label="次の場面"><span aria-hidden="true">→</span></a></nav>
 </div></div></div>
 <section class="film-archive container" id="guide" aria-labelledby="film-guide-title">
-<h2 id="film-guide-title">この街の、その先へ。</h2><p>世界を知り、街を歩き、君の人物を考える。</p>
-<details class="film-archive-disclosure"><summary>気になるところから訪ねる</summary><div class="film-archive-links">
-<a href="#/docs/01_プレイヤー向け世界観.md"><strong>世界を知る</strong><span>魔石文明、大転流、大断裂の谷、育ち続けるルオスエン</span></a>
-<a href="#/docs/04_自由迷宮都市と組織.md"><strong>ルオスエンを歩く</strong><span>六つの場所と、そこで暮らす人々</span></a>
-<a href="#/adventures/次の冒険.md"><strong>次の冒険の始まり</strong><span>次回の導入は準備中です</span></a>
-<a href="#/players/キャラクター作成ガイド.md"><strong>この世界で冒険する</strong><span>人物像から、四人で歩き出す準備へ</span></a>
+<h2 id="film-guide-title">この街の、その先へ。</h2><p>地下へ向かう道は一つではない。気になる場所から、君の冒険を始めよう。</p>
+<details class="film-archive-disclosure" open><summary>四つの入口から選ぶ</summary><div class="film-archive-links">
+<a href="#/docs/04_自由迷宮都市と組織.md"><strong>ルオスエンを歩く</strong><span>街の下に広がる迷宮、六つの場所、人々の夢と噂</span></a>
+<a href="#/adventures/次の冒険.md"><strong>この街で冒険する</strong><span>救助、探索、護衛。君たちには何ができるだろう</span></a>
+<a href="#/players/キャラクター作成ガイド.md"><strong>キャラクターを考える</strong><span>人物の種から、四人で歩き出す準備へ</span></a>
+<a href="#/docs/01_プレイヤー向け世界観.md"><strong>世界を知る</strong><span>魔石文明、大転流、街に至る歴史をもっと深く</span></a>
 </div></details></section></div>
 <div id="reader-view" class="hidden">
 <nav id="journey-nav" class="journey-nav" aria-label="街から冒険へ"></nav>
