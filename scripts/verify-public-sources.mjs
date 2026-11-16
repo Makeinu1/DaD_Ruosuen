@@ -63,7 +63,7 @@ for (const match of html.matchAll(/<img[^>]+src="(assets\/[^"?#]+)"/g)) {
 if (!/fetch\(new URL\(path,\s*document\.baseURI\)/.test(js)) {
   fail("Pages reader no longer fetches the declared Markdown path directly");
 }
-if (!html.includes('src="assets/site.js"') || !html.includes('id="article-content"')) {
+if (!/src="assets\/site\.js(?:\?[^"]*)?"/.test(html) || !html.includes('id="article-content"')) {
   fail("Reader not mounted in index.html");
 }
 
