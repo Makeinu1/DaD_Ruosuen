@@ -10,7 +10,7 @@ const SECTIONS = [
   {
     label: "世界を知る",
     entries: [
-      { path: "docs/01_プレイヤー向け世界観.md", label: "ルオスエンの世界", kicker: "WORLD / 01", summary: "地下へ広がる世界と冒険者たちの物語" },
+      { path: "docs/01_プレイヤー向け世界観.md", label: "レウナの世界", kicker: "WORLD / 01", summary: "地下へ広がる世界と冒険者たちの物語" },
       { path: "docs/02_迷宮と探索.md", label: "迷宮と探索", kicker: "WORLD / 02", summary: "未踏の通路、領域主、描きかけの地図" },
       { path: "docs/03_魔石と魔術.md", label: "魔石と魔術", kicker: "WORLD / 03", summary: "文明を動かすマナと魔石" },
       { path: "docs/04_自由迷宮都市と組織.md", label: "自由迷宮都市と組織", kicker: "WORLD / 04", summary: "五大国、ギルド、商人、探索者" },
@@ -23,7 +23,6 @@ const SECTIONS = [
   {
     label: "冒険の準備",
     entries: [
-      { path: "DECISIONS.md", label: "決定事項と未決事項", kicker: "SYSTEM / 01", summary: "開始レベルや種族など、まだ決まっていないこと" },
       { path: "players/キャラクター作成ガイド.md", label: "キャラクター作成", kicker: "PLAYER / 01", summary: "4人の冒険に参加するためのPC作成案内" },
       { path: "players/探索パーティ結成.md", label: "パーティー結成", kicker: "PLAY / 02", summary: "4人が共に冒険する理由を作ろう" },
       { path: "players/キャラクター提出テンプレート.md", label: "キャラクター提出", kicker: "PLAYER / 02", summary: "自分のキャラクター像を書き出す" },
