@@ -114,3 +114,30 @@
 @media (prefers-reduced-motion: reduce) {
   [data-scroll-reveal],.story-art img,.story-caption { transform: none !important; opacity: 1 !important; }
 }
+
+/* A single quiet downward gesture introduces the film without a caption. */
+.film-scroll-cue {
+  position: absolute;
+  z-index: 4;
+  left: calc(50% - 24px);
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  color: #e3f8ff;
+  opacity: var(--scene-caption, 1);
+  text-decoration: none;
+}
+.film-scroll-cue svg { overflow: visible; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; animation: scroll-cue-down 2.4s ease-in-out 2; }
+.film-scroll-cue:hover { color: #fff; }
+.film-scroll-cue:focus-visible { border-radius: 4px; }
+.is-scroll-story[data-active-scene="opening"] #film-next { visibility: hidden; pointer-events: none; }
+@keyframes scroll-cue-down {
+  0%, 65%, 100% { transform: translateY(0); }
+  32% { transform: translateY(6px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .film-scroll-cue svg { animation: none; }
+}
