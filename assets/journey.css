@@ -291,7 +291,7 @@
 /* The underground triptych leads into the six sites; artwork remains the focus. */
 .article-body.storybook-walk > h2 {
   max-width: 1030px; margin: 0 auto 22px; padding: 30px clamp(24px,5vw,72px) 0;
-  color: #e3f8ff; font: 600 clamp(26px,3vw,38px)/1.55 var(--serif);
+  color: #e3f8ff; font: 600 clamp(26px,3vw,38px)/1.55 var(--serif); scroll-margin-top: 105px;
 }
 .article-body.storybook-walk > h2 + p {
   max-width: 52em; margin: 0 auto clamp(34px,5vw,62px);
