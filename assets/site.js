@@ -7,13 +7,13 @@
  * safe Markdown subset needed by these documents.
  */
 const SECTIONS = [
-  {label:"この街から", entries:[
-    {path:"docs/01_プレイヤー向け世界観.md",label:"世界を知る",kicker:"魔石から、ルオスエンへ",summary:"魔石文明の繁栄と衰退。大断裂の谷から、育ち続ける街へ。",layout:"story",book:true,chapters:true,history:true},
-    {path:"docs/04_自由迷宮都市と組織.md",label:"ルオスエンを歩く",kicker:"街と人々を知る",summary:"六つの場所から、君の人物の居場所を探して。",layout:"story",book:true,chapters:true},
-    {path:"adventures/次の冒険.md",label:"次の冒険の始まり",kicker:"次は、君たちの話を",summary:"導入と開始条件は、準備中です。",layout:"story"}
+  {label:"街から冒険へ",entries:[
+    {path:"docs/04_自由迷宮都市と組織.md",label:"ルオスエンを歩く",kicker:"人と仕事と、その先の迷宮",summary:"地下の三つの景色から、六つの場所とそこで生きる人々へ。",layout:"story",book:true,chapters:true},
+    {path:"adventures/次の冒険.md",label:"この街で冒険する",kicker:"君たちは、何を探しに行く？",summary:"救助、探索、護衛、採集。四人から始まる小さな冒険の可能性。",layout:"story",book:true},
+    {path:"players/キャラクター作成ガイド.md",label:"キャラクターを考える",kicker:"君は、この街で何者になる？",summary:"人物像の種と、四人で冒険するための準備。"}
   ]},
-  {label:"冒険の準備",entries:[
-    {path:"players/キャラクター作成ガイド.md",label:"この世界で冒険する",kicker:"君は、何を求めてルオスエンへ？",summary:"この街での暮らしと、地下へ向かう理由から。"}
+  {label:"もっと知る",entries:[
+    {path:"docs/01_プレイヤー向け世界観.md",label:"世界を知る",kicker:"魔石から、ルオスエンへ",summary:"なぜ船は地下を飛ぶのか。レウナの歴史から、街の始まりをたどる。",layout:"story",book:true,chapters:true,history:true}
   ]}
 ];
 // Public bookmarks survive the consolidation; editor-only pages stay unregistered.
@@ -169,10 +169,10 @@ function renderNav(activePath) {
 
 // Deliberate neighbors rather than a circular tour of every document.
 const RELATED = {
-  "docs/01_プレイヤー向け世界観.md":["docs/04_自由迷宮都市と組織.md"],
-  "docs/04_自由迷宮都市と組織.md":["players/キャラクター作成ガイド.md"],
+  "docs/04_自由迷宮都市と組織.md":["adventures/次の冒険.md"],
   "adventures/次の冒険.md":["players/キャラクター作成ガイド.md"],
-  "players/キャラクター作成ガイド.md":["adventures/次の冒険.md"]
+  "players/キャラクター作成ガイド.md":["docs/01_プレイヤー向け世界観.md"],
+  "docs/01_プレイヤー向け世界観.md":["docs/04_自由迷宮都市と組織.md"]
 };
 
 // Keep the Markdown source readable on GitHub: heading + image + quotation.
@@ -266,7 +266,7 @@ function composeStory(meta) {
   chapters.setAttribute('aria-label',meta.history ? '世界の歴史' : '街の行き先');
   chapters.hidden = !meta.chapters;
   if (meta.chapters) {
-    for (const heading of article.querySelectorAll(meta.history ? '.history-chapter > h2' : '.story-panel h2')) {
+    for (const heading of article.querySelectorAll(meta.history ? '.history-chapter > h2' : 'h2')) {
       const link = document.createElement('a');
       link.href = '#' + heading.id;
       link.textContent = heading.textContent;
@@ -318,7 +318,7 @@ function updateReturnLinks(entry) {
   document.querySelectorAll('[data-return-to-story]').forEach(link => { link.textContent = label; });
 }
 function renderRelated(path) {
-  const prep = BY_PATH.get(path).group === '冒険の準備' || path === 'docs/07_短編セッションの進め方.md';
+  const prep = path === 'players/キャラクター作成ガイド.md';
   const links = (RELATED[path] || []).map(p => '<a href="'+docUrl(p)+'">'+escapeHtml(BY_PATH.get(p).label)+' <span aria-hidden="true">→</span></a>').join('');
   $("reader-bottom").innerHTML = '<div class="reader-related"><p>'+(prep?'冒険の準備を進める':'この先へ')+'</p>'+links+'</div>' +
     '<a class="reader-return" data-return-to-story href="#/">物語を見る</a>' +
