@@ -11,10 +11,18 @@ const CITY='docs/04_自由迷宮都市と組織.md';
 const NEXT='adventures/次の冒険.md';
 const PREP='players/キャラクター作成ガイド.md';
 const SHARE='players/キャラクター提出テンプレート.md';
-const scenes=['opening','vista','cargo','depths','explorers','territory','tavern','next'];
+const scenes=['opening','vista','trail','cargo','depths','explorers','territory','tavern','next'];
 const institutions=['円環商館の酒場','セレド王立地図院','底空船廠','伽藍の塔','聖路教会','深青の石工房'];
 const errors=[];
 const url=path=>base+'#/'+encodeURIComponent(path);
+async function clickVisible(page,link) {
+  const box=await link.boundingBox();
+  assert(box&&box.y>=0&&box.y+box.height<=900);
+  await page.mouse.click(box.x+box.width/2,box.y+box.height/2);
+}
+async function clickWorld(page) {
+  await clickVisible(page,page.getByRole('link',{name:'世界を知る',exact:true}));
+}
 const paint=page=>page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
 async function ready(page,path) {
   await page.waitForFunction(path=>document.querySelector('#article-content').dataset.source===path &&
@@ -27,14 +35,14 @@ async function nativeSeek(page,id,fraction=.27) {
     const frames=[...sequence.querySelectorAll('[data-film-scene]')];
     const travel=parseFloat(sequence.style.getPropertyValue('--film-travel'));
     const step=travel/(frames.length-1+.65);
-    scrollTo({top:sequence.getBoundingClientRect().top+scrollY+(frames.findIndex(e=>e.id===id)+fraction)*step,behavior:'instant'});
+    scrollTo({top:sequence.getBoundingClientRect().top+scrollY-document.querySelector('.site-header').getBoundingClientRect().height+(frames.findIndex(e=>e.id===id)+fraction)*step,behavior:'instant'});
   },{id,fraction});
   await page.waitForFunction(id=>document.querySelector('.film-sequence').dataset.activeScene===id,id);
   await paint(page);
 }
 async function restored(page,id,y) {
-  await page.waitForFunction(({id,y})=>!document.querySelector('#home-view').classList.contains('hidden')&&
-    document.querySelector('.film-sequence').dataset.activeScene===id&&Math.abs(scrollY-y)<=2,{id,y});
+  try { await page.waitForFunction(({id,y})=>!document.querySelector('#home-view').classList.contains('hidden')&&
+    document.querySelector('.film-sequence').dataset.activeScene===id&&Math.abs(scrollY-y)<=2,{id,y}); } catch(e) { console.error(await page.evaluate(()=>({y:scrollY,scene:document.querySelector('.film-sequence').dataset.activeScene,snapshot:window.RuosuenStory.capture(),entry:visits.get(activeKey)})));throw e; }
 }
 async function atY(page,y) {
   try { await page.waitForFunction(y=>Math.abs(scrollY-y)<=2,y); }
@@ -49,26 +57,27 @@ async function checkJourney(page,width) {
   await page.goto(base,{waitUntil:'networkidle'});
   await page.waitForFunction(()=>window.RuosuenStory&&document.querySelector('.is-scroll-story'));
   assert.deepEqual(await page.locator('[data-film-scene]').evaluateAll(es=>es.map(e=>e.id)),scenes);
-  assert.deepEqual(await page.locator('.film-sequence [data-film-scene]').evaluateAll(es=>es.map(e=>e.id)),scenes.slice(1));
+  assert.deepEqual(await page.locator('.film-sequence [data-film-scene]').evaluateAll(es=>es.map(e=>e.id)),scenes);
   const artwork=await page.locator('[data-film-scene] img').evaluateAll(es=>es.map(e=>e.getAttribute('src')));
-  assert.equal(new Set(artwork).size,8,'Every film scene needs distinct artwork');
+  assert.equal(new Set(artwork).size,9,'Every film scene needs distinct artwork');
   assert.equal(await page.locator('.film-story-hint,.film-scene-steps,.film-story-progress').count(),0);
   assert.equal(await page.locator('.brand-city-name').innerText(),'ルオスエン');
   assert.equal(await page.locator('#opening h1').textContent(),'自由迷宮都市ルオスエン');
   assert.equal(await page.locator('#vista h2').textContent(),'この街の下には、まだ世界がある。');
-  assert.equal(await page.evaluate(()=>window.RuosuenStory.capture()),null,'Opening uses normal document scroll');
-  const continuation=await page.locator('#vista').boundingBox();
-  assert(continuation.y>0&&continuation.y<900,'Next artwork should peek below the introduction');
+  assert.equal((await page.evaluate(()=>window.RuosuenStory.capture())).position,0);
+  await nativeSeek(page,'opening',.2);
+  assert(await page.locator('#vista').evaluate(e=>Number(e.style.opacity)>.1),'The city opening must dissolve into the second artwork');
+  await nativeSeek(page,'opening',0);
   assert.equal(await page.locator('.film-artwalk').count(),0);
   assert.equal(await page.locator('.site-header .nav-start').isVisible(),true);
   const distance = await page.locator('.film-sequence').evaluate(e=>parseFloat(e.style.getPropertyValue('--film-travel')));
   const stageHeight = await page.locator('.film-stage').evaluate(e=>e.clientHeight);
-  assert(distance/stageHeight<4.2,'The film should take about four stage-heights of scrolling');
+  assert(distance/stageHeight>6&&distance/stageHeight<6.5,'Nine scenes use a moderate .74 viewport pace');
   await nativeSeek(page,'vista',.2);
-  assert(await page.locator('#cargo').evaluate(e=>Number(e.style.opacity)>.1),'A small scroll must visibly start the dissolve');
+  assert(await page.locator('#trail').evaluate(e=>Number(e.style.opacity)>.1),'A small scroll must visibly start the dissolve');
   const menu=page.locator('.header-menu summary');
-  if(await menu.isVisible()) await menu.click();
-  await page.getByRole('link',{name:'世界を知る',exact:true}).click();await ready(page,WORLD);
+  if(await menu.isVisible()) await clickVisible(page,menu);
+  await clickWorld(page);await ready(page,WORLD);
   await page.locator('#reader-bottom [data-return-to-story]').click();
   await page.waitForFunction(()=>!document.querySelector('#home-view').classList.contains('hidden'));
   await nativeSeek(page,'vista',0);
@@ -93,7 +102,9 @@ async function checkJourney(page,width) {
   await page.goto(base,{waitUntil:'networkidle'});
   await nativeSeek(page,'next',.2);
   const movieY=await page.evaluate(()=>scrollY);
-  await page.locator('#next a').click();await ready(page,WORLD);
+  assert.equal(await page.locator('#next a').count(),0);
+  if(await menu.isVisible()) await clickVisible(page,menu);
+  await clickWorld(page);await ready(page,WORLD);
   assert.equal(await page.locator('.story-panel').count(),6);
   const worldText=await page.locator('#article-content').innerText();
   for(const term of ['マナ','魔石','純度','大転流','願いが叶う'])assert(worldText.includes(term));
@@ -123,7 +134,9 @@ async function checkJourney(page,width) {
   // Complete the intended world -> city -> next-session -> creation -> sharing path.
   for(const [path,following] of [[WORLD,CITY],[CITY,NEXT],[NEXT,PREP],[PREP,SHARE]]) {
     await page.goto(url(path));await ready(page,path);
-    await page.locator('#reader-bottom .reader-related a').first().click();await ready(page,following);
+    const onward=page.locator('#reader-bottom .reader-related a').first();
+    await onward.scrollIntoViewIfNeeded();await paint(page);
+    await clickVisible(page,onward);await ready(page,following);
   }
   await page.goto(url(NEXT));await ready(page,NEXT);
   assert((await page.locator('#article-content').innerText()).includes('準備中'));
@@ -160,7 +173,7 @@ async function checkJourney(page,width) {
     const after=await target.evaluate((e,p)=>e.style.getPropertyValue(p),property);
     assert.notEqual(before,after,'Native scroll must animate '+path);
   }
-  console.log(JSON.stringify({width,journey:'PASS',scenes:8,cityPanels:10,history:true,archiveReturn:true}));
+  console.log(JSON.stringify({width,journey:'PASS',scenes:9,cityPanels:10,history:true,archiveReturn:true}));
 }
 (async()=>{
   const proxy=process.env.HTTPS_PROXY||process.env.HTTP_PROXY;
@@ -180,7 +193,9 @@ async function checkJourney(page,width) {
     const c=await context({viewport:{width:390,height:844},reducedMotion:'reduce'});const p=await c.newPage();
     await p.goto(base,{waitUntil:'networkidle'});assert.equal(await p.locator('.is-scroll-story').count(),0);
     assert.equal(await p.locator('html.scroll-effects').count(),0);
-    await p.locator('#next a').click();await ready(p,WORLD);
+    await p.locator('#next').scrollIntoViewIfNeeded();await paint(p);
+    await clickVisible(p,p.locator('.header-menu summary'));
+    await clickWorld(p);await ready(p,WORLD);
     await p.locator('#reader-bottom [data-return-to-story]').click();assert(await p.locator('#next').isVisible());
     // Existing public URLs continue to resolve after consolidation.
     for(const [old,path] of [['docs/03_魔石と魔術.md',WORLD],['docs/08_街角の風景.md',CITY],['docs/06_種族と信仰.md',PREP],['players/characters/README.md',SHARE]]) {

@@ -1,4 +1,4 @@
-// Shared native-scroll motion for the intro, illustrated pages and reading pages.
+// Shared native-scroll motion for illustrated pages and reading pages.
 // Transform/opacity only: reading positions and browser history keep their geometry.
 function initScrollEffects() {
   const preference = matchMedia('(prefers-reduced-motion: reduce)');
@@ -20,12 +20,7 @@ function initScrollEffects() {
       element.style.setProperty('--reveal-opacity',String(.3+.7*entry));
       element.style.setProperty('--reveal-y',`${(1-entry)*26}px`);
       element.style.setProperty('--art-shift-y',`${(passage-.5)*Math.min(22,(artHeight || bounds.height)*.036)}px`);
-      if (element.id === 'opening') {
-        const departure=clamp(-bounds.top/Math.max(1,bounds.height));
-        element.style.setProperty('--intro-pan',`${departure*36}px`);
-        element.style.setProperty('--intro-copy-y',`${-departure*24}px`);
-        element.style.setProperty('--intro-copy-opacity',String(1-departure*.65));
-      }
+
     }
   }
   function schedule() {
@@ -34,7 +29,7 @@ function initScrollEffects() {
   function refresh() {
     root.classList.toggle('scroll-effects',!preference.matches);
     targets = !home.classList.contains('hidden')
-      ? [...document.querySelectorAll('#opening,.film-archive')]
+      ? [...document.querySelectorAll('.film-archive')]
       : [...document.querySelectorAll('#reader-view .article-hero,.story-panel,.reading-section,#reader-bottom')];
     targets.forEach(element=>element.setAttribute('data-scroll-reveal',''));
     if (preference.matches) return;

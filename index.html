@@ -16,11 +16,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Noto+Serif+JP:wght@400;500;600;700;900&display=swap" rel="stylesheet">
   <link rel="preload" href="assets/ruosuen-street-night-oil.webp" as="image" type="image/webp">
   <link rel="stylesheet" href="assets/site.css">
-  <link rel="stylesheet" href="assets/concept.css?v=20261116-pace">
-  <link rel="stylesheet" href="assets/journey.css?v=20261116-pace">
-  <script src="assets/site.js?v=20261116-pace" defer></script>
-  <script type="module" src="assets/scroll-story.mjs?v=20261116-pace"></script>
-  <script type="module" src="assets/scroll-effects.mjs?v=20261116-pace"></script>
+  <link rel="stylesheet" href="assets/concept.css?v=20261116-wonder">
+  <link rel="stylesheet" href="assets/journey.css?v=20261116-wonder">
+  <script src="assets/site.js?v=20261116-wonder" defer></script>
+  <script type="module" src="assets/scroll-story.mjs?v=20261116-wonder"></script>
+  <script type="module" src="assets/scroll-effects.mjs?v=20261116-wonder"></script>
 </head>
 <body class="is-watching-film">
 <a class="skip-link" href="#main">本文へ移動</a>
@@ -45,14 +45,14 @@
 </header>
 <main id="main">
 <div id="home-view" class="film-home">
-<section class="film-frame film-montage-shot film-intro" id="opening" data-film-scene="自由迷宮都市ルオスエン" tabindex="-1" aria-labelledby="film-opening-title">
+<div class="film-sequence"><div class="film-stage">
+<section class="film-frame film-montage-shot film-city-title" id="opening" data-film-scene="自由迷宮都市ルオスエン" tabindex="-1" aria-labelledby="film-opening-title">
   <img class="film-image" src="assets/ruosuen-street-night-oil.webp" width="1672" height="941" alt="橋と街並み、魔導灯が裂谷の奥へ連なる自由迷宮都市ルオスエンの全景" fetchpriority="high" decoding="async">
   <div class="film-shot-shade" aria-hidden="true"></div>
   <div class="film-caption container" data-film-caption>
     <h1 class="film-title" id="film-opening-title"><span class="city-title-kind">自由迷宮都市</span><span class="city-title-name">ルオスエン</span></h1>
   </div>
 </section>
-<div class="film-sequence"><div class="film-stage">
 <section class="film-frame film-montage-shot" id="vista" data-film-scene="まだ世界がある" tabindex="-1" aria-labelledby="film-vista-title">
   <img class="film-image" src="assets/ruosuen-film-vista.webp" width="1536" height="1024" alt="街の縁の向こうに、地下河川、空を行く船、巨大な岩柱と空洞が幾重にも続く" loading="lazy" decoding="async">
   <div class="film-shot-shade" aria-hidden="true"></div>
@@ -60,8 +60,15 @@
     <h2 class="film-title" id="film-vista-title">この街の下には、<br>まだ世界がある。</h2>
   </div>
 </section>
+<section class="film-frame film-montage-shot" id="trail" data-film-scene="冒険者たちの一歩" tabindex="-1" aria-labelledby="film-trail-title">
+  <img class="film-image" src="assets/ruosuen-film-survey.webp" width="1536" height="1024" alt="地図を確かめ、足場を探りながら未知の道を進む探索者たち" loading="lazy" decoding="async">
+  <div class="film-shot-shade" aria-hidden="true"></div>
+  <div class="film-caption container" data-film-caption>
+    <h2 class="film-title" id="film-trail-title">地図の先へ、<br>冒険者たちは踏み出す。</h2>
+  </div>
+</section>
 <section class="film-frame film-montage-shot" id="cargo" data-film-scene="地下の空中港" tabindex="-1" aria-labelledby="film-cargo-title">
-  <img class="film-image" src="assets/ruosuen-film-airharbor.webp" width="1536" height="1024" alt="岩壁の桟橋に接近する魔導船。船底の下には深い空間が広がる" loading="lazy" decoding="async">
+  <img class="film-image" src="assets/ruosuen-film-airfleet.webp" width="1672" height="941" alt="巨大な岩天井と幾重もの桟橋の間を、多くの魔導船が高さを違えて飛び交う地下港" loading="lazy" decoding="async">
   <div class="film-shot-shade" aria-hidden="true"></div>
   <div class="film-caption container" data-film-caption>
     <h2 class="film-title" id="film-cargo-title">地下の港では、<br>船が空を行く。</h2>
@@ -75,14 +82,14 @@
   </div>
 </section>
 <section class="film-frame film-montage-shot" id="explorers" data-film-scene="未知を確かめる" tabindex="-1" aria-labelledby="film-explorers-title">
-  <img class="film-image" src="assets/ruosuen-film-survey.webp" width="1536" height="1024" alt="足場を確かめ、記録を取り、標本を包む種族の異なる探索者たち" loading="lazy" decoding="async">
+  <img class="film-image" src="assets/ruosuen-film-manastones.webp" width="1672" height="941" alt="岩に宿る紫の魔石を確かめるドワーフと、灯りや記録を担うドラゴンボーン、エルフの探索者" loading="lazy" decoding="async">
   <div class="film-shot-shade" aria-hidden="true"></div>
   <div class="film-caption container" data-film-caption>
-    <h2 class="film-title" id="film-explorers-title">地図にない道を探し、<br>まだ見ぬものを持ち帰る。</h2>
+    <h2 class="film-title" id="film-explorers-title">地図にない道を探し、<br>魔石を持ち帰る。</h2>
   </div>
 </section>
 <section class="film-frame film-montage-shot" id="territory" data-film-scene="最下層の噂" tabindex="-1" aria-labelledby="film-territory-title">
-  <img class="film-image" src="assets/ruosuen-film-rumor.webp" width="1536" height="1024" alt="灯りを携えた小さな一行が、さらに下へ続く道を進む。到達点は見えない" loading="lazy" decoding="async">
+  <img class="film-image" src="assets/ruosuen-film-possibility.webp" width="1672" height="941" alt="小さな探索者たちの向こうに、淡い光の遺構と橋、地底の流れが幾層にも広がる。最下層はまだ見えない" loading="lazy" decoding="async">
   <div class="film-shot-shade" aria-hidden="true"></div>
   <div class="film-caption container" data-film-caption>
     <h2 class="film-title" id="film-territory-title">迷宮の最下層に辿り着けば、<br>願いが叶うという。</h2>
@@ -92,7 +99,7 @@
   <img class="film-image" src="assets/ruosuen-street-tavern-watercolor.webp" width="1536" height="1024" alt="日暮れの酒場通りで、帰還した旅人を食事と会話が迎える" loading="lazy" decoding="async">
   <div class="film-shot-shade" aria-hidden="true"></div>
   <div class="film-caption container" data-film-caption>
-    <h2 class="film-title" id="film-tavern-title">帰ってきたら、<br>聞かせたい話がある。</h2>
+    <h2 class="film-title" id="film-tavern-title">帰ってきたら、<br>聞いてもらいたい話がある。</h2>
   </div>
 </section>
 <section class="film-frame film-montage-shot film-invitation" id="next" data-film-scene="君の一歩" tabindex="-1" aria-labelledby="film-next-title">
@@ -100,11 +107,10 @@
   <div class="film-shot-shade" aria-hidden="true"></div>
   <div class="film-caption container" data-film-caption>
     <h2 class="film-title" id="film-next-title">君は、この街から<br>何を探しに行く？</h2>
-    <a class="film-primary film-start-action" href="#/docs/01_プレイヤー向け世界観.md">レウナの世界を知る <span aria-hidden="true">→</span></a>
   </div>
 </section>
 <div class="film-story-hud">
-<nav class="film-story-controls" aria-label="場面の移動"><a id="film-prev" href="#vista" aria-label="前の場面" hidden><span aria-hidden="true">←</span></a><a id="film-next" href="#cargo" aria-label="次の場面"><span aria-hidden="true">→</span></a></nav>
+<nav class="film-story-controls" aria-label="場面の移動"><a id="film-prev" href="#opening" aria-label="前の場面" hidden><span aria-hidden="true">←</span></a><a id="film-next" href="#vista" aria-label="次の場面"><span aria-hidden="true">→</span></a></nav>
 </div></div></div>
 <section class="film-archive container" id="guide" aria-labelledby="film-guide-title">
 <h2 id="film-guide-title">この街の、その先へ。</h2><p>世界を知り、街を歩き、君の人物を考える。</p>

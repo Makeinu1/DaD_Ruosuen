@@ -209,8 +209,8 @@ function initStory() {
       updateControls(flowIndex());
       return;
     }
-    start = sequence.getBoundingClientRect().top + window.scrollY;
-    step = Math.max(300, height * 0.62);
+    start = sequence.getBoundingClientRect().top + window.scrollY - headerHeight;
+    step = Math.max(300, height * 0.74);
     travel = timeline.travel * step;
     sequence.style.setProperty('--film-travel', `${travel}px`);
     end = start + travel + height;
