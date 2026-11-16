@@ -11,7 +11,7 @@ const CITY='docs/04_自由迷宮都市と組織.md';
 const NEXT='adventures/次の冒険.md';
 const PREP='players/キャラクター作成ガイド.md';
 const SHARE='players/キャラクター提出テンプレート.md';
-const scenes=['opening','world','cargo','depths','territory','explorers','tavern','next'];
+const scenes=['opening','world','cargo','depths','explorers','territory','tavern','next'];
 const institutions=['円環商館の酒場','セレド王立地図院','底空船廠','伽藍の塔','聖路教会','深青の石工房'];
 const errors=[];
 const url=path=>base+'#/'+encodeURIComponent(path);
@@ -49,10 +49,18 @@ async function checkJourney(page,width) {
   await page.goto(base,{waitUntil:'networkidle'});
   await page.waitForFunction(()=>window.RuosuenStory&&document.querySelector('.is-scroll-story'));
   assert.deepEqual(await page.locator('[data-film-scene]').evaluateAll(es=>es.map(e=>e.id)),scenes);
+  assert.deepEqual(await page.locator('.film-sequence [data-film-scene]').evaluateAll(es=>es.map(e=>e.id)),scenes.slice(1));
+  const artwork=await page.locator('[data-film-scene] img').evaluateAll(es=>es.map(e=>e.getAttribute('src')));
+  assert.equal(new Set(artwork).size,8,'Every film scene needs distinct artwork');
+  assert.equal(await page.locator('.film-story-hint,.film-scene-steps,.film-story-progress').count(),0);
+  assert.equal(await page.locator('.brand-city-name').innerText(),'ルオスエン');
+  assert.equal(await page.locator('#opening h1').textContent(),'この街の下には、まだ世界がある。');
+  assert.equal(await page.evaluate(()=>window.RuosuenStory.capture()),null,'Opening uses normal document scroll');
+  const continuation=await page.locator('#world').boundingBox();
+  assert(continuation.y>0&&continuation.y<900,'Next artwork should peek below the introduction');
   assert.equal(await page.locator('.film-artwalk').count(),0);
   assert.equal(await page.locator('.site-header .nav-start').isVisible(),false);
-  await page.getByRole('link',{name:'物語を始める',exact:true}).click();
-  await page.waitForFunction(()=>document.querySelector('.film-sequence').dataset.activeScene==='world');
+  await nativeSeek(page,'world',0);
   // Actual native scroll, next/previous controls, and deep links all choose the same scenes.
   for(let i=1;i<scenes.length-1;i++) {
     await nativeSeek(page,scenes[i]);
@@ -66,7 +74,8 @@ async function checkJourney(page,width) {
   }
   for(const id of scenes) {
     await page.goto(base+'#'+id);
-    await page.waitForFunction(id=>document.querySelector('.film-sequence').dataset.activeScene===id,id);
+    if(id==='opening') await page.waitForFunction(()=>scrollY<10);
+    else await page.waitForFunction(id=>document.querySelector('.film-sequence').dataset.activeScene===id,id);
   }
   assert((await page.locator('#territory').textContent()).includes('願いが叶うという'));
   // Depart without a scene hash: preserve the actual movie position through multiple pages.

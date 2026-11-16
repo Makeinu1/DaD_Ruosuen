@@ -156,8 +156,8 @@ function initStory() {
       frame.classList.toggle('is-scene-visible', opacity > 0.001);
     });
     updateControls(active);
-    label.textContent = frames[active].dataset.filmScene;
-    progress.style.transform = `scaleX(${timeline.distanceAt(state.value) / timeline.travel})`;
+    if (label) label.textContent = frames[active].dataset.filmScene;
+    if (progress) progress.style.transform = `scaleX(${timeline.distanceAt(state.value) / timeline.travel})`;
     sequence.dataset.activeScene = frames[active].id;
   }
 
@@ -168,6 +168,7 @@ function initStory() {
   function refresh() {
     if (home.classList.contains('hidden')) return;
     const wasEnabled = enabled;
+    const atIntroduction = window.scrollY < sequence.getBoundingClientRect().top + window.scrollY - header.getBoundingClientRect().height;
     const previous = frames[active];
     headerHeight = header.getBoundingClientRect().height;
     const oldPosition = enabled ? (window.scrollY - start) / step : null;
@@ -183,7 +184,7 @@ function initStory() {
     if (media.matches || window.innerHeight - headerHeight < 540 ||
         !CSS.supports('position', 'sticky') || !('inert' in HTMLElement.prototype)) {
       reset();
-      if (wasEnabled) previous.scrollIntoView({behavior:'instant', block:'start'});
+      if (wasEnabled && !atIntroduction) previous.scrollIntoView({behavior:'instant', block:'start'});
       flowFrames = frames.map(frame => {
         const bounds = frame.getBoundingClientRect();
         return {top: bounds.top + window.scrollY, bottom: bounds.bottom + window.scrollY, height: bounds.height};
@@ -199,7 +200,7 @@ function initStory() {
     const fits = captions.every(caption => caption.getBoundingClientRect().height <= height - 120);
     if (!fits) {
       reset();
-      if (wasEnabled) previous.scrollIntoView({behavior:'instant', block:'start'});
+      if (wasEnabled && !atIntroduction) previous.scrollIntoView({behavior:'instant', block:'start'});
       flowFrames = frames.map(frame => {
         const bounds = frame.getBoundingClientRect();
         return {top: bounds.top + window.scrollY, bottom: bounds.bottom + window.scrollY, height: bounds.height};
@@ -242,7 +243,7 @@ function initStory() {
   }
 
   function capture() {
-    if (home.classList.contains('hidden')) return null;
+    if (home.classList.contains('hidden') || window.scrollY < sequence.getBoundingClientRect().top + window.scrollY - headerHeight) return null;
     if (enabled) {
       if (window.scrollY > start + travel) return null;
       return {kind:'scroll', position:timeline.positionAt((window.scrollY - start) / step)};

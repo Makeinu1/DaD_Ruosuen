@@ -287,7 +287,7 @@ function renderRelated(path) {
 const nextPaint = () => new Promise(resolve => requestAnimationFrame(resolve));
 
 async function showHome(entry, token) {
-  document.title = 'RUOSUEN｜ルオスエン — 地の底に、空がある。';
+  document.title = '自由迷宮都市ルオスエン — この街の下には、まだ世界がある。';
   document.body.classList.remove('story-layout','reading-layout');
   captionObserver?.disconnect();
   $("home-view").classList.remove('hidden');
