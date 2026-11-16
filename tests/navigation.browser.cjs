@@ -100,10 +100,10 @@ async function checkHookScenes(page,width) {
   const ids = await scenes.evaluateAll(elements => elements.map(element => element.id));
   assert.equal(ids.length,12);
   const hooks = [
-    ['manastone','魔石が、暮らしを灯す。','地下から運ばれた力が、遠い街の灯りになる。'],
+    ['manastone','魔石が、暮らしを灯す。','魔石は、マナを蓄えた燃料だ。使えば減る力を、人々は地下に求める。持ち帰った石が、遠い街の灯りになる。'],
     ['territory','領域主の縄張りへ。','そこに生きるものを、君たちはまだ知らない。'],
-    ['explorers','異国の探索者たち。','出身も目的も違う者たちが、この都市に集まる。'],
-    ['map','地図が、宝になる。','君たちが見つけた道が、誰かの明日をつなぐかもしれない。']
+    ['explorers','発見を、この街へ。','商館には買付人と、仕事を探す人々。市場を抜ければ、酒場で誰かが帰還を祝う。次の道へ向かう前に、この街で出会う人がいる。'],
+    ['map','地図が、宝になる。','水場の位置。荷が通れる橋。帰り道。君たちが確かめたことを、次に進む誰かが待っている。']
   ];
   const shortIds = ['domains',...hooks.map(([id]) => id)];
   assert.deepEqual(ids.slice(ids.indexOf('domains'),ids.indexOf('domains')+5),shortIds);
@@ -161,6 +161,18 @@ async function checkHookScenes(page,width) {
     await page.goto(base+'#'+id);
     await waitForScene(page,id);
     assert.ok(await page.locator('#'+id+' h2').isVisible());
+  }
+  for (const [scene,path] of [
+    ['manastone','docs/03_魔石と魔術.md'],
+    ['explorers','docs/04_自由迷宮都市と組織.md']
+  ]) {
+    await page.goto(base+'#'+scene);
+    await waitForScene(page,scene);
+    const departureY = await page.evaluate(() => scrollY);
+    await page.locator('#'+scene+' a[href^="#/"]').click();
+    await articleReady(page,path);
+    await page.locator('#reader-bottom [data-return-to-story]').click();
+    await waitForMoviePosition(page,scene,departureY);
   }
   console.log(JSON.stringify({check:'individual hooks and weighted scroll',width,scenes:12,
     normalDistance,shortScenes:shortIds,deepLinks:hooks.map(([id]) => id)}));
@@ -224,7 +236,7 @@ async function checkMobileContents(page) {
   await contents.getByText('資料の目次', {exact:true}).click();
   assert.equal(await contents.evaluate(element => element.open), true);
   const links = contents.locator('#mobile-categories a');
-  assert.equal(await links.count(), 14);
+  assert.equal(await links.count(), 13);
   const groups = await contents.locator('#mobile-categories').evaluate(element =>
     [...element.children].filter(child => child.tagName !== 'A' && child.querySelector('a')).length);
   assert.ok(groups >= 2, 'Contents should present labeled groups, not a flat tab row');
@@ -233,7 +245,7 @@ async function checkMobileContents(page) {
     'Mobile contents should have vertically arranged links');
   await contents.getByText('資料の目次', {exact:true}).click();
   assert.equal(await contents.evaluate(element => element.open), false);
-  console.log(JSON.stringify({check:'mobile grouped contents', groups, articles:14}));
+  console.log(JSON.stringify({check:'mobile grouped contents', groups, articles:13}));
 }
 
 async function waitForHomePosition(page, expectedY) {
@@ -351,8 +363,10 @@ async function checkReducedMotionReturn(browser) {
       await articleReady(page,'players/キャラクター作成ガイド.md');
       if (width === 390) await checkMobileContents(page);
       await checkArchiveOrigin(page,width);
-      await page.goto(base+'#/DECISIONS.md');
-      await articleReady(page,'DECISIONS.md');
+      assert.equal(await page.locator('a[href="#/DECISIONS.md"]').count(),0,
+        'Editor decisions must not be offered as a player route');
+      await page.goto(base+'#/'+encodeURIComponent('docs/05_歴史と伝承.md'));
+      await articleReady(page,'docs/05_歴史と伝承.md');
       assert.ok(!(await page.locator('#reader-bottom').innerText()).includes('次に読む：'));
       await page.close();
     }

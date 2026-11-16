@@ -189,3 +189,17 @@ Before sharing broadly:
 ## Project decisions
 
 A gorgeous hero is an invitation, not license to invent canon. Do not expose author-only metaphysical truths or spoilers in the player-facing website, assign names to currently unnamed nations, or treat D&D level 3 / official rules options as settled when they are still proposals. The player-facing site should remain source-compatible with Markdown edits, and the primary link remains character creation.
+
+## プレイヤーの入口と資料への寄り道（2026-11-16）
+
+世界資料の改稿と、商館街区の追加設定を踏まえ、トップから人物作成までの言葉と導線を見直す。
+
+- 既存の夜の青黒 `#030810`、地下の濃紺 `#071625`、岩の青 `#173a55`、マナの青 `#80bbde`、白 `#e3f8ff` を保持。既存の明朝体と情景画を使い、字幕を読む構成を活かす。新しいパネルや場面は増やさない。
+- 街の暮らし → 地下港 → 地下世界 → 魔石・生き物・商館・地図 → 四人の冒険 → 人物像 → 任意の資料、という流れ。魔石は用途・消耗・持ち帰る意味を短く伝え、詳細は元のMarkdownへ案内する。
+- 商館の場面は市場の既存絵で街区の交流を表す。商館の建築や外観を描いた絵とは扱わない。円環商館は資料内で仮称を明示し、未決の創設者や遺物をトップで語らない。
+- 作成案内は世界資料の通読を前提にせず、人物像から始められる順にする。内部資料 `DECISIONS.md` へのトップのリンクを取り除き、参加条件は作成ガイドで確認する。
+- 公開対象は13資料。ブラウザテストの旧14資料・内部資料閲覧の期待を現行の公開範囲に合わせ、魔石／商館の寄り道と元の場面への復帰を確認する。
+
+検証：320・390・768・1440px幅で場面の収まりと横はみ出し、動きを減らす設定、JavaScriptなしのトップ本文を確認。390px幅の画面を目視し、商館の見出しを短くして折り返しを調整。単体テスト7件と公開原稿13件の参照検査は成功。通常のブラウザ回帰では機能チェック完了後、Google Fontsへのプロキシ接続失敗によりエラー集計が失敗した。外部フォントを読み込まない代替書体での検証は別に実施し、通常のネットワーク条件の結果と区別する。実機端末と本番反映は未確認。
+
+代替書体の検証結果：外部フォントCSSへの応答だけをテスト実行時に空に置き換え、既存のブラウザ回帰と追加した寄り道・復帰の検査が1440・390pxで全件成功。サイト本体のフォント設定やネットワークエラーの検出は変更していない。
