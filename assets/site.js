@@ -181,10 +181,9 @@ const RELATED = {
   "docs/05_歴史と伝承.md": ["docs/01_プレイヤー向け世界観.md", "docs/06_種族と信仰.md"],
   "docs/06_種族と信仰.md": ["docs/04_自由迷宮都市と組織.md", "docs/05_歴史と伝承.md"],
   "docs/07_短編セッションの進め方.md": ["players/キャラクター作成ガイド.md", "players/探索パーティ結成.md"],
-  "DECISIONS.md": ["players/キャラクター作成ガイド.md"],
   "players/キャラクター作成ガイド.md": ["players/探索パーティ結成.md", "players/キャラクター提出テンプレート.md"],
   "players/探索パーティ結成.md": ["players/キャラクター提出テンプレート.md", "players/キャラクター作成ガイド.md"],
-  "players/キャラクター提出テンプレート.md": ["players/characters/README.md", "DECISIONS.md"],
+  "players/キャラクター提出テンプレート.md": ["players/characters/README.md"],
   "players/characters/README.md": ["players/キャラクター提出テンプレート.md", "players/探索パーティ結成.md"],
   "adventures/README.md": ["docs/07_短編セッションの進め方.md", "players/キャラクター作成ガイド.md"]
 };
