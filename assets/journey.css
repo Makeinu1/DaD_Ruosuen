@@ -286,3 +286,38 @@
   .reader:has(.world-history) > #story-chapters { width: calc(100% - 32px); gap: 4px; padding: 8px 6px; margin-bottom: 24px; }
   .reader:has(.world-history) > #story-chapters a { font-size: 12px; padding-inline: 2px; }
 }
+
+
+/* The underground triptych leads into the six sites; artwork remains the focus. */
+.article-body.storybook-walk > h2 {
+  max-width: 1030px; margin: 0 auto 22px; padding: 30px clamp(24px,5vw,72px) 0;
+  color: #e3f8ff; font: 600 clamp(26px,3vw,38px)/1.55 var(--serif);
+}
+.article-body.storybook-walk > h2 + p {
+  max-width: 52em; margin: 0 auto clamp(34px,5vw,62px);
+  padding: 0 clamp(24px,5vw,72px);
+}
+.storybook-walk .story-corner .story-caption { padding: 28px clamp(24px,5vw,72px) 0; }
+.article-body.storybook-walk .story-corner .story-caption h3 {
+  font: 600 clamp(23px,2.7vw,34px)/1.6 var(--serif);
+  color: #e3f8ff; margin-bottom: 18px;
+}
+.article-body.storybook-walk .story-corner .story-caption p {
+  color: #d0dfe9; font-size: clamp(15px,1.3vw,18px); line-height: 2;
+}
+/* Film position is supplemental to the image and native scrolling. */
+.is-scroll-story .film-story-hud { align-items: end; justify-content: space-between; gap: 24px; }
+.film-story-status {
+  display: flex; flex-direction: column; gap: 9px; min-width: 180px;
+  width: min(32vw,340px); color: #c6e2f1;
+  font: 12px/1.4 var(--serif); letter-spacing: .06em;
+  text-shadow: 0 1px 5px #030810; pointer-events: none;
+}
+.film-story-progress { height: 2px; background: #80bbde40; }
+.film-story-progress > span { background: #a6dcf8; }
+@media (max-width:700px) {
+  .article-body.storybook-walk > h2 { padding-inline: 24px; }
+  .article-body.storybook-walk > h2 + p { padding-inline: 24px; }
+  .film-story-status { min-width: 0; width: min(48vw,240px); font-size: 10px; }
+  .is-scroll-story .film-story-hud { gap: 8px; }
+}
