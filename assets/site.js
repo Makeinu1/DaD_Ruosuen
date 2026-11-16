@@ -8,7 +8,7 @@
  */
 const SECTIONS = [
   {label:"この街から", entries:[
-    {path:"docs/01_プレイヤー向け世界観.md",label:"世界を知る",kicker:"魔石から始まる、街の物語",summary:"暮らしを支える石と、地下での発見。ルオスエンに人が集まるまで。",layout:"story",book:true},
+    {path:"docs/01_プレイヤー向け世界観.md",label:"世界を知る",kicker:"魔石から、ルオスエンへ",summary:"魔石文明の繁栄と衰退。大断裂の谷から、育ち続ける街へ。",layout:"story",book:true,chapters:true,history:true},
     {path:"docs/04_自由迷宮都市と組織.md",label:"ルオスエンを歩く",kicker:"街と人々を知る",summary:"六つの場所から、君の人物の居場所を探して。",layout:"story",book:true,chapters:true},
     {path:"adventures/次の冒険.md",label:"次の冒険の始まり",kicker:"次は、君たちの話を",summary:"導入と開始条件は、準備中です。",layout:"story"}
   ]},
@@ -113,7 +113,7 @@ function markdownToHtml(markdown, sourcePath) {
         if (allowed) {
           const img = new URL(raw, new URL(sourcePath, document.baseURI));
           if (img.origin === location.origin && img.pathname.startsWith(new URL("assets/", document.baseURI).pathname)) {
-            const wide = /ruosuen-(underground-world|street-night-oil|manastone-(life|shortage|discovery|frontier))\.webp$/.test(raw);
+            const wide = /(?:ruosuen-(underground-world|street-night-oil|manastone-(life|shortage|discovery|frontier))|reuna-turn-\d{2})\.webp$/.test(raw);
             html.push('<figure class="article-map"><a href="' + escapeHtml(img.href) + '" target="_blank" rel="noopener noreferrer" aria-label="画像を拡大表示">' +
               '<img src="' + escapeHtml(img.href) + '" alt="' + escapeHtml(match[1]) + '" width="' + (wide ? 1672 : 1536) + '" height="' + (wide ? 941 : 1024) + '" loading="lazy" decoding="async">' +
               '</a><figcaption>画像を選択すると別画面で拡大できます。</figcaption></figure>');
@@ -189,7 +189,8 @@ function composeStory(meta) {
   captionObserver?.disconnect();
   const article = $("article-content");
   article.classList.toggle("storybook",Boolean(meta.book));
-  article.classList.toggle("storybook-walk",Boolean(meta.chapters));
+  article.classList.toggle("storybook-walk",Boolean(meta.chapters && !meta.history));
+  article.classList.toggle("world-history",Boolean(meta.history));
   if (meta.layout === 'story') {
     for (const heading of [...article.children]) {
       if (!/^H[23]$/.test(heading.tagName)) continue;
@@ -197,7 +198,7 @@ function composeStory(meta) {
       const quote = figure?.nextElementSibling;
       if (!figure?.matches('figure.article-map') || quote?.tagName !== 'BLOCKQUOTE') continue;
       const panel = document.createElement('section');
-      panel.className = 'story-panel' + (heading.tagName === 'H3' ? ' story-corner' : '');
+      panel.className = 'story-panel' + (!meta.history && heading.tagName === 'H3' ? ' story-corner' : '');
       panel.setAttribute('aria-labelledby', heading.id);
       heading.before(panel);
       const caption = document.createElement('div');
@@ -220,6 +221,29 @@ function composeStory(meta) {
       quote.remove();
     }
   }
+  if (meta.history) {
+    const phases = ['rise','fall','renewal','city'];
+    let chapter;
+    let index = 0;
+    for (const child of [...article.children]) {
+      if (child.tagName === 'H2') {
+        chapter = document.createElement('section');
+        chapter.className = 'history-chapter';
+        chapter.dataset.historyPhase = phases[index++];
+        chapter.setAttribute('aria-labelledby',child.id);
+        child.before(chapter);
+        chapter.append(child);
+      } else if (chapter && child.matches('.story-panel')) {
+        chapter.append(child);
+      } else if (chapter && child.tagName === 'P' && !chapter.querySelector('.story-panel')) {
+        child.classList.add('history-era');
+        chapter.append(child);
+      } else {
+        // The concluding question and onward link stay outside the chapters.
+        chapter = null;
+      }
+    }
+  }
   if (meta.layout !== 'story') {
     // Animate coherent reading sections rather than each line of body text.
     let section;
@@ -239,9 +263,10 @@ function composeStory(meta) {
   }
   const chapters = $("story-chapters");
   chapters.replaceChildren();
+  chapters.setAttribute('aria-label',meta.history ? '世界の歴史' : '街の行き先');
   chapters.hidden = !meta.chapters;
   if (meta.chapters) {
-    for (const heading of article.querySelectorAll('.story-panel h2')) {
+    for (const heading of article.querySelectorAll(meta.history ? '.history-chapter > h2' : '.story-panel h2')) {
       const link = document.createElement('a');
       link.href = '#' + heading.id;
       link.textContent = heading.textContent;

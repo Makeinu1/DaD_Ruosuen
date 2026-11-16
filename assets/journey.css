@@ -157,3 +157,132 @@
   .article-body.storybook .story-caption h2 { font-size: 24px; }
   .story-layout .article-body.storybook > p { max-width: 100%; margin-inline: 0; }
 }
+
+/* World history: the turns of the story remain visible while reading at
+   a native pace. Phase colors belong to the page, never to the paintings. */
+.article-body.world-history .history-chapter {
+  --history-accent: #beb7ab;
+  --history-heading: #e5e3dc;
+  margin: 0 0 clamp(36px, 5vw, 64px);
+  padding-top: clamp(30px, 4vw, 48px);
+  background: #101820;
+}
+.article-body.world-history .history-chapter > h2 {
+  margin: 0;
+  padding: 0 clamp(24px, 5vw, 72px);
+  border: 0;
+  color: var(--history-heading);
+  font: 600 clamp(30px, 3.6vw, 48px)/1.55 var(--serif);
+  letter-spacing: .045em;
+  text-wrap: balance;
+  scroll-margin-top: 166px;
+}
+.article-body.world-history .history-era {
+  max-width: 48em;
+  margin: 14px 0 34px;
+  padding: 0 clamp(24px, 5vw, 72px);
+  color: var(--history-accent);
+  font: 400 clamp(13px, 1.15vw, 15px)/1.9 var(--serif);
+  letter-spacing: .03em;
+}
+.article-body.world-history .history-chapter > h2 + .story-panel { margin-top: 30px; }
+.article-body.world-history .history-chapter > .story-panel {
+  margin-bottom: clamp(36px, 5vw, 64px);
+}
+.article-body.world-history .history-chapter > .story-panel:last-child {
+  margin-bottom: 0;
+  padding-bottom: clamp(30px, 4vw, 48px);
+}
+.article-body.world-history .story-caption {
+  position: relative;
+  inset: auto;
+  padding: 30px clamp(24px, 5vw, 72px) 0;
+  text-shadow: none;
+  pointer-events: auto;
+}
+.article-body.world-history .story-caption::before { display: none; }
+.article-body.world-history .story-caption h3 {
+  margin: 0 0 20px;
+  padding: 0;
+  border: 0;
+  color: var(--history-heading);
+  font: 600 clamp(23px, 2.7vw, 36px)/1.65 var(--serif);
+  letter-spacing: .025em;
+  text-wrap: balance;
+}
+.article-body.world-history .story-caption p {
+  max-width: 44em;
+  margin: 0 0 12px;
+  color: #d0d8de;
+  font-size: clamp(15px, 1.3vw, 18px);
+  line-height: 2;
+}
+.article-body.world-history .history-chapter[data-history-phase="fall"] {
+  --history-accent: #aeb7bf;
+  --history-heading: #e5e9ed;
+  margin-top: clamp(40px, 6vw, 72px);
+  padding-top: clamp(40px, 5vw, 64px);
+  border-top: 3px solid #697681;
+  background: linear-gradient(180deg, #1b242d, #0b1119 260px);
+}
+.article-body.world-history .history-chapter[data-history-phase="fall"] > h2 {
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+.article-body.world-history .history-chapter[data-history-phase="renewal"] {
+  --history-accent: #9ed8ec;
+  --history-heading: #e3f8ff;
+  margin-top: clamp(40px, 6vw, 72px);
+  padding-top: clamp(40px, 5vw, 64px);
+  border-top: 1px solid #9ed8ec;
+  background: linear-gradient(180deg, #123043, #071827 260px);
+}
+.article-body.world-history .history-chapter[data-history-phase="city"] {
+  --history-accent: #b8dce9;
+  --history-heading: #eefaff;
+  background: #0a2030;
+}
+.article-body.world-history .history-chapter[data-history-phase="city"] .story-caption p {
+  color: #dae8ef;
+}
+.reader:has(.world-history) > #story-chapters {
+  position: sticky;
+  top: 78px;
+  z-index: 25;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 4px 12px;
+  width: min(100%, 1160px);
+  margin: 0 auto 28px;
+  padding: 8px 12px;
+  background: #071625f5;
+  border-bottom: 1px solid #557487;
+}
+.reader:has(.world-history) > #story-chapters[hidden] { display: none; }
+.reader:has(.world-history) > #story-chapters a {
+  justify-content: center;
+  min-width: 0;
+  padding: 4px;
+  text-align: center;
+  line-height: 1.7;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+@media (max-width: 720px) {
+  .reader:has(.world-history) > #story-chapters { top: 66px; }
+}
+@media (max-width: 700px) {
+  .article-body.world-history .history-chapter { padding-top: 30px; margin-bottom: 36px; }
+  .article-body.world-history .history-chapter > h2 { font-size: clamp(28px, 8vw, 34px); scroll-margin-top: 154px; }
+  .article-body.world-history .history-era { margin-top: 12px; margin-bottom: 26px; }
+  .article-body.world-history .story-caption { padding: 24px 24px 0; }
+  .article-body.world-history .story-caption h3 { font-size: 23px; line-height: 1.7; margin-bottom: 16px; }
+  .article-body.world-history .story-caption p { font-size: 15px; line-height: 2; }
+  .article-body.world-history .history-chapter > .story-panel { margin-bottom: 36px; }
+  .article-body.world-history .history-chapter > .story-panel:last-child { padding-bottom: 30px; }
+  .article-body.world-history .history-chapter[data-history-phase="fall"],
+  .article-body.world-history .history-chapter[data-history-phase="renewal"] { margin-top: 44px; padding-top: 40px; }
+  .reader:has(.world-history) > #story-chapters { width: calc(100% - 32px); gap: 4px; padding: 8px 6px; margin-bottom: 24px; }
+  .reader:has(.world-history) > #story-chapters a { font-size: 12px; padding-inline: 2px; }
+}

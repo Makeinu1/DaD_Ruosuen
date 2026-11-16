@@ -12,7 +12,9 @@ const NEXT='adventures/次の冒険.md';
 const PREP='players/キャラクター作成ガイド.md';
 const OLD_SHARE='players/キャラクター提出テンプレート.md';
 const scenes=['opening','vista','trail','cargo','depths','explorers','territory','tavern','next'];
-const worldArtwork=['life','shortage','discovery','frontier'].map(scene=>'ruosuen-manastone-'+scene+'.webp');
+const worldArtwork=Array.from({length:10},(_,index)=>'reuna-turn-'+String(index+1).padStart(2,'0')+'.webp');
+const historyChapters=['魔石とは','大転流','大断裂の谷','ルオスエン'];
+const historyPhases=['rise','fall','renewal','city'];
 const institutions=['円環商館の酒場','セレド王立地図院','底空船廠','伽藍の塔','聖路教会','深青の石工房'];
 const errors=[];
 const url=path=>base+'#/'+encodeURIComponent(path);
@@ -67,9 +69,20 @@ async function readAt(page,y=420) {
 }
 async function checkWorldPanels(page) {
   const panels=page.locator('#article-content .story-panel');
-  assert.equal(await panels.count(),4);
-  assert.deepEqual(await panels.locator('img').evaluateAll(images=>
-    images.map(image=>new URL(image.currentSrc||image.src).pathname.split('/').pop())),worldArtwork);
+  assert.equal(await panels.count(),10);
+  const artwork=await panels.locator('img').evaluateAll(images=>
+    images.map(image=>new URL(image.currentSrc||image.src).pathname.split('/').pop()));
+  assert.deepEqual(artwork,worldArtwork);
+  assert.equal(new Set(artwork).size,10,'Every history scene needs its own painting');
+  const chapters=page.locator('#article-content .history-chapter');
+  assert.deepEqual(await chapters.evaluateAll(elements=>elements.map(element=>element.dataset.historyPhase)),historyPhases);
+  assert.deepEqual(await chapters.locator(':scope > h2').allTextContents(),historyChapters);
+  assert.deepEqual(await chapters.evaluateAll(elements=>elements.map(element=>element.querySelectorAll('.story-panel').length)),[3,3,2,2]);
+  assert.deepEqual(await page.locator('#story-chapters a').allTextContents(),historyChapters);
+  assert.equal(await panels.nth(3).locator('h3').innerText(),'地上の富が、細っていく');
+  assert.equal(await panels.nth(6).locator('h3').innerText(),'その谷の底に、世界が開いた');
+  assert.equal(await panels.nth(3).evaluate(element=>element.closest('.history-chapter').dataset.historyPhase),'fall');
+  assert.equal(await panels.nth(6).evaluate(element=>element.closest('.history-chapter').dataset.historyPhase),'renewal');
   for (const panel of await panels.all()) {
     const image=panel.locator('img');
     await image.scrollIntoViewIfNeeded();
@@ -89,33 +102,56 @@ async function checkWorldPanels(page) {
         alt:image.alt,filters,captionPosition:getComputedStyle(caption).position,
         followsArtwork:art.nextElementSibling===caption,
         artBottom:art.getBoundingClientRect().bottom,captionTop:caption.getBoundingClientRect().top,
-        paragraphCount:caption.querySelectorAll('p').length};
+        paragraphCount:caption.querySelectorAll('p').length,headingCount:caption.querySelectorAll('h3').length};
     });
-    assert.equal(actual.naturalWidth,1672);
-    assert.equal(actual.naturalHeight,941);
-    assert.equal(actual.width,'1672');
-    assert.equal(actual.height,'941');
+    assert(actual.naturalWidth>0&&actual.naturalHeight>0,'The actual history painting must load');
+    assert.equal(Number(actual.width),actual.naturalWidth);
+    assert.equal(Number(actual.height),actual.naturalHeight);
     assert(actual.alt.trim().length>10,'Each painting needs a meaningful description');
     assert(actual.filters.every(filter=>filter==='none'),'World artwork must keep its original colors');
     assert.equal(actual.captionPosition,'relative');
     assert(actual.followsArtwork&&actual.captionTop>=actual.artBottom-1,
       'World explanations must flow below the full painting');
+    assert.equal(actual.headingCount,1,'Each scene has one heading within its chapter');
     assert.equal(actual.paragraphCount,2,'World scenes must preserve explanatory paragraphs');
   }
-  const causalTerms=[['使えば消耗','灯り','工房'],['大転流','新しい供給源'],
-    ['高純度の魔石','道を拓く仕事'],['人が集まり','仕事が生まれ','いまのルオスエン']];
+  const causalTerms=[['その力を蓄えた結晶鉱物'],
+    ['保管していた魔石','マナを失いやすく','石に蓄えられた力','地表の天然魔石鉱床は枯渇'],
+    ['従来のものをはるかに上回る高純度の魔石'],['いまも育ち続けるこの街']];
   for(let index=0;index<causalTerms.length;index++) {
-    const text=await panels.nth(index).innerText();
-    for(const term of causalTerms[index])assert(text.includes(term),'World scene '+(index+1)+' needs '+term);
+    const text=await chapters.nth(index).innerText();
+    for(const term of causalTerms[index])assert(text.includes(term),'History chapter '+historyChapters[index]+' needs '+term);
   }
   const worldText=await page.locator('#article-content').innerText();
   for(const term of ['レウナ','マナ','魔石','大転流','約三十年','大断裂','地下','ルオスエン'])assert(worldText.includes(term));
   assert.equal((worldText.match(/君は、何を求めて、この街へ？/g)||[]).length,1);
-  const question=page.locator('#article-content > p').filter({hasText:'君は、何を求めて、この街へ？'});
+  const question=page.locator('#article-content p').filter({hasText:'君は、何を求めて、この街へ？'});
   assert.equal(await question.innerText(),'君は、何を求めて、この街へ？');
-  assert(await question.evaluate(element=>element.previousElementSibling.matches('.story-panel')),
+  assert(await question.evaluate(element=>{
+    const finalScene=[...document.querySelectorAll('#article-content .story-panel')].at(-1);
+    return Boolean(finalScene.compareDocumentPosition(element)&Node.DOCUMENT_POSITION_FOLLOWING);
+  }),
     'The world story should end by inviting the reader to imagine their character');
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+
+  // Chapter controls scroll inside the article. Enter must neither send the
+  // reader home nor replace the article URL with an unroutable section hash.
+  const route=await page.evaluate(()=>location.hash);
+  for(const link of await page.locator('#story-chapters a').all()) {
+    const targetId=(await link.getAttribute('href')).replace(/^#/,'');
+    assert(targetId.startsWith('section-'));
+    await link.focus();
+    await page.keyboard.press('Enter');
+    await page.waitForFunction(({route,targetId})=>{
+      const target=document.getElementById(targetId);
+      const bounds=target?.getBoundingClientRect();
+      const headerBottom=document.querySelector('.site-header').getBoundingClientRect().bottom;
+      return location.hash===route&&document.activeElement===target&&
+        !document.querySelector('#reader-view').classList.contains('hidden')&&
+        bounds.top>=headerBottom-1&&bounds.top<innerHeight/2;
+    },{route,targetId});
+    assert.equal(await page.locator('#article-content').getAttribute('data-source'),WORLD);
+  }
 }
 async function checkJourney(page,width) {
   await page.goto(base,{waitUntil:'networkidle'});
@@ -242,7 +278,7 @@ async function checkJourney(page,width) {
     const after=await target.evaluate((e,p)=>e.style.getPropertyValue(p),property);
     assert.notEqual(before,after,'Native scroll must animate '+path);
   }
-  console.log(JSON.stringify({width,journey:'PASS',scenes:9,cityPanels:6,history:true,archiveReturn:true}));
+  console.log(JSON.stringify({width,journey:'PASS',scenes:9,worldPanels:10,historyChapters:4,chapterKeyboard:true,cityPanels:6,history:true,archiveReturn:true}));
 }
 (async()=>{
   const proxy=process.env.HTTPS_PROXY||process.env.HTTP_PROXY;
