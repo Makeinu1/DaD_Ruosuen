@@ -218,6 +218,19 @@ function composeStory(meta) {
       quote.remove();
     }
   }
+  if (meta.layout !== 'story') {
+    // Animate coherent reading sections rather than each line of body text.
+    let section;
+    for (const child of [...article.children]) {
+      if (child.tagName === 'H2') {
+        section = document.createElement('section');
+        section.className = 'reading-section';
+        section.setAttribute('aria-labelledby',child.id);
+        child.before(section);
+      }
+      if (section) section.append(child);
+    }
+  }
   if (meta.layout === 'story' && window.ResizeObserver) {
     captionObserver = new ResizeObserver(fitStoryCaptions);
     article.querySelectorAll('.story-caption, .story-art img').forEach(e => captionObserver.observe(e));
@@ -307,6 +320,7 @@ async function showHome(entry, token) {
     document.getElementById(entry.path)?.scrollIntoView({behavior:'instant',block:'start'});
   }
   if (token !== routing) return;
+  window.RuosuenScroll?.refresh();
   // Raw scroll restoration outside the film still needs to update its header.
   window.RuosuenStory?.refresh();
 }
@@ -357,6 +371,7 @@ async function showDoc(path, entry, token) {
   $("article-title").setAttribute('tabindex','-1');
   $("article-title").focus({preventScroll:true});
   $("article-content").setAttribute('aria-busy','false');
+  window.RuosuenScroll?.refresh();
 }
 
 async function onRoute() {

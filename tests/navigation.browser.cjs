@@ -11,7 +11,7 @@ const CITY='docs/04_自由迷宮都市と組織.md';
 const NEXT='adventures/次の冒険.md';
 const PREP='players/キャラクター作成ガイド.md';
 const SHARE='players/キャラクター提出テンプレート.md';
-const scenes=['opening','world','cargo','depths','explorers','territory','tavern','next'];
+const scenes=['opening','vista','world','cargo','depths','explorers','territory','tavern','next'];
 const institutions=['円環商館の酒場','セレド王立地図院','底空船廠','伽藍の塔','聖路教会','深青の石工房'];
 const errors=[];
 const url=path=>base+'#/'+encodeURIComponent(path);
@@ -51,12 +51,13 @@ async function checkJourney(page,width) {
   assert.deepEqual(await page.locator('[data-film-scene]').evaluateAll(es=>es.map(e=>e.id)),scenes);
   assert.deepEqual(await page.locator('.film-sequence [data-film-scene]').evaluateAll(es=>es.map(e=>e.id)),scenes.slice(1));
   const artwork=await page.locator('[data-film-scene] img').evaluateAll(es=>es.map(e=>e.getAttribute('src')));
-  assert.equal(new Set(artwork).size,8,'Every film scene needs distinct artwork');
+  assert.equal(new Set(artwork).size,9,'Every film scene needs distinct artwork');
   assert.equal(await page.locator('.film-story-hint,.film-scene-steps,.film-story-progress').count(),0);
   assert.equal(await page.locator('.brand-city-name').innerText(),'ルオスエン');
-  assert.equal(await page.locator('#opening h1').textContent(),'この街の下には、まだ世界がある。');
+  assert.equal(await page.locator('#opening h1').textContent(),'自由迷宮都市ルオスエン');
+  assert.equal(await page.locator('#vista h2').textContent(),'この街の下には、まだ世界がある。');
   assert.equal(await page.evaluate(()=>window.RuosuenStory.capture()),null,'Opening uses normal document scroll');
-  const continuation=await page.locator('#world').boundingBox();
+  const continuation=await page.locator('#vista').boundingBox();
   assert(continuation.y>0&&continuation.y<900,'Next artwork should peek below the introduction');
   assert.equal(await page.locator('.film-artwalk').count(),0);
   assert.equal(await page.locator('.site-header .nav-start').isVisible(),false);
@@ -137,7 +138,19 @@ async function checkJourney(page,width) {
   await page.locator('.film-archive-links a').filter({hasText:'ルオスエンを歩く'}).click();await ready(page,CITY);
   await page.locator('#reader-bottom [data-return-to-story]').click();await atY(page,archiveY);
   assert.equal(await page.locator('.film-archive-disclosure').evaluate(e=>e.open),true);
-  console.log(JSON.stringify({width,journey:'PASS',scenes:8,cityPanels:10,history:true,archiveReturn:true}));
+  for (const path of [WORLD,CITY,NEXT,PREP,SHARE]) {
+    await page.goto(url(path));await ready(page,path);
+    await page.waitForFunction(()=>window.RuosuenScroll&&document.documentElement.classList.contains('scroll-effects'));
+    const illustrated=[WORLD,CITY,NEXT].includes(path);
+    const target=page.locator(illustrated?'.story-panel':'.reading-section').last();
+    await paint(page);
+    const property=illustrated?'--art-shift-y':'--reveal-opacity';
+    const before=await target.evaluate((e,p)=>e.style.getPropertyValue(p),property);
+    await target.evaluate(e=>scrollTo({top:e.getBoundingClientRect().top+scrollY-120,behavior:'instant'}));await paint(page);
+    const after=await target.evaluate((e,p)=>e.style.getPropertyValue(p),property);
+    assert.notEqual(before,after,'Native scroll must animate '+path);
+  }
+  console.log(JSON.stringify({width,journey:'PASS',scenes:9,cityPanels:10,history:true,archiveReturn:true}));
 }
 (async()=>{
   const proxy=process.env.HTTPS_PROXY||process.env.HTTP_PROXY;
@@ -156,6 +169,7 @@ async function checkJourney(page,width) {
     }
     const c=await context({viewport:{width:390,height:844},reducedMotion:'reduce'});const p=await c.newPage();
     await p.goto(base,{waitUntil:'networkidle'});assert.equal(await p.locator('.is-scroll-story').count(),0);
+    assert.equal(await p.locator('html.scroll-effects').count(),0);
     await p.locator('#next a').click();await ready(p,WORLD);
     await p.locator('#reader-bottom [data-return-to-story]').click();assert(await p.locator('#next').isVisible());
     // Existing public URLs continue to resolve after consolidation.

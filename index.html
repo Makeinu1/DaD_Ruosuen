@@ -8,18 +8,19 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="自由迷宮都市ルオスエン — この街の下には、まだ世界がある。">
   <meta property="og:description" content="この街の下には、まだ世界がある。魔導船の行き交う街から、まだ地図にない道へ。">
-  <meta property="og:image" content="https://makeinu1.github.io/DaD_Ruosuen/assets/ruosuen-film-vista.webp">
+  <meta property="og:image" content="https://makeinu1.github.io/DaD_Ruosuen/assets/ruosuen-street-night-oil.webp">
   <meta property="og:url" content="https://makeinu1.github.io/DaD_Ruosuen/">
   <title>自由迷宮都市ルオスエン — この街の下には、まだ世界がある。</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Noto+Serif+JP:wght@400;500;600;700;900&display=swap" rel="stylesheet">
-  <link rel="preload" href="assets/ruosuen-film-vista.webp" as="image" type="image/webp">
+  <link rel="preload" href="assets/ruosuen-street-night-oil.webp" as="image" type="image/webp">
   <link rel="stylesheet" href="assets/site.css">
   <link rel="stylesheet" href="assets/concept.css">
-  <link rel="stylesheet" href="assets/journey.css?v=20261116-film2">
-  <script src="assets/site.js?v=20261116-film2" defer></script>
-  <script type="module" src="assets/scroll-story.mjs?v=20261116-film2"></script>
+  <link rel="stylesheet" href="assets/journey.css?v=20261116-motion">
+  <script src="assets/site.js?v=20261116-motion" defer></script>
+  <script type="module" src="assets/scroll-story.mjs?v=20261116-motion"></script>
+  <script type="module" src="assets/scroll-effects.mjs?v=20261116-motion"></script>
 </head>
 <body class="is-watching-film">
 <a class="skip-link" href="#main">本文へ移動</a>
@@ -43,15 +44,21 @@
 </header>
 <main id="main">
 <div id="home-view" class="film-home">
-<section class="film-frame film-montage-shot film-intro" id="opening" data-film-scene="まだ世界がある" tabindex="-1" aria-labelledby="film-opening-title">
-  <img class="film-image" src="assets/ruosuen-film-vista.webp" width="1536" height="1024" alt="街の縁の向こうに、地下河川、空を行く船、巨大な岩柱と空洞が幾重にも続く" fetchpriority="high" decoding="async">
+<section class="film-frame film-montage-shot film-intro" id="opening" data-film-scene="自由迷宮都市ルオスエン" tabindex="-1" aria-labelledby="film-opening-title">
+  <img class="film-image" src="assets/ruosuen-street-night-oil.webp" width="1672" height="941" alt="橋と街並み、魔導灯が裂谷の奥へ連なる自由迷宮都市ルオスエンの全景" fetchpriority="high" decoding="async">
   <div class="film-shot-shade" aria-hidden="true"></div>
   <div class="film-caption container" data-film-caption>
-    <h1 class="film-title" id="film-opening-title">この街の下には、<br>まだ世界がある。</h1>
-    <p class="film-copy">自由迷宮都市ルオスエン。</p>
+    <h1 class="film-title" id="film-opening-title"><span class="city-title-kind">自由迷宮都市</span><span class="city-title-name">ルオスエン</span></h1>
   </div>
 </section>
 <div class="film-sequence"><div class="film-stage">
+<section class="film-frame film-montage-shot" id="vista" data-film-scene="まだ世界がある" tabindex="-1" aria-labelledby="film-vista-title">
+  <img class="film-image" src="assets/ruosuen-film-vista.webp" width="1536" height="1024" alt="街の縁の向こうに、地下河川、空を行く船、巨大な岩柱と空洞が幾重にも続く" loading="lazy" decoding="async">
+  <div class="film-shot-shade" aria-hidden="true"></div>
+  <div class="film-caption container" data-film-caption>
+    <h2 class="film-title" id="film-vista-title">この街の下には、<br>まだ世界がある。</h2>
+  </div>
+</section>
 <section class="film-frame film-montage-shot" id="world" data-film-scene="地上の川港" tabindex="-1" aria-labelledby="film-world-title">
   <img class="film-image" src="assets/ruosuen-film-riverport.webp" width="1536" height="1024" alt="地上の川港で、川船から食料と木材を下ろす人々と街に着く旅人" loading="lazy" decoding="async">
   <div class="film-shot-shade" aria-hidden="true"></div>
@@ -103,7 +110,7 @@
   </div>
 </section>
 <div class="film-story-hud">
-<nav class="film-story-controls" aria-label="場面の移動"><a id="film-prev" href="#world" aria-label="前の場面" hidden><span aria-hidden="true">←</span></a><a id="film-next" href="#cargo" aria-label="次の場面"><span aria-hidden="true">→</span></a></nav>
+<nav class="film-story-controls" aria-label="場面の移動"><a id="film-prev" href="#vista" aria-label="前の場面" hidden><span aria-hidden="true">←</span></a><a id="film-next" href="#world" aria-label="次の場面"><span aria-hidden="true">→</span></a></nav>
 </div></div></div>
 <section class="film-archive container" id="guide" aria-labelledby="film-guide-title">
 <h2 id="film-guide-title">この街の、その先へ。</h2><p>世界を知り、街を歩き、君の人物を考える。</p>

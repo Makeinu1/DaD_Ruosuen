@@ -102,3 +102,24 @@
   #opening.film-intro .film-image { object-position: 58% center; }
   .is-scroll-story .film-story-hud { inset-inline: 16px; bottom: 14px; }
 }
+
+/* The city's exterior opens the film; its underground world is the second view. */
+.city-title-kind,.city-title-name { display: block; }
+#opening.film-intro .city-title-kind { font-size: clamp(19px,2.3vw,32px); letter-spacing: .14em; margin-bottom: 10px; }
+#opening.film-intro .city-title-name { font-size: clamp(46px,7vw,96px); letter-spacing: .12em; }
+#opening.film-intro .film-image { object-position: 68% center; }
+#vista .film-image { object-position: 58% center; }
+.film-intro { overflow: hidden; }
+.scroll-effects .film-intro .film-image { transform: translate3d(0,var(--intro-pan,0px),0) scale(1.07); }
+.scroll-effects .film-intro .film-caption { transform: translate3d(0,var(--intro-copy-y,0px),0); opacity: var(--intro-copy-opacity,1); }
+.scroll-effects .film-archive,
+.scroll-effects .article-hero,
+.scroll-effects .reading-section,
+.scroll-effects #reader-bottom { transform: translate3d(0,var(--reveal-y,0px),0); opacity: var(--reveal-opacity,1); }
+.scroll-effects .story-art { overflow: hidden; }
+.scroll-effects .story-art img { transform: translate3d(0,var(--art-shift-y,0px),0) scale(1.04); }
+.scroll-effects .story-caption { transform: translate3d(0,var(--reveal-y,0px),0); opacity: var(--reveal-opacity,1); }
+.scroll-effects [data-scroll-reveal]:focus-within { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .film-intro .film-image,.film-intro .film-caption,[data-scroll-reveal],.story-art img,.story-caption { transform: none !important; opacity: 1 !important; }
+}
