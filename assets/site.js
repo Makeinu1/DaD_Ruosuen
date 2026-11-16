@@ -8,7 +8,7 @@
  */
 const SECTIONS = [
   {label:"この街から", entries:[
-    {path:"docs/01_プレイヤー向け世界観.md",label:"この世界と、ルオスエンの始まり",kicker:"世界を知る",summary:"魔石が築いた文明から、自由迷宮都市の誕生へ。",layout:"story",book:true},
+    {path:"docs/01_プレイヤー向け世界観.md",label:"世界を知る",kicker:"魔石の文明と、大転流",summary:"かつての文明から、大地の変化を経て、いまのルオスエンへ。",layout:"story",book:true},
     {path:"docs/04_自由迷宮都市と組織.md",label:"ルオスエンを歩く",kicker:"街と人々を知る",summary:"六つの場所から、君の人物の居場所を探して。",layout:"story",book:true,chapters:true},
     {path:"adventures/次の冒険.md",label:"次の冒険の始まり",kicker:"次は、君たちの話を",summary:"導入と開始条件は、準備中です。",layout:"story"}
   ]},

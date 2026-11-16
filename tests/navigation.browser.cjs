@@ -116,14 +116,14 @@ async function checkJourney(page,width) {
   assert.equal(await page.locator('#next a').count(),0);
   if(await menu.isVisible()) await clickVisible(page,menu);
   await clickWorld(page);await ready(page,WORLD);
-  assert.equal(await page.locator('.story-panel').count(),7);
-  assert.equal(await page.locator('.storybook .story-caption').count(),7);
+  assert.equal(await page.locator('.story-panel').count(),4);
+  assert.equal(await page.locator('.storybook .story-caption').count(),4);
   for(const caption of await page.locator('.storybook .story-caption').all()) {
     assert.equal(await caption.locator('p').count(),2,'World scenes preserve explanatory paragraphs');
     assert.equal(await caption.evaluate(e=>getComputedStyle(e).position),'relative');
   }
   const worldText=await page.locator('#article-content').innerText();
-  for(const term of ['マナ','魔石','純度','大転流','願いが叶う'])assert(worldText.includes(term));
+  for(const term of ['レウナ','マナ','魔石','大転流','大断裂','約三十年','いまのルオスエン'])assert(worldText.includes(term));
   const readingY=await readAt(page);
   assert(readingY>100);
   await page.goBack();await restored(page,'next',movieY);
