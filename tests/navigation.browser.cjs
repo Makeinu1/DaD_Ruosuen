@@ -15,7 +15,7 @@ const scenes=['opening','vista','trail','cargo','depths','explorers','territory'
 const worldArtwork=Array.from({length:10},(_,index)=>'reuna-turn-'+String(index+1).padStart(2,'0')+'.webp');
 const historyChapters=['魔石とは','大転流','大断裂の谷','ルオスエン'];
 const historyPhases=['rise','fall','renewal','city'];
-const institutions=['円環商館のまわり','セレド王立地図院','底空船廠','伽藍の塔','聖路教会','深青の石工房'];
+const institutions=['商館のまわり','王立地図院','竜骨亭','伽藍の塔','星路教会','魔石工房'];
 const errors=[];
 const url=path=>base+'#/'+encodeURIComponent(path);
 async function clickVisible(page,link) {
