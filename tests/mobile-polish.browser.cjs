@@ -50,6 +50,27 @@ for (const [name,type] of [['chromium',chromium],['webkit',webkit]]) {
         assert.equal(nav.count,5);
         assert(nav.bodyWidth<=width+1,JSON.stringify({name,width,path,nav}));
         if(width<=430)assert(nav.rows===1&&nav.activeVisible&&nav.wrap==='nowrap',JSON.stringify({name,width,path,nav}));
+        if(path===paths[0]){
+          const divider=p.locator('.walk-chapter-divider');
+          assert.equal(await divider.count(),1);
+          assert.equal(await divider.locator('h2').innerText(),'この街に生きる人々');
+          assert.equal(await divider.locator('.walk-divider-copy br').count(),2);
+          assert(await divider.evaluate(e=>{
+            const style=getComputedStyle(e), r=e.getBoundingClientRect();
+            return r.width<=innerWidth && parseFloat(style.paddingTop)>=64 &&
+              e.previousElementSibling.matches('.story-panel') && e.nextElementSibling.querySelector('h2')?.textContent==='モグラの寝床';
+          }));
+          assert.equal(await p.locator('#article-content .story-panel').count(),11);
+          const q=p.locator('.story-panel').filter({has:p.locator('h2',{hasText:'クェンサ ― 我らの青'})});
+          assert.equal(await q.count(),1);
+          assert.equal(await q.locator('img').count(),1);
+          assert.equal(await q.locator('.story-caption p').count(),3);
+          assert((await q.innerText()).includes('大断裂で森ごと地下へ沈んだエルフたち'));
+          await p.locator('#story-chapters a').filter({hasText:'この街に生きる人々'}).click();
+          await p.waitForFunction(()=>document.activeElement?.id==='walk-people');
+          await p.locator('#story-chapters a').filter({hasText:'モグラの寝床'}).click();
+          await p.waitForFunction(()=>document.activeElement?.textContent==='モグラの寝床');
+        }
         const imgs=p.locator('#article-content img');
         if(await imgs.count()) {
           const first=imgs.first();

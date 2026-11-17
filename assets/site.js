@@ -120,10 +120,6 @@ const RESPONSIVE_ART = {
     1672,
     941
   ],
-  "ruosuen-walk-quentha-forest-20261117.webp": [
-    1536,
-    508
-  ],
   "ruosuen-walk-shipyard-20261117.webp": [
     1672,
     941
@@ -243,7 +239,11 @@ function markdownToHtml(markdown, sourcePath) {
       const level = Math.min(h[1].length, 4), title = h[2];
       // The document title is already shown in the styled article header.
       if (level !== 1 || headingCount > 0) {
-        const id = "section-" + (headingCount++);
+        // The city chapter divider gets its own ID without renumbering
+        // any of the existing article navigation targets.
+        const isCityDivider = sourcePath === "docs/04_自由迷宮都市と組織.md" &&
+          level === 2 && title === "この街に生きる人々";
+        const id = isCityDivider ? "walk-people" : "section-" + (headingCount++);
         html.push("<h" + level + ' id="' + id + '">' + inlineMarkdown(title, sourcePath) + "</h" + level + ">");
       }
       i++; continue;
@@ -375,6 +375,20 @@ function composeStory(meta) {
       // Blockquotes remain normal readable Markdown outside the Pages viewer.
       quote.querySelectorAll('p').forEach(p => caption.append(p));
       quote.remove();
+    }
+  }
+  if (meta.chapters && !meta.history) {
+    const heading = article.querySelector('#walk-people');
+    const kicker = heading?.nextElementSibling;
+    const copy = kicker?.nextElementSibling;
+    if (heading && kicker?.tagName === 'P' && copy?.tagName === 'P') {
+      const divider = document.createElement('section');
+      divider.className = 'walk-chapter-divider';
+      divider.setAttribute('aria-labelledby', heading.id);
+      heading.before(divider);
+      kicker.classList.add('walk-divider-kicker');
+      copy.classList.add('walk-divider-copy');
+      divider.append(heading, kicker, copy);
     }
   }
   if (meta.history) {
