@@ -131,13 +131,13 @@ const RESPONSIVE_ART = {
 };
 const SECTIONS = [
   {label:"街から冒険へ",entries:[
-    {path:"docs/04_自由迷宮都市と組織.md",label:"ルオスエンを歩く",kicker:"人と仕事と、その先の迷宮",summary:"地下の三つの景色から、街の表と裏に生きる人々へ。",layout:"story",book:true,chapters:true},
+    {path:"docs/04_自由迷宮都市と組織.md",label:"ルオスエンを歩く",kicker:"人と仕事と、その先の迷宮",summary:"地下の三つの景色から、街の表と裏に生きる人々へ。",layout:"story",book:true,walk:true},
     {path:"adventures/次の冒険.md",label:"この街で冒険する",kicker:"君たちは、何を探しに行く？",summary:"救助、探索、護衛、採集。四人から始まる小さな冒険の可能性。",layout:"story",book:true},
-    {path:"adventures/最初の冒険.md",label:"最初の冒険",kicker:"第一話",summary:"年の瀬、自由迷宮都市ルオスエン。",book:true},
+    {path:"adventures/最初の冒険.md",label:"最初の冒険",kicker:"第一話",summary:"年の瀬、自由迷宮都市ルオスエン。",book:true,prologue:true},
     {path:"players/キャラクター作成ガイド.md",label:"キャラクターを考える",kicker:"君は、この街で何者になる？",summary:"人物像の種と、四人で冒険するための準備。"}
   ]},
   {label:"もっと知る",entries:[
-    {path:"docs/01_プレイヤー向け世界観.md",label:"世界を知る",kicker:"魔石から、ルオスエンへ",summary:"なぜ船は地下を飛ぶのか。レウナの歴史から、街の始まりをたどる。",layout:"story",book:true,chapters:true,history:true}
+    {path:"docs/01_プレイヤー向け世界観.md",label:"世界を知る",kicker:"魔石から、ルオスエンへ",summary:"なぜ船は地下を飛ぶのか。レウナの歴史から、街の始まりをたどる。",layout:"story",book:true,history:true}
   ]}
 ];
 // Public bookmarks survive the consolidation; editor-only pages stay unregistered.
@@ -271,7 +271,7 @@ function markdownToHtml(markdown, sourcePath) {
               : '';
             html.push('<figure class="article-map"><a href="' + escapeHtml(img.href) + '" target="_blank" rel="noopener noreferrer" aria-label="画像を拡大表示">' +
               '<img src="' + escapeHtml(img.href) + '"' + responsive + ' alt="' + escapeHtml(match[1]) + '" width="' + width + '" height="' + height + '" loading="lazy" decoding="async">' +
-              '</a><figcaption>画像を選択すると別画面で拡大できます。</figcaption></figure>');
+              '</a></figure>');
           }
         }
       }
@@ -337,8 +337,9 @@ function composeStory(meta) {
   captionObserver?.disconnect();
   const article = $("article-content");
   article.classList.toggle("storybook",Boolean(meta.book));
-  article.classList.toggle("storybook-walk",Boolean(meta.chapters && !meta.history));
+  article.classList.toggle("storybook-walk",Boolean(meta.walk));
   article.classList.toggle("world-history",Boolean(meta.history));
+  article.classList.toggle("prologue",Boolean(meta.prologue));
   if (meta.layout === 'story') {
     for (const heading of [...article.children]) {
       if (!/^H[23]$/.test(heading.tagName)) continue;
@@ -352,7 +353,6 @@ function composeStory(meta) {
       const caption = document.createElement('div');
       caption.className = 'story-caption';
       figure.className = 'story-art';
-      figure.querySelector('figcaption')?.remove();
       panel.append(figure, caption);
       caption.append(heading);
       // The optional opening emphasis is the short hook, before the explanation.
@@ -369,7 +369,7 @@ function composeStory(meta) {
       quote.remove();
     }
   }
-  if (meta.chapters && !meta.history) {
+  if (meta.walk) {
     const heading = article.querySelector('#walk-people');
     const kicker = heading?.nextElementSibling;
     const copy = kicker?.nextElementSibling;
@@ -406,6 +406,11 @@ function composeStory(meta) {
       }
     }
   }
+  if (meta.prologue) {
+    const heading = article.querySelector('h2');
+    const image = heading?.nextElementSibling;
+    if (image?.matches('figure.article-map')) heading.before(image);
+  }
   if (meta.layout !== 'story') {
     // Animate coherent reading sections rather than each line of body text.
     let section;
@@ -423,35 +428,7 @@ function composeStory(meta) {
     captionObserver = new ResizeObserver(fitStoryCaptions);
     article.querySelectorAll('.story-caption, .story-art img').forEach(e => captionObserver.observe(e));
   }
-  const chapters = $("story-chapters");
-  chapters.replaceChildren();
-  chapters.setAttribute('aria-label',meta.history ? '世界の歴史' : '街の行き先');
-  chapters.hidden = !meta.chapters;
-  if (meta.chapters) {
-    const headings = [...article.querySelectorAll(meta.history ? '.history-chapter > h2' : 'h2')];
-    const makeLink = heading => {
-      const link = document.createElement('a');
-      link.href = '#' + heading.id;
-      link.textContent = heading.textContent;
-      return link;
-    };
-    if (meta.history) {
-      headings.forEach(heading => chapters.append(makeLink(heading)));
-    } else {
-      const main = document.createElement('div');
-      main.className = 'walk-main-chapters';
-      headings.slice(0,2).forEach(heading => main.append(makeLink(heading)));
-      const organizations = document.createElement('details');
-      organizations.className = 'walk-organizations';
-      const summary = document.createElement('summary');
-      summary.textContent = '組織から探す';
-      const links = document.createElement('div');
-      links.className = 'walk-organization-links';
-      headings.slice(2).forEach(heading => links.append(makeLink(heading)));
-      organizations.append(summary,links);
-      chapters.append(main,organizations);
-    }
-  }
+
 }
 const HOME_ANCHORS = new Set([...document.querySelectorAll('[data-film-scene]')].map(frame => frame.id).concat('characters','guide'));
 const visits = new Map();
@@ -560,7 +537,6 @@ async function showDoc(path, entry, token) {
   document.title = meta.label + ' | ルオスエン';
   document.body.classList.toggle('story-layout',meta.layout === 'story');
   document.body.classList.toggle('reading-layout',meta.layout !== 'story');
-  $("story-chapters").hidden = true;
   document.body.classList.remove('is-watching-film');
   $("home-view").classList.add('hidden');
   $("reader-view").classList.remove('hidden');
@@ -648,8 +624,6 @@ document.addEventListener('click', event => {
     const target = document.getElementById(path);
     if (target && !target.closest('.hidden')) {
       event.preventDefault();
-      const organizations = link.closest('.walk-organizations');
-      if (organizations) organizations.open = false;
       target.scrollIntoView({behavior:'instant',block:'start'});
       target.setAttribute('tabindex','-1');
       target.focus({preventScroll:true});

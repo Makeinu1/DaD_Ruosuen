@@ -89,7 +89,8 @@ async function checkWorldPanels(page) {
   assert.deepEqual(await chapters.evaluateAll(elements=>elements.map(element=>element.dataset.historyPhase)),historyPhases);
   assert.deepEqual(await chapters.locator(':scope > h2').allTextContents(),historyChapters);
   assert.deepEqual(await chapters.evaluateAll(elements=>elements.map(element=>element.querySelectorAll('.story-panel').length)),[3,3,2,2]);
-  assert.deepEqual(await page.locator('#story-chapters a').allTextContents(),historyChapters);
+  assert.equal(await page.locator('#story-chapters').count(),0);
+  assert(await chapters.evaluateAll(es=>es.every(e=>getComputedStyle(e).backgroundColor==='rgba(0, 0, 0, 0)'&&getComputedStyle(e).backgroundImage==='none')));
   assert.equal(await panels.nth(3).locator('h3').innerText(),'地上の富が、細っていく');
   assert.equal(await panels.nth(6).locator('h3').innerText(),'その谷の底に、世界が開いた');
   assert.equal(await panels.nth(3).evaluate(element=>element.closest('.history-chapter').dataset.historyPhase),'fall');
@@ -147,24 +148,7 @@ async function checkWorldPanels(page) {
     'The world story should end by inviting the reader to imagine their character');
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
 
-  // Chapter controls scroll inside the article. Enter must neither send the
-  // reader home nor replace the article URL with an unroutable section hash.
-  const route=await page.evaluate(()=>location.hash);
-  for(const link of await page.locator('#story-chapters a').all()) {
-    const targetId=(await link.getAttribute('href')).replace(/^#/,'');
-    assert(targetId.startsWith('section-'));
-    await link.focus();
-    await page.keyboard.press('Enter');
-    await page.waitForFunction(({route,targetId})=>{
-      const target=document.getElementById(targetId);
-      const bounds=target?.getBoundingClientRect();
-      const headerBottom=document.querySelector('.site-header').getBoundingClientRect().bottom;
-      return location.hash===route&&document.activeElement===target&&
-        !document.querySelector('#reader-view').classList.contains('hidden')&&
-        bounds.top>=headerBottom-1&&bounds.top<innerHeight/2;
-    },{route,targetId});
-    assert.equal(await page.locator('#article-content').getAttribute('data-source'),WORLD);
-  }
+
 }
 async function checkJourney(page,width) {
   await page.goto(base,{waitUntil:'networkidle'});
@@ -229,7 +213,8 @@ async function checkJourney(page,width) {
   const departWorldY=await page.evaluate(()=>scrollY);
   await page.locator('#reader-bottom .reader-onward-link').click();await ready(page,CITY);
   assert.equal(await page.locator('.story-panel').count(),11);
-  assert.deepEqual(await page.locator('#story-chapters a').allTextContents(),['街の下へ','この街に生きる人々',...institutions,'クェンサ ― 我らの青']);
+  assert.equal(await page.locator('#story-chapters,.walk-organizations').count(),0);
+  assert.deepEqual(await page.locator('#article-content .story-panel h2').allTextContents(),[...institutions,'クェンサ ― 我らの青']);
   const divider=page.locator('.walk-chapter-divider');
   assert.equal(await divider.count(),1);
   assert.equal(await divider.locator('h2').innerText(),'この街に生きる人々');
@@ -253,9 +238,8 @@ async function checkJourney(page,width) {
     await image.evaluate(i=>i.decode());
     assert(await image.evaluate(i=>i.naturalWidth>0));
   }
-  await page.locator('.walk-organizations summary').click();
-  await page.locator('#story-chapters').getByRole('link',{name:'伽藍の塔',exact:true}).click();
   const tower=page.locator('.story-panel').filter({has:page.locator('h2',{hasText:'伽藍の塔'})});
+  await tower.scrollIntoViewIfNeeded();
   assert(await tower.isVisible());
   await paint(page);
   const cityY=await page.evaluate(()=>scrollY);
@@ -332,7 +316,7 @@ async function checkJourney(page,width) {
     const after=await target.evaluate((e,p)=>e.style.getPropertyValue(p),property);
     assert.notEqual(before,after,'Native scroll must animate '+path);
   }
-  console.log(JSON.stringify({width,journey:'PASS',scenes:9,worldPanels:10,historyChapters:4,chapterKeyboard:true,cityPanels:11,history:true,archiveReturn:true}));
+  console.log(JSON.stringify({width,journey:'PASS',scenes:9,worldPanels:10,historyChapters:4,chapterNavigationRemoved:true,cityPanels:11,history:true,archiveReturn:true}));
 }
 (async()=>{
   const proxy=process.env.HTTPS_PROXY||process.env.HTTP_PROXY;

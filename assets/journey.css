@@ -5,7 +5,6 @@
 #territory .film-image { object-position: 76% center; }
 #depths .film-image { object-position: 30% center; }
 #next .film-title { font-size: clamp(30px, 4.4vw, 64px); }
-.story-chapters a:focus-visible { outline: 2px solid #80bbde; outline-offset: 4px; }
 #reader-view .reader-layout { display: block; }
 .reading-layout .reader-layout { max-width: 960px; }
 .story-layout { background: #030810; }
@@ -19,9 +18,6 @@
 .story-layout .article-body > p { max-width: 44em; margin: 16px 0 32px; }
 .story-layout .article-body strong { color: inherit; }
 .story-layout .article-body a { color: #c0e1f1; }
-.story-chapters { display: flex; flex-wrap: wrap; gap: 6px 22px; padding: 10px 0 26px; }
-.story-chapters[hidden] { display: none; }
-.story-chapters a { color: #c0e1f1; min-height: 44px; display: inline-flex; align-items: center; font-size: 13px; text-underline-offset: 6px; }
 .story-panel { position: relative; isolation: isolate; margin: 0 0 64px; scroll-margin-top: 105px; }
 .story-art { margin: 0; }
 .story-art a { display: block; }
@@ -141,11 +137,11 @@
 /* World history: the turns of the story remain visible while reading at
    a native pace. Phase colors belong to the page, never to the paintings. */
 .article-body.world-history .history-chapter {
-  --history-accent: #beb7ab;
-  --history-heading: #e5e3dc;
+  --history-accent: #b8ccd9;
+  --history-heading: #e3f8ff;
   margin: 0 0 clamp(36px, 5vw, 64px);
   padding-top: clamp(30px, 4vw, 48px);
-  background: #101820;
+  background: transparent;
 }
 .article-body.world-history .history-chapter > h2 {
   margin: 0;
@@ -155,7 +151,7 @@
   font: 600 clamp(30px, 3.6vw, 48px)/1.55 var(--serif);
   letter-spacing: .045em;
   text-wrap: balance;
-  scroll-margin-top: 166px;
+  scroll-margin-top: 105px;
 }
 .article-body.world-history .history-era {
   max-width: 48em;
@@ -198,63 +194,38 @@
   line-height: 2;
 }
 .article-body.world-history .history-chapter[data-history-phase="fall"] {
-  --history-accent: #aeb7bf;
-  --history-heading: #e5e9ed;
+  --history-accent: #b8ccd9;
+  --history-heading: #e3f8ff;
   margin-top: clamp(40px, 6vw, 72px);
   padding-top: clamp(40px, 5vw, 64px);
-  border-top: 3px solid #697681;
-  background: linear-gradient(180deg, #1b242d, #0b1119 260px);
+  border-top: 0;
+  background: transparent;
 }
 .article-body.world-history .history-chapter[data-history-phase="fall"] > h2 {
   font-weight: 700;
   letter-spacing: .08em;
 }
 .article-body.world-history .history-chapter[data-history-phase="renewal"] {
-  --history-accent: #9ed8ec;
+  --history-accent: #b8ccd9;
   --history-heading: #e3f8ff;
   margin-top: clamp(40px, 6vw, 72px);
   padding-top: clamp(40px, 5vw, 64px);
-  border-top: 1px solid #9ed8ec;
-  background: linear-gradient(180deg, #123043, #071827 260px);
+  border-top: 0;
+  background: transparent;
 }
 .article-body.world-history .history-chapter[data-history-phase="city"] {
-  --history-accent: #b8dce9;
-  --history-heading: #eefaff;
-  background: #0a2030;
+  --history-accent: #b8ccd9;
+  --history-heading: #e3f8ff;
+  background: transparent;
 }
 .article-body.world-history .history-chapter[data-history-phase="city"] .story-caption p {
-  color: #dae8ef;
-}
-.reader:has(.world-history) > #story-chapters {
-  position: sticky;
-  top: 78px;
-  z-index: 25;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 4px 12px;
-  width: min(100%, 1160px);
-  margin: 0 auto 28px;
-  padding: 8px 12px;
-  background: #071625f5;
-  border-bottom: 1px solid #557487;
-}
-.reader:has(.world-history) > #story-chapters[hidden] { display: none; }
-.reader:has(.world-history) > #story-chapters a {
-  justify-content: center;
-  min-width: 0;
-  padding: 4px;
-  text-align: center;
-  line-height: 1.7;
-  white-space: normal;
-  overflow-wrap: anywhere;
-  text-wrap: balance;
+  color: #d0dfe9;
 }
 @media (max-width: 720px) {
-  .reader:has(.world-history) > #story-chapters { top: 66px; }
-}
+  }
 @media (max-width: 700px) {
   .article-body.world-history .history-chapter { padding-top: 30px; margin-bottom: 36px; }
-  .article-body.world-history .history-chapter > h2 { font-size: clamp(28px, 8vw, 34px); scroll-margin-top: 154px; }
+  .article-body.world-history .history-chapter > h2 { font-size: clamp(28px, 8vw, 34px); scroll-margin-top: 105px; }
   .article-body.world-history .history-era { margin-top: 12px; margin-bottom: 26px; }
   .article-body.world-history .story-caption { padding: 24px 24px 0; }
   .article-body.world-history .story-caption h3 { font-size: 23px; line-height: 1.7; margin-bottom: 16px; }
@@ -263,9 +234,7 @@
   .article-body.world-history .history-chapter > .story-panel:last-child { padding-bottom: 30px; }
   .article-body.world-history .history-chapter[data-history-phase="fall"],
   .article-body.world-history .history-chapter[data-history-phase="renewal"] { margin-top: 44px; padding-top: 40px; }
-  .reader:has(.world-history) > #story-chapters { width: calc(100% - 32px); gap: 4px; padding: 8px 6px; margin-bottom: 24px; }
-  .reader:has(.world-history) > #story-chapters a { font-size: 12px; padding-inline: 2px; }
-}
+    }
 
 
 /* The underground triptych leads into the six sites; artwork remains the focus. */
@@ -407,25 +376,9 @@
   text-underline-offset: 7px;
 }
 .top-nav .nav-start[aria-current="page"] { border-color: #b5e4ff; }
-.top-nav a:focus-visible,.walk-organizations summary:focus-visible,
+.top-nav a:focus-visible,
 .reader-onward-link:focus-visible { outline: 2px solid #80bbde; outline-offset: 4px; }
-.reader > .walk-chapter-nav { display: block; }
 .article-body.storybook-walk { --chapter-line: #334959; }
-.reader:has(.storybook-walk) > #story-chapters {
-  display: block;
-  max-width: 960px;
-  margin: 0 auto 28px;
-  padding: 12px 24px;
-  background: #0a1927;
-  border-bottom: 1px solid #41657e;
-}
-.reader:has(.storybook-walk) > #story-chapters[hidden] { display: none; }
-.walk-main-chapters { display: flex; justify-content: center; flex-wrap: wrap; column-gap: clamp(18px, 5vw, 72px); }
-.walk-main-chapters a { text-underline-offset: 5px; }
-.walk-organizations { border-top: 1px solid #294557; text-align: center; }
-.walk-organizations summary { min-height: 44px; padding: 10px; color: #b4cbdc; cursor: pointer; font: 13px/1.8 var(--serif); }
-.walk-organization-links { display: grid; grid-template-columns: repeat(auto-fit,minmax(150px,1fr)); gap: 0 16px; padding: 4px 0 12px; }
-.walk-organization-links a { justify-content: center; }
 #reader-bottom[hidden] { display: none; }
 #reader-bottom {
   display: block;
@@ -452,8 +405,96 @@
 .reader-onward-arrow { color: #a6cde2; font-size: 23px; }
 #reader-bottom.optional-onward .reader-onward-link { font-size: clamp(16px, 2vw, 21px); font-weight: 400; }
 @media (max-width: 700px) {
-  .reader:has(.storybook-walk) > #story-chapters { margin-inline: 24px; padding-inline: 9px; }
-  .walk-organization-links { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 0 8px; }
-  .walk-organization-links a { font-size: 12px; text-align: center; }
   #reader-bottom { margin-inline: 24px; }
+}
+
+/* One book: width may vary by content, but the page palette and heading do not. */
+#reader-view {
+  background: #030810;
+  color: #e3f8ff;
+}
+#reader-view .reader-layout {
+  width: min(100%, 1500px);
+  max-width: 1500px;
+  padding: clamp(28px, 4vw, 64px) clamp(20px, 4vw, 54px) clamp(64px, 8vw, 120px);
+}
+#reader-view .reader { max-width: none; width: 100%; }
+#reader-view .article-hero {
+  padding: 0 0 clamp(30px, 4vw, 54px);
+  border: 0;
+  margin: 0;
+}
+#reader-view .article-hero h1 {
+  color: #e3f8ff;
+  font: 700 clamp(32px, 4vw, 52px)/1.5 var(--serif);
+  letter-spacing: .035em;
+  margin: 14px 0 17px;
+}
+#reader-view .article-label { color: #80bbde; font: 500 14px/1.8 var(--serif); letter-spacing: .08em; }
+#reader-view .article-summary { color: #b8ccd9; font: 16px/2 var(--serif); }
+#reader-view .article-body { color: #d0dfe9; font: clamp(16px, 1.35vw, 18px)/2.15 var(--serif); }
+.reading-layout #article-content { max-width: 45em; margin-inline: auto; }
+#reader-view .article-body h2 { border-bottom: 0; }
+#reader-view .article-body.storybook .story-caption p,
+#reader-view .article-body.world-history .story-caption p,
+#reader-view .article-body.storybook-walk .story-caption p:last-child,
+#reader-view .article-body.storybook-walk .story-corner .story-caption p {
+  font-size: clamp(16px, 1.35vw, 18px);
+}
+#reader-view .article-body.world-history .history-era { font-size: clamp(14px, 1.15vw, 16px); }
+#reader-view .article-body.world-history .history-chapter {
+  background: transparent; border: 0;
+  padding-top: clamp(28px, 5vw, 64px);
+  margin-bottom: clamp(48px, 8vw, 100px);
+}
+#reader-view .article-body.world-history .history-chapter > h2 { color: #e3f8ff; }
+#reader-view .article-body .walk-divider-copy { font-size: clamp(16px, 1.35vw, 18px); }
+#reader-view .article-body .walk-divider-kicker { font-size: 13px; }
+#reader-view .article-body table { font-size: 16px; }
+#reader-view .article-map, #reader-view .article-map img {
+  background: #030810;
+}
+#reader-view .article-map { margin-inline: 0; border: 0; box-shadow: none; }
+#reader-view .article-map a:focus-visible { outline: 2px solid #80bbde; outline-offset: -3px; }
+#reader-view #article-content.prologue > .article-map {
+  margin: 0 auto clamp(38px, 5vw, 68px);
+}
+#reader-view #article-content.prologue .reading-section > h2 {
+  text-align: center;
+  font-size: clamp(24px, 3vw, 36px);
+  margin: 0 0 clamp(30px, 4vw, 52px);
+  padding: 0;
+}
+#reader-view #article-content.prologue .reading-section > p { margin-bottom: 1.65em; }
+#reader-view .reader-onward-kicker { font-size: 13px; }
+.footer-inner,.footer-logo span { font-size: 14px; }
+/* Text that must be read is at least 14px; only compact secondary labels
+   such as scene progress may use 12px. Keep the scene headline scale. */
+.top-nav a,.top-nav .nav-start,.header-menu summary,.header-menu-links a { font-size: 14px; }
+.brand-city-kind { font-size: 12px; }
+.film-archive-links strong { font-size: 16px; }
+.film-archive-links span,.film-archive > p { font-size: 14px; }
+.film-story-status { font-size: 12px; }
+.film-kicker,.is-scroll-story .film-kicker,.film-worldname { font-size: 13px; }
+.film-copy,.is-scroll-story .film-copy,.is-scroll-story .film-hook .film-copy,
+.film-intertitle-copy,.is-scroll-story .film-intertitle-copy,
+.film-opening-intro,.film-session-note,.is-scroll-story .film-session-note,
+.film-character-action p,.film-character-heading p { font-size: clamp(14px, 1.2vw, 16px); }
+@media (max-width: 1180px) {
+  .top-nav > .header-desktop-link { display: none; }
+  .header-menu { display: block; }
+}
+@media (max-width: 720px) {
+  .top-nav { gap: 10px; }
+  .brand-city-kind { font-size: 12px; letter-spacing: 0; }
+  .brand-city-name { font-size: 18px; }
+  .top-nav .nav-start { white-space: normal; text-align: center; line-height: 1.5; letter-spacing: 0; padding: 5px 8px; }
+  .header-menu summary { font-size: 14px; }
+  .is-scroll-story .film-copy,.is-scroll-story .film-hook .film-copy { line-height: 1.8; margin-top: 14px; }
+}
+@media (max-width: 480px) {
+  .header-inner { padding-inline: 12px; gap: 9px; }
+  .top-nav { gap: 8px; }
+  .top-nav .nav-start { width: 114px; max-width: 38vw; justify-content: center; }
+  .brand-city { flex-shrink: 0; }
 }

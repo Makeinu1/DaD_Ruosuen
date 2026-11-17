@@ -43,16 +43,33 @@ for (const [name,type] of [['chromium',chromium],['webkit',webkit]]) {
       for(const path of paths) {
         await p.goto(base+'#/'+encodeURIComponent(path));
         await docsReady(p,path);
-        assert.equal(await p.locator('#journey-nav,.reader-breadcrumbs,.reader-toc,#sidebar').count(),0);
+        assert.equal(await p.locator('#journey-nav,.reader-breadcrumbs,.reader-toc,#sidebar,#story-chapters,.walk-organizations').count(),0);
+        const design=await p.evaluate(()=>{
+          const reader=document.querySelector('#reader-view'),hero=document.querySelector('.article-hero');
+          const title=hero.querySelector('h1'), r=title.getBoundingClientRect();
+          const font=e=>parseFloat(getComputedStyle(e).fontSize);
+          const text=[...document.querySelectorAll('#article-content p,#article-content li')].filter(e=>!e.matches('.walk-divider-kicker,.history-era') && e.getClientRects().length);
+          return {background:getComputedStyle(reader).backgroundColor,gradient:getComputedStyle(reader).backgroundImage,
+            border:getComputedStyle(hero).borderBottomWidth,headingFont:font(title),titleLeft:r.left,
+            titleTop:r.top,minimumBody:Math.min(...text.map(font)),
+            labelFont:font(hero.querySelector('.article-label')),summaryFont:font(hero.querySelector('.article-summary')),
+            captions:document.querySelectorAll('#article-content figure figcaption').length};
+        });
+        assert(design.background==='rgb(3, 8, 16)'&&design.gradient==='none'&&design.border==='0px'&&design.minimumBody>=16&&design.labelFont>=14&&design.summaryFont>=16&&design.captions===0,JSON.stringify({name,width,path,design}));
+        if(path===paths[0]) globalThis.baseline=design;
+        else assert(Math.abs(design.headingFont-globalThis.baseline.headingFont)<.1&&Math.abs(design.titleLeft-globalThis.baseline.titleLeft)<1&&Math.abs(design.titleTop-globalThis.baseline.titleTop)<2,JSON.stringify({name,width,path,design,baseline:globalThis.baseline}));
+        if(path===paths[2])assert(await p.locator('.prologue').evaluate(e=>e.firstElementChild.matches('figure.article-map')&&e.firstElementChild.nextElementSibling.querySelector('h2').textContent.includes('ある年の瀬')));
+        if(path===paths[4])assert(await p.locator('.history-chapter').evaluateAll(es=>es.length===4&&es.every(e=>getComputedStyle(e).backgroundImage==='none'&&getComputedStyle(e).backgroundColor==='rgba(0, 0, 0, 0)')));
+
         assert.equal(await p.locator('#reader-bottom a').count(),1);
         const menu=p.locator('.header-menu summary');
         const mobile=await menu.isVisible();
         if(mobile) await menu.click();
         const nav=await p.locator('.top-nav').evaluate(e=>{
           const links=[...e.querySelectorAll('a[href^="#/"]:not([data-return-to-story])')].filter(a=>a.getClientRects().length && getComputedStyle(a).visibility!=='hidden' && (!a.closest('details') || a.closest('details').open));
-          return {count:links.length,active:links.filter(a=>a.getAttribute('aria-current')==='page').length,unique:new Set(links.map(a=>a.getAttribute('href'))).size,bodyWidth:document.documentElement.scrollWidth};
+          return {minimumFont:Math.min(...links.map(a=>parseFloat(getComputedStyle(a).fontSize))),count:links.length,active:links.filter(a=>a.getAttribute('aria-current')==='page').length,unique:new Set(links.map(a=>a.getAttribute('href'))).size,bodyWidth:document.documentElement.scrollWidth};
         });
-        assert(nav.count===5&&nav.unique===5&&nav.active===1&&nav.bodyWidth<=width+1,JSON.stringify({name,width,path,nav}));
+        assert(nav.minimumFont>=14&&nav.count===5&&nav.unique===5&&nav.active===1&&nav.bodyWidth<=width+1,JSON.stringify({name,width,path,nav}));
         if(mobile) await menu.click();
         if(path===paths[0]){
           const divider=p.locator('.walk-chapter-divider');
@@ -70,13 +87,7 @@ for (const [name,type] of [['chromium',chromium],['webkit',webkit]]) {
           assert.equal(await q.locator('img').count(),1);
           assert.equal(await q.locator('.story-caption p').count(),3);
           assert((await q.innerText()).includes('大断裂で森ごと地下へ沈んだエルフたち'));
-          await p.locator('#story-chapters a').filter({hasText:'この街に生きる人々'}).click();
-          await p.waitForFunction(()=>document.activeElement?.id==='walk-people');
-          assert.equal(await p.locator('#story-chapters a:visible').count(),2);
-          await p.locator('.walk-organizations summary').click();
-          assert.equal(await p.locator('.walk-organization-links a:visible').count(),8);
-          await p.locator('#story-chapters a').filter({hasText:'モグラの寝床'}).click();
-          await p.waitForFunction(()=>document.activeElement?.textContent==='モグラの寝床');
+
         }
         const imgs=p.locator('#article-content img');
         if(await imgs.count()) {
