@@ -88,15 +88,15 @@ const RESPONSIVE_ART = {
     1672,
     941
   ],
-  "ruosuen-walk-labyrinth-discovery-20261117.webp": [
+  "ruosuen-walk-labyrinth-battle-v2.webp": [
     1672,
     941
   ],
-  "ruosuen-walk-labyrinth-panorama-20261117.webp": [
-    1672,
-    941
+  "ruosuen-walk-labyrinth-fleet-v2.webp": [
+    1024,
+    1536
   ],
-  "ruosuen-walk-labyrinth-survey-20261117.webp": [
+  "ruosuen-walk-labyrinth-ruins-v2.webp": [
     1672,
     941
   ],
@@ -260,12 +260,13 @@ function markdownToHtml(markdown, sourcePath) {
             const firstAdventure = name === 'ruosuen-first-adventure-1672.webp';
             const dimensions = firstAdventure ? [1672, 941] : RESPONSIVE_ART[name];
             const [width, height] = dimensions || [1536, 1024];
-            const sizes = BY_PATH.get(sourcePath)?.layout === 'story'
+            const portrait = height > width;
+            const sizes = portrait ? '(max-width: 480px) 400px, (max-width: 740px) calc(100vw - 40px), 700px' : BY_PATH.get(sourcePath)?.layout === 'story'
               ? '(max-width: 480px) 400px, (max-width: 700px) 100vw, (max-width: 1500px) 92vw, 1392px'
               : '(max-width: 700px) calc(100vw - 48px), 880px';
             const candidates = firstAdventure
               ? [img.href.replace('-1672.webp', '-800.webp') + ' 800w', img.href.replace('-1672.webp', '-1200.webp') + ' 1200w']
-              : dimensions ? [800, 1200].map(w => new URL('responsive/' + name.replace('.webp', '-' + w + '.webp'), img).href + ' ' + w + 'w') : [];
+              : dimensions ? [800, 1200].filter(w => w < width).map(w => new URL('responsive/' + name.replace('.webp', '-' + w + '.webp'), img).href + ' ' + w + 'w') : [];
             const responsive = candidates.length
               ? ' srcset="' + escapeHtml([...candidates, img.href + ' ' + width + 'w'].join(', ')) + '" sizes="' + sizes + '"'
               : '';
@@ -353,6 +354,8 @@ function composeStory(meta) {
       const caption = document.createElement('div');
       caption.className = 'story-caption';
       figure.className = 'story-art';
+      const artwork = figure.querySelector('img');
+      if (Number(artwork?.getAttribute('height')) > Number(artwork?.getAttribute('width'))) figure.classList.add('portrait-art');
       panel.append(figure, caption);
       caption.append(heading);
       // The optional opening emphasis is the short hook, before the explanation.

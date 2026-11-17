@@ -84,7 +84,7 @@ if (fs.existsSync(file(manifestPath))) {
   for (const name of Object.keys(manifest)) {
     const original = file("assets/" + name);
     if (!fs.existsSync(original)) { fail("Responsive artwork missing its original: " + name); continue; }
-    for (const width of [800, 1200]) {
+    for (const width of [800, 1200].filter(w => w < manifest[name][0])) {
       const derivative = file("assets/responsive/" + name.replace(/\.webp$/, "-" + width + ".webp"));
       if (!fs.existsSync(derivative)) fail("Missing responsive artwork: " + derivative);
       else if (fs.statSync(derivative).size >= fs.statSync(original).size) fail("Responsive artwork is not smaller: " + derivative);

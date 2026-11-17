@@ -50,3 +50,5 @@ Changes should retain mobile-first legibility, semantic links, visible focus, re
 Before adding any article to `assets/site.js` `SECTIONS`, confirm it is intended for players and does not reveal spoilers. Never register paths under `notes/` or `world/` without explicit review (default: do not register them). An article living under `world/` is not automatically eligible for Pages navigation.
 
 GitHub Pages uses the repository `main` / root when configured. The intended public URL is https://makeinu1.github.io/DaD_Ruosuen/ . Do not report live deployment or device testing as complete without evidence.
+
+The three labyrinth scenes now use the approved portrait fleet (1024x1536, uncropped, at most 700 CSS px wide, no image parallax), a rust-colored battle, and a flooded ruin (both 1672x941). Keep the three distinct moods and two caption paragraphs each. Responsive candidates must be smaller than the original's width; the portrait has 800w and 1024w only. Old paintings remain archived, not referenced by the current public article. Never establish new canon from these artworks.

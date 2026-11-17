@@ -213,6 +213,9 @@ async function checkJourney(page,width) {
   const departWorldY=await page.evaluate(()=>scrollY);
   await page.locator('#reader-bottom .reader-onward-link').click();await ready(page,CITY);
   assert.equal(await page.locator('.story-panel').count(),11);
+  assert.deepEqual(await page.locator('#article-content .story-panel h3').allTextContents(),['どこまでも広がる、未知の景色','探す、確かめる、生き延びる','見つけて、持ち帰る']);
+  assert.deepEqual(await page.locator('#article-content .story-panel img').evaluateAll(es=>es.slice(0,3).map(e=>new URL(e.src).pathname.split('/').pop())),['ruosuen-walk-labyrinth-fleet-v2.webp','ruosuen-walk-labyrinth-battle-v2.webp','ruosuen-walk-labyrinth-ruins-v2.webp']);
+  assert(await page.locator('.portrait-art img').evaluate(e=>e.getAttribute('width')==='1024'&&e.getAttribute('height')==='1536'&&e.srcset.includes('800w')&&e.srcset.includes('1024w')&&!e.srcset.includes('1200w')&&getComputedStyle(e).transform==='none'&&e.clientWidth<=700&&Math.abs(e.clientHeight/e.clientWidth-1.5)<.02));
   assert.equal(await page.locator('#story-chapters,.walk-organizations').count(),0);
   assert.deepEqual(await page.locator('#article-content .story-panel h2').allTextContents(),[...institutions,'クェンサ ― 我らの青']);
   const divider=page.locator('.walk-chapter-divider');
@@ -269,7 +272,7 @@ async function checkJourney(page,width) {
   assert.equal(await page.locator('#reader-bottom .reader-onward-link').count(),1);
   await page.goto(url(PREP));await ready(page,PREP);
   const prep=await page.locator('#article-content').innerText();
-  for(const term of ['地下の世界からやって来た','ゲーム上の作成条件','キャラクターを作成する'])assert(prep.includes(term));
+  for(const term of ['地下の世界からやって来た','ゲーム上の作成条件','キャラクターを作成する','Lv2','追加資料の使用も原則OK','早めにDMへ資料を共有','何でも気軽に相談'])assert(prep.includes(term));
   assert(!prep.includes('死者の蘇生'));
   assert(prep.includes('大きな夢を抱いている者。\n故郷を離れ、新しい暮らしを求める者。\nまだ誰も知らない世界からやって来た者。'));
   assert(prep.includes('大切な人はいるだろうか。\n忘れられない出来事はあるだろうか。'));
