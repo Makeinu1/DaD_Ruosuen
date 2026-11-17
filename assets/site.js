@@ -6,6 +6,133 @@
  * The reader is intentionally dependency-free and only renders a small,
  * safe Markdown subset needed by these documents.
  */
+// Dimensions from the original artwork. Variants are derived without replacing it.
+const RESPONSIVE_ART = {
+  "reuna-turn-01.webp": [
+    1672,
+    941
+  ],
+  "reuna-turn-02.webp": [
+    1672,
+    941
+  ],
+  "reuna-turn-03.webp": [
+    1672,
+    941
+  ],
+  "reuna-turn-04.webp": [
+    1672,
+    941
+  ],
+  "reuna-turn-05.webp": [
+    1672,
+    941
+  ],
+  "reuna-turn-06.webp": [
+    1672,
+    941
+  ],
+  "reuna-turn-07.webp": [
+    1672,
+    941
+  ],
+  "reuna-turn-08.webp": [
+    1672,
+    941
+  ],
+  "reuna-turn-09.webp": [
+    1672,
+    941
+  ],
+  "reuna-turn-10.webp": [
+    1672,
+    941
+  ],
+  "ruosuen-film-airfleet.webp": [
+    1672,
+    941
+  ],
+  "ruosuen-film-departure.webp": [
+    1536,
+    1024
+  ],
+  "ruosuen-film-manastones.webp": [
+    1672,
+    941
+  ],
+  "ruosuen-film-possibility.webp": [
+    1672,
+    941
+  ],
+  "ruosuen-film-survey.webp": [
+    1536,
+    1024
+  ],
+  "ruosuen-film-vista.webp": [
+    1536,
+    1024
+  ],
+  "ruosuen-street-night-oil.webp": [
+    1672,
+    941
+  ],
+  "ruosuen-street-tavern-watercolor.webp": [
+    1536,
+    1024
+  ],
+  "ruosuen-underground-world.webp": [
+    1672,
+    941
+  ],
+  "ruosuen-walk-church-20261117.webp": [
+    1672,
+    941
+  ],
+  "ruosuen-walk-labyrinth-discovery-20261117.webp": [
+    1672,
+    941
+  ],
+  "ruosuen-walk-labyrinth-panorama-20261117.webp": [
+    1672,
+    941
+  ],
+  "ruosuen-walk-labyrinth-survey-20261117.webp": [
+    1672,
+    941
+  ],
+  "ruosuen-walk-maps-20261117.webp": [
+    1672,
+    941
+  ],
+  "ruosuen-walk-matenrou-20261117.webp": [
+    1672,
+    941
+  ],
+  "ruosuen-walk-mole-inn-20261117.webp": [
+    1672,
+    941
+  ],
+  "ruosuen-walk-mole-trading-20261117.webp": [
+    1672,
+    941
+  ],
+  "ruosuen-walk-quentha-20261117.webp": [
+    1672,
+    941
+  ],
+  "ruosuen-walk-quentha-forest-20261117.webp": [
+    1536,
+    508
+  ],
+  "ruosuen-walk-shipyard-20261117.webp": [
+    1672,
+    941
+  ],
+  "ruosuen-walk-tower-20261117.webp": [
+    1672,
+    941
+  ]
+};
 const SECTIONS = [
   {label:"街から冒険へ",entries:[
     {path:"docs/04_自由迷宮都市と組織.md",label:"ルオスエンを歩く",kicker:"人と仕事と、その先の迷宮",summary:"地下の三つの景色から、街の表と裏に生きる人々へ。",layout:"story",book:true,chapters:true},
@@ -129,14 +256,21 @@ function markdownToHtml(markdown, sourcePath) {
         if (allowed) {
           const img = new URL(raw, new URL(sourcePath, document.baseURI));
           if (img.origin === location.origin && img.pathname.startsWith(new URL("assets/", document.baseURI).pathname)) {
-            const forest = /ruosuen-walk-quentha-forest-20261117\.webp$/.test(raw);
-            const firstAdventure = /ruosuen-first-adventure-1672\.webp$/.test(raw);
-            const wide = firstAdventure || /(?:ruosuen-(underground-world|street-night-oil|manastone-(life|shortage|discovery|frontier)|walk-[a-z-]+-20261117)|reuna-turn-\d{2})\.webp$/.test(raw) && !forest;
-            const responsive = firstAdventure
-              ? ' srcset="' + escapeHtml(img.href.replace('-1672.webp', '-800.webp')) + ' 800w, ' + escapeHtml(img.href.replace('-1672.webp', '-1200.webp')) + ' 1200w, ' + escapeHtml(img.href) + ' 1672w" sizes="(max-width: 700px) calc(100vw - 48px), 880px"'
+            const name = img.pathname.split('/').pop();
+            const firstAdventure = name === 'ruosuen-first-adventure-1672.webp';
+            const dimensions = firstAdventure ? [1672, 941] : RESPONSIVE_ART[name];
+            const [width, height] = dimensions || [1536, 1024];
+            const sizes = BY_PATH.get(sourcePath)?.layout === 'story'
+              ? '(max-width: 700px) 100vw, (max-width: 1500px) 92vw, 1392px'
+              : '(max-width: 700px) calc(100vw - 48px), 880px';
+            const candidates = firstAdventure
+              ? [img.href.replace('-1672.webp', '-800.webp') + ' 800w', img.href.replace('-1672.webp', '-1200.webp') + ' 1200w']
+              : dimensions ? [800, 1200].map(w => new URL('responsive/' + name.replace('.webp', '-' + w + '.webp'), img).href + ' ' + w + 'w') : [];
+            const responsive = candidates.length
+              ? ' srcset="' + escapeHtml([...candidates, img.href + ' ' + width + 'w'].join(', ')) + '" sizes="' + sizes + '"'
               : '';
             html.push('<figure class="article-map"><a href="' + escapeHtml(img.href) + '" target="_blank" rel="noopener noreferrer" aria-label="画像を拡大表示">' +
-              '<img src="' + escapeHtml(img.href) + '"' + responsive + ' alt="' + escapeHtml(match[1]) + '" width="' + (wide ? 1672 : 1536) + '" height="' + (forest ? 508 : wide ? 941 : 1024) + '" loading="lazy" decoding="async">' +
+              '<img src="' + escapeHtml(img.href) + '"' + responsive + ' alt="' + escapeHtml(match[1]) + '" width="' + width + '" height="' + height + '" loading="lazy" decoding="async">' +
               '</a><figcaption>画像を選択すると別画面で拡大できます。</figcaption></figure>');
           }
         }
