@@ -14,12 +14,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Noto+Serif+JP:wght@400;500;600;700;900&display=swap" rel="stylesheet">
-  <link rel="preload" href="assets/ruosuen-street-night-oil.webp" as="image" type="image/webp">
+  <link rel="preload" href="assets/ruosuen-street-night-oil.webp" as="image" type="image/webp" imagesrcset="assets/responsive/ruosuen-street-night-oil-800.webp 800w, assets/responsive/ruosuen-street-night-oil-1200.webp 1200w, assets/ruosuen-street-night-oil.webp 1672w" imagesizes="100vw" fetchpriority="high">
   <link rel="stylesheet" href="assets/site.css">
   <link rel="stylesheet" href="assets/concept.css?v=20261116-four-scenes">
   <link rel="stylesheet" href="assets/journey.css?v=20261117-mobile-polish">
-  <script src="assets/site.js?v=20261117-first-adventure-art" defer></script>
-  <script type="module" src="assets/scroll-story.mjs?v=20261116-four-scenes"></script>
+  <script src="assets/site.js?v=20261117-responsive-art" defer></script>
+  <script type="module" src="assets/scroll-story.mjs?v=20261117-responsive-art"></script>
   <script type="module" src="assets/scroll-effects.mjs?v=20261116-four-scenes"></script>
 </head>
 <body class="is-watching-film">
@@ -49,7 +49,7 @@
 <div id="home-view" class="film-home">
 <div class="film-sequence"><div class="film-stage">
 <section class="film-frame film-montage-shot film-city-title" id="opening" data-film-scene="自由迷宮都市ルオスエン" tabindex="-1" aria-labelledby="film-opening-title">
-  <img class="film-image" src="assets/ruosuen-street-night-oil.webp" width="1672" height="941" alt="大断裂の谷を渡る夜の石橋。店先の灯り、旅人と荷車の往来、その先に幾世代もの建物が重なるルオスエン" fetchpriority="high" decoding="async">
+  <img class="film-image" src="assets/ruosuen-street-night-oil.webp" srcset="assets/responsive/ruosuen-street-night-oil-800.webp 800w, assets/responsive/ruosuen-street-night-oil-1200.webp 1200w, assets/ruosuen-street-night-oil.webp 1672w" sizes="100vw" width="1672" height="941" alt="大断裂の谷を渡る夜の石橋。店先の灯り、旅人と荷車の往来、その先に幾世代もの建物が重なるルオスエン" fetchpriority="high" decoding="async">
   <div class="film-shot-shade" aria-hidden="true"></div>
   <div class="film-caption container" data-film-caption>
     <h1 class="film-title" id="film-opening-title"><span class="city-title-kind">自由迷宮都市</span><span class="city-title-name">ルオスエン</span></h1>
@@ -59,56 +59,56 @@
   </a>
 </section>
 <section class="film-frame film-montage-shot" id="vista" data-film-scene="まだ世界がある" tabindex="-1" aria-labelledby="film-vista-title">
-  <img class="film-image" src="assets/ruosuen-film-vista.webp" width="1536" height="1024" alt="街の縁の向こうに、地下河川、空を行く船、巨大な岩柱と空洞が幾重にも続く" loading="lazy" decoding="async">
+  <img class="film-image" src="assets/ruosuen-film-vista.webp" srcset="assets/responsive/ruosuen-film-vista-800.webp 800w, assets/responsive/ruosuen-film-vista-1200.webp 1200w, assets/ruosuen-film-vista.webp 1536w" sizes="100vw" width="1536" height="1024" alt="街の縁の向こうに、地下河川、空を行く船、巨大な岩柱と空洞が幾重にも続く" loading="lazy" fetchpriority="low" decoding="async">
   <div class="film-shot-shade" aria-hidden="true"></div>
   <div class="film-caption container" data-film-caption>
     <h2 class="film-title" id="film-vista-title"><span class="film-phrase">この街の</span><span class="film-phrase">下には、</span><br><span class="film-phrase">まだ世界が</span><span class="film-phrase">ある。</span></h2>
   </div>
 </section>
 <section class="film-frame film-montage-shot" id="trail" data-film-scene="冒険者たちの一歩" tabindex="-1" aria-labelledby="film-trail-title">
-  <img class="film-image" src="assets/ruosuen-film-survey.webp" width="1536" height="1024" alt="地図を確かめ、足場を探りながら未知の道を進む探索者たち" loading="lazy" decoding="async">
+  <img class="film-image" src="assets/ruosuen-film-survey.webp" srcset="assets/responsive/ruosuen-film-survey-800.webp 800w, assets/responsive/ruosuen-film-survey-1200.webp 1200w, assets/ruosuen-film-survey.webp 1536w" sizes="100vw" width="1536" height="1024" alt="地図を確かめ、足場を探りながら未知の道を進む探索者たち" loading="lazy" fetchpriority="low" decoding="async">
   <div class="film-shot-shade" aria-hidden="true"></div>
   <div class="film-caption container" data-film-caption>
     <h2 class="film-title" id="film-trail-title"><span class="film-phrase">地図の先へ、</span><br><span class="film-phrase">冒険者たちは</span><span class="film-phrase">踏み出す。</span></h2>
   </div>
 </section>
 <section class="film-frame film-montage-shot" id="cargo" data-film-scene="地下の空中港" tabindex="-1" aria-labelledby="film-cargo-title">
-  <img class="film-image" src="assets/ruosuen-film-airfleet.webp" width="1672" height="941" alt="巨大な岩天井と幾重もの桟橋の間を、多くの魔導船が高さを違えて飛び交う地下港" loading="lazy" decoding="async">
+  <img class="film-image" src="assets/ruosuen-film-airfleet.webp" srcset="assets/responsive/ruosuen-film-airfleet-800.webp 800w, assets/responsive/ruosuen-film-airfleet-1200.webp 1200w, assets/ruosuen-film-airfleet.webp 1672w" sizes="100vw" width="1672" height="941" alt="巨大な岩天井と幾重もの桟橋の間を、多くの魔導船が高さを違えて飛び交う地下港" loading="lazy" fetchpriority="low" decoding="async">
   <div class="film-shot-shade" aria-hidden="true"></div>
   <div class="film-caption container" data-film-caption>
     <h2 class="film-title" id="film-cargo-title"><span class="film-phrase">地下の</span><span class="film-phrase">港では、</span><br><span class="film-phrase">船が</span><span class="film-phrase">空を行く。</span></h2>
   </div>
 </section>
 <section class="film-frame film-montage-shot" id="depths" data-film-scene="広大な地下迷宮" tabindex="-1" aria-labelledby="film-depths-title">
-  <img class="film-image" src="assets/ruosuen-underground-world.webp" width="1672" height="941" alt="巨大な岩柱と地下河川、植生、分かれる道。小さな探索者の先に迷宮が広がる" loading="lazy" decoding="async">
+  <img class="film-image" src="assets/ruosuen-underground-world.webp" srcset="assets/responsive/ruosuen-underground-world-800.webp 800w, assets/responsive/ruosuen-underground-world-1200.webp 1200w, assets/ruosuen-underground-world.webp 1672w" sizes="100vw" width="1672" height="941" alt="巨大な岩柱と地下河川、植生、分かれる道。小さな探索者の先に迷宮が広がる" loading="lazy" fetchpriority="low" decoding="async">
   <div class="film-shot-shade" aria-hidden="true"></div>
   <div class="film-caption container" data-film-caption>
     <h2 class="film-title" id="film-depths-title"><span class="film-phrase">街の下には、</span><br><span class="film-phrase">広大な</span><span class="film-phrase">迷宮が</span><span class="film-phrase">続いている。</span></h2>
   </div>
 </section>
 <section class="film-frame film-montage-shot" id="explorers" data-film-scene="未知を確かめる" tabindex="-1" aria-labelledby="film-explorers-title">
-  <img class="film-image" src="assets/ruosuen-film-manastones.webp" width="1672" height="941" alt="岩に宿る紫の魔石を確かめるドワーフと、灯りや記録を担うドラゴンボーン、エルフの探索者" loading="lazy" decoding="async">
+  <img class="film-image" src="assets/ruosuen-film-manastones.webp" srcset="assets/responsive/ruosuen-film-manastones-800.webp 800w, assets/responsive/ruosuen-film-manastones-1200.webp 1200w, assets/ruosuen-film-manastones.webp 1672w" sizes="100vw" width="1672" height="941" alt="岩に宿る紫の魔石を確かめるドワーフと、灯りや記録を担うドラゴンボーン、エルフの探索者" loading="lazy" fetchpriority="low" decoding="async">
   <div class="film-shot-shade" aria-hidden="true"></div>
   <div class="film-caption container" data-film-caption>
     <h2 class="film-title" id="film-explorers-title"><span class="film-phrase">地図にない</span><span class="film-phrase">道を探し、</span><br><span class="film-phrase">魔石を</span><span class="film-phrase">持ち帰る。</span></h2>
   </div>
 </section>
 <section class="film-frame film-montage-shot" id="territory" data-film-scene="最下層の噂" tabindex="-1" aria-labelledby="film-territory-title">
-  <img class="film-image" src="assets/ruosuen-film-possibility.webp" width="1672" height="941" alt="小さな探索者たちの向こうに、淡い光の遺構と橋、地底の流れが幾層にも広がる。最下層はまだ見えない" loading="lazy" decoding="async">
+  <img class="film-image" src="assets/ruosuen-film-possibility.webp" srcset="assets/responsive/ruosuen-film-possibility-800.webp 800w, assets/responsive/ruosuen-film-possibility-1200.webp 1200w, assets/ruosuen-film-possibility.webp 1672w" sizes="100vw" width="1672" height="941" alt="小さな探索者たちの向こうに、淡い光の遺構と橋、地底の流れが幾層にも広がる。最下層はまだ見えない" loading="lazy" fetchpriority="low" decoding="async">
   <div class="film-shot-shade" aria-hidden="true"></div>
   <div class="film-caption container" data-film-caption>
     <h2 class="film-title" id="film-territory-title"><span class="film-phrase">迷宮の</span><span class="film-phrase">最下層に</span><span class="film-phrase">辿り着けば、</span><br><span class="film-phrase">願いが</span><span class="film-phrase">叶うという。</span></h2>
   </div>
 </section>
 <section class="film-frame film-montage-shot" id="tavern" data-film-scene="帰還する街" tabindex="-1" aria-labelledby="film-tavern-title">
-  <img class="film-image" src="assets/ruosuen-street-tavern-watercolor.webp" width="1536" height="1024" alt="日暮れの酒場通りで、帰還した旅人を食事と会話が迎える" loading="lazy" decoding="async">
+  <img class="film-image" src="assets/ruosuen-street-tavern-watercolor.webp" srcset="assets/responsive/ruosuen-street-tavern-watercolor-800.webp 800w, assets/responsive/ruosuen-street-tavern-watercolor-1200.webp 1200w, assets/ruosuen-street-tavern-watercolor.webp 1536w" sizes="100vw" width="1536" height="1024" alt="日暮れの酒場通りで、帰還した旅人を食事と会話が迎える" loading="lazy" fetchpriority="low" decoding="async">
   <div class="film-shot-shade" aria-hidden="true"></div>
   <div class="film-caption container" data-film-caption>
     <h2 class="film-title" id="film-tavern-title"><span class="film-phrase">帰ってきたら、</span><br><span class="film-phrase">聞いて</span><span class="film-phrase">もらいたい</span><span class="film-phrase">話がある。</span></h2>
   </div>
 </section>
 <section class="film-frame film-montage-shot film-invitation" id="next" data-film-scene="君の一歩" tabindex="-1" aria-labelledby="film-next-title">
-  <img class="film-image" src="assets/ruosuen-film-departure.webp" width="1536" height="1024" alt="街の灯りを背に、地下へ続く歩ける道を自分の目線で眺める" loading="lazy" decoding="async">
+  <img class="film-image" src="assets/ruosuen-film-departure.webp" srcset="assets/responsive/ruosuen-film-departure-800.webp 800w, assets/responsive/ruosuen-film-departure-1200.webp 1200w, assets/ruosuen-film-departure.webp 1536w" sizes="100vw" width="1536" height="1024" alt="街の灯りを背に、地下へ続く歩ける道を自分の目線で眺める" loading="lazy" fetchpriority="low" decoding="async">
   <div class="film-shot-shade" aria-hidden="true"></div>
   <div class="film-caption container" data-film-caption>
     <h2 class="film-title" id="film-next-title"><span class="film-phrase">君は、</span><span class="film-phrase">この街から</span><br><span class="film-phrase">何を</span><span class="film-phrase">探しに行く？</span></h2>

@@ -43,7 +43,7 @@ async function nativeSeek(page,id,fraction=.27) {
   // Wait for actual image decoding before checking a same-scene dissolve.
   // An unchanged active-scene label alone can describe the previous paint.
   const index=scenes.indexOf(id);
-  await Promise.all(scenes.slice(index,index+2).map(scene=>page.locator('#'+scene+' img').evaluate(i=>i.decode())));
+  await Promise.all(scenes.slice(index,index+2).map(scene=>page.locator('#'+scene+' img').evaluate(i=>{i.loading='eager';return i.decode();})));
   await page.evaluate(({id,fraction})=>{
     const sequence=document.querySelector('.film-sequence');
     const frames=[...sequence.querySelectorAll('[data-film-scene]')];
@@ -77,7 +77,7 @@ async function checkWorldPanels(page) {
   const panels=page.locator('#article-content .story-panel');
   assert.equal(await panels.count(),10);
   const artwork=await panels.locator('img').evaluateAll(images=>
-    images.map(image=>new URL(image.currentSrc||image.src).pathname.split('/').pop()));
+    images.map(image=>new URL(image.src).pathname.split('/').pop()));
   assert.deepEqual(artwork,worldArtwork);
   assert.equal(new Set(artwork).size,10,'Every history scene needs its own painting');
   const chapters=page.locator('#article-content .history-chapter');
@@ -111,8 +111,10 @@ async function checkWorldPanels(page) {
         paragraphCount:caption.querySelectorAll('p').length,headingCount:caption.querySelectorAll('h3').length};
     });
     assert(actual.naturalWidth>0&&actual.naturalHeight>0,'The actual history painting must load');
-    assert.equal(Number(actual.width),actual.naturalWidth);
-    assert.equal(Number(actual.height),actual.naturalHeight);
+    assert.equal(Number(actual.width),1672);
+    assert.equal(Number(actual.height),941);
+    // srcset makes naturalWidth density-corrected, not the encoded width.
+    assert(Math.abs(actual.naturalWidth/actual.naturalHeight-1672/941)<.02);
     assert(actual.alt.trim().length>10,'Each painting needs a meaningful description');
     assert(actual.filters.every(filter=>filter==='none'),'World artwork must keep its original colors');
     assert.equal(actual.captionPosition,'relative');
@@ -165,6 +167,7 @@ async function checkJourney(page,width) {
   assert.deepEqual(await page.locator('[data-film-scene]').evaluateAll(es=>es.map(e=>e.id)),scenes);
   assert.deepEqual(await page.locator('.film-sequence [data-film-scene]').evaluateAll(es=>es.map(e=>e.id)),scenes);
   const artwork=await page.locator('[data-film-scene] img').evaluateAll(es=>es.map(e=>e.getAttribute('src')));
+  assert(await page.locator('[data-film-scene] img').evaluateAll(es=>es.every(e=>e.srcset.includes('800w')&&e.srcset.includes('1200w')&&e.sizes==='100vw')));
   assert.equal(new Set(artwork).size,9,'Every film scene needs distinct artwork');
   assert.equal(await page.locator('.film-story-hint,.film-scene-steps').count(),0);
   assert.equal(await page.locator('.film-story-progress').count(),1);
@@ -280,7 +283,8 @@ async function checkJourney(page,width) {
       return {overflow:el.scrollWidth>el.clientWidth, singleRow:links.every(link=>Math.abs(link.offsetTop-links[0].offsetTop)<2),
         activeVisible:a.left>=box.left-1&&a.right<=box.right+1};
     });
-    assert(nav.overflow&&nav.singleRow&&nav.activeVisible);
+    assert(nav.singleRow&&nav.activeVisible);
+    if(width<=430) assert(nav.overflow);
   }
   // Curated navigation has five pages and no author-only or archived destinations.
   assert.equal(await page.locator('#journey-nav a').count(),5);

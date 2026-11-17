@@ -218,9 +218,8 @@ function initStory() {
     lastValue = NaN;
     if (wasInside) window.scrollTo({top: start + oldPosition * step, behavior:'instant'});
     else if (!wasEnabled && staticIndex >= 0) window.scrollTo({top: start + timeline.distanceAt(staticIndex) * step, behavior:'instant'});
-    // The stacked frames share a viewport, so request their images before a
-    // fast scroll can reach them. Raster colors remain entirely untouched.
-    frames.forEach(frame => frame.querySelectorAll('img').forEach(img => { img.loading = 'eager'; }));
+    // Let non-adjacent frames retain native lazy loading. render() requests
+    // the outgoing and incoming artwork explicitly before each dissolve.
     prepare(sceneAt(timeline.positionAt((window.scrollY - start) / step), frames.length).active);
     render();
   }
