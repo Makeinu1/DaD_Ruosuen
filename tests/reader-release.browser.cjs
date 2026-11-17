@@ -6,13 +6,57 @@ const base = process.env.RUOSUEN_BASE_URL || 'http://127.0.0.1:8819/';
 const city = 'docs/04_自由迷宮都市と組織.md';
 const version = JSON.parse(fs.readFileSync(path.join(__dirname,'../assets/reader-release.json'),'utf8')).version;
 const route = '#/'+encodeURIComponent(city);
-async function check(page) {
-  await page.waitForFunction(p=>{const e=document.querySelector('#article-content');return e?.dataset.source===p && e.getAttribute('aria-busy')==='false';},city);
-  const dividers=page.locator('.walk-chapter-divider');
-  assert.deepEqual(await dividers.locator('h2').allTextContents(),['街の下へ','この街に生きる人々','まだ、この街のほんの入口だ。']);
-  assert.deepEqual(await dividers.locator('h2').evaluateAll(es=>es.map(e=>e.id)),['section-0','walk-people','walk-beyond']);
-  assert.equal(await dividers.locator('.walk-divider-copy br').count(),6);
-  assert.equal(await page.locator('.story-panel').count(),11);
+const chapterTitles = {
+  "docs/04_自由迷宮都市と組織.md": [
+    "街の下へ",
+    "この街に生きる人々",
+    "まだ、この街のほんの入口だ。"
+  ],
+  "adventures/次の冒険.md": [
+    "冒険者という生き方",
+    "例えば、こんな冒険",
+    "冒険のある暮らし",
+    "君たちの物語"
+  ],
+  "adventures/最初の冒険.md": [
+    "第一話　ある年の瀬、ルオスエンにて",
+    "君たちの物語は、この街の年の瀬から始まる。"
+  ],
+  "players/キャラクター作成ガイド.md": [
+    "君の想像する世界",
+    "例えば、こんな人物",
+    "仲間と出会う",
+    "君は、この世界で何者になるだろう。"
+  ],
+  "docs/01_プレイヤー向け世界観.md": [
+    "魔石とは",
+    "大転流",
+    "大断裂の谷",
+    "ルオスエン",
+    "君は、何を求めて、この街へ？"
+  ]
+};
+async function check(page, article=city) {
+  await page.waitForFunction(p=>{const e=document.querySelector('#article-content');return e?.dataset.source===p && e.getAttribute('aria-busy')==='false';},article);
+  const dividers=page.locator('.chapter-divider');
+  assert.deepEqual(await dividers.locator('h2').allTextContents(),chapterTitles[article]);
+  assert.equal(await dividers.locator('.walk-divider-kicker').count(),chapterTitles[article].length);
+  if(article===city) {
+    assert.deepEqual(await dividers.locator('h2').evaluateAll(es=>es.map(e=>e.id)),['section-0','walk-people','walk-beyond']);
+    assert.equal(await dividers.locator('.walk-divider-copy br').count(),6);
+    assert.equal(await page.locator('.story-panel').count(),11);
+  }
+  if(article.startsWith('docs/01')) {
+    assert.equal(await page.locator('.history-chapter').count(),4);
+    assert.equal(await page.locator('.story-panel').count(),10);
+    assert.deepEqual(await page.locator('.history-chapter').evaluateAll(es=>es.map(e=>e.querySelectorAll('.story-panel').length)),[3,3,2,2]);
+  }
+  if(article==="adventures/最初の冒険.md") {
+    assert(await page.locator('.prologue').evaluate(e=>e.firstElementChild.matches('figure.article-map')));
+    assert.equal(await page.locator('#article-content img').count(),1);
+  }
+  if(article==="adventures/次の冒険.md") assert.equal(await page.locator('.story-panel').count(),1);
+  if(article==="players/キャラクター作成ガイド.md") assert((await page.locator('#article-content').innerText()).includes('ゲーム上の作成条件'));
   assert.equal(await page.locator('#reader-bottom a').count(),1);
   assert(await dividers.evaluateAll(es=>es.every(e=>{
     const r=e.getBoundingClientRect(), css=getComputedStyle(e), before=getComputedStyle(e,'::before'), after=getComputedStyle(e,'::after');
@@ -28,8 +72,10 @@ async function check(page) {
         await context.route('https://fonts.googleapis.com/**',r=>r.fulfill({contentType:'text/css',body:'/* fallback font */'}));
         const page=await context.newPage();
         const errors=[];page.on('pageerror',e=>errors.push(e.message));
-        await page.goto(base+route,{waitUntil:'domcontentloaded'});
-        await check(page);
+        for(const article of Object.keys(chapterTitles)){
+          await page.goto(base+'#/'+encodeURIComponent(article),{waitUntil:'domcontentloaded'});
+          await check(page,article);
+        }
         assert.deepEqual(errors,[]);
         await context.close();
       }
@@ -57,7 +103,7 @@ async function check(page) {
       assert.equal(oldShell,1);assert.equal(staleDoc,1);
       assert.equal(decodeURIComponent(new URL(page.url()).hash.slice(2)),city);
       await context.close();
-      console.log(name+': chapter doors, stale shell and stale source PASS');
+      console.log(name+': all five articles, chapter doors, stale shell and stale source PASS');
     }finally{await browser.close();}
   }
 })().catch(e=>{console.error(e);process.exitCode=1;});

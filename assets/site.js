@@ -390,6 +390,32 @@ function fitStoryCaptions() {
     panel.classList.toggle('caption-below', caption.scrollHeight > image.clientHeight * 0.6);
   }
 }
+// A chapter is explicitly marked in the plain Markdown by an H2 and a
+// standalone italic uppercase English label, not by a hard-coded title.
+function isChapterLabel(element) {
+  return element?.tagName === 'P' && element.childNodes.length === 1 &&
+    element.firstElementChild?.tagName === 'EM' &&
+    /^[A-Z][A-Z0-9 '?,.!\-’]+$/.test(element.textContent.trim());
+}
+function composeChapterDoors(article, meta) {
+  for (const heading of [...article.children].filter(node => node.tagName === 'H2')) {
+    const kicker = heading.nextElementSibling;
+    if (!isChapterLabel(kicker)) continue;
+    const copy = kicker.nextElementSibling;
+    const divider = document.createElement('section');
+    divider.className = 'chapter-divider' + (meta.walk ? ' walk-chapter-divider' : '');
+    divider.setAttribute('aria-labelledby', heading.id);
+    heading.before(divider);
+    kicker.classList.add('walk-divider-kicker');
+    divider.append(heading, kicker);
+    // A link-only paragraph is the onward action, never chapter copy.
+    if (copy?.tagName === 'P' && !(copy.childNodes.length === 1 && copy.firstElementChild?.tagName === 'A')) {
+      copy.classList.add('walk-divider-copy');
+      divider.append(copy);
+    }
+    if (meta.prologue && copy?.matches('figure.article-map')) divider.before(copy);
+  }
+}
 function composeStory(meta) {
   captionObserver?.disconnect();
   const article = $("article-content");
@@ -400,13 +426,16 @@ function composeStory(meta) {
   if (meta.layout === 'story') {
     for (const heading of [...article.children]) {
       if (!/^H[23]$/.test(heading.tagName)) continue;
-      const figure = heading.nextElementSibling;
+      const label = heading.tagName === 'H2' && isChapterLabel(heading.nextElementSibling)
+        ? heading.nextElementSibling : null;
+      const figure = (label || heading).nextElementSibling;
       const quote = figure?.nextElementSibling;
       if (!figure?.matches('figure.article-map') || quote?.tagName !== 'BLOCKQUOTE') continue;
       const panel = document.createElement('section');
       panel.className = 'story-panel' + (!meta.history && heading.tagName === 'H3' ? ' story-corner' : '');
       panel.setAttribute('aria-labelledby', heading.id);
-      heading.before(panel);
+      if (label) label.after(panel);
+      else heading.before(panel);
       const caption = document.createElement('div');
       caption.className = 'story-caption';
       figure.className = 'story-art';
@@ -414,7 +443,7 @@ function composeStory(meta) {
       if (figure.dataset.size) panel.classList.add('panel-' + figure.dataset.size);
       else if (Number(artwork?.getAttribute('height')) > Number(artwork?.getAttribute('width'))) figure.classList.add('portrait-art');
       panel.append(figure, caption);
-      caption.append(heading);
+      if (!label) caption.append(heading);
       // The optional opening emphasis is the short hook, before the explanation.
       const paragraph = quote.querySelector('p');
       const lead = paragraph?.firstChild;
@@ -438,34 +467,17 @@ function composeStory(meta) {
     let next = first;
     while (next?.classList?.contains('panel-pair')) { const after = next.nextElementSibling; row.append(next); next = after; }
   }
-  if (meta.walk) {
-    // Chapter doors are authored as H2 + standalone italic label + prose.
-    // The legacy heading IDs are kept only for existing deep links.
-    for (const heading of [...article.children].filter(node => node.tagName === 'H2')) {
-      const kicker = heading.nextElementSibling;
-      const copy = kicker?.nextElementSibling;
-      if (heading.tagName !== 'H2' || kicker?.tagName !== 'P' ||
-          kicker.childNodes.length !== 1 || kicker.firstElementChild?.tagName !== 'EM' ||
-          copy?.tagName !== 'P') continue;
-      const divider = document.createElement('section');
-      divider.className = 'walk-chapter-divider';
-      divider.setAttribute('aria-labelledby', heading.id);
-      heading.before(divider);
-      kicker.classList.add('walk-divider-kicker');
-      copy.classList.add('walk-divider-copy');
-      divider.append(heading, kicker, copy);
-    }
-  }
+  composeChapterDoors(article, meta);
   if (meta.history) {
     const phases = ['rise','fall','renewal','city'];
     let chapter;
     let index = 0;
     for (const child of [...article.children]) {
-      if (child.tagName === 'H2') {
+      if (child.matches('.chapter-divider') && index < phases.length) {
         chapter = document.createElement('section');
         chapter.className = 'history-chapter';
         chapter.dataset.historyPhase = phases[index++];
-        chapter.setAttribute('aria-labelledby',child.id);
+        chapter.setAttribute('aria-labelledby',child.getAttribute('aria-labelledby'));
         child.before(chapter);
         chapter.append(child);
       } else if (chapter && child.matches('.story-panel')) {
@@ -479,19 +491,14 @@ function composeStory(meta) {
       }
     }
   }
-  if (meta.prologue) {
-    const heading = article.querySelector('h2');
-    const image = heading?.nextElementSibling;
-    if (image?.matches('figure.article-map')) heading.before(image);
-  }
-  if (meta.layout !== 'story') {
+   if (meta.layout !== 'story') {
     // Animate coherent reading sections rather than each line of body text.
     let section;
     for (const child of [...article.children]) {
-      if (child.tagName === 'H2') {
+      if (child.tagName === 'H2' || child.matches('.chapter-divider')) {
         section = document.createElement('section');
         section.className = 'reading-section';
-        section.setAttribute('aria-labelledby',child.id);
+        section.setAttribute('aria-labelledby',child.id || child.getAttribute('aria-labelledby'));
         child.before(section);
       }
       if (section) section.append(child);

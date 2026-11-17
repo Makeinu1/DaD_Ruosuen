@@ -87,7 +87,7 @@ async function checkWorldPanels(page) {
   assert.equal(new Set(artwork).size,10,'Every history scene needs its own painting');
   const chapters=page.locator('#article-content .history-chapter');
   assert.deepEqual(await chapters.evaluateAll(elements=>elements.map(element=>element.dataset.historyPhase)),historyPhases);
-  assert.deepEqual(await chapters.locator(':scope > h2').allTextContents(),historyChapters);
+  assert.deepEqual(await chapters.locator(':scope > .chapter-divider > h2').allTextContents(),historyChapters);
   assert.deepEqual(await chapters.evaluateAll(elements=>elements.map(element=>element.querySelectorAll('.story-panel').length)),[3,3,2,2]);
   assert.equal(await page.locator('#story-chapters').count(),0);
   assert(await chapters.evaluateAll(es=>es.every(e=>getComputedStyle(e).backgroundColor==='rgba(0, 0, 0, 0)'&&getComputedStyle(e).backgroundImage==='none')));
