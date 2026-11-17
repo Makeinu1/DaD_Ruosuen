@@ -279,10 +279,11 @@ async function checkJourney(page,width) {
   assert.equal(await page.locator('#reader-bottom .reader-onward-link').count(),1);
   await page.goto(url(PREP));await ready(page,PREP);
   const prep=await page.locator('#article-content').innerText();
-  for(const term of ['地下の世界からやって来た','ゲーム上の作成条件','キャラクターを作成する','Lv2','追加資料の使用も原則OK','早めにDMへ資料を共有','何でも気軽に相談'])assert(prep.includes(term));
+  for(const term of ['誰も知らない地下世界の出身者','キャラクター作成','D&D 2024年版','Lv2','追加資料も原則OK','早めにDMへ資料を共有','気軽にDMへ相談','世界設定をすべて読んでおく必要はありません'])assert(prep.includes(term));
   assert(!prep.includes('死者の蘇生'));
-  assert(prep.includes('大きな夢を抱いている者。\n故郷を離れ、新しい暮らしを求める者。\nまだ誰も知らない世界からやって来た者。'));
-  assert(prep.includes('大切な人はいるだろうか。\n忘れられない出来事はあるだろうか。'));
+  assert(prep.includes('まだ名前のない国を故郷にしてもいい') && prep.includes('この街に新しい組織を作り'));
+  assert(prep.includes('別の三人の冒険者と旅をする') && !prep.includes('空に憧れるファイター'));
+  assert.equal(await page.locator('#article-content a[href^="https://"]').count(),2);
   // Only the header provides global navigation. The mobile menu does not
   // repeat the always-visible character creation action.
   assert.equal(await page.locator('#journey-nav,.reader-breadcrumbs,.reader-toc,#sidebar').count(),0);

@@ -24,8 +24,8 @@ const chapterTitles = {
   ],
   "players/キャラクター作成ガイド.md": [
     "君の想像する世界",
-    "例えば、こんな人物",
-    "仲間と出会う",
+    "この街で何を求めるのか",
+    "仲間と冒険へ",
     "君は、この世界で何者になるだろう。"
   ],
   "docs/01_プレイヤー向け世界観.md": [
@@ -56,7 +56,12 @@ async function check(page, article=city) {
     assert.equal(await page.locator('#article-content img').count(),1);
   }
   if(article==="adventures/次の冒険.md") assert.equal(await page.locator('.story-panel').count(),1);
-  if(article==="players/キャラクター作成ガイド.md") assert((await page.locator('#article-content').innerText()).includes('ゲーム上の作成条件'));
+  if(article==="players/キャラクター作成ガイド.md") {
+    const text = await page.locator('#article-content').innerText();
+    for(const term of ['D&D 2024年版','Lv2','追加資料も原則OK','早めにDMへ資料を共有','世界設定をすべて読んでおく必要はありません','誰も知らない地下世界の出身者','この街に新しい組織を作り','別の三人の冒険者と旅をする']) assert(text.includes(term),term);
+    assert(!text.includes('空に憧れるファイター'));
+    assert.equal(await page.locator('#article-content a[href^="https://"]').count(),2);
+  }
   assert.equal(await page.locator('#reader-bottom a').count(),1);
   assert(await dividers.evaluateAll(es=>es.every(e=>{
     const r=e.getBoundingClientRect(), css=getComputedStyle(e), before=getComputedStyle(e,'::before'), after=getComputedStyle(e,'::after');

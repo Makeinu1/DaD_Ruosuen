@@ -103,7 +103,7 @@ for (const [name,type] of [['chromium',chromium],['webkit',webkit]]) {
           await first.evaluate(i=>i.decode());
           assert(await first.evaluate(i=>i.naturalWidth>0&&i.srcset.includes('800w')&&(i.closest('.portrait-art')?i.srcset.includes('1024w')&&!i.srcset.includes('1200w')&&i.clientWidth<=700&&Math.abs(i.clientHeight/i.clientWidth-1.5)<.02&&getComputedStyle(i).transform==='none':i.srcset.includes('1200w'))));
         }
-        if(path.startsWith('players/'))assert((await p.locator('#article-content').innerText()).includes('大きな夢を抱いている者。\n故郷を離れ、新しい暮らしを求める者。\nまだ誰も知らない世界からやって来た者。'));
+        if(path.startsWith('players/'))assert((await p.locator('#article-content').innerText()).includes('世界設定をすべて読んでおく必要はありません'));
       }
       assert.deepEqual(errors,[]);
       console.log(JSON.stringify({browser:name,width,dpr:width<=430?3:1,initialSrc:film.initialSrc,initialTransfer,phraseCount:film.phraseCount,nav:5,result:'PASS'}));
