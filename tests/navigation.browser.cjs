@@ -214,8 +214,8 @@ async function checkJourney(page,width) {
   await page.locator('#reader-bottom .reader-onward-link').click();await ready(page,CITY);
   assert.equal(await page.locator('.story-panel').count(),11);
   assert.deepEqual(await page.locator('#article-content .story-panel h3').allTextContents(),['どこまでも広がる、未知の景色','探す、確かめる、生き延びる','見つけて、持ち帰る']);
-  assert.deepEqual(await page.locator('#article-content .story-panel img').evaluateAll(es=>es.slice(0,3).map(e=>new URL(e.src).pathname.split('/').pop())),['ruosuen-walk-labyrinth-fleet-v2.webp','ruosuen-walk-labyrinth-battle-v2.webp','ruosuen-walk-labyrinth-ruins-v2.webp']);
-  assert(await page.locator('.portrait-art img').evaluate(e=>e.getAttribute('width')==='1024'&&e.getAttribute('height')==='1536'&&e.srcset.includes('800w')&&e.srcset.includes('1024w')&&!e.srcset.includes('1200w')&&getComputedStyle(e).transform==='none'&&e.clientWidth<=700&&Math.abs(e.clientHeight/e.clientWidth-1.5)<.02));
+  assert.deepEqual(await page.locator('#article-content .story-panel img').evaluateAll(es=>es.slice(0,3).map(e=>new URL(e.src).pathname.split('/').pop())),['ruosuen-walk-labyrinth-exploration-v3.webp','ruosuen-walk-labyrinth-battle-v2.webp','ruosuen-walk-labyrinth-ruins-v2.webp']);
+  assert(await page.locator('#article-content .story-panel img').first().evaluate(e=>e.getAttribute('width')==='1670'&&e.getAttribute('height')==='941'&&e.srcset.includes('800w')&&e.srcset.includes('1200w')&&e.srcset.includes('1670w')&&!e.closest('.portrait-art')&&Math.abs(e.clientHeight/e.clientWidth-941/1670)<.02));
   assert.equal(await page.locator('#story-chapters,.walk-organizations').count(),0);
   assert.deepEqual(await page.locator('#article-content .story-panel h2').allTextContents(),[...institutions,'クェンサ ― 我らの青']);
   const divider=page.locator('.walk-chapter-divider');
