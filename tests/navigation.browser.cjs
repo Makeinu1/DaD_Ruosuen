@@ -219,13 +219,16 @@ async function checkJourney(page,width) {
   await page.locator('#article-content > p:last-child a').scrollIntoViewIfNeeded();await paint(page);
   const departWorldY=await page.evaluate(()=>scrollY);
   await page.locator('#article-content > p:last-child a').click();await ready(page,CITY);
-  assert.equal(await page.locator('.story-panel').count(),10);
+  assert.equal(await page.locator('.story-panel').count(),12);
   assert.deepEqual(await page.locator('#story-chapters a').allTextContents(),['街の下へ',...institutions,'クェンサ ― 我らの青']);
   const quentha=page.locator('#article-content > h2').filter({hasText:'クェンサ ― 我らの青'});
-  assert.equal(await quentha.count(),1,'Quentha is an unillustrated coda, not an invented location');
+  assert.equal(await quentha.count(),1,'Quentha is a chapter, not an invented location');
+  const quenthaPanels=page.locator('.story-panel').filter({has:page.locator('h3',{hasText:/^(森ごと地下へ|街のもう一つの顔)$/})});
+  assert.deepEqual(await quenthaPanels.locator('h3').allTextContents(),['森ごと地下へ','街のもう一つの顔']);
+  assert.deepEqual(await quenthaPanels.locator('img').evaluateAll(imgs=>imgs.map(img=>new URL(img.src).pathname.split('/').pop())),['ruosuen-walk-quentha-forest-20261117.webp','ruosuen-walk-quentha-20261117.webp']);
   assert((await page.locator('#article-content').innerText()).includes('クェンサもまた、ルオスエンに生きる人々だ。'));
   for(const [index,caption] of (await page.locator('.storybook .story-caption').all()).entries()) {
-    assert.equal(await caption.locator('p').count(),index<3?2:3,'Labyrinth scenes have two paragraphs; institutions have three');
+    assert.equal(await caption.locator('p').count(),index<3?2:index===10?1:3,'Labyrinth scenes have two paragraphs; Quentha forest has one; other city scenes have three');
     assert.equal(await caption.locator('.story-hook').count(),0,'Place names remain in explanatory prose');
   }
   assert((await page.locator('#article-content').innerText()).includes('ほんの入口'));
@@ -287,7 +290,7 @@ async function checkJourney(page,width) {
     const after=await target.evaluate((e,p)=>e.style.getPropertyValue(p),property);
     assert.notEqual(before,after,'Native scroll must animate '+path);
   }
-  console.log(JSON.stringify({width,journey:'PASS',scenes:9,worldPanels:10,historyChapters:4,chapterKeyboard:true,cityPanels:7,history:true,archiveReturn:true}));
+  console.log(JSON.stringify({width,journey:'PASS',scenes:9,worldPanels:10,historyChapters:4,chapterKeyboard:true,cityPanels:12,history:true,archiveReturn:true}));
 }
 (async()=>{
   const proxy=process.env.HTTPS_PROXY||process.env.HTTP_PROXY;
