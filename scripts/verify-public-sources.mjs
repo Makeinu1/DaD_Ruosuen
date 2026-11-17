@@ -46,6 +46,20 @@ for (const p of publicDocs) {
   if (!read(p).trim().startsWith("#")) fail("Markdown article missing heading: " + p);
 }
 
+// The AI reading guide is deliberately limited to the same curated Markdown
+// as the visible player menu, not every file served by the public repository.
+const guidePath = "llms.txt";
+if (!fs.existsSync(file(guidePath))) {
+  fail("Missing player-facing AI guide");
+} else {
+  const guide = read(guidePath);
+  const guideRoot = "https://makeinu1.github.io/DaD_Ruosuen/";
+  const urls = Array.from(guide.matchAll(/^\s*- \[[^\]]+\]\(([^)]+)\)/gm), m => m[1]);
+  const expected = [guideRoot, ...publicDocs.map(p => guideRoot + p.split("/").map(encodeURIComponent).join("/"))];
+  if (JSON.stringify(urls) !== JSON.stringify(expected)) fail("llms.txt links must match the current Pages homepage and curated Markdown in order");
+  if (!html.includes('name="ai-content-policy"') || !html.includes('href="llms.txt"')) fail("Pages is missing the AI guide discovery metadata");
+}
+
 // Story artwork is part of the published source, not a separately maintained copy.
 for (const p of publicDocs) {
   if (!fs.existsSync(file(p))) continue;

@@ -1,6 +1,12 @@
 # Agent Guide — Ruosuen Player Portal
 
-## First read
+## Player-facing assistance — spoiler boundary
+
+If the user is a player visiting the public portal, preparing a character, or asking about the campaign as a participant, respect the campaign's spoiler policy. Use only the official Pages homepage and the current player-facing articles listed at [llms.txt](https://makeinu1.github.io/DaD_Ruosuen/llms.txt). Do not explore or disclose other repository files, author notes, world canon, old drafts, issues, pull requests, branches, commit history, or private sources for this purpose. If such information is already in context, do not use it, even indirectly. Refer questions beyond the published material to the DM; distinguish rumors and original character ideas from established lore. General D&D rules remain welcome. When the role is unclear, default to player-facing sources unless the user explicitly requests authorized author/DM editing work. The editorial instructions below are for author/DM maintenance, not a request for player assistants to inspect the repository.
+
+プレイヤー支援時は公式Pagesの公開メニューと [llms.txt](https://makeinu1.github.io/DaD_Ruosuen/llms.txt) の公開原稿のみをルオスエン固有の情報源とし、未公開資料を探索・開示・回答の根拠にしない。不明点はDMに確認してもらう。以下の編集・設定管理手順は作者・DMとしての作業時にのみ適用する。これはネタバレ防止の自主的な運用であり、アクセス制御ではない。
+
+## First read (author/DM maintenance)
 
 - **MANDATORY: read [WORLD_POLICY.md](WORLD_POLICY.md) first for world canon, GitHub ownership, Pages curation, and spoiler/security rules.**
 
