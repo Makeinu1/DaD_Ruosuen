@@ -565,11 +565,6 @@ img.film-city-image { width: 100%; height: auto; aspect-ratio: 1 / 1.05; object-
   box-shadow: 0 16px 30px #0007;
 }
 .header-menu-links a { display: flex; align-items: center; min-height: 48px; white-space: normal; }
-.reader-toc { display: none; }
-.reader-related { flex: 1 1 100%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 28px; }
-.reader-related p { grid-column: 1 / -1; color: #b8ccd9; font-size: 12px; margin: 0 0 4px; }
-.reader-related a { display: flex; align-items: center; min-height: 44px; line-height: 1.8; }
-.reader-bottom .reader-return { display: flex; align-items: center; min-height: 44px; }
 
 @media (max-width: 900px) {
   .top-nav { gap: 18px; }
@@ -584,34 +579,7 @@ img.film-city-image { width: 100%; height: auto; aspect-ratio: 1 / 1.05; object-
   .top-nav { gap: 12px; }
   .top-nav .nav-start { min-height: 44px; padding: 9px 10px; font-size: 11px; white-space: nowrap; }
   .header-menu summary { font-size: 11px; padding-inline: 0; }
-  .reader-toc { display: block; margin-bottom: 28px; border-bottom: 1px solid #41657e; }
-  .reader-toc > summary { min-height: 48px; padding-block: 12px; color: #c5e6f4; font: 13px/1.8 var(--serif); cursor: pointer; }
-  .reader-toc > summary:focus-visible { outline: 3px solid #80bbde; outline-offset: 3px; }
-  .reader-toc .mobile-categories {
-    display: block;
-    position: static;
-    overflow: visible;
-    margin: 0;
-    padding: 8px 0 16px;
-    background: transparent;
-    border: 0;
-  }
-  .reader-toc .side-group { margin-bottom: 22px; }
-  .reader-toc .side-group-title { margin-bottom: 6px; color: #b8ccd9; font-size: 12px; }
-  .reader-toc .mobile-categories a {
-    display: flex;
-    align-items: center;
-    min-height: 44px;
-    margin: 0;
-    padding: 10px 12px;
-    border: 0;
-    background: transparent;
-    color: #c9dfec;
-    white-space: normal;
-    line-height: 1.8;
-  }
-  .reader-toc .mobile-categories a[aria-current="page"] { color: #e3f8ff; background: #173a55; }
-  .reader-related { grid-template-columns: 1fr; gap: 2px; }
+
 }
 @media (max-width: 380px) {
   .brand-word { display: none; }

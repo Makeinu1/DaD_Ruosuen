@@ -43,13 +43,17 @@ for (const [name,type] of [['chromium',chromium],['webkit',webkit]]) {
       for(const path of paths) {
         await p.goto(base+'#/'+encodeURIComponent(path));
         await docsReady(p,path);
-        const nav=await p.locator('#journey-nav').evaluate(e=>{
-          const links=[...e.querySelectorAll('a')],a=e.querySelector('[aria-current="page"]'),box=e.getBoundingClientRect(),r=a.getBoundingClientRect();
-          return {count:links.length,rows:new Set(links.map(x=>Math.round(x.getBoundingClientRect().top))).size,activeVisible:r.left>=box.left-1&&r.right<=box.right+1,bodyWidth:document.documentElement.scrollWidth,wrap:getComputedStyle(e).flexWrap};
+        assert.equal(await p.locator('#journey-nav,.reader-breadcrumbs,.reader-toc,#sidebar').count(),0);
+        assert.equal(await p.locator('#reader-bottom a').count(),1);
+        const menu=p.locator('.header-menu summary');
+        const mobile=await menu.isVisible();
+        if(mobile) await menu.click();
+        const nav=await p.locator('.top-nav').evaluate(e=>{
+          const links=[...e.querySelectorAll('a[href^="#/"]:not([data-return-to-story])')].filter(a=>a.getClientRects().length && getComputedStyle(a).visibility!=='hidden' && (!a.closest('details') || a.closest('details').open));
+          return {count:links.length,active:links.filter(a=>a.getAttribute('aria-current')==='page').length,unique:new Set(links.map(a=>a.getAttribute('href'))).size,bodyWidth:document.documentElement.scrollWidth};
         });
-        assert.equal(nav.count,5);
-        assert(nav.bodyWidth<=width+1,JSON.stringify({name,width,path,nav}));
-        if(width<=430)assert(nav.rows===1&&nav.activeVisible&&nav.wrap==='nowrap',JSON.stringify({name,width,path,nav}));
+        assert(nav.count===5&&nav.unique===5&&nav.active===1&&nav.bodyWidth<=width+1,JSON.stringify({name,width,path,nav}));
+        if(mobile) await menu.click();
         if(path===paths[0]){
           const divider=p.locator('.walk-chapter-divider');
           assert.equal(await divider.count(),1);
@@ -68,6 +72,9 @@ for (const [name,type] of [['chromium',chromium],['webkit',webkit]]) {
           assert((await q.innerText()).includes('大断裂で森ごと地下へ沈んだエルフたち'));
           await p.locator('#story-chapters a').filter({hasText:'この街に生きる人々'}).click();
           await p.waitForFunction(()=>document.activeElement?.id==='walk-people');
+          assert.equal(await p.locator('#story-chapters a:visible').count(),2);
+          await p.locator('.walk-organizations summary').click();
+          assert.equal(await p.locator('.walk-organization-links a:visible').count(),8);
           await p.locator('#story-chapters a').filter({hasText:'モグラの寝床'}).click();
           await p.waitForFunction(()=>document.activeElement?.textContent==='モグラの寝床');
         }

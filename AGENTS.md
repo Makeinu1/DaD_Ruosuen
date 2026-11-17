@@ -26,6 +26,8 @@ If the user is a player visiting the public portal, preparing a character, or as
 
 ## Web architecture
 
+Use a single global navigation in the header, with mutually exclusive desktop and mobile menu links and an always-visible character creation action. Preserve the return-to-story position in that header. No redundant reader nav band, breadcrumbs, sidebar or bottom return. World history retains four chapter links; the city page exposes two chapter links and eight organizations in a native disclosure. Promote the final standalone Markdown link to the sole onward action; character creation ends with optional world reading. Keep the five homepage entrances, official rules and image enlargement.
+
 A minimal dependency-free static GitHub Pages site:
 `index.html` (intro and reader frame), `assets/site.css` (reader/shared styles), `assets/concept.css` (homepage/scenes), `assets/journey.css` (illustrated world/city and journey navigation), `assets/site.js` (Markdown viewer/router), `assets/scroll-story.mjs` (scroll-driven scene controller), `assets/ruosuen-underground-world.webp` (underground scene painting). `#/docs/...` and `#/players/...` open documents. `#world` and `#guide` navigate to home sections.
 
