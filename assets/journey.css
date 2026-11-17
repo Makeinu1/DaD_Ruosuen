@@ -357,3 +357,71 @@
   }
   .journey-nav:focus-within { -webkit-mask-image: none; mask-image: none; }
 }
+
+/* A quiet typographic chapter turn: the labyrinth gives way to its people. */
+.article-body.storybook-walk .walk-chapter-divider {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  max-width: 1030px;
+  margin: clamp(20px, 4vw, 56px) auto clamp(60px, 9vw, 120px);
+  padding: clamp(64px, 10vw, 140px) clamp(24px, 5vw, 64px);
+  border-block: 1px solid #334959;
+  background: radial-gradient(ellipse at center, #10243866, transparent 74%);
+}
+.walk-chapter-divider::before {
+  content: "";
+  width: min(240px, 64%);
+  height: 18px;
+  margin-bottom: 26px;
+  background: linear-gradient(90deg, transparent, #7598ad) left center / calc(50% - 15px) 1px no-repeat,
+              linear-gradient(90deg, #7598ad, transparent) right center / calc(50% - 15px) 1px no-repeat,
+              linear-gradient(45deg, transparent 49%, #a6cde2 50%, transparent 51%) center / 16px 16px no-repeat;
+}
+.walk-chapter-divider::after {
+  content: "";
+  position: absolute;
+  top: calc(clamp(64px, 10vw, 140px) + 5px);
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background: #a6cde2;
+  transform: translateX(-50%) rotate(45deg);
+}
+.article-body .walk-chapter-divider h2 {
+  order: 1;
+  margin: 0 0 28px;
+  padding: 0;
+  border: 0;
+  color: #e3edf5;
+  font: 600 clamp(26px, 4vw, 44px)/1.6 var(--serif);
+  letter-spacing: .045em;
+  text-wrap: balance;
+  scroll-margin-top: 105px;
+}
+.article-body .walk-chapter-divider .walk-divider-kicker {
+  order: 0;
+  margin: 0 0 12px;
+  color: #96b7ca;
+  font: 400 12px/1.8 Cinzel, var(--serif);
+  letter-spacing: .14em;
+}
+.walk-divider-kicker em { font-style: normal; }
+.article-body .walk-chapter-divider .walk-divider-copy {
+  order: 2;
+  margin: 0;
+  max-width: 38em;
+  color: #c0d2df;
+  font: 400 clamp(14px, 1.3vw, 17px)/2.35 var(--serif);
+  overflow-wrap: anywhere;
+}
+@media (max-width: 700px) {
+  .article-body.storybook-walk .walk-chapter-divider {
+    margin-inline: 20px;
+    padding-inline: 16px;
+  }
+  .article-body .walk-chapter-divider h2 { font-size: clamp(23px, 6.5vw, 30px); }
+}
