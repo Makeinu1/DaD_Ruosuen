@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   source-consistency:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -22,3 +22,16 @@ jobs:
         run: node --test tests/scroll-story.test.mjs
       - name: Validate curated Pages source paths
         run: node scripts/verify-public-sources.mjs
+      - name: Validate reader release fingerprints
+        run: node scripts/sync-reader-release.mjs --check
+      - name: Install browser regression dependencies
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
+      - name: Test chapter doors and stale releases on mobile browsers
+        run: |
+          python3 -m http.server 8819 --bind 127.0.0.1 > /tmp/ruosuen-http.log 2>&1 &
+          server=$!
+          trap 'kill "$server" 2>/dev/null || true' EXIT
+          for i in {1..20}; do curl -fsS http://127.0.0.1:8819/ >/dev/null && break; sleep 1; done
+          node tests/reader-release.browser.cjs

@@ -275,8 +275,8 @@
   display: inline-block;
   white-space: nowrap;
 }
-/* A quiet typographic chapter turn: the labyrinth gives way to its people. */
-.article-body.storybook-walk .walk-chapter-divider {
+/* Shared chapter doors: a quiet typographic turn in every reader article. */
+.article-body .chapter-divider {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -289,7 +289,7 @@
   border-block: 1px solid #334959;
   background: radial-gradient(ellipse at center, #10243866, transparent 74%);
 }
-.walk-chapter-divider::before {
+.chapter-divider::before {
   content: "";
   width: min(240px, 64%);
   height: 18px;
@@ -298,7 +298,7 @@
               linear-gradient(90deg, #7598ad, transparent) right center / calc(50% - 15px) 1px no-repeat,
               linear-gradient(45deg, transparent 49%, #a6cde2 50%, transparent 51%) center / 16px 16px no-repeat;
 }
-.walk-chapter-divider::after {
+.chapter-divider::after {
   content: "";
   position: absolute;
   top: calc(clamp(64px, 10vw, 140px) + 5px);
@@ -308,7 +308,7 @@
   background: #a6cde2;
   transform: translateX(-50%) rotate(45deg);
 }
-.article-body .walk-chapter-divider h2 {
+.article-body .chapter-divider h2 {
   order: 1;
   margin: 0 0 28px;
   padding: 0;
@@ -319,7 +319,7 @@
   text-wrap: balance;
   scroll-margin-top: 105px;
 }
-.article-body .walk-chapter-divider .walk-divider-kicker {
+.article-body .chapter-divider .walk-divider-kicker {
   order: 0;
   margin: 0 0 12px;
   color: #96b7ca;
@@ -327,7 +327,7 @@
   letter-spacing: .14em;
 }
 .walk-divider-kicker em { font-style: normal; }
-.article-body .walk-chapter-divider .walk-divider-copy {
+.article-body .chapter-divider .walk-divider-copy {
   order: 2;
   margin: 0;
   max-width: 38em;
@@ -336,11 +336,11 @@
   overflow-wrap: anywhere;
 }
 @media (max-width: 700px) {
-  .article-body.storybook-walk .walk-chapter-divider {
+  .article-body .chapter-divider {
     margin-inline: 20px;
     padding-inline: 16px;
   }
-  .article-body .walk-chapter-divider h2 { font-size: clamp(23px, 6.5vw, 30px); }
+  .article-body .chapter-divider h2 { font-size: clamp(23px, 6.5vw, 30px); }
 }
 
 /* Navigation: global header and one onward action. */
@@ -511,4 +511,16 @@
   .article-body.world-history .story-panel.panel-small .story-caption,
   .storybook .story-pair .story-caption { padding: 24px 24px 0; }
   .storybook .story-pair { grid-template-columns: 1fr; gap: clamp(56px, 8vw, 112px); }
+}
+
+/* Keep the shared decoration at the same rhythm in the history and prose layouts. */
+#reader-view .article-body.world-history .history-chapter { padding-top: 0; }
+#reader-view .article-body .chapter-divider { box-sizing: border-box; }
+#reader-view .article-body .chapter-divider h2 { overflow-wrap: anywhere; }
+#reader-view .article-body .chapter-divider .walk-divider-kicker { overflow-wrap: anywhere; max-width: 100%; }
+#reader-view .article-body .chapter-divider .walk-divider-copy { max-width: 38em; }
+#reader-view .article-body .chapter-divider:not(:has(.walk-divider-copy)) h2 { margin-bottom: 0; }
+@media (max-width: 700px) {
+  .reading-layout #article-content .chapter-divider { margin-inline: 0; }
+  #reader-view .article-body .chapter-divider { padding-block: 64px; }
 }

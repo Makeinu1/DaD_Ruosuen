@@ -100,7 +100,7 @@ if (fs.existsSync(file(manifestPath))) {
   const firstArt = firstArticle.match(/!\[[^\]]*\]\(\.\.\/assets\/([^/]+\.webp)\)/)?.[1];
   if (!firstArt || !manifest[firstArt]) fail("First adventure artwork must be listed in the common responsive manifest");
 }
-if (!/fetch\(new URL\(path,\s*document\.baseURI\)/.test(js)) {
+if (!/new URL\(path,\s*document\.baseURI\)/.test(js) || !/await fetch\(url,/.test(js)) {
   fail("Pages reader no longer fetches the declared Markdown path directly");
 }
 if (!/src="assets\/site\.js(?:\?[^"]*)?"/.test(html) || !html.includes('id="article-content"')) {
