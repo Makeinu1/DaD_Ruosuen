@@ -314,22 +314,14 @@ function markdownToHtml(markdown, sourcePath) {
   return html.join("\n");
 }
 
-function renderNav(activePath) {
-  const groups = SECTIONS.map(section => '<div class="side-group"><div class="side-group-title">'+escapeHtml(section.label)+'</div>' +
-    section.entries.map(e => '<a class="side-link" href="'+docUrl(e.path)+'"'+(activePath===e.path?' aria-current="page"':'')+'>'+escapeHtml(e.label)+'</a>').join("") + '</div>').join("");
-  $("sidebar").innerHTML = '<div class="sidebar-title">FIELD GUIDE / 目次</div>' + groups;
-  $("mobile-categories").innerHTML = groups;
-  document.querySelector('.reader-toc').open = false;
+// One global navigation, with mutually exclusive desktop/mobile links.
+function updateHeaderCurrent(path) {
+  for (const link of document.querySelectorAll('.top-nav a[href^="#/"]')) {
+    const target = resolvePath(decodeURIComponent(link.getAttribute('href').slice(2)));
+    if (path && target === path) link.setAttribute('aria-current','page');
+    else link.removeAttribute('aria-current');
+  }
 }
-
-// Deliberate neighbors rather than a circular tour of every document.
-const RELATED = {
-  "docs/04_自由迷宮都市と組織.md":["adventures/次の冒険.md"],
-  "adventures/次の冒険.md":["adventures/最初の冒険.md"],
-  "adventures/最初の冒険.md":["players/キャラクター作成ガイド.md"],
-  "players/キャラクター作成ガイド.md":["docs/01_プレイヤー向け世界観.md"],
-  "docs/01_プレイヤー向け世界観.md":["docs/04_自由迷宮都市と組織.md"]
-};
 
 // Keep the Markdown source readable on GitHub: heading + image + quotation.
 // Only curated story pages opt into the scenic presentation.
@@ -436,11 +428,28 @@ function composeStory(meta) {
   chapters.setAttribute('aria-label',meta.history ? '世界の歴史' : '街の行き先');
   chapters.hidden = !meta.chapters;
   if (meta.chapters) {
-    for (const heading of article.querySelectorAll(meta.history ? '.history-chapter > h2' : 'h2')) {
+    const headings = [...article.querySelectorAll(meta.history ? '.history-chapter > h2' : 'h2')];
+    const makeLink = heading => {
       const link = document.createElement('a');
       link.href = '#' + heading.id;
       link.textContent = heading.textContent;
-      chapters.append(link);
+      return link;
+    };
+    if (meta.history) {
+      headings.forEach(heading => chapters.append(makeLink(heading)));
+    } else {
+      const main = document.createElement('div');
+      main.className = 'walk-main-chapters';
+      headings.slice(0,2).forEach(heading => main.append(makeLink(heading)));
+      const organizations = document.createElement('details');
+      organizations.className = 'walk-organizations';
+      const summary = document.createElement('summary');
+      summary.textContent = '組織から探す';
+      const links = document.createElement('div');
+      links.className = 'walk-organization-links';
+      headings.slice(2).forEach(heading => links.append(makeLink(heading)));
+      organizations.append(summary,links);
+      chapters.append(main,organizations);
     }
   }
 }
@@ -487,12 +496,36 @@ function updateReturnLinks(entry) {
   const label = origin?.story ? '物語の続きへ' : origin ? '元の場所へ戻る' : '物語を見る';
   document.querySelectorAll('[data-return-to-story]').forEach(link => { link.textContent = label; });
 }
-function renderRelated(path) {
-  const prep = path === 'players/キャラクター作成ガイド.md';
-  const links = (RELATED[path] || []).map(p => '<a href="'+docUrl(p)+'">'+escapeHtml(BY_PATH.get(p).label)+' <span aria-hidden="true">→</span></a>').join('');
-  $("reader-bottom").innerHTML = '<div class="reader-related"><p>'+(prep?'冒険の準備を進める':'この先へ')+'</p>'+links+'</div>' +
-    '<a class="reader-return" data-return-to-story href="#/">物語を見る</a>' +
-    '<a class="reader-return" href="#guide">街から冒険へ <span aria-hidden="true">→</span></a>';
+// Promote the original Markdown's final standalone internal link to the
+// single onward action. No second list of page destinations is maintained.
+function renderOnward(path) {
+  const nav = $("reader-bottom");
+  const article = $("article-content");
+  nav.replaceChildren();
+  nav.hidden = true;
+  const last = article.lastElementChild;
+  // Reading pages may wrap their final paragraph in a reading section.
+  const paragraph = last?.matches('.reading-section') ? last.lastElementChild : last;
+  if (!paragraph?.matches('p') || paragraph.childNodes.length !== 1 ||
+      !paragraph.firstElementChild?.matches('a[href^="#/"]')) return;
+  const link = paragraph.firstElementChild;
+  const target = resolvePath(decodeURIComponent(link.getAttribute('href').slice(2)));
+  if (!BY_PATH.has(target)) return;
+  const optional = path === 'players/キャラクター作成ガイド.md';
+  const kicker = document.createElement('span');
+  kicker.className = 'reader-onward-kicker';
+  kicker.textContent = optional ? 'OPTIONAL READING' : path === 'adventures/最初の冒険.md' ? 'YOUR STORY BEGINS' : 'THE NEXT CHAPTER';
+  const arrow = document.createElement('span');
+  arrow.className = 'reader-onward-arrow';
+  arrow.textContent = '→';
+  arrow.setAttribute('aria-hidden','true');
+  link.className = 'reader-onward-link';
+  link.prepend(kicker);
+  link.append(arrow);
+  nav.append(link);
+  paragraph.remove();
+  nav.classList.toggle('optional-onward',optional);
+  nav.hidden = false;
 }
 const nextPaint = () => new Promise(resolve => requestAnimationFrame(resolve));
 
@@ -527,33 +560,18 @@ async function showDoc(path, entry, token) {
   document.title = meta.label + ' | ルオスエン';
   document.body.classList.toggle('story-layout',meta.layout === 'story');
   document.body.classList.toggle('reading-layout',meta.layout !== 'story');
-  $("journey-nav").innerHTML = ALL.map(e => '<a href="'+docUrl(e.path)+'"'+(e.path===path?' aria-current="page"':'')+'>'+escapeHtml(e.label)+'</a>').join('');
   $("story-chapters").hidden = true;
   document.body.classList.remove('is-watching-film');
   $("home-view").classList.add('hidden');
   $("reader-view").classList.remove('hidden');
-  const journey = $("journey-nav");
-  const activeLink = journey.querySelector('[aria-current="page"]');
-  const updateJourneyEdges = () => {
-    const remaining = journey.scrollWidth - journey.clientWidth;
-    journey.classList.toggle('can-scroll-left', journey.scrollLeft > 2);
-    journey.classList.toggle('can-scroll-right', remaining - journey.scrollLeft > 2);
-  };
-  journey.onscroll = updateJourneyEdges;
-  if (activeLink) {
-    const navBox = journey.getBoundingClientRect();
-    const linkBox = activeLink.getBoundingClientRect();
-    journey.scrollLeft += linkBox.left - navBox.left + linkBox.width / 2 - navBox.width / 2;
-  }
-  updateJourneyEdges();
-  renderNav(path);
   $("article-label").textContent = meta.kicker;
   $("article-title").textContent = meta.label;
   $("article-summary").textContent = meta.summary;
   $("article-content").setAttribute('aria-busy','true');
   delete $("article-content").dataset.source;
   $("article-content").innerHTML = '<p class="loading" role="status">資料を読み込んでいます…</p>';
-  renderRelated(path);
+  $("reader-bottom").replaceChildren();
+  $("reader-bottom").hidden = true;
   updateReturnLinks(entry);
   window.scrollTo({top:0,behavior:'instant'});
   try {
@@ -563,6 +581,7 @@ async function showDoc(path, entry, token) {
     if (token !== routing) return;
     $("article-content").innerHTML = markdownToHtml(text, path);
     composeStory(meta);
+    renderOnward(path);
     $("article-content").dataset.source = path;
     // Dimensions reserve the artwork's space. Decode only the opening image and
     // images above a restored position; the rest load as the visitor approaches.
@@ -595,6 +614,7 @@ async function onRoute() {
   activeHash = location.hash;
   document.querySelectorAll('.header-menu').forEach(menu => { menu.open = false; });
   updateReturnLinks(entry);
+  updateHeaderCurrent(entry.kind === 'doc' ? entry.path : null);
   if (entry.kind === 'doc') await showDoc(entry.path, entry, token);
   else await showHome(entry, token);
   if (token !== routing) return;
@@ -628,6 +648,8 @@ document.addEventListener('click', event => {
     const target = document.getElementById(path);
     if (target && !target.closest('.hidden')) {
       event.preventDefault();
+      const organizations = link.closest('.walk-organizations');
+      if (organizations) organizations.open = false;
       target.scrollIntoView({behavior:'instant',block:'start'});
       target.setAttribute('tabindex','-1');
       target.focus({preventScroll:true});

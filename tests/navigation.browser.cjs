@@ -24,6 +24,11 @@ async function clickVisible(page,link) {
   assert(box&&box.y>=0&&box.y+box.height<=900);
   await page.mouse.click(box.x+box.width/2,box.y+box.height/2);
 }
+async function returnToStory(page) {
+  const menu=page.locator('.header-menu summary');
+  if(await menu.isVisible()) await menu.click();
+  await page.locator('.top-nav [data-return-to-story]:visible').click();
+}
 async function clickWorld(page) {
   const links=await page.getByRole('link',{name:'世界を知る',exact:true}).all();
   for (const link of links) {
@@ -188,7 +193,7 @@ async function checkJourney(page,width) {
   const menu=page.locator('.header-menu summary');
   if(await menu.isVisible()) await clickVisible(page,menu);
   await clickWorld(page);await ready(page,WORLD);
-  await page.locator('#reader-bottom [data-return-to-story]').click();
+  await returnToStory(page);
   await page.waitForFunction(()=>!document.querySelector('#home-view').classList.contains('hidden'));
   await nativeSeek(page,'vista',0);
   // Actual native scroll, next/previous controls, and deep links all choose the same scenes.
@@ -220,9 +225,9 @@ async function checkJourney(page,width) {
   assert(readingY>100);
   await page.goBack();await restored(page,'next',movieY);
   await page.goForward();await ready(page,WORLD);await atY(page,readingY);
-  await page.locator('#article-content > p:last-child a').scrollIntoViewIfNeeded();await paint(page);
+  await page.locator('#reader-bottom .reader-onward-link').scrollIntoViewIfNeeded();await paint(page);
   const departWorldY=await page.evaluate(()=>scrollY);
-  await page.locator('#article-content > p:last-child a').click();await ready(page,CITY);
+  await page.locator('#reader-bottom .reader-onward-link').click();await ready(page,CITY);
   assert.equal(await page.locator('.story-panel').count(),11);
   assert.deepEqual(await page.locator('#story-chapters a').allTextContents(),['街の下へ','この街に生きる人々',...institutions,'クェンサ ― 我らの青']);
   const divider=page.locator('.walk-chapter-divider');
@@ -248,6 +253,7 @@ async function checkJourney(page,width) {
     await image.evaluate(i=>i.decode());
     assert(await image.evaluate(i=>i.naturalWidth>0));
   }
+  await page.locator('.walk-organizations summary').click();
   await page.locator('#story-chapters').getByRole('link',{name:'伽藍の塔',exact:true}).click();
   const tower=page.locator('.story-panel').filter({has:page.locator('h2',{hasText:'伽藍の塔'})});
   assert(await tower.isVisible());
@@ -256,17 +262,18 @@ async function checkJourney(page,width) {
   assert(cityY>1000);
   await page.goBack();await ready(page,WORLD);await atY(page,departWorldY);
   await page.goForward();await ready(page,CITY);await atY(page,cityY);
-  await page.locator('#reader-bottom [data-return-to-story]').click();await restored(page,'next',movieY);
+  await returnToStory(page);await restored(page,'next',movieY);
   // First-time reader journey: city → possible adventures → first adventure → character, then optional history.
   for(const [path,following] of [[WORLD,CITY],[CITY,NEXT],[NEXT,FIRST],[FIRST,PREP],[PREP,WORLD]]) {
     await page.goto(url(path));await ready(page,path);
-    const onward=page.locator('#reader-bottom .reader-related a').first();
+    const onward=page.locator('#reader-bottom .reader-onward-link');
+    assert.equal(await page.locator('#reader-bottom a').count(),1);
     await onward.scrollIntoViewIfNeeded();await paint(page);
     await clickVisible(page,onward);await ready(page,following);
   }
   await page.goto(url(NEXT));await ready(page,NEXT);
   assert(!(await page.locator('#article-content').innerText()).includes('ある年の瀬、ルオスエンにて'));
-  assert.equal(await page.locator('#article-content').getByRole('link',{name:'最初の冒険',exact:true}).count(),1);
+  assert.equal(await page.locator('#reader-bottom .reader-onward-link').count(),1);
   await page.goto(url(FIRST));await ready(page,FIRST);
   const firstArt=page.locator('#article-content img');
   assert.equal(await firstArt.count(),1);
@@ -275,28 +282,25 @@ async function checkJourney(page,width) {
     img.getAttribute('height')==='941' && img.srcset.includes('800w') && img.srcset.includes('1200w')));
   const prologue=await page.locator('#article-content').innerText();
   assert(prologue.includes('ある年の瀬、ルオスエンにて')&&prologue.includes('一年かけて貯めた金で買った乗船券')&&prologue.includes('君たちの物語は、この街の年の瀬から始まる。'));
-  assert.equal(await page.locator('#article-content').getByRole('link',{name:'キャラクターを考える',exact:true}).count(),1);
+  assert.equal(await page.locator('#reader-bottom .reader-onward-link').count(),1);
   await page.goto(url(PREP));await ready(page,PREP);
   const prep=await page.locator('#article-content').innerText();
   for(const term of ['地下の世界からやって来た','ゲーム上の作成条件','キャラクターを作成する'])assert(prep.includes(term));
   assert(!prep.includes('死者の蘇生'));
   assert(prep.includes('大きな夢を抱いている者。\n故郷を離れ、新しい暮らしを求める者。\nまだ誰も知らない世界からやって来た者。'));
   assert(prep.includes('大切な人はいるだろうか。\n忘れられない出来事はあるだろうか。'));
-  if (await page.evaluate(()=>innerWidth<=700)) {
-    const nav = await page.locator('#journey-nav').evaluate(el=>{
-      const links=[...el.querySelectorAll('a')], active=el.querySelector('[aria-current="page"]');
-      const box=el.getBoundingClientRect(), a=active.getBoundingClientRect();
-      return {overflow:el.scrollWidth>el.clientWidth, singleRow:links.every(link=>Math.abs(link.offsetTop-links[0].offsetTop)<2),
-        activeVisible:a.left>=box.left-1&&a.right<=box.right+1};
-    });
-    assert(nav.singleRow&&nav.activeVisible);
-    if(width<=430) assert(nav.overflow);
-  }
-  // Curated navigation has five pages and no author-only or archived destinations.
-  assert.equal(await page.locator('#journey-nav a').count(),5);
-  const hrefs=await page.locator('#journey-nav a').evaluateAll(es=>es.map(e=>decodeURIComponent(e.getAttribute('href'))));
-  assert.deepEqual(hrefs,[CITY,NEXT,FIRST,PREP,WORLD].map(p=>'#/'+p));
-  assert(!hrefs.some(h=>/notes\/|world\/|DECISIONS|提出テンプレート/.test(h)));
+  // Only the header provides global navigation. The mobile menu does not
+  // repeat the always-visible character creation action.
+  assert.equal(await page.locator('#journey-nav,.reader-breadcrumbs,.reader-toc,#sidebar').count(),0);
+  const menuSummary=page.locator('.header-menu summary');
+  const mobile=await menuSummary.isVisible();
+  if(mobile) await menuSummary.click();
+  const navLinks=page.locator('.top-nav a[href^="#/"]:not([data-return-to-story]):visible');
+  const hrefs=await navLinks.evaluateAll(es=>es.map(e=>decodeURIComponent(e.getAttribute('href'))).sort());
+  assert.deepEqual(hrefs,[CITY,NEXT,FIRST,PREP,WORLD].map(p=>'#/'+p).sort());
+  assert.equal(await page.locator('.top-nav a[aria-current="page"]:visible').count(),1);
+  if(mobile) await menuSummary.click();
+  assert.equal(await page.locator('#reader-bottom a').count(),1);
   assert.equal(await page.getByRole('link',{name:'キャラクターを共有する',exact:true}).count(),0);
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   await page.goto(base+'#guide');
@@ -311,7 +315,7 @@ async function checkJourney(page,width) {
   await page.locator('.film-archive-links a').filter({hasText:'ルオスエンを歩く'}).scrollIntoViewIfNeeded();await paint(page);
   const archiveY=await page.evaluate(()=>scrollY);
   await page.locator('.film-archive-links a').filter({hasText:'ルオスエンを歩く'}).click();await ready(page,CITY);
-  await page.locator('#reader-bottom [data-return-to-story]').click();await atY(page,archiveY);
+  await returnToStory(page);await atY(page,archiveY);
   assert.equal(await page.locator('.film-archive-disclosure').evaluate(e=>e.open),true);
   for (const path of [WORLD,CITY,NEXT,FIRST,PREP]) {
     await page.goto(url(path));await ready(page,path);
@@ -351,7 +355,7 @@ async function checkJourney(page,width) {
     await p.locator('#next').scrollIntoViewIfNeeded();await paint(p);
     await clickVisible(p,p.locator('.header-menu summary'));
     await clickWorld(p);await ready(p,WORLD);
-    await p.locator('#reader-bottom [data-return-to-story]').click();assert(await p.locator('#next').isVisible());
+    await returnToStory(p);assert(await p.locator('#next').isVisible());
     // Existing public URLs continue to resolve after consolidation.
     for(const [old,path] of [['docs/03_魔石と魔術.md',WORLD],['docs/08_街角の風景.md',CITY],['docs/06_種族と信仰.md',PREP],['players/characters/README.md',PREP],[OLD_SHARE,PREP]]) {
       await p.goto(url(old));await ready(p,path);
