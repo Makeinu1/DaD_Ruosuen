@@ -8,9 +8,9 @@
  */
 // Dimensions from the original artwork. Variants are derived without replacing it.
 const RESPONSIVE_ART = {
-  "reuna-story-threshold.webp": [
-    1536,
-    1024
+  "reuna-turn-01.webp": [
+    1672,
+    941
   ],
   "reuna-turn-02.webp": [
     1672,
@@ -21,6 +21,10 @@ const RESPONSIVE_ART = {
     941
   ],
   "reuna-turn-04.webp": [
+    1672,
+    941
+  ],
+  "reuna-turn-05.webp": [
     1672,
     941
   ],
@@ -56,7 +60,11 @@ const RESPONSIVE_ART = {
     1672,
     941
   ],
-  "ruosuen-film-rumor.webp": [
+  "ruosuen-film-possibility.webp": [
+    1672,
+    941
+  ],
+  "ruosuen-film-survey.webp": [
     1536,
     1024
   ],
@@ -65,18 +73,6 @@ const RESPONSIVE_ART = {
     1024
   ],
   "ruosuen-first-adventure-b.webp": [
-    1672,
-    941
-  ],
-  "ruosuen-manastone-discovery.webp": [
-    1672,
-    941
-  ],
-  "ruosuen-manastone-life.webp": [
-    1672,
-    941
-  ],
-  "ruosuen-manastone-shortage.webp": [
     1672,
     941
   ],
@@ -97,6 +93,10 @@ const RESPONSIVE_ART = {
     941
   ],
   "ruosuen-walk-labyrinth-battle-v2.webp": [
+    1672,
+    941
+  ],
+  "ruosuen-walk-labyrinth-discovery-20261117.webp": [
     1672,
     941
   ],
