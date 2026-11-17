@@ -167,7 +167,7 @@ async function checkJourney(page,width) {
   assert.deepEqual(await page.locator('[data-film-scene]').evaluateAll(es=>es.map(e=>e.id)),scenes);
   assert.deepEqual(await page.locator('.film-sequence [data-film-scene]').evaluateAll(es=>es.map(e=>e.id)),scenes);
   const artwork=await page.locator('[data-film-scene] img').evaluateAll(es=>es.map(e=>e.getAttribute('src')));
-  assert(await page.locator('[data-film-scene] img').evaluateAll(es=>es.every(e=>e.srcset.includes('800w')&&e.srcset.includes('1200w')&&e.sizes==='100vw')));
+  assert(await page.locator('[data-film-scene] img').evaluateAll(es=>es.every(e=>e.srcset.includes('800w')&&e.srcset.includes('1200w')&&e.sizes==='(max-width: 480px) 400px, 100vw')));
   assert.equal(new Set(artwork).size,9,'Every film scene needs distinct artwork');
   assert.equal(await page.locator('.film-story-hint,.film-scene-steps').count(),0);
   assert.equal(await page.locator('.film-story-progress').count(),1);
@@ -311,7 +311,10 @@ async function checkJourney(page,width) {
     await page.goto(url(path));await ready(page,path);
     await page.waitForFunction(()=>window.RuosuenScroll&&document.documentElement.classList.contains('scroll-effects'));
     const illustrated=[WORLD,CITY,NEXT].includes(path);
-    const target=page.locator(illustrated?'.story-panel':'.reading-section').last();
+    // FIRST has a single section beginning above the fold, so its reveal
+    // is already complete on desktop. The below-fold onward nav is the
+    // meaningful scroll target on that page.
+    const target=page.locator(illustrated?'.story-panel':path===FIRST?'#reader-bottom':'.reading-section').last();
     await paint(page);
     const property=illustrated?'--art-shift-y':'--reveal-opacity';
     const before=await target.evaluate((e,p)=>e.style.getPropertyValue(p),property);

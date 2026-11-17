@@ -60,6 +60,32 @@ for (const match of html.matchAll(/<img[^>]+src="(assets\/[^"?#]+)"/g)) {
   if (!fs.existsSync(file(match[1]))) fail("Missing film artwork: " + match[1]);
 }
 
+// Verify that both responsive derivatives exist, retain their original
+// counterpart, and actually reduce the bytes served.
+const manifestPath = "assets/responsive/manifest.json";
+if (fs.existsSync(file(manifestPath))) {
+  const manifest = JSON.parse(read(manifestPath));
+  const declared = js.match(/const RESPONSIVE_ART = (\{[\s\S]*?\});/);
+  if (!declared || JSON.stringify(JSON.parse(declared[1])) !== JSON.stringify(manifest)) fail("Responsive artwork metadata diverges from the manifest");
+  for (const name of Object.keys(manifest)) {
+    const original = file("assets/" + name);
+    if (!fs.existsSync(original)) { fail("Responsive artwork missing its original: " + name); continue; }
+    for (const width of [800, 1200]) {
+      const derivative = file("assets/responsive/" + name.replace(/\.webp$/, "-" + width + ".webp"));
+      if (!fs.existsSync(derivative)) fail("Missing responsive artwork: " + derivative);
+      else if (fs.statSync(derivative).size >= fs.statSync(original).size) fail("Responsive artwork is not smaller: " + derivative);
+    }
+  }
+  for (const match of html.matchAll(/(?:imagesrcset|srcset)="([^"]+)"/g)) {
+    for (const candidate of match[1].split(",")) {
+      const source = candidate.trim().split(/\s+/)[0];
+      if (!fs.existsSync(file(source))) fail("Responsive HTML references a missing asset: " + source);
+    }
+  }
+  for (const width of [800, 1200, 1672]) {
+    if (!fs.existsSync(file("assets/ruosuen-first-adventure-" + width + ".webp"))) fail("Missing first adventure art: " + width);
+  }
+}
 if (!/fetch\(new URL\(path,\s*document\.baseURI\)/.test(js)) {
   fail("Pages reader no longer fetches the declared Markdown path directly");
 }
