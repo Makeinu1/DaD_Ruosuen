@@ -47,6 +47,8 @@ Changes should retain mobile-first legibility, semantic links, visible focus, re
 
 ## Publishing
 
+Before committing changes to `index.html`, reader CSS/JS/modules or any curated public Markdown, run `node scripts/sync-reader-release.mjs` and commit the resulting `index.html` and `assets/reader-release.json` together. CI checks the deterministic fingerprints and runs the focused Chromium/WebKit chapter/cache regression; the reader revalidates the release before fetching Markdown. Keep chapter doors as H2 + standalone italic label + prose (no renderer title-list dependency). Old pre-check tabs require a one-time reload; do not claim GitHub Pages can instantly replace already-running JavaScript.
+
 **Do not create a second manually maintained Pages copy of a Markdown article.** The Pages reader fetches Markdown directly from repository paths; edit the source file to change published prose. After deployment, check that the rendered article matches the source in meaning.
 
 Before adding any article to `assets/site.js` `SECTIONS`, confirm it is intended for players and does not reveal spoilers. Never register paths under `notes/` or `world/` without explicit review (default: do not register them). An article living under `world/` is not automatically eligible for Pages navigation.

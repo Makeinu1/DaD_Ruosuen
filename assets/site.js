@@ -163,6 +163,57 @@ const ALL = SECTIONS.flatMap(section => section.entries.map(item => ({...item, g
 const BY_PATH = new Map(ALL.map(item => [item.path, item]));
 const $ = id => document.getElementById(id);
 
+// A static Pages deployment can leave an old HTML/JS shell in a long-lived
+// browser tab. Revalidate before reading a mutable Markdown source.
+// Fingerprints detect accidental mixed releases; they are not security hashes.
+const READER_RELEASE = document.querySelector('meta[name="ruosuen-release"]')?.content;
+function fingerprint(text) {
+  let hash = 0xcbf29ce484222325n;
+  for (let i = 0; i < text.length; i++) {
+    hash = BigInt.asUintN(64, (hash ^ BigInt(text.charCodeAt(i))) * 0x100000001b3n);
+  }
+  return hash.toString(16).padStart(16, '0');
+}
+async function currentReaderRelease() {
+  const url = new URL('assets/reader-release.json', document.baseURI);
+  url.searchParams.set('check', Date.now().toString(36));
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 3500);
+  try {
+    const response = await fetch(url, {cache:'no-store', signal:controller.signal});
+    if (!response.ok) return null;
+    const manifest = await response.json();
+    return /^[0-9a-f]{16}$/.test(manifest.version) && manifest.docs &&
+      typeof manifest.docs === 'object' ? manifest : null;
+  } catch (_) {
+    // A transient connection failure should not stop an otherwise readable page.
+    return null;
+  } finally { clearTimeout(timeout); }
+}
+function refreshReaderFor(manifest) {
+  if (!manifest || manifest.version === READER_RELEASE) return false;
+  const url = new URL(location.href);
+  // Avoid a reload loop if the CDN still serves an older shell.
+  if (url.searchParams.get('v') === manifest.version) throw new Error('release-mismatch');
+  url.searchParams.set('v', manifest.version);
+  location.replace(url.href);
+  return true;
+}
+async function loadReaderSource(path, manifest) {
+  const url = new URL(path, document.baseURI);
+  if (READER_RELEASE) url.searchParams.set('v', READER_RELEASE);
+  const expected = manifest?.docs[path];
+  for (let attempt = 0; attempt < 2; attempt++) {
+    if (attempt) url.searchParams.set('retry', Date.now().toString(36));
+    const response = await fetch(url, {cache:attempt ? 'no-store' : 'no-cache'});
+    if (!response.ok) throw new Error('HTTP ' + response.status);
+    const text = await response.text();
+    if (!expected || fingerprint(text) === expected) return text;
+  }
+  throw new Error('release-mismatch');
+}
+
+
 function docUrl(path) { return "#/" + encodeURIComponent(resolvePath(path)); }
 function escapeHtml(value) {
   return String(value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
@@ -388,11 +439,14 @@ function composeStory(meta) {
     while (next?.classList?.contains('panel-pair')) { const after = next.nextElementSibling; row.append(next); next = after; }
   }
   if (meta.walk) {
-    for (const heading of article.querySelectorAll('#section-0, #walk-people, #walk-beyond')) {
+    // Chapter doors are authored as H2 + standalone italic label + prose.
+    // The legacy heading IDs are kept only for existing deep links.
+    for (const heading of [...article.children].filter(node => node.tagName === 'H2')) {
       const kicker = heading.nextElementSibling;
       const copy = kicker?.nextElementSibling;
       if (heading.tagName !== 'H2' || kicker?.tagName !== 'P' ||
-          !kicker.querySelector('em') || copy?.tagName !== 'P') continue;
+          kicker.childNodes.length !== 1 || kicker.firstElementChild?.tagName !== 'EM' ||
+          copy?.tagName !== 'P') continue;
       const divider = document.createElement('section');
       divider.className = 'walk-chapter-divider';
       divider.setAttribute('aria-labelledby', heading.id);
@@ -570,9 +624,10 @@ async function showDoc(path, entry, token) {
   updateReturnLinks(entry);
   window.scrollTo({top:0,behavior:'instant'});
   try {
-    const response = await fetch(new URL(path,document.baseURI), {cache:'no-cache'});
-    if (!response.ok) throw new Error('HTTP ' + response.status);
-    const text = await response.text();
+    const manifest = await currentReaderRelease();
+    if (token !== routing) return;
+    if (refreshReaderFor(manifest)) return;
+    const text = await loadReaderSource(path, manifest);
     if (token !== routing) return;
     $("article-content").innerHTML = markdownToHtml(text, path);
     composeStory(meta);
@@ -584,10 +639,12 @@ async function showDoc(path, entry, token) {
     await Promise.all(images.filter((image,index) => index === 0 ||
       (entry.saved && image.getBoundingClientRect().top + scrollY <= entry.y + innerHeight))
       .map(image => { image.loading = 'eager'; return image.decode().catch(() => {}); }));
-  } catch (_) {
+  } catch (error) {
     if (token !== routing) return;
-    $("article-content").innerHTML = '<p>資料を読み込めませんでした。接続を確認して再読み込みするか、' +
-      '<a href="'+docUrl(path)+'">もう一度読み込む</a>。</p>';
+    $("article-content").innerHTML = error?.message === 'release-mismatch'
+      ? '<p role="status">資料を更新しています。ページを再読み込みして、もう一度お試しください。</p>'
+      : '<p>資料を読み込めませんでした。接続を確認して再読み込みするか、' +
+        '<a href="'+docUrl(path)+'">もう一度読み込む</a>。</p>';
   }
   await nextPaint();
   if (token !== routing) return;
