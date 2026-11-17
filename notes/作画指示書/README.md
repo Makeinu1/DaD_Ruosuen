@@ -6,7 +6,7 @@
 
 | 優先 | ID | 掲載先 | ファイル | 現在の掲載画 |
 |---|---|---|---|---|
-| 1 | H7 | 冒頭 第7場面 | [H7_冒頭_最下層の噂.md](H7_冒頭_最下層の噂.md) | ruosuen-film-possibility |
+| 保留 | H7 | 冒頭 第7場面 | [H7_冒頭_最下層の噂.md](H7_冒頭_最下層の噂.md) | ruosuen-film-possibility（作者が元の絵を評価、2026-11-18。新作は保留） |
 | 2 | H3 | 冒頭 第3場面 | [H3_冒頭_地図の先へ.md](H3_冒頭_地図の先へ.md) | ruosuen-film-survey |
 | 3 | W5 | 街歩き モグラ商館 | [W5_街歩き_モグラ商館.md](W5_街歩き_モグラ商館.md) | ruosuen-walk-mole-trading-20261117-crop |
 | 4 | W4 | 街歩き モグラの寝床 | [W4_街歩き_モグラの寝床.md](W4_街歩き_モグラの寝床.md) | ruosuen-walk-mole-inn-20261117-crop |
