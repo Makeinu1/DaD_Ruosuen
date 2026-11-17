@@ -96,9 +96,9 @@ if (fs.existsSync(file(manifestPath))) {
       if (!fs.existsSync(file(source))) fail("Responsive HTML references a missing asset: " + source);
     }
   }
-  for (const width of [800, 1200, 1672]) {
-    if (!fs.existsSync(file("assets/ruosuen-first-adventure-" + width + ".webp"))) fail("Missing first adventure art: " + width);
-  }
+  const firstArticle = read("adventures/最初の冒険.md");
+  const firstArt = firstArticle.match(/!\[[^\]]*\]\(\.\.\/assets\/([^/]+\.webp)\)/)?.[1];
+  if (!firstArt || !manifest[firstArt]) fail("First adventure artwork must be listed in the common responsive manifest");
 }
 if (!/fetch\(new URL\(path,\s*document\.baseURI\)/.test(js)) {
   fail("Pages reader no longer fetches the declared Markdown path directly");

@@ -72,6 +72,10 @@ const RESPONSIVE_ART = {
     1536,
     1024
   ],
+  "ruosuen-first-adventure-b.webp": [
+    1672,
+    941
+  ],
   "ruosuen-street-night-oil.webp": [
     1672,
     941
@@ -257,16 +261,13 @@ function markdownToHtml(markdown, sourcePath) {
           const img = new URL(raw, new URL(sourcePath, document.baseURI));
           if (img.origin === location.origin && img.pathname.startsWith(new URL("assets/", document.baseURI).pathname)) {
             const name = img.pathname.split('/').pop();
-            const firstAdventure = name === 'ruosuen-first-adventure-1672.webp';
-            const dimensions = firstAdventure ? [1672, 941] : RESPONSIVE_ART[name];
+            const dimensions = RESPONSIVE_ART[name];
             const [width, height] = dimensions || [1536, 1024];
             const portrait = height > width;
             const sizes = portrait ? '(max-width: 480px) 400px, (max-width: 740px) calc(100vw - 40px), 700px' : BY_PATH.get(sourcePath)?.layout === 'story'
               ? '(max-width: 480px) 400px, (max-width: 700px) 100vw, (max-width: 1500px) 92vw, 1392px'
               : '(max-width: 700px) calc(100vw - 48px), 880px';
-            const candidates = firstAdventure
-              ? [img.href.replace('-1672.webp', '-800.webp') + ' 800w', img.href.replace('-1672.webp', '-1200.webp') + ' 1200w']
-              : dimensions ? [800, 1200].filter(w => w < width).map(w => new URL('responsive/' + name.replace('.webp', '-' + w + '.webp'), img).href + ' ' + w + 'w') : [];
+            const candidates = dimensions ? [800, 1200].filter(w => w < width).map(w => new URL('responsive/' + name.replace('.webp', '-' + w + '.webp'), img).href + ' ' + w + 'w') : [];
             const responsive = candidates.length
               ? ' srcset="' + escapeHtml([...candidates, img.href + ' ' + width + 'w'].join(', ')) + '" sizes="' + sizes + '"'
               : '';
