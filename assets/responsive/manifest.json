@@ -1,7 +1,7 @@
 {
-  "reuna-turn-01.webp": [
-    1672,
-    941
+  "reuna-story-threshold.webp": [
+    1536,
+    1024
   ],
   "reuna-turn-02.webp": [
     1672,
@@ -12,10 +12,6 @@
     941
   ],
   "reuna-turn-04.webp": [
-    1672,
-    941
-  ],
-  "reuna-turn-05.webp": [
     1672,
     941
   ],
@@ -31,15 +27,15 @@
     1672,
     941
   ],
-  "reuna-turn-09.webp": [
-    1672,
-    941
+  "reuna-turn-09-crop.webp": [
+    950,
+    534
   ],
   "reuna-turn-10.webp": [
     1672,
     941
   ],
-  "ruosuen-film-airfleet.webp": [
+  "ruosuen-film-airfleet-muted.webp": [
     1672,
     941
   ],
@@ -51,11 +47,7 @@
     1672,
     941
   ],
-  "ruosuen-film-possibility.webp": [
-    1672,
-    941
-  ],
-  "ruosuen-film-survey.webp": [
+  "ruosuen-film-rumor.webp": [
     1536,
     1024
   ],
@@ -64,6 +56,18 @@
     1024
   ],
   "ruosuen-first-adventure-b.webp": [
+    1672,
+    941
+  ],
+  "ruosuen-manastone-discovery.webp": [
+    1672,
+    941
+  ],
+  "ruosuen-manastone-life.webp": [
+    1672,
+    941
+  ],
+  "ruosuen-manastone-shortage.webp": [
     1672,
     941
   ],
@@ -87,29 +91,25 @@
     1672,
     941
   ],
-  "ruosuen-walk-labyrinth-discovery-20261117.webp": [
-    1672,
-    941
-  ],
   "ruosuen-walk-labyrinth-exploration-v3.webp": [
     1670,
     941
   ],
-  "ruosuen-walk-maps-20261117.webp": [
-    1672,
+  "ruosuen-walk-maps-20261117-crop.webp": [
+    1120,
+    630
+  ],
+  "ruosuen-walk-matenrou-20261117-crop.webp": [
+    836,
     941
   ],
-  "ruosuen-walk-matenrou-20261117.webp": [
-    1672,
-    941
+  "ruosuen-walk-mole-inn-20261117-crop.webp": [
+    1100,
+    619
   ],
-  "ruosuen-walk-mole-inn-20261117.webp": [
-    1672,
-    941
-  ],
-  "ruosuen-walk-mole-trading-20261117.webp": [
-    1672,
-    941
+  "ruosuen-walk-mole-trading-20261117-crop.webp": [
+    932,
+    524
   ],
   "ruosuen-walk-quentha-20261117.webp": [
     1672,

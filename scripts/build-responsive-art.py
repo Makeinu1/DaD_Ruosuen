@@ -11,6 +11,7 @@ sources = [
     Path("docs/01_プレイヤー向け世界観.md"),
     Path("docs/04_自由迷宮都市と組織.md"),
     Path("adventures/次の冒険.md"),
+    Path("adventures/最初の冒険.md"),
 ]
 names = set()
 for p in sources:
