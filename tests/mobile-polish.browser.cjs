@@ -94,6 +94,7 @@ for (const [name,type] of [['chromium',chromium],['webkit',webkit]]) {
           assert.equal(await q.locator('img').count(),1);
           assert.equal(await q.locator('.story-caption p').count(),3);
           assert((await q.innerText()).includes('大断裂で森ごと地下へ沈んだエルフたち'));
+          assert((await q.innerText()).includes('この街の顔役の一人に数えられている'));
 
         }
         const imgs=p.locator('#article-content img');

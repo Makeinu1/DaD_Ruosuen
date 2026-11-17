@@ -235,7 +235,8 @@ async function checkJourney(page,width) {
   assert.equal(await quentha.locator('img').count(),1);
   assert.equal(await quentha.locator('img').evaluate(img=>new URL(img.src).pathname.split('/').pop()),'ruosuen-walk-quentha-20261117.webp');
   assert((await quentha.innerText()).includes('大断裂で森ごと地下へ沈んだエルフたち'));
-  assert((await page.locator('#article-content').innerText()).includes('クェンサもまた、ルオスエンに生きる人々だ。'));
+  assert((await quentha.innerText()).includes('クェンサの名を知らない者はほとんどいない'));
+  assert((await quentha.innerText()).includes('この街の顔役の一人に数えられている'));
   for(const [index,caption] of (await page.locator('.storybook .story-caption').all()).entries()) {
     assert.equal(await caption.locator('p').count(),index<3?2:3,'Labyrinth scenes have two paragraphs; all city scenes have three');
     assert.equal(await caption.locator('.story-hook').count(),0,'Place names remain in explanatory prose');
