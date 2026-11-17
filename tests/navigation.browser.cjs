@@ -13,7 +13,7 @@ const FIRST='adventures/最初の冒険.md';
 const PREP='players/キャラクター作成ガイド.md';
 const OLD_SHARE='players/キャラクター提出テンプレート.md';
 const scenes=['opening','vista','trail','cargo','depths','explorers','territory','tavern','next'];
-const worldArtwork=Array.from({length:10},(_,index)=>'reuna-turn-'+String(index+1).padStart(2,'0')+'.webp');
+const worldArtwork=['ruosuen-manastone-life.webp','reuna-turn-02.webp','reuna-turn-03.webp','reuna-turn-04.webp','ruosuen-manastone-shortage.webp','reuna-turn-06.webp','reuna-turn-07.webp','reuna-turn-08.webp','reuna-turn-09-crop.webp','reuna-turn-10.webp'];
 const historyChapters=['魔石とは','大転流','大断裂の谷','ルオスエン'];
 const historyPhases=['rise','fall','renewal','city'];
 const institutions=['モグラの寝床','モグラ商館','王立地図院','竜骨亭','伽藍の塔','摩天楼','星路教会'];
@@ -117,8 +117,8 @@ async function checkWorldPanels(page) {
         paragraphCount:caption.querySelectorAll('p').length,headingCount:caption.querySelectorAll('h3').length};
     });
     assert(actual.naturalWidth>0&&actual.naturalHeight>0,'The actual history painting must load');
-    assert.equal(Number(actual.width),1672);
-    assert.equal(Number(actual.height),941);
+    // Interim crops keep the landscape proportion of the history paintings.
+    assert(Math.abs(Number(actual.width)/Number(actual.height)-1672/941)<.02);
     // srcset makes naturalWidth density-corrected, not the encoded width.
     assert(Math.abs(actual.naturalWidth/actual.naturalHeight-1672/941)<.02);
     assert(actual.alt.trim().length>10,'Each painting needs a meaningful description');
@@ -214,7 +214,7 @@ async function checkJourney(page,width) {
   await page.locator('#reader-bottom .reader-onward-link').click();await ready(page,CITY);
   assert.equal(await page.locator('.story-panel').count(),11);
   assert.deepEqual(await page.locator('#article-content .story-panel h3').allTextContents(),['どこまでも広がる、未知の景色','探す、確かめる、生き延びる','見つけて、持ち帰る']);
-  assert.deepEqual(await page.locator('#article-content .story-panel img').evaluateAll(es=>es.slice(0,3).map(e=>new URL(e.src).pathname.split('/').pop())),['ruosuen-walk-labyrinth-exploration-v3.webp','ruosuen-walk-labyrinth-battle-v2.webp','ruosuen-walk-labyrinth-discovery-20261117.webp']);
+  assert.deepEqual(await page.locator('#article-content .story-panel img').evaluateAll(es=>es.slice(0,3).map(e=>new URL(e.src).pathname.split('/').pop())),['ruosuen-walk-labyrinth-exploration-v3.webp','ruosuen-walk-labyrinth-battle-v2.webp','ruosuen-manastone-discovery.webp']);
   assert(await page.locator('#article-content .story-panel img').first().evaluate(e=>e.getAttribute('width')==='1670'&&e.getAttribute('height')==='941'&&e.srcset.includes('800w')&&e.srcset.includes('1200w')&&e.srcset.includes('1670w')&&!e.closest('.portrait-art')&&Math.abs(e.clientHeight/e.clientWidth-941/1670)<.02));
   assert.equal(await page.locator('#story-chapters,.walk-organizations').count(),0);
   assert.deepEqual(await page.locator('#article-content .story-panel h2').allTextContents(),[...institutions,'クェンサ ― 我らの青']);

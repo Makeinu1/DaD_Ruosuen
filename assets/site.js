@@ -8,9 +8,9 @@
  */
 // Dimensions from the original artwork. Variants are derived without replacing it.
 const RESPONSIVE_ART = {
-  "reuna-turn-01.webp": [
-    1672,
-    941
+  "reuna-story-threshold.webp": [
+    1536,
+    1024
   ],
   "reuna-turn-02.webp": [
     1672,
@@ -21,10 +21,6 @@ const RESPONSIVE_ART = {
     941
   ],
   "reuna-turn-04.webp": [
-    1672,
-    941
-  ],
-  "reuna-turn-05.webp": [
     1672,
     941
   ],
@@ -40,15 +36,15 @@ const RESPONSIVE_ART = {
     1672,
     941
   ],
-  "reuna-turn-09.webp": [
-    1672,
-    941
+  "reuna-turn-09-crop.webp": [
+    950,
+    534
   ],
   "reuna-turn-10.webp": [
     1672,
     941
   ],
-  "ruosuen-film-airfleet.webp": [
+  "ruosuen-film-airfleet-muted.webp": [
     1672,
     941
   ],
@@ -60,11 +56,7 @@ const RESPONSIVE_ART = {
     1672,
     941
   ],
-  "ruosuen-film-possibility.webp": [
-    1672,
-    941
-  ],
-  "ruosuen-film-survey.webp": [
+  "ruosuen-film-rumor.webp": [
     1536,
     1024
   ],
@@ -73,6 +65,18 @@ const RESPONSIVE_ART = {
     1024
   ],
   "ruosuen-first-adventure-b.webp": [
+    1672,
+    941
+  ],
+  "ruosuen-manastone-discovery.webp": [
+    1672,
+    941
+  ],
+  "ruosuen-manastone-life.webp": [
+    1672,
+    941
+  ],
+  "ruosuen-manastone-shortage.webp": [
     1672,
     941
   ],
@@ -96,29 +100,25 @@ const RESPONSIVE_ART = {
     1672,
     941
   ],
-  "ruosuen-walk-labyrinth-discovery-20261117.webp": [
-    1672,
-    941
-  ],
   "ruosuen-walk-labyrinth-exploration-v3.webp": [
     1670,
     941
   ],
-  "ruosuen-walk-maps-20261117.webp": [
-    1672,
+  "ruosuen-walk-maps-20261117-crop.webp": [
+    1120,
+    630
+  ],
+  "ruosuen-walk-matenrou-20261117-crop.webp": [
+    836,
     941
   ],
-  "ruosuen-walk-matenrou-20261117.webp": [
-    1672,
-    941
+  "ruosuen-walk-mole-inn-20261117-crop.webp": [
+    1100,
+    619
   ],
-  "ruosuen-walk-mole-inn-20261117.webp": [
-    1672,
-    941
-  ],
-  "ruosuen-walk-mole-trading-20261117.webp": [
-    1672,
-    941
+  "ruosuen-walk-mole-trading-20261117-crop.webp": [
+    932,
+    524
   ],
   "ruosuen-walk-quentha-20261117.webp": [
     1672,
@@ -253,9 +253,12 @@ function markdownToHtml(markdown, sourcePath) {
       i++; continue;
     }
     if (isImage(l)) {
-      const match = l.trim().match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
+      // An optional Markdown title sets the painting's size in the reading
+      // rhythm: "medium", "small" or "pair" (two consecutive pairs sit side by side).
+      const match = l.trim().match(/^!\[([^\]]*)\]\(([^)\s]+)(?:\s+"(medium|small|pair)")?\)$/);
       if (match) {
         const raw = match[2].trim();
+        const size = match[3] || '';
         const allowed = /^\.\.\/assets\/[a-z0-9-]+\.(?:svg|png|webp|avif|jpe?g)$/i.test(raw);
         if (allowed) {
           const img = new URL(raw, new URL(sourcePath, document.baseURI));
@@ -264,14 +267,14 @@ function markdownToHtml(markdown, sourcePath) {
             const dimensions = RESPONSIVE_ART[name];
             const [width, height] = dimensions || [1536, 1024];
             const portrait = height > width;
-            const sizes = portrait ? '(max-width: 480px) 400px, (max-width: 740px) calc(100vw - 40px), 700px' : BY_PATH.get(sourcePath)?.layout === 'story'
+            const sizes = size === 'small' || size === 'pair' ? '(max-width: 700px) calc(100vw - 40px), 560px' : size === 'medium' ? '(max-width: 480px) 400px, (max-width: 900px) calc(100vw - 40px), 860px' : portrait ? '(max-width: 480px) 400px, (max-width: 740px) calc(100vw - 40px), 700px' : BY_PATH.get(sourcePath)?.layout === 'story'
               ? '(max-width: 480px) 400px, (max-width: 700px) 100vw, (max-width: 1500px) 92vw, 1392px'
               : '(max-width: 700px) calc(100vw - 48px), 880px';
             const candidates = dimensions ? [800, 1200].filter(w => w < width).map(w => new URL('responsive/' + name.replace('.webp', '-' + w + '.webp'), img).href + ' ' + w + 'w') : [];
             const responsive = candidates.length
               ? ' srcset="' + escapeHtml([...candidates, img.href + ' ' + width + 'w'].join(', ')) + '" sizes="' + sizes + '"'
               : '';
-            html.push('<figure class="article-map"><a href="' + escapeHtml(img.href) + '" target="_blank" rel="noopener noreferrer" aria-label="画像を拡大表示">' +
+            html.push('<figure class="article-map"' + (size ? ' data-size="' + size + '"' : '') + '><a href="' + escapeHtml(img.href) + '" target="_blank" rel="noopener noreferrer" aria-label="画像を拡大表示">' +
               '<img src="' + escapeHtml(img.href) + '"' + responsive + ' alt="' + escapeHtml(match[1]) + '" width="' + width + '" height="' + height + '" loading="lazy" decoding="async">' +
               '</a></figure>');
           }
@@ -356,7 +359,8 @@ function composeStory(meta) {
       caption.className = 'story-caption';
       figure.className = 'story-art';
       const artwork = figure.querySelector('img');
-      if (Number(artwork?.getAttribute('height')) > Number(artwork?.getAttribute('width'))) figure.classList.add('portrait-art');
+      if (figure.dataset.size) panel.classList.add('panel-' + figure.dataset.size);
+      else if (Number(artwork?.getAttribute('height')) > Number(artwork?.getAttribute('width'))) figure.classList.add('portrait-art');
       panel.append(figure, caption);
       caption.append(heading);
       // The optional opening emphasis is the short hook, before the explanation.
@@ -372,6 +376,15 @@ function composeStory(meta) {
       quote.querySelectorAll('p').forEach(p => caption.append(p));
       quote.remove();
     }
+  }
+  // Consecutive paired paintings share one row; everything else keeps its own.
+  for (const first of [...article.querySelectorAll('.story-panel.panel-pair')]) {
+    if (first.parentElement.classList.contains('story-pair')) continue;
+    const row = document.createElement('div');
+    row.className = 'story-pair';
+    first.before(row);
+    let next = first;
+    while (next?.classList?.contains('panel-pair')) { const after = next.nextElementSibling; row.append(next); next = after; }
   }
   if (meta.walk) {
     const heading = article.querySelector('#walk-people');
