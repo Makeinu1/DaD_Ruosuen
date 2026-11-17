@@ -221,8 +221,6 @@
 .article-body.world-history .history-chapter[data-history-phase="city"] .story-caption p {
   color: #d0dfe9;
 }
-@media (max-width: 720px) {
-  }
 @media (max-width: 700px) {
   .article-body.world-history .history-chapter { padding-top: 30px; margin-bottom: 36px; }
   .article-body.world-history .history-chapter > h2 { font-size: clamp(28px, 8vw, 34px); scroll-margin-top: 105px; }
@@ -277,29 +275,6 @@
   display: inline-block;
   white-space: nowrap;
 }
-@media (max-width: 700px) {
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    overflow-x: auto;
-    max-width: 100%;
-    gap: 0 18px;
-    padding: 5px 20px;
-    scroll-padding-inline: 20px;
-    overscroll-behavior-x: contain;
-    scrollbar-width: thin;
-    scrollbar-color: #54778d #071625;
-  }
-    -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 10px), transparent);
-    mask-image: linear-gradient(90deg, #000 calc(100% - 10px), transparent);
-  }
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 10px);
-    mask-image: linear-gradient(90deg, transparent, #000 10px);
-  }
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 10px, #000 calc(100% - 10px), transparent);
-    mask-image: linear-gradient(90deg, transparent, #000 10px, #000 calc(100% - 10px), transparent);
-  }
-}
-
 /* A quiet typographic chapter turn: the labyrinth gives way to its people. */
 .article-body.storybook-walk .walk-chapter-divider {
   position: relative;
@@ -368,7 +343,7 @@
   .article-body .walk-chapter-divider h2 { font-size: clamp(23px, 6.5vw, 30px); }
 }
 
-/* Navigation serves three purposes only: global, in-chapter, onward. */
+/* Navigation: global header and one onward action. */
 .top-nav a[aria-current="page"] {
   color: #f0faff;
   text-decoration: underline;

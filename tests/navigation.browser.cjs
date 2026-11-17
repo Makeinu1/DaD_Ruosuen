@@ -296,9 +296,13 @@ async function checkJourney(page,width) {
   await close.click();assert.equal(await page.locator('.film-archive-disclosure').evaluate(e=>e.open),false);
   await close.focus();await page.keyboard.press('Enter');
   assert.equal(await page.locator('.film-archive-disclosure').evaluate(e=>e.open),true);
-  await page.locator('.film-archive-links a').filter({hasText:'ルオスエンを歩く'}).scrollIntoViewIfNeeded();await paint(page);
+  const archiveCity=page.locator('.film-archive-links a').filter({hasText:'ルオスエンを歩く'});
+  await archiveCity.evaluate(e=>e.scrollIntoView({block:'center',behavior:'instant'}));
+  await paint(page);
+  // A normal pointer click cannot silently scroll the page before the
+  // departure snapshot (Playwright's auto-scroll may do so).
   const archiveY=await page.evaluate(()=>scrollY);
-  await page.locator('.film-archive-links a').filter({hasText:'ルオスエンを歩く'}).click();await ready(page,CITY);
+  await clickVisible(page,archiveCity);await ready(page,CITY);
   await returnToStory(page);await atY(page,archiveY);
   assert.equal(await page.locator('.film-archive-disclosure').evaluate(e=>e.open),true);
   for (const path of [WORLD,CITY,NEXT,FIRST,PREP]) {

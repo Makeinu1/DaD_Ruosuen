@@ -76,11 +76,12 @@ for (const [name,type] of [['chromium',chromium],['webkit',webkit]]) {
           assert.equal(await divider.count(),1);
           assert.equal(await divider.locator('h2').innerText(),'この街に生きる人々');
           assert.equal(await divider.locator('.walk-divider-copy br').count(),2);
-          assert(await divider.evaluate(e=>{
+          const dividerStyle=await divider.evaluate(e=>{
             const style=getComputedStyle(e), r=e.getBoundingClientRect();
-            return r.width<=innerWidth && parseFloat(style.paddingTop)>=64 &&
-              e.previousElementSibling.matches('.story-panel') && e.nextElementSibling.querySelector('h2')?.textContent==='モグラの寝床';
-          }));
+            return {width:r.width,viewport:innerWidth,padding:parseFloat(style.paddingTop),
+              previous:e.previousElementSibling.matches('.story-panel'),next:e.nextElementSibling.querySelector('h2')?.textContent};
+          });
+          assert(dividerStyle.width<=dividerStyle.viewport&&dividerStyle.padding>=64&&dividerStyle.previous&&dividerStyle.next==='モグラの寝床',JSON.stringify({name,width,dividerStyle}));
           assert.equal(await p.locator('#article-content .story-panel').count(),11);
           const q=p.locator('.story-panel').filter({has:p.locator('h2',{hasText:'クェンサ ― 我らの青'})});
           assert.equal(await q.count(),1);
