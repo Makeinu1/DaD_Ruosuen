@@ -15,7 +15,7 @@ const scenes=['opening','vista','trail','cargo','depths','explorers','territory'
 const worldArtwork=Array.from({length:10},(_,index)=>'reuna-turn-'+String(index+1).padStart(2,'0')+'.webp');
 const historyChapters=['魔石とは','大転流','大断裂の谷','ルオスエン'];
 const historyPhases=['rise','fall','renewal','city'];
-const institutions=['モグラの寝床と商館','王立地図院','竜骨亭','伽藍の塔','星路教会','摩天楼'];
+const institutions=['モグラの寝床','モグラ商館','王立地図院','竜骨亭','伽藍の塔','摩天楼','星路教会'];
 const errors=[];
 const url=path=>base+'#/'+encodeURIComponent(path);
 async function clickVisible(page,link) {
@@ -219,7 +219,7 @@ async function checkJourney(page,width) {
   await page.locator('#article-content > p:last-child a').scrollIntoViewIfNeeded();await paint(page);
   const departWorldY=await page.evaluate(()=>scrollY);
   await page.locator('#article-content > p:last-child a').click();await ready(page,CITY);
-  assert.equal(await page.locator('.story-panel').count(),9);
+  assert.equal(await page.locator('.story-panel').count(),10);
   assert.deepEqual(await page.locator('#story-chapters a').allTextContents(),['街の下へ',...institutions]);
   for(const [index,caption] of (await page.locator('.storybook .story-caption').all()).entries()) {
     assert.equal(await caption.locator('p').count(),index<3?2:3,'Labyrinth scenes have two paragraphs; institutions have three');
@@ -284,7 +284,7 @@ async function checkJourney(page,width) {
     const after=await target.evaluate((e,p)=>e.style.getPropertyValue(p),property);
     assert.notEqual(before,after,'Native scroll must animate '+path);
   }
-  console.log(JSON.stringify({width,journey:'PASS',scenes:9,worldPanels:10,historyChapters:4,chapterKeyboard:true,cityPanels:6,history:true,archiveReturn:true}));
+  console.log(JSON.stringify({width,journey:'PASS',scenes:9,worldPanels:10,historyChapters:4,chapterKeyboard:true,cityPanels:7,history:true,archiveReturn:true}));
 }
 (async()=>{
   const proxy=process.env.HTTPS_PROXY||process.env.HTTP_PROXY;
