@@ -220,7 +220,10 @@ async function checkJourney(page,width) {
   const departWorldY=await page.evaluate(()=>scrollY);
   await page.locator('#article-content > p:last-child a').click();await ready(page,CITY);
   assert.equal(await page.locator('.story-panel').count(),10);
-  assert.deepEqual(await page.locator('#story-chapters a').allTextContents(),['街の下へ',...institutions]);
+  assert.deepEqual(await page.locator('#story-chapters a').allTextContents(),['街の下へ',...institutions,'クェンサ ― 我らの青']);
+  const quentha=page.locator('#article-content > h2').filter({hasText:'クェンサ ― 我らの青'});
+  assert.equal(await quentha.count(),1,'Quentha is an unillustrated coda, not an invented location');
+  assert((await page.locator('#article-content').innerText()).includes('クェンサもまた、ルオスエンに生きる人々だ。'));
   for(const [index,caption] of (await page.locator('.storybook .story-caption').all()).entries()) {
     assert.equal(await caption.locator('p').count(),index<3?2:3,'Labyrinth scenes have two paragraphs; institutions have three');
     assert.equal(await caption.locator('.story-hook').count(),0,'Place names remain in explanatory prose');

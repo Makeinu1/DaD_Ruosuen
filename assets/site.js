@@ -8,7 +8,7 @@
  */
 const SECTIONS = [
   {label:"街から冒険へ",entries:[
-    {path:"docs/04_自由迷宮都市と組織.md",label:"ルオスエンを歩く",kicker:"人と仕事と、その先の迷宮",summary:"地下の三つの景色から、七つの場所とそこで生きる人々へ。",layout:"story",book:true,chapters:true},
+    {path:"docs/04_自由迷宮都市と組織.md",label:"ルオスエンを歩く",kicker:"人と仕事と、その先の迷宮",summary:"地下の三つの景色から、街の表と裏に生きる人々へ。",layout:"story",book:true,chapters:true},
     {path:"adventures/次の冒険.md",label:"この街で冒険する",kicker:"君たちは、何を探しに行く？",summary:"救助、探索、護衛、採集。四人から始まる小さな冒険の可能性。",layout:"story",book:true},
     {path:"players/キャラクター作成ガイド.md",label:"キャラクターを考える",kicker:"君は、この街で何者になる？",summary:"人物像の種と、四人で冒険するための準備。"}
   ]},
