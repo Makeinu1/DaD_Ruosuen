@@ -321,3 +321,39 @@
   .film-story-status { min-width: 0; width: min(48vw,240px); font-size: 10px; }
   .is-scroll-story .film-story-hud { gap: 8px; }
 }
+
+/* Keep meaningful Japanese phrases together, including on Safari.
+   Override concept.css's block-span rule only for these headline spans. */
+.film-frame .film-title .film-phrase {
+  display: inline-block;
+  white-space: nowrap;
+}
+@media (max-width: 700px) {
+  .journey-nav {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    max-width: 100%;
+    gap: 0 18px;
+    padding: 5px 20px;
+    scroll-padding-inline: 20px;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    scrollbar-color: #54778d #071625;
+  }
+  .journey-nav a { flex: 0 0 auto; white-space: nowrap; }
+  .journey-nav a[aria-current="page"] { color: #e5f5ff; font-weight: 700; text-decoration-thickness: 2px; }
+  .journey-nav.can-scroll-right {
+    -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 10px), transparent);
+    mask-image: linear-gradient(90deg, #000 calc(100% - 10px), transparent);
+  }
+  .journey-nav.can-scroll-left {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 10px);
+    mask-image: linear-gradient(90deg, transparent, #000 10px);
+  }
+  .journey-nav.can-scroll-left.can-scroll-right {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 10px, #000 calc(100% - 10px), transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 10px, #000 calc(100% - 10px), transparent);
+  }
+  .journey-nav:focus-within { -webkit-mask-image: none; mask-image: none; }
+}

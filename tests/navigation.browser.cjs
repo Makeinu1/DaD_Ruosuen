@@ -266,6 +266,17 @@ async function checkJourney(page,width) {
   const prep=await page.locator('#article-content').innerText();
   for(const term of ['地下の世界からやって来た','ゲーム上の作成条件','キャラクターを作成する'])assert(prep.includes(term));
   assert(!prep.includes('死者の蘇生'));
+  assert(prep.includes('大きな夢を抱いている者。\n故郷を離れ、新しい暮らしを求める者。\nまだ誰も知らない世界からやって来た者。'));
+  assert(prep.includes('大切な人はいるだろうか。\n忘れられない出来事はあるだろうか。'));
+  if (await page.evaluate(()=>innerWidth<=700)) {
+    const nav = await page.locator('#journey-nav').evaluate(el=>{
+      const links=[...el.querySelectorAll('a')], active=el.querySelector('[aria-current="page"]');
+      const box=el.getBoundingClientRect(), a=active.getBoundingClientRect();
+      return {overflow:el.scrollWidth>el.clientWidth, singleRow:links.every(link=>Math.abs(link.offsetTop-links[0].offsetTop)<2),
+        activeVisible:a.left>=box.left-1&&a.right<=box.right+1};
+    });
+    assert(nav.overflow&&nav.singleRow&&nav.activeVisible);
+  }
   // Curated navigation has five pages and no author-only or archived destinations.
   assert.equal(await page.locator('#journey-nav a').count(),5);
   const hrefs=await page.locator('#journey-nav a').evaluateAll(es=>es.map(e=>decodeURIComponent(e.getAttribute('href'))));
@@ -276,6 +287,8 @@ async function checkJourney(page,width) {
   await page.goto(base+'#guide');
   await page.waitForFunction(()=>document.querySelector('.film-archive-disclosure').open);
   assert.equal(await page.locator('.film-archive-links a').count(),5);
+  assert.equal(await page.locator('h2.film-title .film-phrase').count(), 32);
+  assert.equal(await page.locator('.header-desktop-link').filter({hasText:'この街で冒険する'}).count(),1);
   const close=page.locator('.film-archive-disclosure summary');
   await close.click();assert.equal(await page.locator('.film-archive-disclosure').evaluate(e=>e.open),false);
   await close.focus();await page.keyboard.press('Enter');

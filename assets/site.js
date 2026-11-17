@@ -74,6 +74,21 @@ function inlineMarkdown(value, sourcePath) {
   s = s.replace(/%%CODE_(\d+)%%/g, (_, i) => codeFragments[Number(i)] || "");
   return s;
 }
+// Standard Markdown hard breaks (two trailing spaces or a backslash).
+// Ordinary soft-wrapped prose still becomes a single paragraph.
+function paragraphHtml(lines, sourcePath) {
+  const groups = [];
+  let group = [];
+  lines.forEach((line, index) => {
+    const hard = index < lines.length - 1 && /(?: {2,}|\\)$/.test(line);
+    group.push((hard ? line.replace(/(?: {2,}|\\)$/, "") : line).trim());
+    if (hard || index === lines.length - 1) {
+      groups.push(inlineMarkdown(group.join(" "), sourcePath));
+      group = [];
+    }
+  });
+  return groups.join("<br>");
+}
 function markdownToHtml(markdown, sourcePath) {
   const lines = markdown.replace(/\r/g,"").split("\n");
   const html = [];
@@ -114,9 +129,10 @@ function markdownToHtml(markdown, sourcePath) {
         if (allowed) {
           const img = new URL(raw, new URL(sourcePath, document.baseURI));
           if (img.origin === location.origin && img.pathname.startsWith(new URL("assets/", document.baseURI).pathname)) {
-            const wide = /(?:ruosuen-(underground-world|street-night-oil|manastone-(life|shortage|discovery|frontier))|reuna-turn-\d{2})\.webp$/.test(raw);
+            const forest = /ruosuen-walk-quentha-forest-20261117\.webp$/.test(raw);
+            const wide = /(?:ruosuen-(underground-world|street-night-oil|manastone-(life|shortage|discovery|frontier)|walk-[a-z-]+-20261117)|reuna-turn-\d{2})\.webp$/.test(raw) && !forest;
             html.push('<figure class="article-map"><a href="' + escapeHtml(img.href) + '" target="_blank" rel="noopener noreferrer" aria-label="画像を拡大表示">' +
-              '<img src="' + escapeHtml(img.href) + '" alt="' + escapeHtml(match[1]) + '" width="' + (wide ? 1672 : 1536) + '" height="' + (wide ? 941 : 1024) + '" loading="lazy" decoding="async">' +
+              '<img src="' + escapeHtml(img.href) + '" alt="' + escapeHtml(match[1]) + '" width="' + (wide ? 1672 : 1536) + '" height="' + (forest ? 508 : wide ? 941 : 1024) + '" loading="lazy" decoding="async">' +
               '</a><figcaption>画像を選択すると別画面で拡大できます。</figcaption></figure>');
           }
         }
@@ -137,7 +153,7 @@ function markdownToHtml(markdown, sourcePath) {
     if (/^\s*>\s?/.test(l)) {
       const parts = [];
       while (i < lines.length && /^\s*>\s?/.test(lines[i])) parts.push(lines[i++].replace(/^\s*>\s?/,""));
-      html.push("<blockquote>"+parts.join("\n").split(/\n\s*\n/).filter(p=>p.trim()).map(p=>"<p>"+inlineMarkdown(p.replace(/\n/g," "),sourcePath)+"</p>").join("")+"</blockquote>");
+      html.push("<blockquote>"+parts.join("\n").split(/\n\s*\n/).filter(p=>p.trim()).map(p=>"<p>"+paragraphHtml(p.split("\n"),sourcePath)+"</p>").join("")+"</blockquote>");
       continue;
     }
     if (isList(l)) {
@@ -150,12 +166,12 @@ function markdownToHtml(markdown, sourcePath) {
       html.push("<"+tag+">" + items.join("") + "</"+tag+">");
       continue;
     }
-    const paragraph = [l.trim()]; i++;
+    const paragraph = [l]; i++;
     while (i < lines.length && !isBlank(lines[i]) && !isHeading(lines[i]) && !isRule(lines[i]) &&
       !isList(lines[i]) && !isImage(lines[i]) && !/^\s*>/.test(lines[i]) && !/^\s*\`\`\`/.test(lines[i]) && !isTable(lines[i],lines[i+1])) {
-      paragraph.push(lines[i++].trim());
+      paragraph.push(lines[i++]);
     }
-    html.push("<p>" + inlineMarkdown(paragraph.join(" "),sourcePath) + "</p>");
+    html.push("<p>" + paragraphHtml(paragraph,sourcePath) + "</p>");
   }
   return html.join("\n");
 }
@@ -364,6 +380,20 @@ async function showDoc(path, entry, token) {
   document.body.classList.remove('is-watching-film');
   $("home-view").classList.add('hidden');
   $("reader-view").classList.remove('hidden');
+  const journey = $("journey-nav");
+  const activeLink = journey.querySelector('[aria-current="page"]');
+  const updateJourneyEdges = () => {
+    const remaining = journey.scrollWidth - journey.clientWidth;
+    journey.classList.toggle('can-scroll-left', journey.scrollLeft > 2);
+    journey.classList.toggle('can-scroll-right', remaining - journey.scrollLeft > 2);
+  };
+  journey.onscroll = updateJourneyEdges;
+  if (activeLink) {
+    const navBox = journey.getBoundingClientRect();
+    const linkBox = activeLink.getBoundingClientRect();
+    journey.scrollLeft += linkBox.left - navBox.left + linkBox.width / 2 - navBox.width / 2;
+  }
+  updateJourneyEdges();
   renderNav(path);
   $("article-label").textContent = meta.kicker;
   $("article-title").textContent = meta.label;
