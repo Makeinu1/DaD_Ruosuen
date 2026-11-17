@@ -92,12 +92,12 @@ const RESPONSIVE_ART = {
     1672,
     941
   ],
-  "ruosuen-walk-labyrinth-exploration-v3.webp": [
-    1670,
+  "ruosuen-walk-labyrinth-discovery-20261117.webp": [
+    1672,
     941
   ],
-  "ruosuen-walk-labyrinth-ruins-v2.webp": [
-    1672,
+  "ruosuen-walk-labyrinth-exploration-v3.webp": [
+    1670,
     941
   ],
   "ruosuen-walk-maps-20261117.webp": [
