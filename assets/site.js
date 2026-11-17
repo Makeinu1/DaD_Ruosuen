@@ -243,11 +243,12 @@ function markdownToHtml(markdown, sourcePath) {
       const level = Math.min(h[1].length, 4), title = h[2];
       // The document title is already shown in the styled article header.
       if (level !== 1 || headingCount > 0) {
-        // The city chapter divider gets its own ID without renumbering
-        // any of the existing article navigation targets.
-        const isCityDivider = sourcePath === "docs/04_自由迷宮都市と組織.md" &&
-          level === 2 && title === "この街に生きる人々";
-        const id = isCityDivider ? "walk-people" : "section-" + (headingCount++);
+        // Extra city chapter dividers have stable IDs without renumbering
+        // existing article targets. The original opening retains section-0.
+        const walkDividerId = sourcePath === "docs/04_自由迷宮都市と組織.md" && level === 2
+          ? ({ "この街に生きる人々": "walk-people", "まだ、この街のほんの入口だ。": "walk-beyond" })[title]
+          : null;
+        const id = walkDividerId || "section-" + (headingCount++);
         html.push("<h" + level + ' id="' + id + '">' + inlineMarkdown(title, sourcePath) + "</h" + level + ">");
       }
       i++; continue;
@@ -387,10 +388,11 @@ function composeStory(meta) {
     while (next?.classList?.contains('panel-pair')) { const after = next.nextElementSibling; row.append(next); next = after; }
   }
   if (meta.walk) {
-    const heading = article.querySelector('#walk-people');
-    const kicker = heading?.nextElementSibling;
-    const copy = kicker?.nextElementSibling;
-    if (heading && kicker?.tagName === 'P' && copy?.tagName === 'P') {
+    for (const heading of article.querySelectorAll('#section-0, #walk-people, #walk-beyond')) {
+      const kicker = heading.nextElementSibling;
+      const copy = kicker?.nextElementSibling;
+      if (heading.tagName !== 'H2' || kicker?.tagName !== 'P' ||
+          !kicker.querySelector('em') || copy?.tagName !== 'P') continue;
       const divider = document.createElement('section');
       divider.className = 'walk-chapter-divider';
       divider.setAttribute('aria-labelledby', heading.id);

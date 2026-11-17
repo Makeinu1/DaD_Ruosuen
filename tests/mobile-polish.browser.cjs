@@ -72,8 +72,14 @@ for (const [name,type] of [['chromium',chromium],['webkit',webkit]]) {
         assert(nav.minimumFont>=14&&nav.count===5&&nav.unique===5&&nav.active===1&&nav.bodyWidth<=width+1,JSON.stringify({name,width,path,nav}));
         if(mobile) await menu.click();
         if(path===paths[0]){
-          const divider=p.locator('.walk-chapter-divider');
-          assert.equal(await divider.count(),1);
+          const dividers=p.locator('.walk-chapter-divider');
+          assert.equal(await dividers.count(),3);
+          assert.deepEqual(await dividers.locator('h2').allTextContents(),['街の下へ','この街に生きる人々','まだ、この街のほんの入口だ。']);
+          for(const chapter of await dividers.all()){
+            assert.equal(await chapter.locator('.walk-divider-copy br').count(),2);
+            assert(await chapter.evaluate(e=>{const r=e.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth+1;}));
+          }
+          const divider=dividers.nth(1);
           assert.equal(await divider.locator('h2').innerText(),'この街に生きる人々');
           assert.equal(await divider.locator('.walk-divider-copy br').count(),2);
           const dividerStyle=await divider.evaluate(e=>{
@@ -83,7 +89,7 @@ for (const [name,type] of [['chromium',chromium],['webkit',webkit]]) {
           });
           assert(dividerStyle.width<=dividerStyle.viewport&&dividerStyle.padding>=64&&dividerStyle.previous&&dividerStyle.next==='モグラの寝床',JSON.stringify({name,width,dividerStyle}));
           assert.equal(await p.locator('#article-content .story-panel').count(),11);
-          const q=p.locator('.story-panel').filter({has:p.locator('h2',{hasText:'クェンサ ― 我らの青'})});
+          const q=p.locator('.story-panel').filter({has:p.locator('h2',{hasText:'クェンサ'})});
           assert.equal(await q.count(),1);
           assert.equal(await q.locator('img').count(),1);
           assert.equal(await q.locator('.story-caption p').count(),3);
