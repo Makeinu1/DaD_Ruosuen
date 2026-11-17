@@ -130,9 +130,13 @@ function markdownToHtml(markdown, sourcePath) {
           const img = new URL(raw, new URL(sourcePath, document.baseURI));
           if (img.origin === location.origin && img.pathname.startsWith(new URL("assets/", document.baseURI).pathname)) {
             const forest = /ruosuen-walk-quentha-forest-20261117\.webp$/.test(raw);
-            const wide = /(?:ruosuen-(underground-world|street-night-oil|manastone-(life|shortage|discovery|frontier)|walk-[a-z-]+-20261117)|reuna-turn-\d{2})\.webp$/.test(raw) && !forest;
+            const firstAdventure = /ruosuen-first-adventure-1672\.webp$/.test(raw);
+            const wide = firstAdventure || /(?:ruosuen-(underground-world|street-night-oil|manastone-(life|shortage|discovery|frontier)|walk-[a-z-]+-20261117)|reuna-turn-\d{2})\.webp$/.test(raw) && !forest;
+            const responsive = firstAdventure
+              ? ' srcset="' + escapeHtml(img.href.replace('-1672.webp', '-800.webp')) + ' 800w, ' + escapeHtml(img.href.replace('-1672.webp', '-1200.webp')) + ' 1200w, ' + escapeHtml(img.href) + ' 1672w" sizes="(max-width: 700px) calc(100vw - 48px), 880px"'
+              : '';
             html.push('<figure class="article-map"><a href="' + escapeHtml(img.href) + '" target="_blank" rel="noopener noreferrer" aria-label="画像を拡大表示">' +
-              '<img src="' + escapeHtml(img.href) + '" alt="' + escapeHtml(match[1]) + '" width="' + (wide ? 1672 : 1536) + '" height="' + (forest ? 508 : wide ? 941 : 1024) + '" loading="lazy" decoding="async">' +
+              '<img src="' + escapeHtml(img.href) + '"' + responsive + ' alt="' + escapeHtml(match[1]) + '" width="' + (wide ? 1672 : 1536) + '" height="' + (forest ? 508 : wide ? 941 : 1024) + '" loading="lazy" decoding="async">' +
               '</a><figcaption>画像を選択すると別画面で拡大できます。</figcaption></figure>');
           }
         }

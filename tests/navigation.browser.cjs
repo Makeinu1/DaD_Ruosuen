@@ -259,6 +259,11 @@ async function checkJourney(page,width) {
   assert(!(await page.locator('#article-content').innerText()).includes('ある年の瀬、ルオスエンにて'));
   assert.equal(await page.locator('#article-content').getByRole('link',{name:'最初の冒険',exact:true}).count(),1);
   await page.goto(url(FIRST));await ready(page,FIRST);
+  const firstArt=page.locator('#article-content img');
+  assert.equal(await firstArt.count(),1);
+  await firstArt.evaluate(img=>img.decode());
+  assert(await firstArt.evaluate(img=>img.naturalWidth>0 && img.getAttribute('width')==='1672' &&
+    img.getAttribute('height')==='941' && img.srcset.includes('800w') && img.srcset.includes('1200w')));
   const prologue=await page.locator('#article-content').innerText();
   assert(prologue.includes('ある年の瀬、ルオスエンにて')&&prologue.includes('一年かけて貯めた金で買った乗船券')&&prologue.includes('君たちの物語は、この街の年の瀬から始まる。'));
   assert.equal(await page.locator('#article-content').getByRole('link',{name:'キャラクターを考える',exact:true}).count(),1);
