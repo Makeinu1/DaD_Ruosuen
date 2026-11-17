@@ -473,3 +473,8 @@
   .top-nav .nav-start { width: 114px; max-width: 38vw; justify-content: center; }
   .brand-city { flex-shrink: 0; }
 }
+
+/* The fleet portrait is a full uncropped painting, not a landscape crop. */
+.storybook .story-art.portrait-art { width: min(100%, 700px); margin-inline: auto; overflow: visible; }
+.scroll-effects .story-art.portrait-art img { transform: none; }
+.storybook .story-art.portrait-art img { width: 100%; height: auto; object-fit: contain; }
