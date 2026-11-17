@@ -269,7 +269,7 @@ async function checkJourney(page,width) {
   assert.equal(await page.locator('#reader-bottom .reader-onward-link').count(),1);
   await page.goto(url(PREP));await ready(page,PREP);
   const prep=await page.locator('#article-content').innerText();
-  for(const term of ['地下の世界からやって来た','ゲーム上の作成条件','キャラクターを作成する'])assert(prep.includes(term));
+  for(const term of ['地下の世界からやって来た','ゲーム上の作成条件','キャラクターを作成する','Lv2','追加資料の使用も原則OK','早めにDMへ資料を共有','何でも気軽に相談'])assert(prep.includes(term));
   assert(!prep.includes('死者の蘇生'));
   assert(prep.includes('大きな夢を抱いている者。\n故郷を離れ、新しい暮らしを求める者。\nまだ誰も知らない世界からやって来た者。'));
   assert(prep.includes('大切な人はいるだろうか。\n忘れられない出来事はあるだろうか。'));
