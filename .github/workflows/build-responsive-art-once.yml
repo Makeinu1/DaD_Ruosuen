@@ -1,0 +1,24 @@
+name: Build mobile artwork variants (one-off)
+on:
+  push:
+    branches: [ruosuen-responsive-art-20261117]
+permissions:
+  contents: write
+jobs:
+  variants:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install Pillow==11.3.0
+      - run: python scripts/build-responsive-art.py
+      - name: Commit generated artwork to the working branch only
+        run: |
+          git add assets/responsive
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Generate responsive WebP variants and dimension manifest'
+          git push origin HEAD:ruosuen-responsive-art-20261117
