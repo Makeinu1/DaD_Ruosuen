@@ -21,6 +21,8 @@ If the user is a player visiting the public portal, preparing a character, or as
 
 ## Available project skills
 
+- [illustration-composition](.agents/skills/illustration-composition/SKILL.md): use for author-approved art direction and narrative illustration composition before image generation. The maintained shared Skill is in [Notion](https://app.notion.com/p/41b0691fc97a8121badad33bf863b210); check the current version when available. Compare distinct value thumbnails, story beats, perspective and visual hierarchy; do not generate artwork at the planning stage.
+
 - [frontend-design](.agents/skills/frontend-design/SKILL.md): apply when redesigning or extending the site. Source: Anthropic, Apache-2.0.
 - [web-interface-review](.agents/skills/web-interface-review/SKILL.md): apply before publication, especially accessibility, responsive behavior and interaction. Source guidance: Vercel Web Interface Guidelines, MIT.
 
