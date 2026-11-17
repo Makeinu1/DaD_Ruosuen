@@ -20,6 +20,7 @@ for (const [name,type] of [['chromium',chromium],['webkit',webkit]]) {
       await p.waitForFunction(()=>window.RuosuenStory);
       await p.evaluate(()=>document.fonts.ready);
       await p.locator('#opening img').evaluate(img=>img.decode());
+      await p.waitForLoadState('networkidle');
       const film=await p.evaluate(()=>{
         const titleSpans=[...document.querySelectorAll('h2.film-title .film-phrase')];
         const phraseFailures=titleSpans.filter(e=>{
@@ -34,6 +35,11 @@ for (const [name,type] of [['chromium',chromium],['webkit',webkit]]) {
       assert.equal(film.phraseCount,32);
       assert.deepEqual(film.phraseFailures,[],JSON.stringify({name,width,film}));
       assert(film.bodyWidth<=width+1 && !film.headerOverflow && film.allSrcset,JSON.stringify({name,width,film}));
+      if(width<=430)assert(film.initialSrc.includes('responsive/'),JSON.stringify({name,width,film}));
+      const initialTransfer=await p.evaluate(()=>{
+        const entries=performance.getEntriesByType('resource').filter(e=>/\.webp(?:\?|$)/.test(e.name));
+        return {images:entries.length,encodedBytes:entries.reduce((n,e)=>n+(e.encodedBodySize||0),0),transferredBytes:entries.reduce((n,e)=>n+(e.transferSize||0),0)};
+      });
       for(const path of paths) {
         await p.goto(base+'#/'+encodeURIComponent(path));
         await docsReady(p,path);
@@ -53,7 +59,7 @@ for (const [name,type] of [['chromium',chromium],['webkit',webkit]]) {
         if(path.startsWith('players/'))assert((await p.locator('#article-content').innerText()).includes('大きな夢を抱いている者。\n故郷を離れ、新しい暮らしを求める者。\nまだ誰も知らない世界からやって来た者。'));
       }
       assert.deepEqual(errors,[]);
-      console.log(JSON.stringify({browser:name,width,dpr:width<=430?3:1,initialSrc:film.initialSrc,phraseCount:film.phraseCount,nav:5,result:'PASS'}));
+      console.log(JSON.stringify({browser:name,width,dpr:width<=430?3:1,initialSrc:film.initialSrc,initialTransfer,phraseCount:film.phraseCount,nav:5,result:'PASS'}));
       await context.close();
     }
   } finally {await browser.close();}

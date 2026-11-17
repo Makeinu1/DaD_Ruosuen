@@ -261,7 +261,7 @@ function markdownToHtml(markdown, sourcePath) {
             const dimensions = firstAdventure ? [1672, 941] : RESPONSIVE_ART[name];
             const [width, height] = dimensions || [1536, 1024];
             const sizes = BY_PATH.get(sourcePath)?.layout === 'story'
-              ? '(max-width: 700px) 100vw, (max-width: 1500px) 92vw, 1392px'
+              ? '(max-width: 480px) 400px, (max-width: 700px) 100vw, (max-width: 1500px) 92vw, 1392px'
               : '(max-width: 700px) calc(100vw - 48px), 880px';
             const candidates = firstAdventure
               ? [img.href.replace('-1672.webp', '-800.webp') + ' 800w', img.href.replace('-1672.webp', '-1200.webp') + ' 1200w']
