@@ -10,6 +10,7 @@ const SECTIONS = [
   {label:"街から冒険へ",entries:[
     {path:"docs/04_自由迷宮都市と組織.md",label:"ルオスエンを歩く",kicker:"人と仕事と、その先の迷宮",summary:"地下の三つの景色から、街の表と裏に生きる人々へ。",layout:"story",book:true,chapters:true},
     {path:"adventures/次の冒険.md",label:"この街で冒険する",kicker:"君たちは、何を探しに行く？",summary:"救助、探索、護衛、採集。四人から始まる小さな冒険の可能性。",layout:"story",book:true},
+    {path:"adventures/最初の冒険.md",label:"最初の冒険",kicker:"第一話",summary:"年の瀬、自由迷宮都市ルオスエン。",book:true},
     {path:"players/キャラクター作成ガイド.md",label:"キャラクターを考える",kicker:"君は、この街で何者になる？",summary:"人物像の種と、四人で冒険するための準備。"}
   ]},
   {label:"もっと知る",entries:[
@@ -170,7 +171,8 @@ function renderNav(activePath) {
 // Deliberate neighbors rather than a circular tour of every document.
 const RELATED = {
   "docs/04_自由迷宮都市と組織.md":["adventures/次の冒険.md"],
-  "adventures/次の冒険.md":["players/キャラクター作成ガイド.md"],
+  "adventures/次の冒険.md":["adventures/最初の冒険.md"],
+  "adventures/最初の冒険.md":["players/キャラクター作成ガイド.md"],
   "players/キャラクター作成ガイド.md":["docs/01_プレイヤー向け世界観.md"],
   "docs/01_プレイヤー向け世界観.md":["docs/04_自由迷宮都市と組織.md"]
 };

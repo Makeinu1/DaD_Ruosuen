@@ -9,6 +9,7 @@ const base = process.env.RUOSUEN_BASE_URL || 'http://127.0.0.1:8819/';
 const WORLD='docs/01_プレイヤー向け世界観.md';
 const CITY='docs/04_自由迷宮都市と組織.md';
 const NEXT='adventures/次の冒険.md';
+const FIRST='adventures/最初の冒険.md';
 const PREP='players/キャラクター作成ガイド.md';
 const OLD_SHARE='players/キャラクター提出テンプレート.md';
 const scenes=['opening','vista','trail','cargo','depths','explorers','territory','tavern','next'];
@@ -247,28 +248,34 @@ async function checkJourney(page,width) {
   await page.goBack();await ready(page,WORLD);await atY(page,departWorldY);
   await page.goForward();await ready(page,CITY);await atY(page,cityY);
   await page.locator('#reader-bottom [data-return-to-story]').click();await restored(page,'next',movieY);
-  // First-time reader journey: city → possible adventures → character, then optional history.
-  for(const [path,following] of [[WORLD,CITY],[CITY,NEXT],[NEXT,PREP],[PREP,WORLD]]) {
+  // First-time reader journey: city → possible adventures → first adventure → character, then optional history.
+  for(const [path,following] of [[WORLD,CITY],[CITY,NEXT],[NEXT,FIRST],[FIRST,PREP],[PREP,WORLD]]) {
     await page.goto(url(path));await ready(page,path);
     const onward=page.locator('#reader-bottom .reader-related a').first();
     await onward.scrollIntoViewIfNeeded();await paint(page);
     await clickVisible(page,onward);await ready(page,following);
   }
   await page.goto(url(NEXT));await ready(page,NEXT);
-  assert((await page.locator('#article-content').innerText()).includes('準備中'));
+  assert(!(await page.locator('#article-content').innerText()).includes('ある年の瀬、ルオスエンにて'));
+  assert.equal(await page.locator('#article-content').getByRole('link',{name:'最初の冒険',exact:true}).count(),1);
+  await page.goto(url(FIRST));await ready(page,FIRST);
+  const prologue=await page.locator('#article-content').innerText();
+  assert(prologue.includes('ある年の瀬、ルオスエンにて')&&prologue.includes('一年かけて貯めた金で買った乗船券')&&prologue.includes('君たちの物語は、この街の年の瀬から始まる。'));
+  assert.equal(await page.locator('#article-content').getByRole('link',{name:'キャラクターを考える',exact:true}).count(),1);
   await page.goto(url(PREP));await ready(page,PREP);
   const prep=await page.locator('#article-content').innerText();
-  for(const term of ['蘇生','未確定','話し合','アアシマール'])assert(prep.includes(term));
-  assert(await page.locator('.table-wrap').count());
-  // Curated navigation has four pages and no author-only or archived destinations.
-  assert.equal(await page.locator('#journey-nav a').count(),4);
+  for(const term of ['地下の世界からやって来た','ゲーム上の作成条件','キャラクターを作成する'])assert(prep.includes(term));
+  assert(!prep.includes('死者の蘇生'));
+  // Curated navigation has five pages and no author-only or archived destinations.
+  assert.equal(await page.locator('#journey-nav a').count(),5);
   const hrefs=await page.locator('#journey-nav a').evaluateAll(es=>es.map(e=>decodeURIComponent(e.getAttribute('href'))));
+  assert.deepEqual(hrefs,[CITY,NEXT,FIRST,PREP,WORLD].map(p=>'#/'+p));
   assert(!hrefs.some(h=>/notes\/|world\/|DECISIONS|提出テンプレート/.test(h)));
   assert.equal(await page.getByRole('link',{name:'キャラクターを共有する',exact:true}).count(),0);
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   await page.goto(base+'#guide');
   await page.waitForFunction(()=>document.querySelector('.film-archive-disclosure').open);
-  assert.equal(await page.locator('.film-archive-links a').count(),4);
+  assert.equal(await page.locator('.film-archive-links a').count(),5);
   const close=page.locator('.film-archive-disclosure summary');
   await close.click();assert.equal(await page.locator('.film-archive-disclosure').evaluate(e=>e.open),false);
   await close.focus();await page.keyboard.press('Enter');
@@ -278,7 +285,7 @@ async function checkJourney(page,width) {
   await page.locator('.film-archive-links a').filter({hasText:'ルオスエンを歩く'}).click();await ready(page,CITY);
   await page.locator('#reader-bottom [data-return-to-story]').click();await atY(page,archiveY);
   assert.equal(await page.locator('.film-archive-disclosure').evaluate(e=>e.open),true);
-  for (const path of [WORLD,CITY,NEXT,PREP]) {
+  for (const path of [WORLD,CITY,NEXT,FIRST,PREP]) {
     await page.goto(url(path));await ready(page,path);
     await page.waitForFunction(()=>window.RuosuenScroll&&document.documentElement.classList.contains('scroll-effects'));
     const illustrated=[WORLD,CITY,NEXT].includes(path);
