@@ -50,7 +50,7 @@ async function check(page, article=city) {
       ['wide','wide','medium','medium','medium','medium','wide','wide','small','medium','medium']);
     assert.equal(await page.locator('.storybook-walk .story-pair').count(),0);
     assert(await panels.evaluateAll(es=>es.every(e=>{
-      const r=e.getBoundingClientRect(), img=e.querySelector('img'), a=img.getBoundingClientRect(), c=e.querySelector('.story-caption').getBoundingClientRect();
+      const r=e.getBoundingClientRect(), img=e.querySelector('img'), a=e.querySelector('.story-art').getBoundingClientRect(), c=e.querySelector('.story-caption').getBoundingClientRect();
       if(r.left<-1||r.right>innerWidth+1||a.left<-1||a.right>innerWidth+1||c.left<-1||c.right>innerWidth+1)return false;
       if(e.classList.contains('panel-small')){
         return getComputedStyle(img).transform==='none' &&
