@@ -267,6 +267,17 @@ function paragraphHtml(lines, sourcePath) {
   });
   return groups.join("<br>");
 }
+// Heading-only, author-controlled line breaks in the canonical Markdown.
+ // Allow exactly <wbr> (optional phrase break) and <br> (forced line),
+ // never arbitrary HTML. Keep each phrase intact unless the viewport is
+ // too narrow even for that phrase.
+function headingHtml(title, sourcePath) {
+  if (!/<(?:wbr|br)>/.test(title)) return inlineMarkdown(title, sourcePath);
+  return title.split(/(<br>|<wbr>)/).map(part =>
+    part === "<br>" ? "<br>" : part === "<wbr>" ? "<wbr>" :
+    part ? '<span class="chapter-phrase">' + inlineMarkdown(part, sourcePath) + '</span>' : ""
+  ).join("");
+}
 function markdownToHtml(markdown, sourcePath) {
   const lines = markdown.replace(/\r/g,"").split("\n");
   const html = [];
@@ -297,10 +308,10 @@ function markdownToHtml(markdown, sourcePath) {
         // Extra city chapter dividers have stable IDs without renumbering
         // existing article targets. The original opening retains section-0.
         const walkDividerId = sourcePath === "docs/04_自由迷宮都市と組織.md" && level === 2
-          ? ({ "この街に生きる人々": "walk-people", "まだ、この街のほんの入口だ。": "walk-beyond" })[title]
+          ? ({ "この街に生きる人々": "walk-people", "まだ、この街のほんの入口だ。": "walk-beyond" })[title.replace(/<(?:br|wbr)>/g, '')]
           : null;
         const id = walkDividerId || "section-" + (headingCount++);
-        html.push("<h" + level + ' id="' + id + '">' + inlineMarkdown(title, sourcePath) + "</h" + level + ">");
+        html.push("<h" + level + ' id="' + id + '">' + headingHtml(title, sourcePath) + "</h" + level + ">");
       }
       i++; continue;
     }

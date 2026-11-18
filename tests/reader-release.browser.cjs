@@ -19,7 +19,7 @@ const chapterTitles = {
     "君たちの物語"
   ],
   "adventures/最初の冒険.md": [
-    "第一話　ある年の瀬、ルオスエンにて",
+    "第一話ある年の瀬、ルオスエンにて",
     "君たちの物語は、この街の年の瀬から始まる。"
   ],
   "players/キャラクター作成ガイド.md": [
@@ -40,6 +40,26 @@ async function check(page, article=city) {
   await page.waitForFunction(p=>{const e=document.querySelector('#article-content');return e?.dataset.source===p && e.getAttribute('aria-busy')==='false';},article);
   const dividers=page.locator('.chapter-divider');
   assert.deepEqual(await dividers.locator('h2').allTextContents(),chapterTitles[article]);
+  // Every marked phrase must fit on a single line at ordinary viewport sizes.
+  assert(await dividers.locator('.chapter-phrase').evaluateAll(es=>es.every(e=>{
+    const r=e.getBoundingClientRect(), h=e.closest('h2').getBoundingClientRect();
+    const range=document.createRange();range.selectNodeContents(e);
+    return getComputedStyle(e).display==='inline-block' &&
+      r.left>=h.left-1&&r.right<=h.right+1 &&
+      range.getClientRects().length===1;
+  })), 'chapter phrase wrapping or overflow');
+  if(article==="adventures/最初の冒険.md"){
+    const headings=dividers.locator('h2');
+    assert.deepEqual(await headings.evaluateAll(es=>es.map(h=>[...h.querySelectorAll('.chapter-phrase')].map(e=>e.textContent))),
+      [['第一話','ある年の瀬、','ルオスエンにて'],['君たちの物語は、','この街の','年の瀬から','始まる。']]);
+    assert(await headings.evaluateAll(es=>es.every(h=>{
+      const p=[...h.querySelectorAll('.chapter-phrase')];
+      const tops=p.map(e=>e.getBoundingClientRect().top);
+      return h.querySelectorAll('br').length===1 && tops[1]>tops[0]+1 &&
+        (innerWidth<1200 || tops.slice(1).every(y=>Math.abs(y-tops[1])<1));
+    })), 'prologue chapter title line break');
+  }
+
   assert.equal(await dividers.locator('.walk-divider-kicker').count(),chapterTitles[article].length);
   if(article===city) {
     assert.deepEqual(await dividers.locator('h2').evaluateAll(es=>es.map(e=>e.id)),['section-0','walk-people','walk-beyond']);

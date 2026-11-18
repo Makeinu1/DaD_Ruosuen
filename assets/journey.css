@@ -560,3 +560,22 @@
     padding: 0;
   }
 }
+
+/* Chapter titles use author-selected Japanese phrase boundaries. The inline
+   blocks wrap between phrases, with a safe fallback for enlarged text. */
+#reader-view .article-body .chapter-divider h2 {
+  width: 100%;
+  min-width: 0;
+  text-wrap: wrap;
+  overflow-wrap: normal;
+  word-break: normal;
+  line-break: strict;
+}
+#reader-view .article-body .chapter-divider h2 .chapter-phrase {
+  display: inline-block;
+  max-width: 100%;
+  vertical-align: baseline;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-wrap: wrap;
+}

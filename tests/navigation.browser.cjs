@@ -140,7 +140,7 @@ async function checkWorldPanels(page) {
   for(const term of ['レウナ','マナ','魔石','大転流','約三十年','大断裂','地下','ルオスエン'])assert(worldText.includes(term));
   assert.equal((worldText.match(/君は、何を求めて、この街へ？/g)||[]).length,1);
   const question=page.locator('#article-content p').filter({hasText:'君は、何を求めて、この街へ？'});
-  assert.equal(await question.innerText(),'君は、何を求めて、この街へ？');
+  assert.equal(await question.textContent(),'君は、何を求めて、この街へ？');
   assert(await question.evaluate(element=>{
     const finalScene=[...document.querySelectorAll('#article-content .story-panel')].at(-1);
     return Boolean(finalScene.compareDocumentPosition(element)&Node.DOCUMENT_POSITION_FOLLOWING);
@@ -275,7 +275,7 @@ async function checkJourney(page,width) {
   assert(await firstArt.evaluate(img=>img.naturalWidth>0 && img.getAttribute('width')==='1672' &&
     img.getAttribute('height')==='941' && img.srcset.includes('800w') && img.srcset.includes('1200w')));
   const prologue=await page.locator('#article-content').innerText();
-  assert(prologue.includes('ある年の瀬、ルオスエンにて')&&prologue.includes('一年かけて貯めた金で買った乗船券')&&prologue.includes('君たちの物語は、この街の年の瀬から始まる。'));
+  assert((await page.locator('.prologue .chapter-divider h2').first().textContent()).includes('ある年の瀬、ルオスエンにて')&&prologue.includes('一年かけて貯めた金で買った乗船券')&&(await page.locator('.prologue .chapter-divider h2').last().textContent())==='君たちの物語は、この街の年の瀬から始まる。');
   assert.equal(await page.locator('#reader-bottom .reader-onward-link').count(),1);
   await page.goto(url(PREP));await ready(page,PREP);
   const prep=await page.locator('#article-content').innerText();
