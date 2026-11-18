@@ -45,6 +45,21 @@ async function check(page, article=city) {
     assert.deepEqual(await dividers.locator('h2').evaluateAll(es=>es.map(e=>e.id)),['section-0','walk-people','walk-beyond']);
     assert.equal(await dividers.locator('.walk-divider-copy br').count(),6);
     assert.equal(await page.locator('.story-panel').count(),11);
+    const panels=page.locator('.storybook-walk .story-panel');
+    assert.deepEqual(await panels.evaluateAll(es=>es.map(e=>e.classList.contains('panel-medium')?'medium':e.classList.contains('panel-small')?'small':e.classList.contains('panel-pair')?'pair':'wide')),
+      ['wide','wide','medium','medium','medium','medium','wide','wide','small','medium','medium']);
+    assert.equal(await page.locator('.storybook-walk .story-pair').count(),0);
+    assert(await panels.evaluateAll(es=>es.every(e=>{
+      const r=e.getBoundingClientRect(), img=e.querySelector('img'), a=img.getBoundingClientRect(), c=e.querySelector('.story-caption').getBoundingClientRect();
+      if(r.left<-1||r.right>innerWidth+1||a.left<-1||a.right>innerWidth+1||c.left<-1||c.right>innerWidth+1)return false;
+      if(e.classList.contains('panel-small')){
+        return getComputedStyle(img).transform==='none' &&
+          Math.abs(img.clientHeight/img.clientWidth-941/836)<.02 &&
+          (innerWidth>1100?getComputedStyle(e).display==='grid'&&a.right<=c.left+1:getComputedStyle(e).display==='block'&&c.top>=a.bottom-1);
+      }
+      return c.top>=a.bottom-1;
+    })), 'city walk artwork/caption layout');
+
   }
   if(article.startsWith('docs/01')) {
     assert.equal(await page.locator('.history-chapter').count(),4);
@@ -72,7 +87,7 @@ async function check(page, article=city) {
   for(const [name,type] of [['chromium',chromium],['webkit',webkit]]){
     const browser=await type.launch({headless:true});
     try{
-      for(const width of [320,390,1440]){
+      for(const width of [320,390,768,1024,1440]){
         const context=await browser.newContext({viewport:{width,height:844},deviceScaleFactor:width<500?3:1});
         await context.route('https://fonts.googleapis.com/**',r=>r.fulfill({contentType:'text/css',body:'/* fallback font */'}));
         const page=await context.newPage();
