@@ -524,3 +524,39 @@
   .reading-layout #article-content .chapter-divider { margin-inline: 0; }
   #reader-view .article-body .chapter-divider { padding-block: 64px; }
 }
+
+/* City walk: landscapes stand alone; only the vertical Matenrou painting
+   shares a row with its prose on a sufficiently wide display. */
+.storybook.storybook-walk .story-panel > .story-caption {
+  box-sizing: border-box;
+  width: min(100%, 760px);
+  margin-inline: auto;
+  padding: clamp(22px, 3vw, 36px) clamp(12px, 2vw, 24px) 0;
+}
+.storybook.storybook-walk .story-panel {
+  margin-bottom: clamp(56px, 7vw, 100px);
+}
+.storybook.storybook-walk .story-panel.panel-small {
+  display: block;
+  max-width: 1060px;
+}
+.storybook.storybook-walk .panel-small .story-art {
+  width: min(100%, 460px);
+  margin-inline: auto;
+  overflow: visible;
+}
+.scroll-effects .storybook-walk .panel-small .story-art img {
+  transform: none;
+}
+@media (min-width: 1101px) {
+  .storybook.storybook-walk .story-panel.panel-small {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: clamp(32px, 4vw, 56px);
+    align-items: center;
+  }
+  .storybook.storybook-walk .story-panel.panel-small > .story-caption {
+    width: 100%;
+    padding: 0;
+  }
+}
