@@ -21,8 +21,8 @@
 
 | 順序 | 区分・予定ディレクトリ | 主要な既存ファイル（ライブラリ名） | 状態 |
 |---|---|---|---|
-| 01 | production/ | この台帳・QG2_最終判定_制作基準.md | 登録対象 |
-| 02 | production/spatial/ | Ruosuen_撮影設計シート_v01.pdf、Ruosuen_撮影設計_編集用素材_v01.zip、ENV02_地底湖_美術設定_v01.md、ENV02_v02_設計仕様.md、ENV02_v02_広域設計.json、ENV02_v04_QG1_制作資料.zip、QG1最終較正・可視範囲・断面・投影図 | 未転送 |
+| 01 | production/ | この台帳・QG2_最終判定_制作基準.md | PR内登録・照合済み |
+| 02 | [production/spatial/](spatial/README.md) | Ruosuen_撮影設計シート_v01.pdf、Ruosuen_撮影設計_編集用素材_v01.zip、ENV02_地底湖_美術設定_v01.md、ENV02_v02_設計仕様.md、ENV02_v02_広域設計.json、ENV02_v04_QG1_制作資料.zip、QG1最終較正・可視範囲・断面・投影図 | 本文3点登録、原本23点未転送（部分完了） |
 | 03 | production/whale/ | WH01_v22_制作資料.zip、WH01_v22_orthographic.png、WH-01 v2.0/v2.1美術設定画 | 未転送 |
 | 04 | production/flower/ | FL01_v08_器官配置資料.zip、FL01_v08_organs.png、六状態植物図鑑、C美術基準 | 未転送 |
 | 05 | production/lighting/ | LGT-02 v0.1照明比較画、LGT02_FG_v02_制作資料.zip、FG_preview.png、FG_timeline.png | 未転送 |
