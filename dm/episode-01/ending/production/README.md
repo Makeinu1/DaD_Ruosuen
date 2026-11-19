@@ -29,7 +29,7 @@
 | 06 | [production/effects/](effects/README.md) | FX01_v02_運動設計資料.zip、FX01_v02_運動設計.png、FX01_v02_散布推移.png、FX-01 v0.1美術参照、制作履歴 | 履歴・基準登録、原本未転送（部分完了） |
 | 07 | [production/camera-motion/](camera-motion/README.md) | CAM02_v01、MOT01_v01、H撮影設計原文、motion_frames/H_route_v03復元CSV、投影・動作資料 | 原文・表データ2点・履歴登録、原本未転送（部分完了） |
 | 08 | [production/previs/](previs/README.md) | HIA v0.2、CAM-02 v0.3統合試写・60秒動画、QG3承認・検証記録、33フレーム索引 | 履歴・検証・目録登録、原本未転送（部分完了） |
-| 09 | production/keyframes/ | Ruosuen_camera_A_differential_spec_v10.md、QG4_基準原画比較.jpg、O/A01/A04/A05/B/C採用原画、植物編集マスク、連続性監査 | 未転送 |
+| 09 | [production/keyframes/](keyframes/README.md) | A差分設計v1.0原文、QG4比較・承認・数値QA履歴、O/A01/A04/A05/B/C原画目録、旧マスク | 原文・監査履歴・目録登録、原本未転送（部分完了・QG4 REWORK） |
 | 10 | images/（既存台帳に従う） | Ruosuen_GitHub_DM_images_v02.zip、Ruosuen_art_archive_v01.zip、原画29点、manifest.csv、一覧JPEG、README | 未転送 |
 | 11 | production/（照合・引き継ぎ） | 最新版相互リンク、全移植の照合結果、QG4再開条件 | 未実施 |
 
