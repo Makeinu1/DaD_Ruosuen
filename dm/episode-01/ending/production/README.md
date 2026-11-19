@@ -27,7 +27,7 @@
 | 04 | [production/flower/](flower/README.md) | [FL-01 v0.8統合本文](../flower.md)、FL01_v08_器官配置資料.zip、器官図、六状態図鑑、C美術基準 | 本文更新・照合、原本未転送（部分完了） |
 | 05 | [production/lighting/](lighting/README.md) | LGT-02 v0.1照明比較画、LGT02_FG_v02_制作資料.zip、FG_preview.png、FG_timeline.png、制作履歴抜粋 | 履歴・基準登録、原本未転送（部分完了） |
 | 06 | [production/effects/](effects/README.md) | FX01_v02_運動設計資料.zip、FX01_v02_運動設計.png、FX01_v02_散布推移.png、FX-01 v0.1美術参照、制作履歴 | 履歴・基準登録、原本未転送（部分完了） |
-| 07 | production/camera-motion/ | CAM02_v01_撮影設計資料.zip、MOT01_v01_動作設計資料.zip、motion_frames.csv、MOT01動作試写、Ruosuen_H_撮影設計_v01.md、Ruosuen_H_route_v03.csv、H投影照合・動線資料 | 未転送 |
+| 07 | [production/camera-motion/](camera-motion/README.md) | CAM02_v01、MOT01_v01、H撮影設計原文、motion_frames/H_route_v03復元CSV、投影・動作資料 | 原文・表データ2点・履歴登録、原本未転送（部分完了） |
 | 08 | production/previs/ | CAM02_HIA_v02_制作資料.zip、HIA_技術アニマティック.mp4、HIA接続試写、CAM02_v03_QG3_統合制作資料.zip、CAM02_v03_修正済み統合試写.png、Ruosuen_QG3_60s_previs.mp4 | 未転送 |
 | 09 | production/keyframes/ | Ruosuen_camera_A_differential_spec_v10.md、QG4_基準原画比較.jpg、O/A01/A04/A05/B/C採用原画、植物編集マスク、連続性監査 | 未転送 |
 | 10 | images/（既存台帳に従う） | Ruosuen_GitHub_DM_images_v02.zip、Ruosuen_art_archive_v01.zip、原画29点、manifest.csv、一覧JPEG、README | 未転送 |
