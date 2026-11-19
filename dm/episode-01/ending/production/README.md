@@ -23,7 +23,7 @@
 |---|---|---|---|
 | 01 | production/ | この台帳・QG2_最終判定_制作基準.md | PR内登録・照合済み |
 | 02 | [production/spatial/](spatial/README.md) | Ruosuen_撮影設計シート_v01.pdf、Ruosuen_撮影設計_編集用素材_v01.zip、ENV02_地底湖_美術設定_v01.md、ENV02_v02_設計仕様.md、ENV02_v02_広域設計.json、ENV02_v04_QG1_制作資料.zip、QG1最終較正・可視範囲・断面・投影図 | 本文3点登録、原本23点未転送（部分完了） |
-| 03 | production/whale/ | WH01_v22_制作資料.zip、WH01_v22_orthographic.png、WH-01 v2.0/v2.1美術設定画 | 未転送 |
+| 03 | [production/whale/](whale/README.md) | WH01_v22_制作資料.zip、WH01_v22_orthographic.png、WH-01 v2.0/v2.1美術設定画、QG2監査 | 基準・原本目録登録、原本5点未転送（部分完了） |
 | 04 | production/flower/ | FL01_v08_器官配置資料.zip、FL01_v08_organs.png、六状態植物図鑑、C美術基準 | 未転送 |
 | 05 | production/lighting/ | LGT-02 v0.1照明比較画、LGT02_FG_v02_制作資料.zip、FG_preview.png、FG_timeline.png | 未転送 |
 | 06 | production/effects/ | FX01_v02_運動設計資料.zip、FX01_v02_運動設計.png、FX01_v02_散布推移.png、FX-01 v0.1美術参照 | 未転送 |
