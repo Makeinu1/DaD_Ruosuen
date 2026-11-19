@@ -8,7 +8,7 @@
 | ENV-01 | b7c76649-5864-41ab-bb99-4f853fdf0f32 | 地底湖の採用候補、冒頭画要確認 |
 | WH-01 | 4db106cb-f70b-46b4-9a7f-0157a63e9160 | 採用 |
 | FL-01 v0.3 | 6d5bb4fa-8bd7-43af-bc32-508af7790459 | 若い花参照。成熟・散布図は旧案 |
-| LGT-01 v0.3 | b89a9a1a-34ac-445a-921e-bad802e3cddd | 採用比較画（画像対応一部未確認） |
+| LGT-01 v0.3 | b89a9a1a-34ac-445a-921e-bad802e3cddd | 採用比較画（生成IDと元ファイル名を照合済み） |
 | CUT02 | 38554075-0c2c-4ccd-96dc-70c3a6fe4fcc | 採用 |
 | CUT03 | e32f8725-8c12-4440-bd54-8ed58af4a22d | 採用 |
 | CUT04 | ae18d28a-8a15-4e1f-adff-391eed5a4eda | 採用 |
@@ -23,4 +23,46 @@
 
 旧稿：FL-01初稿・v0.2、CUT03初稿、CUT07比較画3枚、CUT08初稿、CUT10背景まで変わった中間稿は撮影原画にしない。
 
-既存ローカルアーカイブ Ruosuen_art_archive_v01.zip は29枚（採用10・候補3・美術4・旧稿等12）とmanifest.csv、contact_sheet.jpg、READMEを収録。画像実体のGitHub同期は別作業。公開assets/ではなくDM用フォルダ内に保管する。
+既存ローカルアーカイブ Ruosuen_art_archive_v01.zip は29枚（採用10・候補3・美術4・旧稿等12）とmanifest.csv、contact_sheet.jpg、READMEを収録。v0.1の分類は履歴。以下のv0.2を今後の登録用分類として優先する。公開assets/ではなくDM用フォルダ内に保管する。
+
+
+## v0.2 登録用原画一覧（2026-11-19）
+
+作者指示：原画実体を `images/` 配下に登録する。元の解像度・PNGデータのまま保存する。会話の画像メタデータと原画アーカイブを照合し、29枚の異なる画像を確認。登録用ZIP `Ruosuen_GitHub_DM_images_v02.zip` は会話添付として作成済み。**この時点ではPNG・一覧JPEG・CSVのGitHub転送未完了。以下は登録予定パスであり、実在するGitHubファイルへのリンクではない。**
+
+| images/ 以下の登録予定パス | 内容・注意 |
+|---|---|
+| adopted/CUT02_KEY_moon.png | 月 |
+| adopted/CUT03_KEY_flower.png | 一輪の空雪花 |
+| adopted/CUT04_KEY_water_shadow.png | 水面の影 |
+| adopted/CUT05_KEY_whale_emerges.png | 浮上 |
+| adopted/CUT06_KEY_eye.png | 眼差し |
+| adopted/CUT07_START.png | 発光前 |
+| adopted/CUT07_END.png | 発光後 |
+| adopted/CUT08_KEY_petal_release.png | 花弁・果実の散布 |
+| adopted/CUT09_KEY_climax.png | 黄金の逆さ雪 |
+| adopted/CUT10_END_moonlight_dimmed.png | 終端の採用版（局所加工） |
+| reference/WH01_whale.png | 白鯨の造形基準 |
+| reference/FL01_v03_young_flower_only.png | 若い花のみ参照可 |
+| reference/LGT_v03_comparison_no_moon.png | 採用月光比較 b89a9a1a-34ac-445a-921e-bad802e3cddd |
+| alternate/CUT01_END_matching_source_candidate.png | 終端の編集元・冒頭比較候補 |
+| alternate/CUT01_ENV_opening_candidate.png | 夜色・構図を要確認 |
+| alternate/CUT10_START_departure.png | 退場Cに沿って再検討 |
+| deprecated/CUT03_first_draft.png | 花接写旧稿 |
+| deprecated/CUT07_split_reject01.png | 分割画 e142043d-4c2c-4d3a-ad41-ceb75e1427eb |
+| deprecated/CUT07_split_reject02.png | 分割画 f12977bf-9dae-4281-9408-230bb460de18 |
+| deprecated/CUT07_split_reject03.png | 分割画 206d174e-8f51-4884-973d-9f9730280bc4 |
+| deprecated/CUT08_separate_wings_rejected.png | 独立翼旧案 |
+| deprecated/CUT10_END_before_dim.png | 減光前の中間版 |
+| deprecated/CUT10_wrong_composition_buds.png | 背景変更不採用 |
+| deprecated/CUT10_wrong_composition_no_flowers.png | 背景変更不採用 |
+| deprecated/FL01_older_gold_wing_design.png | 旧植物設定 |
+| deprecated/FL01_older_white_wing_design.png | 旧植物設定 |
+| deprecated/LGT_v01_too_bright.png | 初稿 c5db4ed4-e835-4cf2-980f-5ac19af82782、昼光に見える |
+| deprecated/LGT_v02_visible_moon_comparison.png | 中間稿 86a0f0d8-e187-489c-b764-21f9fee3ed96、画面内に月 |
+| deprecated/storyboard_v01_9panels.png | 旧ラフ |
+| contact-sheets/contact_sheet.jpg | 全29枚一覧 |
+| manifest.csv | 29枚分の相対パス・元ファイル名・生成ID・解像度・SHA-256・バイト数 |
+| README.md | 画像分類、警告、リンク一覧 |
+
+採用10・設定参照3・候補3・旧稿13。CUT01は正式画未確定。撮影設計に基づく再制作が前提で、adoptedは撮影用原画の確定を意味しない。
