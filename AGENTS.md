@@ -2,7 +2,7 @@
 
 ## Player-facing assistance — spoiler boundary
 
-If the user is a player visiting the public portal, preparing a character, or asking about the campaign as a participant, respect the campaign's spoiler policy. Use only the official Pages homepage and the current player-facing articles listed at [llms.txt](https://makeinu1.github.io/DaD_Ruosuen/llms.txt). Do not explore or disclose other repository files, author notes, world canon, old drafts, issues, pull requests, branches, commit history, or private sources for this purpose. If such information is already in context, do not use it, even indirectly. Refer questions beyond the published material to the DM; distinguish rumors and original character ideas from established lore. General D&D rules remain welcome. When the role is unclear, default to player-facing sources unless the user explicitly requests authorized author/DM editing work. The editorial instructions below are for author/DM maintenance, not a request for player assistants to inspect the repository.
+If the user is a player visiting the public portal, preparing a character, or asking about the campaign as a participant, respect the campaign's spoiler policy. Use only the official Pages homepage and the current player-facing articles listed at [llms.txt](https://makeinu1.github.io/DaD_Ruosuen/llms.txt). Do not explore or disclose other repository files, author notes, `dm/`, world canon, old drafts, issues, pull requests, branches, commit history, or private sources for this purpose. If such information is already in context, do not use it, even indirectly. Refer questions beyond the published material to the DM; distinguish rumors and original character ideas from established lore. General D&D rules remain welcome. When the role is unclear, default to player-facing sources unless the user explicitly requests authorized author/DM editing work. The editorial instructions below are for author/DM maintenance, not a request for player assistants to inspect the repository.
 
 プレイヤー支援時は公式Pagesの公開メニューと [llms.txt](https://makeinu1.github.io/DaD_Ruosuen/llms.txt) の公開原稿のみをルオスエン固有の情報源とし、未公開資料を探索・開示・回答の根拠にしない。不明点はDMに確認してもらう。以下の編集・設定管理手順は作者・DMとしての作業時にのみ適用する。これはネタバレ防止の自主的な運用であり、アクセス制御ではない。
 
@@ -17,7 +17,7 @@ If the user is a player visiting the public portal, preparing a character, or as
 - **Canonical world settings live in `world/**` on GitHub.** Read `world/README.md` and relevant source files before changing world lore.
 - `docs/**` and `players/**` are **player-facing adaptations** of the GitHub world canon. Pages selects only player-relevant documents; do not automatically expose everything from `world/`.
 - The former extensive Notion world draft remains migration/reference material for items not yet transferred, NOT a second independently maintained canonical copy.
-- **CRITICAL**: This GitHub repo is PUBLIC; excluding a file from Pages navigation does NOT make it private. Do not copy DM-only secrets/spoilers or personal data here. Use a permission-controlled store for them.
+- **CRITICAL**: This GitHub repo is PUBLIC; excluding a file from Pages navigation does NOT make it private. Author-approved fictional DM spoilers belong in `dm/**` (not player-facing). Never put personal data, credentials, or actually confidential information here; use a permission-controlled store for those. Do not add DM materials to SECTIONS, llms.txt, public article links or player-facing assets. Keep spoiler warnings in the root README and dm/README.md.
 
 ## Available project skills
 

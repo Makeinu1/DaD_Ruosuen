@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 740" width="960" height="740" font-family="sans-serif" fill="#dce8f3">
+<rect width="960" height="740" fill="#142334"/>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="#f0e1c5"/></marker></defs>
+<text x="28" y="35" font-size="21" font-weight="bold">地底湖・退場経路 C案（採用方針・概念図）</text><text x="28" y="58" font-size="12" fill="#9bb1c3">撮影設計上の仮案・寸法／地形／時刻は未確定　｜　月光接触後は白鯨が移動光源</text>
+<text x="28" y="93" font-size="17" font-weight="bold">01 平面図（上から）</text>
+<path d="M80 120 Q260 90 410 122 Q570 132 645 110 Q735 85 885 115 L920 292 Q810 324 722 288 Q580 364 382 337 Q116 365 53 268Z" fill="#344a5e" stroke="#69859b"/>
+<path d="M109 147 Q275 116 429 155 Q541 166 650 144 Q753 130 870 152 L889 239 Q781 263 673 236 Q546 323 382 308 Q141 330 88 249Z" fill="#234963" stroke="#7396af"/>
+<path d="M708 110 Q669 150 710 193 L762 227 L730 290 L823 302 L855 242 Q780 208 784 163 L811 111Z" fill="#344a5e" stroke="#69859b" stroke-width="2"/>
+<text x="740" y="90" font-size="12">背後の地下空間（行先不明）</text><text x="817" y="217" font-size="12">岩壁</text>
+<path d="M139 290 Q310 333 502 304" fill="none" stroke="#ddbc77" stroke-width="12" stroke-linecap="round" opacity=".7"/><text x="140" y="354" font-size="12" fill="#e6c58c">空雪花の群生帯</text>
+<path d="M610 126 L471 285" stroke="#81cbe8" stroke-width="21" opacity=".13"/><path d="M610 126 L471 285" stroke="#81cbe8" stroke-dasharray="6 5" fill="none"/>
+<circle cx="610" cy="126" r="6" fill="#81cbe8"/><text x="560" y="114" font-size="12" fill="#81cbe8">天井の裂け目</text>
+<path d="M175 225 Q335 185 521 218 Q635 234 704 226 Q759 187 851 151" fill="none" stroke="#f0e1c5" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#arrow)"/>
+<circle cx="175" cy="225" r="5" fill="#e0edf4"/><text x="127" y="208" font-size="12">浮上</text>
+<circle cx="532" cy="218" r="23" fill="#b6d8ec" opacity=".18"/><circle cx="532" cy="218" r="6" fill="#ffffff"/><text x="480" y="194" font-size="12">月光接触→発光</text>
+<circle cx="660" cy="233" r="33" fill="#b6d8ec" opacity=".12"/><circle cx="660" cy="233" r="6" fill="#ffffff"/><text x="583" y="268" font-size="12">祝祭・移動光</text>
+<circle cx="850" cy="151" r="6" fill="#ffffff"/><text x="797" y="139" font-size="12">遮蔽</text>
+<path d="M345 364 L181 186 L690 178Z" fill="#94b5cb" opacity=".08" stroke="#94b5cb" stroke-dasharray="4 4"/><rect x="334" y="355" width="22" height="13" rx="3" fill="#dee9f0"/><path d="M356 357 L365 352 V371 L356 366" fill="#dee9f0"/><text x="373" y="367" font-size="12">A：冒頭・終幕共通</text>
+<line x1="28" y1="389" x2="932" y2="389" stroke="#476176"/>
+<text x="28" y="419" font-size="17" font-weight="bold">02 側面図（進行方向）</text>
+<path d="M25 458 Q180 432 320 448 L462 441 L485 417 L512 440 Q655 438 732 448 L756 478 L788 450 L936 458 V440 H25Z" fill="#344a5e"/>
+<path d="M25 667 H936 V695 H25Z" fill="#234963"/><line x1="25" y1="667" x2="936" y2="667" stroke="#8eb0c7"/>
+<path d="M492 423 L511 450 L395 667 L370 667Z" fill="#81cbe8" opacity=".17"/><path d="M497 437 L383 667" stroke="#81cbe8" stroke-dasharray="6 4"/>
+<path d="M734 449 L711 489 L740 523 L726 565 L757 601 L793 667 L936 667 V634 L823 622 L786 573 L812 521 L785 474 L807 451Z" fill="#344a5e" stroke="#69859b"/>
+<path d="M111 680 Q200 562 381 548 Q570 487 690 507 Q749 510 856 488" fill="none" stroke="#f0e1c5" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#arrow)"/>
+<g transform="translate(381 548) rotate(-15)"><path d="M-24 -2 L-40 -12 L-35 0 L-40 12 L-24 4 Q0 17 25 1 Q31 -10 8 -12 Q-10 -12 -24 -2Z" fill="#e3edf4"/><path d="M0 6 L-16 20 L-8 4" fill="#b9d0df"/></g>
+<ellipse cx="600" cy="511" rx="97" ry="62" fill="#b9d8ee" opacity=".14"/><g transform="translate(600 511)"><path d="M-24 -2 L-40 -12 L-35 0 L-40 12 L-24 4 Q0 17 25 1 Q31 -10 8 -12 Q-10 -12 -24 -2Z" fill="#f0f5fa"/><path d="M0 6 L-16 20 L-8 4" fill="#c7d9e6"/></g>
+<path d="M600 511 L664 658 L420 658Z" fill="#b9d8ee" opacity=".085"/><text x="522" y="594" font-size="13">発光する鯨の移動に伴って照明が変化</text>
+<text x="70" y="715" font-size="12">浮上は映像演出案</text><text x="757" y="705" font-size="12">岩壁の向こうへ（未知）</text><text x="28" y="641" font-size="12" fill="#e6c58c">湖畔</text><text x="738" y="545" font-size="11" fill="#9bb1c3">遮蔽で残光が消える</text>
+</svg>
