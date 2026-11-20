@@ -15,4 +15,6 @@
 
 - [第一話のNPC導入・予定外訪問の対応案](episode-01/npc-hooks.md)：ベル・タッカーの依頼と各組織の情報収集案（未採用の詳細を区別）。
 
+- [ベルとタッカーの演技ガイド・掛け合い集](npcs/bell-tucker-roleplay.md)：口調、7場面の会話例、即興演技早見表。
+
 運用規約：[WORLD_POLICY.md](../WORLD_POLICY.md)。
