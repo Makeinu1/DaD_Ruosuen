@@ -2,7 +2,7 @@
 
 > **DM専用・プレイヤー閲覧禁止。シナリオの重大なネタバレを含む。** GitHubリポジトリは公開設定であり、この注意書きはアクセス制御ではない。公開Pagesやプレイヤー向け文書には掲載しない。
 
-このファイルは**作者が絵を見比べ、残す画像を決めるための棚卸し**。カット割り・時間・設定・原画の採用を新たに確定するものではない。比較原画は一切削除しない。**番号が同じでも旧10カット構成の「CUTxx」と現行19カット構成の「Cxx」は別物**として扱う。
+このファイルは**作者が絵を見比べ、残す画像を決めるための棚卸し**。カット割り・時間・設定・原画の採用を新たに確定するものではない。比較原画34枚の比較一覧は今回の整理対象から外した（既存の原本PNGは今回の更新では削除しない）。**番号が同じでも旧10カット構成の「CUTxx」と現行19カット構成の「Cxx」は別物**として扱う。
 
 ## 作者の今回の決定（2026-11-22）
 
@@ -13,8 +13,8 @@
 - 基準： [v10・19カットの仮決め](v10-shotlist.md)、[感情ラインv9](emotion-line-v9.md)、[鯨の動線v10](whale-motion-v10.md)。
 - **PR #27 の C03–C08** は画像原本が存在するが2026-11-22確認時点では**未マージ**。本書では当該PRのコミットSHA固定の画像URLで表示する（後のマージで相対リンクに統一可能）。[PR #27](https://github.com/Makeinu1/DaD_Ruosuen/pull/27)。
 - **PR #28 の C09・C10** はメタデータのみでPNGのGitHub転送が未完了。会話で仮採用したPNGをここでは表示できない。[PR #28](https://github.com/Makeinu1/DaD_Ruosuen/pull/28)。
-- C11–C19の採用・候補・比較原画の所在は [原画台帳](keyframe-test/results/C11-C19-2026-11-21/README.md) を参照。ただし**C16の採否は今回の作者判断を優先**し、台帳ではOldと分類されたBパターンを現状採用とする。
-- 比較用の `turnXX_YY.png` 34枚は全点末尾に掲載し、画像のGit blob SHAが一致する選定版9件は確定対応とした。残りは**生成順からの仮分類**であり、内容・カット対応は作者確認が必要。
+- C11–C19の原画の所在は [原画台帳](keyframe-test/results/C11-C19-2026-11-21/README.md) を参照。ただし**C16の採否は今回の作者判断を優先**し、台帳ではOldと分類されたBパターンを現状採用とする。
+- **2026-11-22追加決定**：`比較原画34枚：候補一覧` は本レビューから削除。今後は各カットの現行候補に集中する。過去の比較画像の原本PNGはこのPRでは削除しない。
 
 ## 一覧・レビュー記録
 
@@ -151,71 +151,6 @@
 
 **映像化時の要確認**：一枚の花びらは旧演出ではP0の近くへ舞い降りるが、選定画では湖面側に見える。どちらを最終画面にするかは未決。
 
-## 比較原画34枚：候補一覧（すべて残す）
-
-**重要**：これは制作履歴の比較原画（現在選定されていない版を含む）であり、旧構成原画を再採用する意図はない。下記の組分けは生成順に基づく暫定配置。現行カットとの対応は後で目視確認する。ただし「★同一画像」はGit blob SHAで一致した現行選定版／C14候補を示す。画像はクリックすると原寸が開く。
-
-### C11周辺（C11.5前）
-
-| 候補 | 候補 | 候補 |
-|---|---|---|
-| <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn09_01.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn09_01.png" alt="turn09_01" width="250"></a><br>turn09_01<br>**★ C11選定と同一** | <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn10_01.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn10_01.png" alt="turn10_01" width="250"></a><br>turn10_01<br>割当は暫定 | <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn12_01.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn12_01.png" alt="turn12_01" width="250"></a><br>turn12_01<br>割当は暫定 |
-| <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn15_01.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn15_01.png" alt="turn15_01" width="250"></a><br>turn15_01<br>割当は暫定 | <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn15_02.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn15_02.png" alt="turn15_02" width="250"></a><br>turn15_02<br>割当は暫定 |   |
-
-### C11.5
-
-| 候補 | 候補 | 候補 |
-|---|---|---|
-| <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn16_01.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn16_01.png" alt="turn16_01" width="250"></a><br>turn16_01<br>**★ C11.5選定と同一** |   |   |
-
-### C12周辺
-
-| 候補 | 候補 | 候補 |
-|---|---|---|
-| <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn17_01.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn17_01.png" alt="turn17_01" width="250"></a><br>turn17_01<br>割当は暫定 | <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn17_02.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn17_02.png" alt="turn17_02" width="250"></a><br>turn17_02<br>**★ C12選定と同一** | <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn19_01.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn19_01.png" alt="turn19_01" width="250"></a><br>turn19_01<br>割当は暫定 |
-| <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn19_02.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn19_02.png" alt="turn19_02" width="250"></a><br>turn19_02<br>割当は暫定 | <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn19_03.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn19_03.png" alt="turn19_03" width="250"></a><br>turn19_03<br>割当は暫定 |   |
-
-### C13
-
-| 候補 | 候補 | 候補 |
-|---|---|---|
-| <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn21_01.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn21_01.png" alt="turn21_01" width="250"></a><br>turn21_01<br>**★ C13選定と同一** |   |   |
-
-### C14周辺
-
-| 候補 | 候補 | 候補 |
-|---|---|---|
-| <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn23_01.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn23_01.png" alt="turn23_01" width="250"></a><br>turn23_01<br>割当は暫定 | <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn25_01.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn25_01.png" alt="turn25_01" width="250"></a><br>turn25_01<br>**★ C14候補と同一** | <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn26_01.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn26_01.png" alt="turn26_01" width="250"></a><br>turn26_01<br>割当は暫定 |
-| <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn26_02.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn26_02.png" alt="turn26_02" width="250"></a><br>turn26_02<br>割当は暫定 |   |   |
-
-### C15周辺
-
-| 候補 | 候補 | 候補 |
-|---|---|---|
-| <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn28_01.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn28_01.png" alt="turn28_01" width="250"></a><br>turn28_01<br>割当は暫定 | <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn29_01.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn29_01.png" alt="turn29_01" width="250"></a><br>turn29_01<br>**★ C15選定と同一** |   |
-
-### C17周辺
-
-| 候補 | 候補 | 候補 |
-|---|---|---|
-| <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn30_01.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn30_01.png" alt="turn30_01" width="250"></a><br>turn30_01<br>割当は暫定 | <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn31_01.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn31_01.png" alt="turn31_01" width="250"></a><br>turn31_01<br>割当は暫定 | <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn32_01.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn32_01.png" alt="turn32_01" width="250"></a><br>turn32_01<br>割当は暫定 |
-| <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn33_01.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn33_01.png" alt="turn33_01" width="250"></a><br>turn33_01<br>割当は暫定 | <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn34_01.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn34_01.png" alt="turn34_01" width="250"></a><br>turn34_01<br>**★ C17選定と同一** |   |
-
-### C18周辺
-
-| 候補 | 候補 | 候補 |
-|---|---|---|
-| <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn36_01.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn36_01.png" alt="turn36_01" width="250"></a><br>turn36_01<br>割当は暫定 | <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn36_02.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn36_02.png" alt="turn36_02" width="250"></a><br>turn36_02<br>割当は暫定 | <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn36_03.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn36_03.png" alt="turn36_03" width="250"></a><br>turn36_03<br>割当は暫定 |
-| <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn37_01.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn37_01.png" alt="turn37_01" width="250"></a><br>turn37_01<br>**★ C18選定と同一** |   |   |
-
-### C19周辺
-
-| 候補 | 候補 | 候補 |
-|---|---|---|
-| <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn39_01.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn39_01.png" alt="turn39_01" width="250"></a><br>turn39_01<br>割当は暫定 | <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn39_02.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn39_02.png" alt="turn39_02" width="250"></a><br>turn39_02<br>割当は暫定 | <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn39_03.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn39_03.png" alt="turn39_03" width="250"></a><br>turn39_03<br>割当は暫定 |
-| <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn40_01.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn40_01.png" alt="turn40_01" width="250"></a><br>turn40_01<br>割当は暫定 | <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn40_02.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn40_02.png" alt="turn40_02" width="250"></a><br>turn40_02<br>割当は暫定 | <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn41_01.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn41_01.png" alt="turn41_01" width="250"></a><br>turn41_01<br>割当は暫定 |
-| <a href="keyframe-test/results/C11-C19-2026-11-21/variants/turn41_02.png"><img src="keyframe-test/results/C11-C19-2026-11-21/variants/turn41_02.png" alt="turn41_02" width="250"></a><br>turn41_02<br>**★ C19選定と同一** |   |   |
-
 ## 旧10カット構成の原画（**現状すべて不採用／履歴のみ**）
 
 **作者決定（2026-11-22）：この節の旧原画はすべて現状不採用。** 2026-11-19時点の旧10カット構成であり、現行v10のC01–C19に番号だけで割り振らない。旧原画保存フォルダ名の `adopted/` は過去の意味で、今回の採用とは無関係。削除せず、履歴リンクだけ残す。**C16のOld B例外はここには含めず、C16欄に現状採用として掲出した。**
@@ -235,12 +170,31 @@
 
 補助（いずれも現状不採用）：[旧冒頭ENV](../images/alternate/CUT01_ENV_opening_candidate.png)／[旧冒頭終幕一致候補](../images/alternate/CUT01_END_matching_source_candidate.png)／[旧退場開始候補](../images/alternate/CUT10_START_departure.png)。最新のv10では鯨は岩岬裏ではなく天井の裂け目へ昇るため、旧退場経路は不一致。
 
+## 次に作る原画（現状の不足分）
+
+この段階では**現行の19カットを仮の作業単位**とし、空間設定・鯨の運動・感情ライン・カメラワークの再設計で後から大幅に変更してよい。制作の優先度と原画の**実在／採用状態**を区別する。
+
+| Cut | 区分 | 作成・修正すべき画 | 制作時の特に重要な点 |
+|---|---|---|---|
+| **C01** | **現行原画未確認 → 新規制作** | 静かな地底湖の導入、天井の裂け目からの月光、照らされる若い一輪 | **C19と同じ視点・画角**を比較基準にする。遠方は闇、花の大半は未開花。旧構成のENV候補は不採用 |
+| **C02** | **現行原画未確認 → 新規制作** | 水際の暗い鏡面に、闇から波紋が届く | 鯨そのものをまだ見せず、異変の予兆だけを見せる。旧CUT02（月の画）は不採用 |
+| **C09** | **過去の仮採用原画は存在、GitHub PNG未転送 → 改稿制作** | 目の前の鯨が強い一漕ぎから背面ロールに移る | **カメラをより右**に置いて腹をより見せる。頭・胴体・尾の姿勢が連続した背面ロールとして読めること |
+| **C10** | **過去の仮採用2案目は存在、GitHub PNG未転送 → 改稿制作** | 顔を見せず、鯨が月光柱へ遠ざかる後ろ姿 | **右胸びれの付け根・位置**、**腹の畝が顔まで続いて見える誤り**を修正。C09から体の向きと進行方向がつながること |
+| **C14** | **最新候補PNGは登録済み、未承認 → まず採否を確認** | 静止した花びらが一斉に鯨へ呼応し、流れ始める | 鯨の不思議な力で動く群れと、C13の静止からC15の群舞へのつながりを確かめる。**不採用なら新規制作** |
+
+**当面の新規・改稿制作対象はC01・C02・C09・C10の4カット。C14は追加制作の可否を決めるためのレビュー対象で、現時点で「原画なし」とは扱わない。**
+
+- C03・C04は暫定決定、C05は改稿画あり、C06は仮採用・要修正、C07・C08は原画あり（いずれもPR #27で未マージ）。
+- C11・C11.5・C12は暫定採用、C13・C15・C17・C18・C19は採用済み。C16は作者指示により**Old Bを現状採用**。
+- 「GitHub未転送」は「過去に一度も描いていない」という意味ではない。C09・C10を今回作り直す場合も、以前の判断と修正意図を保持する。
+- 新しい絵の採用は、後続の世界設定・感情ライン・カメラ設計の再評価を制限しない。
+
 ## 確認時の優先事項
 
-1. C01・C02の現行原画を特定し、C01の冒頭構図をC19と比較。
+1. C01・C02は現行原画が未確認なので、旧構成の不採用画像を流用せず新規制作する。C01はC19との冒頭／終幕の関係を意識する。
 2. 未マージPR #27のC03–C08を目視評価し、採否を記録。
-3. PR #28のC09・C10原本PNGを転送・検証したうえで、仮採用を再評価。
-4. C11–C15・C17–C19の比較原画から残す版を選び、C11.5を独立カットにする必要があるか検討。
+3. C09・C10は過去の仮採用を参照しつつ、後述の要修正点を踏まえて新しい現行候補を制作する。PR #28のPNG未転送状況は引き続き記録する。
+4. C11–C15・C17–C19は現在の選定画をまず確認する。C14は未承認なので採否確認、C11.5を独立カットにするかは映像構成検討時に判断する。
 5. C16は**Old Bパターンを現状採用**として他カットとの接続を確認。Old初稿と、旧10カット構成の原画は不採用を維持する。
 6. すべての暫定採用が済んだ後、鯨・花・洞窟・裂け目・月・光・鯨の動き・感情ライン・カメラワークを再設計。**この棚卸しは構成変更を妨げない**。
 
@@ -253,4 +207,4 @@
 - [C11–C19登録台帳](keyframe-test/results/C11-C19-2026-11-21/README.md)
 - [旧原画台帳](../art-manifest.md)
 
-2026-11-22改訂。**今回の作者判断を最優先**し、旧構成は不採用、C16はOld Bを採用とした。他カットの原画判定は当時の作者判断とファイル実在確認を分けて記載。未確認・未転送を採用済みと表記しない。
+2026-11-22再改訂。**今回の作者判断を最優先**し、旧構成は不採用、C16はOld Bを採用。比較原画34枚の候補一覧は削除した。他カットの原画判定は当時の作者判断とファイル実在確認を分けて記載し、未確認・未転送を採用済みと表記しない。
