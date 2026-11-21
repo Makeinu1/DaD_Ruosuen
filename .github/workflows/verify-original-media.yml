@@ -1,0 +1,38 @@
+name: Verify original PNG records
+
+on:
+  pull_request:
+    paths:
+      - 'dm/episode-01/ending/v8/keyframe-test/results/**'
+      - 'tools/github-original-transfer/audit_repository_media.py'
+      - '.github/workflows/verify-original-media.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'dm/episode-01/ending/v8/keyframe-test/results/**'
+      - 'tools/github-original-transfer/audit_repository_media.py'
+      - '.github/workflows/verify-original-media.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-original-media:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compute SHA-256 from checkout and compare Git blob SHA-1
+        shell: bash
+        run: |
+          python3 tools/github-original-transfer/audit_repository_media.py \
+            --repo-root . \
+            --manifest dm/episode-01/ending/v8/keyframe-test/results/C11-C19-2026-11-21/manifest.json \
+            --output original-media-audit.json
+      - name: Preserve verification report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: original-media-audit
+          path: original-media-audit.json
+          if-no-files-found: warn
