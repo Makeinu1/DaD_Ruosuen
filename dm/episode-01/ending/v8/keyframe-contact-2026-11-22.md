@@ -14,8 +14,8 @@
 
 | カット・v10仮時間 | GitHub上で確認できた原画 | 原画・絵の状況と作業論点 |
 | --- | --- | --- |
-| **C01** 0–6秒 静かな地底湖 | ![C01提出原本](keyframe-test/results/C01-C16-2026-11-22/originals/C01.png) [原本](keyframe-test/results/C01-C16-2026-11-22/originals/C01.png) | **2026-11-22 原本保全／最終採否未記録**。終幕C19と同じCam Aにするか、月の見え方・花の配置を確認。 |
-| **C02** 6–10秒 湖面の波紋 | ![C02提出原本](keyframe-test/results/C01-C16-2026-11-22/originals/C02.png) [原本](keyframe-test/results/C01-C16-2026-11-22/originals/C02.png) | **原本保全／最終採否未記録**。前後の低照度と連続性を確認。 |
+| **C01** 0–6秒 静かな地底湖 | ![C01提出原本](keyframe-test/results/C01-C16-2026-11-22/originals/C01.png) [原本](keyframe-test/results/C01-C16-2026-11-22/originals/C01.png) | **作者採用済み／この提出原本と採用画の同一性未照合**。終幕C19と同じCam Aにするか、月の見え方・花の配置を確認。 |
+| **C02** 6–10秒 湖面の波紋 | ![C02提出原本](keyframe-test/results/C01-C16-2026-11-22/originals/C02.png) [原本](keyframe-test/results/C01-C16-2026-11-22/originals/C02.png) | **C02-A/Bの2枚は作者採用済み／提出済みのC02・C02.5との対応は未照合**。A静止→B波紋を尊重し、前後の低照度と連続性を確認。 |
 | **C02.5** 追加素材 | ![C02.5提出原本](keyframe-test/results/C01-C16-2026-11-22/originals/C02.5.png) [原本](keyframe-test/results/C01-C16-2026-11-22/originals/C02.5.png) | **追加案／本編への挿入位置・時間未確定**。C02とC03の間に使うか再検討。 |
 | **C03** 10–14秒 水中の影 | ![C03作者確定原画](https://raw.githubusercontent.com/Makeinu1/DaD_Ruosuen/b0322124b9bedf5e3233934d4879148bac671d53/dm/episode-01/ending/v8/keyframe-test/results/C03-C08-2026-11-21/C03.png) [原本（PR #27）](https://raw.githubusercontent.com/Makeinu1/DaD_Ruosuen/b0322124b9bedf5e3233934d4879148bac671d53/dm/episode-01/ending/v8/keyframe-test/results/C03-C08-2026-11-21/C03.png) | **採用確定（2026-11-22）**。作者が**原画確定**。水面下の影。C02/C04との連続性は動画化時に検証。 |
 | **C04** 14–18秒 浮上 | ![C04作者確定原画](https://raw.githubusercontent.com/Makeinu1/DaD_Ruosuen/b0322124b9bedf5e3233934d4879148bac671d53/dm/episode-01/ending/v8/keyframe-test/results/C03-C08-2026-11-21/C04.png) [原本（PR #27）](https://raw.githubusercontent.com/Makeinu1/DaD_Ruosuen/b0322124b9bedf5e3233934d4879148bac671d53/dm/episode-01/ending/v8/keyframe-test/results/C03-C08-2026-11-21/C04.png) | **採用確定（2026-11-22）**。作者が**原画確定**。鯨の無発光と水面の連続性を映像化時に検証。 |
@@ -23,7 +23,7 @@
 | **C06** 21–25秒 頭上から接近 | ![C06作者確定原画](https://raw.githubusercontent.com/Makeinu1/DaD_Ruosuen/b0322124b9bedf5e3233934d4879148bac671d53/dm/episode-01/ending/v8/keyframe-test/results/C03-C08-2026-11-21/C06.png) [原本（PR #27）](https://raw.githubusercontent.com/Makeinu1/DaD_Ruosuen/b0322124b9bedf5e3233934d4879148bac671d53/dm/episode-01/ending/v8/keyframe-test/results/C03-C08-2026-11-21/C06.png) | **採用確定（2026-11-22）**。作者が**原画確定**。旧修正課題は映像制作上の確認であり、原画の暫定扱いに戻さない。 |
 | **C07** 25–28秒 巨大な頭部 | ![C07作者確定原画](https://raw.githubusercontent.com/Makeinu1/DaD_Ruosuen/b0322124b9bedf5e3233934d4879148bac671d53/dm/episode-01/ending/v8/keyframe-test/results/C03-C08-2026-11-21/C07.png) [原本（PR #27）](https://raw.githubusercontent.com/Makeinu1/DaD_Ruosuen/b0322124b9bedf5e3233934d4879148bac671d53/dm/episode-01/ending/v8/keyframe-test/results/C03-C08-2026-11-21/C07.png) | **採用確定（2026-11-22）**。作者が**原画確定**。C06との距離感と眼の位置を映像化時にチェック。 |
 | **C08** 28–32秒 読めない一瞥 | ![C08作者確定原画](https://raw.githubusercontent.com/Makeinu1/DaD_Ruosuen/b0322124b9bedf5e3233934d4879148bac671d53/dm/episode-01/ending/v8/keyframe-test/results/C03-C08-2026-11-21/C08.png) [原本（PR #27）](https://raw.githubusercontent.com/Makeinu1/DaD_Ruosuen/b0322124b9bedf5e3233934d4879148bac671d53/dm/episode-01/ending/v8/keyframe-test/results/C03-C08-2026-11-21/C08.png) | **採用確定（2026-11-22）**。作者が**原画確定**。旧試作は[不採用の履歴](keyframe-test/results/C08_t01.png)。 |
-| **C09** 32–35秒 背面ロール | ![C09提出原本](keyframe-test/results/C01-C16-2026-11-22/originals/C09.png) [原本](keyframe-test/results/C01-C16-2026-11-22/originals/C09.png) | **2026-11-22 原本保全・会話上は暫定**。カメラをもっと右へ、腹の可視量、胴・尾の連続性は修正課題。 |
+| **C09** 32–35秒 背面ロール | ![C09提出原本](keyframe-test/results/C01-C16-2026-11-22/originals/C09.png) [原本](keyframe-test/results/C01-C16-2026-11-22/originals/C09.png) | **作者は11/22生成のC09を暫定採用／この提出原本との同一性未照合**。カメラ右寄り視点、腹の可視量、胴・尾の連続性は動画化時の検証課題。 |
 | **C10** 35–37秒 月光へ向かう後ろ姿 | ![C10確定原画（保存時のファイル名はC11.png）](keyframe-test/results/C01-C16-2026-11-22/originals/C11.png) [原本（旧保存名C11.png）](keyframe-test/results/C01-C16-2026-11-22/originals/C11.png) | **作者による原画確定・割当て訂正**。11/22提出原本のC11.pngは現行カットでは**C10**。ファイル名だけ歴史的な旧ラベルとして維持する。発光前のC10からC11の点火への連続性は動画化時に検証。 |
 | **C11** 37–41秒 月光への接触と点火 | ![C11 11/21暫定原画](keyframe-test/results/C11-C19-2026-11-21/selected/C11.png) [11/21原本](keyframe-test/results/C11-C19-2026-11-21/selected/C11.png) | **11/21版のみ暫定採用**。11/22保存名C11.pngの画像はC10なので**この欄では重複しない**。吻先からの点火順とC10との姿勢接続を確認。 |
 | **C11.5** 追加素材 | ![C11.5暫定](keyframe-test/results/C11-C19-2026-11-21/selected/C11_5.png) [原本](keyframe-test/results/C11-C19-2026-11-21/selected/C11_5.png) | **暫定採用**。胸びれ数の誤描画を修正した版。C11→C12間の挿入をまだ固定しない。 |
@@ -38,6 +38,7 @@
 
 ## 複数バージョンと照合待ち
 
+- **C01・C02・C09・C16**：作者採用の判断は記録済み。ただし2026-11-22提出原本のうち採用画と同一かの実体照合は未完了。**採用済み・同一性未照合**という二軸を混同しない。
 - **C10/C11の誤登録名を訂正**：11/22提出原本 originals/C11.png の**現行カットはC10**。C11の現行原画は11/21版 selected/C11.png。別カットなので「C11二版」とは分類しない。元の原本保存名は来歴として変更しない。
 - C16の**旧版**：[以前の高密度B案](keyframe-test/results/Old/C16_B_petals_dense_no_flower.png)・[初稿](keyframe-test/results/Old/C16_t01.png)は **Old**。2026-11-22のC16に混ぜない。
 - [C11–C19の比較試作34枚](keyframe-test/results/C11-C19-2026-11-21/variants/)は試行履歴。ファイル名が turnXX 形式のため、切り分け可能な対応証拠なしに個々をカットへ割り当てない。
@@ -48,7 +49,7 @@
 
 1. C01とC19の位置・画角・月の見かけサイズ、P0の若い花の同一性を比較。
 2. C09・C10の連続した360度姿勢と胸びれ、尾、腹側の畝を通しで確認。
-3. C10（11/22保存名C11.png）→C11（11/21版）→C11.5の接続を検証し、C16の採用版と保存原本の同一性を照合。
+3. C10（11/22保存名C11.png）→C11（11/21版）→C11.5の接続を検証し、C01・C02-A/B・C09・C16の作者採用画と保存原本の同一性を照合。
 4. 作者確定のC03〜C08をPR #27からmainへ取り込む。C10の原本保存名とカット対応を台帳に明示する。
 5. 設定とカメラを検討した後、**採用原画も含めたカット構成そのものを再評価**する。
 
@@ -93,7 +94,9 @@
 </details>
 
 <details>
-<summary><strong>A3｜未承認の候補原画（1点）</strong></summary>
+<summary><strong>A3｜元のcandidateフォルダに保管された採用済みC14（1点）</strong></summary>
+
+**2026-11-22の作者決定で採用確定**。`candidate/` は保存時の旧分類名であり、現在の採否を意味しない。
 
 | プレビュー／GitHub画像ファイル | プレビュー／GitHub画像ファイル |
 | :--- | :--- |
