@@ -1,0 +1,132 @@
+{
+ "version": "v9-temp",
+ "tempo_bpm": 60,
+ "seconds_per_beat": 1.0,
+ "total_beats": 80,
+ "total_seconds": 80,
+ "fps": 24,
+ "cuts": [
+  {
+   "cut": "1",
+   "beat_in": 0,
+   "beat_out": 6,
+   "still": "video-pipeline/v7_blender_cycles/out/cuts_16_90s/cut01_02s_open_cam_a.jpg",
+   "title": "安堵：依頼を終えた静かな地底湖",
+   "music": "音楽なし・水滴"
+  },
+  {
+   "cut": "2",
+   "beat_in": 6,
+   "beat_out": 14,
+   "still": "video-pipeline/v7_blender_cycles/out/cuts_16_90s/cut03_16s_lake_ripples_shadow.jpg",
+   "title": "違和感：波紋と水面下の巨大な影",
+   "music": "低いドローン"
+  },
+  {
+   "cut": "3a",
+   "beat_in": 14,
+   "beat_out": 18,
+   "still": "video-pipeline/v7_blender_cycles/out/cuts_16_90s/cut04_21s_silent_breach.jpg",
+   "title": "驚愕：水面が割れ鯨が浮上",
+   "music": "HIT 浮上：低音金管"
+  },
+  {
+   "cut": "3b",
+   "beat_in": 18,
+   "beat_out": 22,
+   "still": "video-pipeline/v7_blender_cycles/out/cuts_16_90s/cut05_25s_foreground_approach.jpg",
+   "title": "驚愕：水を落としながら宙へ",
+   "music": "うねり"
+  },
+  {
+   "cut": "4a",
+   "beat_in": 22,
+   "beat_out": 30,
+   "still": "video-pipeline/v7_blender_cycles/out/cuts_16_90s/cut06_28s_heigei_closeup.jpg",
+   "title": "警戒：頭上へ迫り画面を覆う（ボス戦!?）",
+   "music": "曖昧な和音・低音金管と太鼓の脈動"
+  },
+  {
+   "cut": "4b",
+   "beat_in": 30,
+   "beat_out": 34,
+   "still": "v8/diagnosis/eye_glance_probe.png",
+   "title": "一瞥：何を考えているか読めない瞳",
+   "music": "HIT 全休止→高い弦1本"
+  },
+  {
+   "cut": "5",
+   "beat_in": 34,
+   "beat_out": 40,
+   "still": "video-pipeline/v7_blender_cycles/out/cuts_16_90s/cut08_34s_graceful_turnback.jpg",
+   "title": "反転：背面ロールで光へ（画は仮）",
+   "music": "長調へ解決・ハープ"
+  },
+  {
+   "cut": "6a",
+   "beat_in": 40,
+   "beat_out": 42,
+   "still": "video-pipeline/v7_blender_cycles/out/cuts_16_90s/cut09_38s_first_spark_snout.jpg",
+   "title": "畏敬：月光に触れて発光",
+   "music": "HIT 点火：チェレスタ"
+  },
+  {
+   "cut": "6b",
+   "beat_in": 42,
+   "beat_out": 44.5,
+   "still": "video-pipeline/v7_blender_cycles/out/cuts_16_90s/cut10_41s_phase1_ignition_wave.jpg",
+   "title": "感嘆：照らされた花が一斉に開花",
+   "music": "合唱のうねり"
+  },
+  {
+   "cut": "6c",
+   "beat_in": 44.5,
+   "beat_out": 48,
+   "still": "video-pipeline/v7_blender_cycles/out/cuts_16_90s/cut12_45s_title_golden_snow_rise.jpg",
+   "title": "感嘆：花吹雪が舞い上がる（タイトル回収）",
+   "music": "溜め"
+  },
+  {
+   "cut": "7a",
+   "beat_in": 48,
+   "beat_out": 52,
+   "still": "video-pipeline/v7_blender_cycles/out/cuts_16_90s/cut11_43s_mirror_lake_symmetry.jpg",
+   "title": "陶酔：花吹雪の中を自由に泳ぐ",
+   "music": "HIT 主題（鯨の動機・長調）"
+  },
+  {
+   "cut": "7b",
+   "beat_in": 52,
+   "beat_out": 58,
+   "still": "video-pipeline/v7_blender_cycles/out/cuts_16_90s/cut14_59s_grand_cavern_panorama.jpg",
+   "title": "陶酔：地上から見上げる大パノラマ",
+   "music": "主題の頂点"
+  },
+  {
+   "cut": "7c",
+   "beat_in": 58,
+   "beat_out": 64,
+   "still": "video-pipeline/v7_blender_cycles/out/cuts_16_90s/cut13_51s_airborne_tracking.jpg",
+   "title": "陶酔：旋回する鯨（画は仮・地上目線に差し替え）",
+   "music": "主題"
+  },
+  {
+   "cut": "8",
+   "beat_in": 64,
+   "beat_out": 72,
+   "still": "video-pipeline/v7_blender_cycles/out/cuts_16_90s/cut15_73s_exit_c_behind_r1.jpg",
+   "title": "名残惜しさ：鯨は岩岬の向こうへ",
+   "music": "断片・減衰"
+  },
+  {
+   "cut": "9",
+   "beat_in": 72,
+   "beat_out": 80,
+   "still": "video-pipeline/v7_blender_cycles/out/cuts_16_90s/cut16_86s_aftermath_cam_a.jpg",
+   "title": "静寂：夢だった？→花びらが一枚",
+   "music": "ピアノの動機→無音",
+   "overlay": "petal"
+  }
+ ],
+ "note": "STILLS_DIR = dm/episode-01/ending/ として build_animatic.py に渡す。仮画・仮曲。"
+}

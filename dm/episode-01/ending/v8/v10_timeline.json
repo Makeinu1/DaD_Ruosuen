@@ -1,0 +1,183 @@
+{
+ "version": "v10-temp",
+ "tempo_bpm": 60,
+ "seconds_per_beat": 1.0,
+ "total_beats": 80,
+ "total_seconds": 80,
+ "fps": 24,
+ "note": "STILLS_DIR = dm/episode-01/ending/ として build_animatic.py に渡す。仮画・仮曲。dark は闇の原則を示す減光（0〜1）。",
+ "cuts": [
+  {
+   "cut": "C01",
+   "beat_in": 0,
+   "beat_out": 6,
+   "still": "video-pipeline/v7_blender_cycles/out/cuts_16_90s/cut01_02s_open_cam_a.jpg",
+   "title": "静寂：月光は P0 の一輪だけ",
+   "music": "音楽なし・水滴",
+   "dark": 0.6
+  },
+  {
+   "cut": "C02",
+   "beat_in": 6,
+   "beat_out": 10,
+   "still": "video-pipeline/v7_blender_cycles/out/cuts_16_90s/cut03_16s_lake_ripples_shadow.jpg",
+   "title": "闇から波紋が届く",
+   "music": "低いドローン",
+   "dark": 0.75
+  },
+  {
+   "cut": "C03",
+   "beat_in": 10,
+   "beat_out": 14,
+   "still": "video-pipeline/v7_blender_cycles/out/cuts_16_90s/cut03_16s_lake_ripples_shadow.jpg",
+   "title": "月光の中を巨大な影が横切る",
+   "music": "ドローン",
+   "dark": 0.7
+  },
+  {
+   "cut": "C04",
+   "beat_in": 14,
+   "beat_out": 18,
+   "still": "video-pipeline/v7_blender_cycles/out/cuts_16_90s/cut04_21s_silent_breach.jpg",
+   "title": "静かな浮上（体の大半は闇）",
+   "music": "HIT 浮上",
+   "dark": 0.7
+  },
+  {
+   "cut": "C05",
+   "beat_in": 18,
+   "beat_out": 21,
+   "still": "video-pipeline/v7_blender_cycles/out/cuts_16_90s/cut05_25s_foreground_approach.jpg",
+   "title": "螺旋で闇の上方へ",
+   "music": "うねり",
+   "dark": 0.7
+  },
+  {
+   "cut": "C06",
+   "beat_in": 21,
+   "beat_out": 25,
+   "still": null,
+   "title": "頭上へ接近（月光の遮り）",
+   "music": "曖昧な和音・脈動",
+   "card": "画なし\n巨大な影が天井の月光を\nゆっくり覆い隠す"
+  },
+  {
+   "cut": "C07",
+   "beat_in": 25,
+   "beat_out": 28,
+   "still": "video-pipeline/v7_blender_cycles/out/cuts_16_90s/cut06_28s_heigei_closeup.jpg",
+   "title": "巨大な頭が目前に（月光の縁取りだけ）",
+   "music": "脈動の頂点",
+   "dark": 0.65
+  },
+  {
+   "cut": "C08",
+   "beat_in": 28,
+   "beat_out": 32,
+   "still": "v8/diagnosis/eye_glance_probe.png",
+   "title": "一瞥：何を考えているか読めない瞳",
+   "music": "HIT 全休止",
+   "dark": 0.55
+  },
+  {
+   "cut": "C09",
+   "beat_in": 32,
+   "beat_out": 35,
+   "still": null,
+   "title": "背面ロール（唯一の速い動き）",
+   "music": "HIT 解放",
+   "card": "画なし\n強い一漕ぎ・背面ロール\n白い腹が月光に閃く"
+  },
+  {
+   "cut": "C10",
+   "beat_in": 35,
+   "beat_out": 37,
+   "still": "video-pipeline/v7_blender_cycles/out/cuts_16_90s/cut08_34s_graceful_turnback.jpg",
+   "title": "月光の柱へ弧を描く",
+   "music": "ハープの上昇",
+   "dark": 0.6
+  },
+  {
+   "cut": "C11",
+   "beat_in": 37,
+   "beat_out": 41,
+   "still": "video-pipeline/v7_blender_cycles/out/cuts_16_90s/cut09_38s_first_spark_snout.jpg",
+   "title": "点火：初めて全身が見える",
+   "music": "HIT 点火",
+   "dark": 0.3
+  },
+  {
+   "cut": "C12",
+   "beat_in": 41,
+   "beat_out": 44.5,
+   "still": "video-pipeline/v7_blender_cycles/out/cuts_16_90s/cut10_41s_phase1_ignition_wave.jpg",
+   "title": "岸を掠め、光の通り道に沿って開花",
+   "music": "弦が膨らむ",
+   "dark": 0.35
+  },
+  {
+   "cut": "C13",
+   "beat_in": 44.5,
+   "beat_out": 47,
+   "still": "video-pipeline/v7_blender_cycles/out/cuts_16_90s/cut02_08s_p0_flower_macro.jpg",
+   "title": "花びらが宙に静止（仮画）",
+   "music": "静けさ・持続音",
+   "dark": 0.3
+  },
+  {
+   "cut": "C14",
+   "beat_in": 47,
+   "beat_out": 52,
+   "still": "video-pipeline/v7_blender_cycles/out/cuts_16_90s/cut12_45s_title_golden_snow_rise.jpg",
+   "title": "一斉に向き直り、リボンになって流れ込む",
+   "music": "HIT 向き直り→主題",
+   "dark": 0.3
+  },
+  {
+   "cut": "C15",
+   "beat_in": 52,
+   "beat_out": 57,
+   "still": "video-pipeline/v7_blender_cycles/out/cuts_16_90s/cut11_43s_mirror_lake_symmetry.jpg",
+   "title": "鯨を包む群舞",
+   "music": "主題",
+   "dark": 0.35
+  },
+  {
+   "cut": "C16",
+   "beat_in": 57,
+   "beat_out": 63,
+   "still": "video-pipeline/v7_blender_cycles/out/cuts_16_90s/cut14_59s_grand_cavern_panorama.jpg",
+   "title": "大渦（仮画：壁は見せない前提で減光）",
+   "music": "主題の頂点",
+   "dark": 0.85
+  },
+  {
+   "cut": "C17",
+   "beat_in": 63,
+   "beat_out": 68,
+   "still": null,
+   "title": "昇天の始まり",
+   "music": "高まり",
+   "card": "画なし\n渦がほどけて光の川に\n鯨が月光の柱を昇る"
+  },
+  {
+   "cut": "C18",
+   "beat_in": 68,
+   "beat_out": 73,
+   "still": null,
+   "title": "タイトル回収",
+   "music": "最後の和音→減衰",
+   "card": "画なし\n満月を横切るシルエット\n花びらの川が夜空へ\n『空に降る雪』"
+  },
+  {
+   "cut": "C19",
+   "beat_in": 73,
+   "beat_out": 80,
+   "still": "video-pipeline/v7_blender_cycles/out/cuts_16_90s/cut16_86s_aftermath_cam_a.jpg",
+   "title": "余韻：P0の若い花と最後の一枚",
+   "music": "水滴・ピアノの一音・無音",
+   "dark": 0.6,
+   "overlay": "petal"
+  }
+ ]
+}
