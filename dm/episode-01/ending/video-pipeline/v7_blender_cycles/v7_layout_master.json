@@ -1,5 +1,5 @@
 {
-  "version": "V7.7_90s_10Cut_DirectorsCut_AC_Hybrid",
+  "version": "V7.8_90s_16Cut_FullStoryboard_DirectorsCut",
   "updated_at": "2026-11-21",
   "coordinate_system": "Blender Z-up meters (X=right, Y=depth, Z=up, Lake Z=0.0)",
   "render_spec": {
@@ -55,118 +55,24 @@
   },
   "camera_philosophy": {
     "pc_policy": "Do NOT fix or depict PC appearance/actions; Camera = Adventurer POV for Act I-III (0-46s)",
-    "style": "A+C Hybrid: Grounded POV tension & 50mm Heigei Close-Up Hold -> Gravity-Release Airborne Whale Tracking -> 18mm Grand Mirror-Lake Panorama -> Return to Locked Ground Cam A"
+    "style": "A+C Hybrid 16-Cut Architecture: Grounded POV tension & 42mm/68mm Heigei Close-Up Hold -> Gravity-Release Airborne Whale Tracking -> 18mm Grand Mirror-Lake Panorama -> Return to Locked Ground Cam A"
   },
   "cuts_90s": [
-    {
-      "cut": "Cut 1",
-      "time_s": [0.0, 10.0],
-      "frames": [1, 240],
-      "lens_mm": 20.0,
-      "camera_move": "Locked static (Cam A — identical to Cut 9)",
-      "cam_pos": [-10.0, -62.0, 5.2],
-      "cam_tgt": [4.0, 48.0, 31.0],
-      "intent": "Establish 450m enclosed cavern silence, overhead canyon moonbeam on P0 only"
-    },
-    {
-      "cut": "Cut 2",
-      "time_s": [10.0, 20.0],
-      "frames": [241, 480],
-      "lens_mm": 22.0,
-      "camera_move": "Very slow push-in overlooking dark mirror lake",
-      "cam_pos": [-10.0, -54.0, 13.5],
-      "cam_tgt": [-2.0, 10.0, 1.5],
-      "intent": "Concentric ripples & giant 24m submerged dark whale silhouette approaching beneath the glassy surface"
-    },
-    {
-      "cut": "Cut 3",
-      "time_s": [20.0, 26.0],
-      "frames": [481, 624],
-      "lens_mm": 21.0,
-      "camera_move": "Slow tilt-up from adventurer eye level (POV)",
-      "cam_pos": [-10.0, -62.0, 5.2],
-      "cam_tgt": [2.0, 35.0, 26.0],
-      "intent": "Silent unlit wet leviathan breaches and approaches foreground shore"
-    },
-    {
-      "cut": "Cut 4",
-      "time_s": [26.0, 31.5],
-      "frames": [625, 756],
-      "lens_mm": 42.0,
-      "camera_move": "Near-static 2.5s hold with subtle breath drift (front-20deg close-up)",
-      "cam_pos": [-11.5, -45.0, 4.2],
-      "cam_tgt": [-3.5, -21.0, 8.6],
-      "intent": "Heigei Close-Up: Massive curved snout & serene dark eye gazing silently at the player"
-    },
-    {
-      "cut": "Cut 5",
-      "time_s": [31.5, 37.0],
-      "frames": [757, 888],
-      "lens_mm": 20.5,
-      "camera_move": "Gentle pan-follow from shore",
-      "cam_pos": [-9.0, -59.0, 5.6],
-      "cam_tgt": [4.0, 48.0, 31.0],
-      "intent": "Graceful turn-back away from shore, rising toward the overhead vertical canyon moonbeam"
-    },
-    {
-      "cut": "Cut 6A",
-      "time_s": [37.0, 41.5],
-      "frames": [889, 996],
-      "lens_mm": 20.5,
-      "camera_move": "Controlled upward gaze",
-      "cam_pos": [-8.5, -58.0, 5.8],
-      "cam_tgt": [4.0, 48.0, 31.0],
-      "intent": "Phase 1 Moonlight Ignition (Ice-Cyan x Silver x Violet wave) + shore flower wave awakening"
-    },
-    {
-      "cut": "Cut 6B",
-      "time_s": [41.5, 46.0],
-      "frames": [997, 1104],
-      "lens_mm": 24.0,
-      "camera_move": "Low-angle Z=0.45m shore-skimming glide",
-      "cam_pos": [-4.5, -31.0, 1.8],
-      "cam_tgt": [1.5, 22.0, 8.5],
-      "intent": "Delicate 4.5cm flowers bloom & golden seeds lift off; ignited whale & moon reflected in mirror lake"
-    },
-    {
-      "cut": "Cut 7A",
-      "time_s": [46.0, 54.0],
-      "frames": [1105, 1296],
-      "lens_mm": 28.0,
-      "camera_move": "Gravity-release airborne tracking flight alongside whale",
-      "cam_pos": [-17.5, -1.5, 27.0],
-      "cam_tgt": [5.5, 28.0, 34.5],
-      "intent": "Camera lifts off ground into mid-air alongside Pearl-Opal whale through high-parallax golden snow"
-    },
-    {
-      "cut": "Cut 7B",
-      "time_s": [54.0, 66.0],
-      "frames": [1297, 1584],
-      "lens_mm": 18.0,
-      "camera_move": "Majestic slow pull-back panorama",
-      "cam_pos": [-12.0, -64.0, 14.5],
-      "cam_tgt": [2.0, 38.0, 22.0],
-      "intent": "Grand 450m cavern panorama: vertical canyon moon, mirror-lake symmetry, full bloom, 3000 golden petals"
-    },
-    {
-      "cut": "Cut 8",
-      "time_s": [66.0, 80.0],
-      "frames": [1585, 1920],
-      "lens_mm": 22.0,
-      "camera_move": "Calm settling hold watching Exit C",
-      "cam_pos": [-10.0, -62.0, 6.2],
-      "cam_tgt": [28.0, 60.0, 24.0],
-      "intent": "Canon Exit C: Lit Pearl-Opal whale glides behind R1 rocky headland; cavern gradually darkens by occlusion"
-    },
-    {
-      "cut": "Cut 9",
-      "time_s": [80.0, 90.0],
-      "frames": [1921, 2160],
-      "lens_mm": 20.0,
-      "camera_move": "Locked static (Cam A — identical to Cut 1)",
-      "cam_pos": [-10.0, -62.0, 5.2],
-      "cam_tgt": [4.0, 48.0, 31.0],
-      "intent": "Dreamlike aftermath: identical fixed framing to 0s, only lingering blossoms & faint petals remain"
-    }
+    {"cut": "Cut 01", "time_s": [0.0, 6.0],   "frames": [1, 144],     "lens_mm": 20.0, "slug": "ex01_02s_open_cam_a",      "intent": "Opening Stillness: Locked Cam A (identical to Cut 16), only P0 lit"},
+    {"cut": "Cut 02", "time_s": [6.0, 11.0],  "frames": [145, 264],   "lens_mm": 58.0, "slug": "ex02_08s_p0_flower_macro", "intent": "P0 Delicate Star-Lily Macro: 4.5cm 5-petal white flowers & golden seed hearts vs surrounding closed buds"},
+    {"cut": "Cut 03", "time_s": [11.0, 19.0], "frames": [265, 456],   "lens_mm": 22.0, "slug": "01_shadow_16s",            "intent": "Lake Ripples + Giant 24m Submerged Shadow gliding beneath the dark mirror surface"},
+    {"cut": "Cut 04", "time_s": [19.0, 23.5], "frames": [457, 564],   "lens_mm": 24.0, "slug": "ex03_21s_silent_breach",   "intent": "Silent Breach: Unlit wet blue-grey leviathan breaks the obsidian water surface"},
+    {"cut": "Cut 05", "time_s": [23.5, 27.0], "frames": [565, 648],   "lens_mm": 21.0, "slug": "02_approach_28s",          "intent": "Close Foreground Approach: Unlit 24m whale glides over the shore toward the adventurer"},
+    {"cut": "Cut 06", "time_s": [27.0, 29.5], "frames": [649, 708],   "lens_mm": 42.0, "slug": "dc01_heigei_closeup_28s",  "intent": "Heigei Close-Up (Front-20deg): Massive curved snout & long pectoral fins fill the frame"},
+    {"cut": "Cut 07", "time_s": [29.5, 32.0], "frames": [709, 768],   "lens_mm": 68.0, "slug": "ex04_30s_eye_hold_macro",  "intent": "Serene Eye Hold (2.5s stillness): Tight portrait on the whale's calm dark eye & facial contour"},
+    {"cut": "Cut 08", "time_s": [32.0, 37.0], "frames": [769, 888],   "lens_mm": 20.5, "slug": "03_turnback_33s",          "intent": "Graceful Turn-Back: Whale banks away from shore and rises toward the vertical canyon moonbeam"},
+    {"cut": "Cut 09", "time_s": [37.0, 39.5], "frames": [889, 948],   "lens_mm": 32.0, "slug": "ex05_38s_first_spark",     "intent": "First Spark: Snout enters the moonbeam; Ice-Cyan & Silver-Violet light ignites the head while the tail stays dark"},
+    {"cut": "Cut 10", "time_s": [39.5, 42.5], "frames": [949, 1020],  "lens_mm": 20.5, "slug": "04_ignite_41s",            "intent": "Phase 1 Ignition Wave & Shore Awakening: Full snout-to-tail luminescence triggers the blooming wave across S1"},
+    {"cut": "Cut 11", "time_s": [42.5, 44.8], "frames": [1021, 1075], "lens_mm": 24.0, "slug": "dc02_ground_bloom_43s",    "intent": "Mirror-Lake Symmetry: Low-angle water-skimming view of the ignited whale reflected in the glassy lake"},
+    {"cut": "Cut 12", "time_s": [44.8, 47.0], "frames": [1076, 1128], "lens_mm": 42.0, "slug": "ex06_45s_petal_liftoff",   "intent": "Title Beat ('Snow Falling to the Sky'): Ground macro of 2cm petals + glowing gold seeds detaching and rising upward"},
+    {"cut": "Cut 13", "time_s": [47.0, 54.5], "frames": [1129, 1308], "lens_mm": 28.0, "slug": "dc03_aerial_track_50s",    "intent": "Gravity Release: Camera lifts off the ground to fly alongside the Pearl-Opal whale through high-parallax golden snow"},
+    {"cut": "Cut 14", "time_s": [54.5, 66.0], "frames": [1309, 1584], "lens_mm": 18.0, "slug": "dc04_panorama_sym_59s",    "intent": "Grand 450m Cavern Panorama: Vertical canyon Full Moon, Pearl-Opal whale, mirror lake, full bloom, 3000 rising petals"},
+    {"cut": "Cut 15", "time_s": [66.0, 80.0], "frames": [1585, 1920], "lens_mm": 24.0, "slug": "ex07_73s_exit_c_r1",       "intent": "Canon Exit C: Still-glowing whale glides behind the right-hand rocky headland R1; cavern dims by terrain occlusion"},
+    {"cut": "Cut 16", "time_s": [80.0, 90.0], "frames": [1921, 2160], "lens_mm": 20.0, "slug": "ex08_86s_aftermath_cam_a", "intent": "Dreamlike Aftermath: Locked Cam A identical to Cut 01; whale is gone, leaving lingering blossoms & faint golden snow"}
   ]
 }

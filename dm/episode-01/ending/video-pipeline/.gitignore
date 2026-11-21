@@ -16,6 +16,7 @@ v7_blender_cycles/*.blend1
 v7_blender_cycles/out/step3_greybox/
 v7_blender_cycles/out/step5_lookdev/*.png
 v7_blender_cycles/out/step5b_director_cuts/
+v7_blender_cycles/out/step5c_extra8/
 *.mp4
 *.mov
 *.wav
