@@ -72,9 +72,10 @@
 | 担当 | 役割 |
 |---|---|
 | 作者 | 方向の決定、承認、PR のマージ |
-| Claude | 設計（脚本・カット割り・構図ガイド・プロンプト・合格基準）、Gemini の成果物の判定、GitHub の整理 |
+| Claude | 設計（脚本・カット割り・構図ガイド・プロンプト・合格基準）、参照画像を Drive に置く、Gemini の成果物を Drive から GitHub へ登録・判定、GitHub の整理 |
 | Notion | Gemini への依頼票。プロジェクト管理DBのタスク（ルオスエンのハブのサブアイテム）として置き、本文は依頼内容と GitHub へのリンクだけにする |
-| Gemini | 画像・動画の生成。成果物と記録を GitHub の指定フォルダへ PR で格納する |
+| Gemini | 画像・動画の生成。成果物と記録を Google Drive の共有フォルダに置く |
+| Google Drive（当面） | 画像の受け渡し場所。Gemini が GitHub 上の画像を取得・添付できないため（2026-11-21）。作者だけの非公開フォルダで、リンクは Notion の依頼票に置く。正本ではない |
 
 設定・プロンプト・結果の正本は GitHub に置き、Notion には複製しない（[Agent Operating Guide](https://app.notion.com/p/40f0691fc97a81f0bd7ac9dacddfa963) のルオスエン例外）。最初の依頼は [原画試作 C08・C16](keyframe-test/README.md)。
 
