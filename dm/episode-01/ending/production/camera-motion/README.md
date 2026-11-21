@@ -2,16 +2,23 @@
 
 **DM専用・プレイヤー閲覧禁止。** 2026-11-20、工程07。既存制作資産の移植であり、新たな演出・世界設定の承認ではない。
 
-## 正本の階層
+## 現行 V7 撮影・動作基準（2026-11-21 確定：90 秒 10 カット・A+C ハイブリッド）
 
-CAM-02 v0.3（QG3 PASS、標本検証の範囲）が現行の全11カット撮影正本。v0.1初稿、旧H単一カットの画角は履歴。MOT-01 v0.1の12–60秒動作とH route v0.3の38–60秒経路を後続のF/G v0.2、HIA v0.2、統合v0.3で継承。統合CSV・動画原本は工程08。地形は[ENV-02 v0.4](../spatial/README.md)、鯨は[WH-01](../whale/README.md)、発光は[LGT-02](../lighting/README.md)、粒子は[FX-01](../effects/README.md)を優先。
+2026-11-21 の Gate ①〜⑤ および新ディレクターズカット検証により、旧 60 秒 11 カット（`CAM-02 v0.3`）を **90 秒 10 カット構成（`2,160f @ 24fps`）** へ拡張・更新した。現行正本は [`v7_layout_master.json`](../../video-pipeline/v7_blender_cycles/v7_layout_master.json) および [../../README.md](../../README.md) を参照。
+
+- **カメラ哲学（PC 行動非固定・1 カット 1 カメラワーク）**：前半（`0–46s`）は冒険者目線 POV に徹し（PC の姿は映さない）、**Cut 4（26–31.5s）正面寄り 20°・50mm 睥睨ドアップ＆2.5s ホールド** で静かな視線交差を作る。後半（`46–66s`）は舞い上がる黄金の花弁に乗って重力から解放（離陸）し、**Cut 7A（28mm 空中並走トラッキング）→ Cut 7B（18mm 450m 空洞大パノラマ＋水鏡シンメトリー）** へ開き、終幕（`80–90s`）は冒頭と完全同一の固定カメラ `Cam A` へ帰還する。
+- **カット構成サマリ**：`Cut 1 (0–10s) Cam A 固定` → `Cut 2 (10–20s) 湖面波紋＆水面下の影` → `Cut 3 (20–26s) 浮上・手前接近` → `Cut 4 (26–31.5s) 50mm 睥睨ドアップ` → `Cut 5 (31.5–37s) 優美な引き返し` → `Cut 6A (37–41.5s) 月光点火＆波状開花` → `Cut 6B (41.5–46s) 水鏡ローアングル＆種子浮上` → `Cut 7A (46–54s) 空中並走トラッキング` → `Cut 7B (54–66s) 18mm 空洞大パノラマ` → `Cut 8 (66–80s) 岩岬 R1 裏退場 C` → `Cut 9 (80–90s) Cam A 固定帰還`。
+
+## 旧正本の階層（2026-11-20 移植時点の記録：60 秒 11 カット CAM-02 v0.3）
+
+旧 `CAM-02 v0.3`（QG3 PASS、全 11 カット 60 秒）は履歴参照として以下に保存する。現行 90 秒制作では上記の V7 基準を優先する。
 
 - [制作履歴抜粋](CAM02_MOT01_decision_history.md)：旧H案から11カット、QG1較正、CAM-02 v0.1とMOT-01の検証履歴。
-- [Ruosuen_H_撮影設計_v01.md](Ruosuen_H_撮影設計_v01.md)：旧H案の原文。後続の32mm tracking2/H・I分割に優先しない。
-- [motion_frames.recovered.csv](motion_frames.recovered.csv)：取得可能な全481データ行、17列。元の表データを取得・書き出したもの。
-- [Ruosuen_H_route_v03.recovered.csv](Ruosuen_H_route_v03.recovered.csv)：全441データ行、10列。同様に表データから書き出し。
+- [Ruosuen_H_撮影設計_v01.md](Ruosuen_H_撮影設計_v01.md)：旧H案の原文。
+- [motion_frames.recovered.csv](motion_frames.recovered.csv)：旧 60 秒 12–60s 表データ（履歴）。
+- [Ruosuen_H_route_v03.recovered.csv](Ruosuen_H_route_v03.recovered.csv)：旧 60 秒 38–60s 経路表データ（履歴）。
 
-## カット構成（CAM-02 v0.3）
+## 旧カット構成（CAM-02 v0.3・60 秒履歴）
 
 | カット | 秒 | 設計上の役割 |
 |---|---|---|
