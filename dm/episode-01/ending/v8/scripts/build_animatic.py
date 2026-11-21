@@ -1,7 +1,8 @@
 """Build an animatic from stills on a timeline JSON + temp score.
 
 Usage: python3 build_animatic.py STILLS_DIR AUDIO_WAV OUT_MP4 [TIMELINE_JSON]
-Default timeline: ../v8_timeline.json. A cut with "overlay": "petal" gets one falling petal.
+Default timeline: ../v8_timeline.json. A cut with "overlay": "petal" gets one falling petal,
+"dark" (0-1) darkens and vignettes the still, and "card" (text) renders a placeholder card instead of a still.
 """
 import json
 import os
@@ -61,16 +62,36 @@ def petal_png(path):
     im.filter(ImageFilter.GaussianBlur(0.8)).save(path)
 
 
+def text_card(text, path):
+    im = Image.new("RGB", (W, H), (3, 5, 10))
+    d = ImageDraw.Draw(im)
+    f = ImageFont.truetype(SANS, 34, index=0)
+    lines = text.split("\n")
+    y = H / 2 - 30 * len(lines)
+    for i, line in enumerate(lines):
+        w = d.textlength(line, font=f)
+        d.text(((W - w) / 2, y), line, font=f, fill=(150, 165, 190) if i == 0 else (215, 222, 236))
+        y += 56
+    im.save(path)
+
+
 clips = []
 for c in TL["cuts"]:
     n = fr(c["beat_out"]) - fr(c["beat_in"])
     lab = WORK / f"label_{c['cut']}.png"
     label_png(c, lab)
     out = WORK / f"clip_{c['cut']}.mp4"
-    if c["still"]:
+    if c.get("card"):
+        src = WORK / f"card_{c['cut']}.png"
+        text_card(c["card"], src)
+        flt = f"[0]scale={W}:{H},fps={FPS}[v];[v][1]overlay=0:0,format=yuv420p"
+    elif c["still"]:
         src = STILLS / c["still"]
         flt = (f"[0]scale=2560:1440:flags=lanczos,zoompan=z='1+0.05*on/{n}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'"
                f":d={n}:s={W}x{H}:fps={FPS}[v];[v][1]overlay=0:0,format=yuv420p")
+        if c.get("dark"):
+            k = c["dark"]
+            flt = flt.replace("[v];", f",eq=gamma={1 - 0.45 * k:.3f}:saturation={1 - 0.2 * k:.3f},vignette=angle={0.35 + 0.9 * k:.3f}[v];", 1)
         if c.get("overlay") == "petal":
             pet = WORK / "petal.png"
             petal_png(pet)
