@@ -19,7 +19,7 @@
 - **洞窟の暗さと数値管理（V7 Blender 5.0 Cycles / AgX - Punchy）**：露出は `0.0` にロックし、洞窟岩壁は深いプルシアンインディゴ（目標輝度 `L ≈ 10–12`）、鏡面湖・鯨・花群落とのコントラスト比を [`v7_step4_target_table.json`](../../video-pipeline/v7_blender_cycles/v7_step4_target_table.json)（±25% 許容基準）で定量管理する。
 - **冒頭・終幕一致**：Cut 1（`0–10s`）と Cut 9（`80–90s`）は同一固定カメラ `Cam A`・同一月光軸。花弁は透過・微照り返し、黄金の種子（果実）のみ微光する。
 
-> 以下「F→G 時刻・空間設計（v0.2）」「HIA 減衰診断」は旧 60 秒案（2026-11-19）の検証履歴として保存。現行 90 秒タイムラインは [../../README.md](../../README.md) および [`v7_layout_master.json`](../../video-pipeline/v7_blender_cycles/v7_layout_master.json) を参照。
+> 以下「F→G 時刻・空間設計（v0.2）」「HIA 減衰診断」は旧 60 秒案（2026-11-19）の検証履歴として保存。**2026-11-21当時のV7 90秒タイムライン**は[旧制作資料](../../README.md)および[`v7_layout_master.json`](../../video-pipeline/v7_blender_cycles/v7_layout_master.json)を参照。現在の約80秒仮構成と光の再検討は[空間・月光の現行整理](../../v8/cavern-moonlight-current.md)から行う。
 
 ## F→G時刻・空間設計（v0.2）
 
