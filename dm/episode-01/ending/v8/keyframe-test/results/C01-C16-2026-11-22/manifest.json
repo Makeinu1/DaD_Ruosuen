@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "project": "Makeinu1/DaD_Ruosuen",
+  "date": "2026-11-22",
+  "scope": "new user-supplied original PNG batch, preserving prior frames",
+  "originals": [
+    {
+      "cut": "C01",
+      "filename": "C01.png",
+      "github_path": "dm/episode-01/ending/v8/keyframe-test/results/C01-C16-2026-11-22/originals/C01.png",
+      "bytes": 2683526,
+      "width": 1672,
+      "height": 941,
+      "sha256": "c324e75fb7c6740f720ba688e039838bf923b50380596ec33d13816d07197791",
+      "git_blob_sha1": "3436aed33cb2376370529a5faa1ffab4bcef465d",
+      "source": "user-uploaded original PNG 2026-11-22",
+      "adoption": "not_changed_by_registration"
+    },
+    {
+      "cut": "C02",
+      "filename": "C02.png",
+      "github_path": "dm/episode-01/ending/v8/keyframe-test/results/C01-C16-2026-11-22/originals/C02.png",
+      "bytes": 912735,
+      "width": 1600,
+      "height": 900,
+      "sha256": "b986b5e35b1a1e5db7f6514b58106d657eda328365fbfd55c2a9742b83a4cd1a",
+      "git_blob_sha1": "fe2631f7d486832b351b3951955ed9d005ec85b9",
+      "source": "user-uploaded original PNG 2026-11-22",
+      "adoption": "not_changed_by_registration"
+    },
+    {
+      "cut": "C02.5",
+      "filename": "C02.5.png",
+      "github_path": "dm/episode-01/ending/v8/keyframe-test/results/C01-C16-2026-11-22/originals/C02.5.png",
+      "bytes": 1019776,
+      "width": 1600,
+      "height": 900,
+      "sha256": "de186f3f540f6f4b38a8c991490ce2592ada2dd92ce357504e0a8b27e1f8c27e",
+      "git_blob_sha1": "4a4c8d36c2ba7b70b27a59924c8f4f71639ff221",
+      "source": "user-uploaded original PNG 2026-11-22",
+      "adoption": "not_changed_by_registration"
+    },
+    {
+      "cut": "C09",
+      "filename": "C09.png",
+      "github_path": "dm/episode-01/ending/v8/keyframe-test/results/C01-C16-2026-11-22/originals/C09.png",
+      "bytes": 2937140,
+      "width": 1670,
+      "height": 942,
+      "sha256": "935368b14a65e746ca011c83d29cf1e056c12df03c8fd69caccd5ef315029c61",
+      "git_blob_sha1": "2eb361105e2549cd7bd7f3845683a27ff35e2d06",
+      "source": "user-uploaded original PNG 2026-11-22",
+      "adoption": "not_changed_by_registration"
+    },
+    {
+      "cut": "C11",
+      "filename": "C11.png",
+      "github_path": "dm/episode-01/ending/v8/keyframe-test/results/C01-C16-2026-11-22/originals/C11.png",
+      "bytes": 2516653,
+      "width": 1671,
+      "height": 941,
+      "sha256": "5f6ac82f5ad24123f9ac18c7839ce3da70de2c09742bfedef31d3d9cebe87db5",
+      "git_blob_sha1": "aa5d41a6200e5acf3a8767a13187d2d7b85f313a",
+      "source": "user-uploaded original PNG 2026-11-22",
+      "adoption": "not_changed_by_registration"
+    },
+    {
+      "cut": "C16",
+      "filename": "C16.png",
+      "github_path": "dm/episode-01/ending/v8/keyframe-test/results/C01-C16-2026-11-22/originals/C16.png",
+      "bytes": 3505211,
+      "width": 1670,
+      "height": 942,
+      "sha256": "364f0615822ce2ec1034fa635efc0ba70e580b9c0bb36927e842256e72585918",
+      "git_blob_sha1": "f6d120b5fcf27c9d113c87d1ed82c06e3ede7531",
+      "source": "user-uploaded original PNG 2026-11-22",
+      "adoption": "not_changed_by_registration"
+    }
+  ],
+  "notes": [
+    "All PNG bytes are preserved unmodified.",
+    "This record does not supersede prior approved frames or alter creative adoption status.",
+    "C11 in this batch is not the same blob as the existing C11 in C11-C19-2026-11-21.",
+    "C16 from this batch is separate from archived old C16 frames."
+  ]
+}
