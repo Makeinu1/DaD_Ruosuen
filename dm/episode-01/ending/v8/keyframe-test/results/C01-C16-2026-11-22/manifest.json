@@ -53,7 +53,7 @@
       "adoption": "not_changed_by_registration"
     },
     {
-      "cut": "C11",
+      "cut": "C10",
       "filename": "C11.png",
       "github_path": "dm/episode-01/ending/v8/keyframe-test/results/C01-C16-2026-11-22/originals/C11.png",
       "bytes": 2516653,
@@ -62,7 +62,9 @@
       "sha256": "5f6ac82f5ad24123f9ac18c7839ce3da70de2c09742bfedef31d3d9cebe87db5",
       "git_blob_sha1": "aa5d41a6200e5acf3a8767a13187d2d7b85f313a",
       "source": "user-uploaded original PNG 2026-11-22",
-      "adoption": "not_changed_by_registration"
+      "adoption": "author_confirmed_current_cut_C10",
+      "original_cut_label": "C11",
+      "cut_assignment_source": "Author correction on 2026-11-22: submitted filename C11.png belongs to current C10"
     },
     {
       "cut": "C16",
@@ -80,7 +82,8 @@
   "notes": [
     "All PNG bytes are preserved unmodified.",
     "This record does not supersede prior approved frames or alter creative adoption status.",
-    "C11 in this batch is not the same blob as the existing C11 in C11-C19-2026-11-21.",
-    "C16 from this batch is separate from archived old C16 frames."
+    "The submitted C11.png retains its source filename but is assigned to current cut C10; it differs from 2026-11-21 C11, which remains C11.",
+    "C16 from this batch is separate from archived old C16 frames.",
+    "The PNG was not renamed or re-encoded. The original SHA-256, Git blob SHA-1, dimensions and byte count remain unchanged."
   ]
 }
