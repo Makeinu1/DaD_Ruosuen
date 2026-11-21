@@ -50,7 +50,7 @@
 
 ## 2026-11-21 追加監査：GitHub Actionsでの原本照合
 
-- [原画監査の実行結果（PASS）](https://github.com/Makeinu1/DaD_Ruosuen/actions/runs/44916353650)、[監査スクリプト](../../../../../../../tools/github-original-transfer/audit_repository_media.py)（リンク参照の正確性はGitHubから確認）。
+- [原画監査の実行結果（PASS）](https://github.com/Makeinu1/DaD_Ruosuen/actions/runs/44916353650)、[監査スクリプト](https://github.com/Makeinu1/DaD_Ruosuen/blob/main/tools/github-original-transfer/audit_repository_media.py)。
 - GitHub Actionsのcheckoutで取得した実ファイル45点をPythonで読込み、選定・候補9点は元のSHA-256・サイズ・Git blob SHA-1のすべてに一致。
 - 旧C16アーカイブ2点はGit blob SHA-1と残置された元ファイルの同一バイト列を照合。比較試作34点は存在・PNGシグネチャ・現物SHA-256を記録。
 - 比較試作34点の外部原本SHA-256は保存されていないため、GitHubにある試作原画が外部原本と完全一致するとの独立検証は未完了。原本ZIPのmanifestが入手できた場合に追加照合する。
