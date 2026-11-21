@@ -3,7 +3,7 @@
   "project": "Makeinu1/DaD_Ruosuen",
   "work": "第一話エンディング『空に降る雪』",
   "source": "ChatGPT image generation conversation",
-  "status": "text_metadata_uploaded_binary_png_pending",
+  "status": "png_binary_registered_git_blob_verified_pr29_pending_merge",
   "images": [
     {
       "cut": "C11",
@@ -12,7 +12,8 @@
       "bytes": 1690417,
       "sha256": "9c312c7c7a385b5ce06516af4b59b7fe3c4b2aee7f091a05343eb231b31f9da2",
       "github_path": "dm/episode-01/ending/v8/keyframe-test/results/C11-C19-2026-11-21/selected/C11.png",
-      "github_binary_status": "NOT_UPLOADED"
+      "github_binary_status": "UPLOADED_VERIFIED_GIT_BLOB_SHA1_AND_SIZE",
+      "github_git_blob_sha1": "39f146d784c86ea9b63a435675e0f4fc5e33ca28"
     },
     {
       "cut": "C11.5",
@@ -21,7 +22,8 @@
       "bytes": 2024682,
       "sha256": "a9ea3986d195a1ace770fd8a780724b77e0d66c33aa52e46f8fb8e72ced50d66",
       "github_path": "dm/episode-01/ending/v8/keyframe-test/results/C11-C19-2026-11-21/selected/C11_5.png",
-      "github_binary_status": "NOT_UPLOADED"
+      "github_binary_status": "UPLOADED_VERIFIED_GIT_BLOB_SHA1_AND_SIZE",
+      "github_git_blob_sha1": "2cb4ba43d7db99134683c09b7c11ca30c9a23731"
     },
     {
       "cut": "C12",
@@ -30,7 +32,8 @@
       "bytes": 2330477,
       "sha256": "0cc46f87b14e99506c8ca40710d67d28e5ec479e374f34bfb0dfd74a2cefe729",
       "github_path": "dm/episode-01/ending/v8/keyframe-test/results/C11-C19-2026-11-21/selected/C12.png",
-      "github_binary_status": "NOT_UPLOADED"
+      "github_binary_status": "UPLOADED_VERIFIED_GIT_BLOB_SHA1_AND_SIZE",
+      "github_git_blob_sha1": "b01d2cde8951367872ae75908ffca3361ed8ae72"
     },
     {
       "cut": "C13",
@@ -39,7 +42,8 @@
       "bytes": 2017465,
       "sha256": "486f792ab0b6394ea3c2e078ba78268be9cb7b71350873ed92d2182d9027ebe3",
       "github_path": "dm/episode-01/ending/v8/keyframe-test/results/C11-C19-2026-11-21/selected/C13.png",
-      "github_binary_status": "NOT_UPLOADED"
+      "github_binary_status": "UPLOADED_VERIFIED_GIT_BLOB_SHA1_AND_SIZE",
+      "github_git_blob_sha1": "75aac0a0508cda4e3c9289244af4890b661be861"
     },
     {
       "cut": "C14",
@@ -48,7 +52,8 @@
       "bytes": 2228161,
       "sha256": "a2167bb077fd201c9d927aedbdf2244c98b3286da1b8ba9392b19983f913fe5f",
       "github_path": "dm/episode-01/ending/v8/keyframe-test/results/C11-C19-2026-11-21/candidate/C14_latest_test.png",
-      "github_binary_status": "NOT_UPLOADED"
+      "github_binary_status": "UPLOADED_VERIFIED_GIT_BLOB_SHA1_AND_SIZE",
+      "github_git_blob_sha1": "9fa93550c52cf0125af261649b5af19b7febc971"
     },
     {
       "cut": "C15",
@@ -57,7 +62,8 @@
       "bytes": 2195869,
       "sha256": "70dcc106ae8929c7c42d8d3e7667441f0b79735e1daf12c63cbda66aa88fd15e",
       "github_path": "dm/episode-01/ending/v8/keyframe-test/results/C11-C19-2026-11-21/selected/C15.png",
-      "github_binary_status": "NOT_UPLOADED"
+      "github_binary_status": "UPLOADED_VERIFIED_GIT_BLOB_SHA1_AND_SIZE",
+      "github_git_blob_sha1": "21e8ddd9cca7bdc3c76266219832bbd9b06ae449"
     },
     {
       "cut": "C17",
@@ -66,7 +72,8 @@
       "bytes": 2475838,
       "sha256": "e6c0ca2cc18190c29c0f74ddacbb2fce5b8ec6395d6e01d3a202ffcccb235ad1",
       "github_path": "dm/episode-01/ending/v8/keyframe-test/results/C11-C19-2026-11-21/selected/C17.png",
-      "github_binary_status": "NOT_UPLOADED"
+      "github_binary_status": "UPLOADED_VERIFIED_GIT_BLOB_SHA1_AND_SIZE",
+      "github_git_blob_sha1": "88725d1ecfcf666ba7c8c092152803dae085e5bb"
     },
     {
       "cut": "C18",
@@ -75,7 +82,8 @@
       "bytes": 2497859,
       "sha256": "96c801f2d784a0c3fb25937060d3e7ddbe66bf370c816efd385583644a135ab1",
       "github_path": "dm/episode-01/ending/v8/keyframe-test/results/C11-C19-2026-11-21/selected/C18.png",
-      "github_binary_status": "NOT_UPLOADED"
+      "github_binary_status": "UPLOADED_VERIFIED_GIT_BLOB_SHA1_AND_SIZE",
+      "github_git_blob_sha1": "25de6e2995c04bf4929090b5d6077f51190f5f24"
     },
     {
       "cut": "C19",
@@ -84,7 +92,8 @@
       "bytes": 2310662,
       "sha256": "5da6e9bdec7ae9b3270a07b9892f51fbf25f7285e274dbb42eccc8e7404a3ec4",
       "github_path": "dm/episode-01/ending/v8/keyframe-test/results/C11-C19-2026-11-21/selected/C19.png",
-      "github_binary_status": "NOT_UPLOADED"
+      "github_binary_status": "UPLOADED_VERIFIED_GIT_BLOB_SHA1_AND_SIZE",
+      "github_git_blob_sha1": "b5ff6e25ee23d7caa836df5fc3d37dca1f3a3ee9"
     }
   ],
   "preexisting": {
@@ -94,7 +103,10 @@
   },
   "variants": {
     "count": 34,
-    "source": "conversation ZIP (original PNG, not yet uploaded to GitHub)"
+    "source": "conversation original PNG (unmodified)",
+    "github_directory": "dm/episode-01/ending/v8/keyframe-test/results/C11-C19-2026-11-21/variants/",
+    "github_binary_status": "UPLOADED_VERIFIED_GIT_BLOB_SHA1_AND_SIZE",
+    "note": "all 34 trial originals checked against local Git blob SHA1 and byte size; duplicated selected image blobs intentionally retained as trial history"
   },
   "legacy_C16": {
     "state": "Old",
@@ -112,5 +124,16 @@
     ],
     "new_C16": "not_generated_in_this_conversation",
     "note": "旧C16 2点は正本として採用しない。以前のURLは履歴互換のため保持"
+  },
+  "verification": {
+    "method": "GitHub tree Git blob SHA-1 and byte count compared with original local PNG's SHA1('blob '+size+'\\0'+bytes); manifest SHA-256 compared with local originals",
+    "selected_png": 8,
+    "candidate_png": 1,
+    "variant_png": 34,
+    "archived_old_C16_png": 2,
+    "total_png_added": 45,
+    "remote_sha256_recomputed": false,
+    "date": "2026-11-21",
+    "result": "all Git blob SHA-1 and byte sizes match original files"
   }
 }
