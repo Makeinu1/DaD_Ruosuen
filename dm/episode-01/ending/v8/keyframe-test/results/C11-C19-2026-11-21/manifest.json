@@ -3,7 +3,7 @@
   "project": "Makeinu1/DaD_Ruosuen",
   "work": "第一話エンディング『空に降る雪』",
   "source": "ChatGPT image generation conversation",
-  "status": "png_binary_registered_git_blob_verified_pr29_pending_merge",
+  "status": "merged_main_and_github_actions_checkout_sha256_audited_2026-11-21",
   "images": [
     {
       "cut": "C11",
@@ -132,8 +132,20 @@
     "variant_png": 34,
     "archived_old_C16_png": 2,
     "total_png_added": 45,
-    "remote_sha256_recomputed": false,
+    "remote_sha256_recomputed": true,
     "date": "2026-11-21",
-    "result": "all Git blob SHA-1 and byte sizes match original files"
+    "result": "all Git blob SHA-1 and byte sizes match original files",
+    "remote_sha256_source_matched_selected_candidate_png": 9,
+    "remote_sha256_variant_png_without_original_reference": 34,
+    "remote_sha256_audit_scope": "GitHub Actions checkout: remote bytes SHA-256; source manifest SHA-256 equality checked for selected/candidate 9; variants 34 have no original SHA-256 stored and are not independently source-matched",
+    "archive_old_c16_source_content_and_git_sha_checked": 2,
+    "github_actions_audit_url": "https://github.com/Makeinu1/DaD_Ruosuen/actions/runs/44916353650",
+    "post_merge_audit_result": "PASS",
+    "historical_initial_check": {
+      "date": "2026-11-21",
+      "remote_sha256_recomputed": false,
+      "method": "GitHub tree Git blob SHA-1 and byte count compared with original local PNG's SHA1('blob '+size+'\\0'+bytes); manifest SHA-256 compared with local originals",
+      "result": "all Git blob SHA-1 and byte sizes match original files"
+    }
   }
 }
