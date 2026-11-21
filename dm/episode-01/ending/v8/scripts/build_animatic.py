@@ -1,6 +1,7 @@
-"""Build v8 animatic: existing 16 stills on the v8 timing + temp score.
+"""Build an animatic from stills on a timeline JSON + temp score.
 
-Usage: python3 build_animatic.py STILLS_DIR AUDIO_WAV OUT_MP4
+Usage: python3 build_animatic.py STILLS_DIR AUDIO_WAV OUT_MP4 [TIMELINE_JSON]
+Default timeline: ../v8_timeline.json. A cut with "overlay": "petal" gets one falling petal.
 """
 import json
 import os
@@ -8,10 +9,10 @@ import subprocess
 import sys
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 HERE = Path(__file__).parent
-TL = json.loads((HERE.parent / "v8_timeline.json").read_text())
+TL = json.loads(Path(sys.argv[4] if len(sys.argv) > 4 else HERE.parent / "v8_timeline.json").read_text())
 STILLS, AUDIO, OUT = Path(sys.argv[1]), Path(sys.argv[2]), Path(sys.argv[3])
 W, H, FPS = 1280, 720, TL["fps"]
 SPB = TL["seconds_per_beat"]
@@ -34,7 +35,7 @@ def label_png(c, path):
     t0, t1 = c["beat_in"] * SPB, c["beat_out"] * SPB
     d.text((18, H - 60), f"Cut {c['cut']}  {t0:5.1f}–{t1:5.1f}s  ({t1 - t0:.1f}s)   {c['title']}", font=fs, fill=(235, 240, 255, 255))
     d.text((18, H - 30), f"♪ {c['music']}", font=fs_small, fill=(190, 205, 235, 255))
-    d.text((W - 260, 12), "v8 ANIMATIC / 仮曲・仮画", font=fs_small, fill=(255, 255, 255, 170))
+    d.text((W - 300, 12), f"{TL['version']} ANIMATIC / 仮曲・仮画", font=fs_small, fill=(255, 255, 255, 170))
     im.save(path)
 
 
@@ -52,6 +53,14 @@ def end_card(path):
     im.save(path)
 
 
+def petal_png(path):
+    im = Image.new("RGBA", (40, 26), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    d.ellipse([4, 6, 36, 20], fill=(250, 246, 236, 235))
+    d.ellipse([6, 10, 12, 16], fill=(255, 214, 140, 255))
+    im.filter(ImageFilter.GaussianBlur(0.8)).save(path)
+
+
 clips = []
 for c in TL["cuts"]:
     n = fr(c["beat_out"]) - fr(c["beat_in"])
@@ -62,11 +71,16 @@ for c in TL["cuts"]:
         src = STILLS / c["still"]
         flt = (f"[0]scale=2560:1440:flags=lanczos,zoompan=z='1+0.05*on/{n}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'"
                f":d={n}:s={W}x{H}:fps={FPS}[v];[v][1]overlay=0:0,format=yuv420p")
+        if c.get("overlay") == "petal":
+            pet = WORK / "petal.png"
+            petal_png(pet)
+            flt = flt.replace(",format=yuv420p", "[l];[2]format=rgba[p];[l][p]overlay=x='W*0.52+34*sin(t*1.5)':y='if(lt(t,3.2),-60,-40+(t-3.2)*120)',format=yuv420p")
     else:
         src = WORK / "endcard.png"
         end_card(src)
         flt = f"[0]scale={W}:{H},fps={FPS},fade=t=in:st=0:d=0.8[v];[v][1]overlay=0:0,format=yuv420p"
-    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-loop", "1", "-i", str(src), "-i", str(lab),
+    extra = ["-loop", "1", "-i", str(WORK / "petal.png")] if c.get("overlay") == "petal" else []
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-loop", "1", "-i", str(src), "-loop", "1", "-i", str(lab), *extra,
                     "-filter_complex", flt, "-frames:v", str(n), "-r", str(FPS), "-c:v", "libx264", "-crf", "18",
                     "-preset", "veryfast", str(out)], check=True)
     clips.append(out)
