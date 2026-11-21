@@ -1,0 +1,30 @@
+{
+  "version": "v8-proposal",
+  "updated_at": "2026-11-21",
+  "tempo_bpm": 64,
+  "beats_per_bar": 4,
+  "seconds_per_beat": 0.9375,
+  "total_beats": 80,
+  "total_seconds": 75.0,
+  "fps": 24,
+  "screening": "2026-12-23 offline session, projector at a friend's house",
+  "cuts": [
+    {"cut": "01", "beat_in": 0,  "beat_out": 6,  "still": "cut01_02s_open_cam_a.jpg",            "title": "静寂の開幕（Cam A 固定）", "music": "無音→ピアノ単音の動機"},
+    {"cut": "02", "beat_in": 6,  "beat_out": 12, "still": "cut02_08s_p0_flower_macro.jpg",       "title": "P0 空雪花の接写", "music": "動機の続き＋薄いパッド"},
+    {"cut": "03", "beat_in": 12, "beat_out": 18, "still": "cut03_16s_lake_ripples_shadow.jpg",   "title": "湖面の波紋と水面下の影", "music": "低弦のドローン"},
+    {"cut": "04", "beat_in": 18, "beat_out": 22, "still": "cut04_21s_silent_breach.jpg",         "title": "静かなる浮上", "music": "HIT 浮上：ティンパニの弱いロール"},
+    {"cut": "05", "beat_in": 22, "beat_out": 26, "still": "cut05_25s_foreground_approach.jpg",   "title": "手前岸辺への接近", "music": "弦のクレッシェンド"},
+    {"cut": "06", "beat_in": 26, "beat_out": 30, "still": "cut06_28s_heigei_closeup.jpg",        "title": "睥睨ドアップ", "music": "クレッシェンドの頂点"},
+    {"cut": "07", "beat_in": 30, "beat_out": 34.5, "still": "cut07_30s_serene_eye_hold.jpg",     "title": "瞳のホールド（視線交差）", "music": "HIT 視線：全休止→高音1本だけ残す"},
+    {"cut": "08", "beat_in": 34.5, "beat_out": 39, "still": "cut08_34s_graceful_turnback.jpg",   "title": "優美な引き返し", "music": "サスペンドの和音が上昇"},
+    {"cut": "09", "beat_in": 39, "beat_out": 41, "still": "cut09_38s_first_spark_snout.jpg",     "title": "月光接触・第一閃", "music": "HIT 点火：チェレスタ＋グロッケン"},
+    {"cut": "10", "beat_in": 41, "beat_out": 43, "still": "cut10_41s_phase1_ignition_wave.jpg",  "title": "全身点火・波状開花", "music": "ハープのグリッサンド"},
+    {"cut": "11", "beat_in": 43, "beat_out": 45, "still": "cut11_43s_mirror_lake_symmetry.jpg",  "title": "鏡面湖シンメトリー", "music": "上昇するアルペジオ"},
+    {"cut": "12", "beat_in": 45, "beat_out": 48, "still": "cut12_45s_title_golden_snow_rise.jpg", "title": "タイトル回収『空に降る雪』＋岸に落ちる4人の影（追加案）", "music": "溜め（Gsus2）"},
+    {"cut": "13", "beat_in": 48, "beat_out": 56, "still": "cut13_51s_airborne_tracking.jpg",     "title": "重力解放・空中並走", "music": "HIT 離陸：主題（全合奏）"},
+    {"cut": "14", "beat_in": 56, "beat_out": 64, "still": "cut14_59s_grand_cavern_panorama.jpg", "title": "空洞大パノラマ", "music": "主題の頂点（合唱パッド）"},
+    {"cut": "15", "beat_in": 64, "beat_out": 70, "still": "cut15_73s_exit_c_behind_r1.jpg",      "title": "岩岬 R1 裏への退場", "music": "主題の断片・デクレッシェンド"},
+    {"cut": "16", "beat_in": 70, "beat_out": 76, "still": "cut16_86s_aftermath_cam_a.jpg",       "title": "夢の余韻（Cam A 帰還）", "music": "冒頭のピアノ動機が戻る"},
+    {"cut": "END", "beat_in": 76, "beat_out": 80, "still": null,                                  "title": "エンドカード：第一話『空に降る雪』完＋PC名", "music": "最後の和音（Dadd9）が消える"}
+  ]
+}
