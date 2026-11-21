@@ -5,12 +5,14 @@ on:
     paths:
       - 'dm/episode-01/ending/v8/keyframe-test/results/**'
       - 'tools/github-original-transfer/audit_repository_media.py'
+      - 'tools/github-original-transfer/verify_originals_manifest.py'
       - '.github/workflows/verify-original-media.yml'
   push:
     branches: [main]
     paths:
       - 'dm/episode-01/ending/v8/keyframe-test/results/**'
       - 'tools/github-original-transfer/audit_repository_media.py'
+      - 'tools/github-original-transfer/verify_originals_manifest.py'
       - '.github/workflows/verify-original-media.yml'
   workflow_dispatch:
 
@@ -29,10 +31,19 @@ jobs:
             --repo-root . \
             --manifest dm/episode-01/ending/v8/keyframe-test/results/C11-C19-2026-11-21/manifest.json \
             --output original-media-audit.json
+      - name: Verify 2026-11-22 user-uploaded six original PNGs against SHA-256 manifest
+        shell: bash
+        run: |
+          python3 tools/github-original-transfer/verify_originals_manifest.py \
+            --repo-root . \
+            --manifest dm/episode-01/ending/v8/keyframe-test/results/C01-C16-2026-11-22/manifest.json \
+            --output new-original-media-audit.json
       - name: Preserve verification report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: original-media-audit
-          path: original-media-audit.json
+          path: |
+            original-media-audit.json
+            new-original-media-audit.json
           if-no-files-found: warn
