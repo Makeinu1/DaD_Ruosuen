@@ -1,0 +1,36 @@
+{
+  "project": "Makeinu1/DaD_Ruosuen",
+  "date": "2026-11-21",
+  "target_directory": "dm/episode-01/ending/v8/keyframe-test/results",
+  "status": "source_files_preserved_locally; GitHub binary upload pending",
+  "files": [
+    {
+      "cut": "C09",
+      "file": "C09_20261121_provisional.png",
+      "original_session_filename": "月光を舞う巨大クジラの宙返り.png",
+      "status": "provisional",
+      "notes": "作者が画像を再提示し『これを仮として進めよう』と判定。背面ロールとカメラ角度を後日修正。",
+      "mime_type": "image/png",
+      "width": 1670,
+      "height": 942,
+      "bytes": 2784880,
+      "sha256": "a83505d209584af88962c4814172cceea4a26ad46beaefd42568dc4429a8ffc2",
+      "git_blob_sha1": "100d3f4a344ea35ff9f26916f661313542cd7c5d",
+      "github_binary_status": "not_uploaded"
+    },
+    {
+      "cut": "C10",
+      "file": "C10_20261121_alt02_provisional.png",
+      "original_session_filename": "a_cinematic_ultra_detailed_fantasy_underwater_cav.png",
+      "status": "provisional_needs_anatomy_fix",
+      "notes": "独立プロンプト2案目。後方視点と月光へ向かう動線は維持。右胸びれの位置と喉腹の畝が顔まで続いて見える点を修正。",
+      "mime_type": "image/png",
+      "width": 1670,
+      "height": 941,
+      "bytes": 2102364,
+      "sha256": "922c80dfe2cc45c40eacc40446df1da7497350edbd9406adced1d7053986e925",
+      "git_blob_sha1": "6bf7af31c5bc2a34ae09f3bddc5401ad63739301",
+      "github_binary_status": "not_uploaded"
+    }
+  ]
+}
