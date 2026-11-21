@@ -1,0 +1,48 @@
+{
+  "date": "2026-11-21",
+  "scope": "C03-C06 5原画原本",
+  "status": "binary_pending_transfer",
+  "source": "ChatGPT image generation conversation",
+  "files": [
+    {
+      "filename": "C03_t01_shadow_underwater.png",
+      "byte_size": 1627123,
+      "sha256": "ee8b0696a142a718e7f5a1953846417ce1d6a1934678af1dafc67285cbe439fd",
+      "cut": "C03",
+      "decision": "作者OK・次へ",
+      "git_status": "not_uploaded"
+    },
+    {
+      "filename": "C04_t01_quiet_emergence.png",
+      "byte_size": 2151646,
+      "sha256": "692add6adfca51bd8c29b4cf37eee8532eba2848fe6ec8b24204ba1c0a6ea770",
+      "cut": "C04",
+      "decision": "作者OK・次へ",
+      "git_status": "not_uploaded"
+    },
+    {
+      "filename": "C05_t01_rise_to_air.png",
+      "byte_size": 2454326,
+      "sha256": "fdbf0dc3122c8f31fe8626b7e72034b70e9c521f109cee1849e533ce1e5c8c6f",
+      "cut": "C05",
+      "decision": "作者OK・次へ",
+      "git_status": "not_uploaded"
+    },
+    {
+      "filename": "C06_t01_moonlight_awe.png",
+      "byte_size": 2421727,
+      "sha256": "489dd51a0fd9e1384933ae11dd0ca8ccbff4e03b5a927e4e02956c9649c63169",
+      "cut": "C06",
+      "decision": "比較案・作者は神々しさを肯定",
+      "git_status": "not_uploaded"
+    },
+    {
+      "filename": "C06_t02_moonlight_awe.png",
+      "byte_size": 2464747,
+      "sha256": "088d923f2e29c13cf6c44811f390c7c4bf457a19cae1e97c7a27b44b567bb690",
+      "cut": "C06",
+      "decision": "採用候補（２案目）",
+      "git_status": "not_uploaded"
+    }
+  ]
+}
