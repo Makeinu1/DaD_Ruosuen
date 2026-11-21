@@ -3,6 +3,7 @@
 Usage: python3 build_animatic.py STILLS_DIR AUDIO_WAV OUT_MP4
 """
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -10,12 +11,12 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 HERE = Path(__file__).parent
-TL = json.loads((HERE / "v8_timeline.json").read_text())
+TL = json.loads((HERE.parent / "v8_timeline.json").read_text())
 STILLS, AUDIO, OUT = Path(sys.argv[1]), Path(sys.argv[2]), Path(sys.argv[3])
 W, H, FPS = 1280, 720, TL["fps"]
 SPB = TL["seconds_per_beat"]
-WORK = HERE / "work"
-WORK.mkdir(exist_ok=True)
+WORK = Path(os.environ.get("ANIMATIC_WORK_DIR", "/tmp/v8_animatic_work"))
+WORK.mkdir(parents=True, exist_ok=True)
 SANS = "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc"
 SERIF = "/usr/share/fonts/opentype/noto/NotoSerifCJK-Medium.ttc"
 fs = ImageFont.truetype(SANS, 22, index=0)
