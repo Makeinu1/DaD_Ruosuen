@@ -85,35 +85,12 @@ def cmd_pack():
     # Copy script
     (stage / "render_step5_lookdev_cycles.py").write_bytes(SCRIPT_PATH.read_bytes())
 
-    # Copy GLBs
-    glbs = [
-        REPO / "dm/episode-01/ending/video-pipeline/v2/assets/processed/wh01_v20_hero.glb",
-        REPO / "dm/episode-01/ending/video-pipeline/v6_anime3d/assets/fl01_open.glb",
-        REPO / "dm/episode-01/ending/video-pipeline/v6_anime3d/assets/fl01_bud.glb",
-        REPO / "dm/episode-01/ending/video-pipeline/v6_anime3d/assets/sakura_petal_3d.glb",
-    ]
-    for g in glbs:
+    # Copy self-contained GLBs & PBR textures from v7_blender_cycles/{assets,textures}
+    for g in sorted((V7_DIR / "assets").glob("*.glb")):
         (stage / "assets" / g.name).write_bytes(g.read_bytes())
-
-    # Convert RGB textures to high-quality JPEG, keep normal & alpha PNGs
-    jpg_maps = [
-        (REPO / "dm/episode-01/ending/video-pipeline/v6_anime3d/textures/anime_cliff_albedo.png", "anime_cliff_albedo.jpg"),
-        (REPO / "dm/episode-01/ending/video-pipeline/v5_cycles/textures/whale_skin_albedo.png", "whale_skin_albedo.jpg"),
-        (REPO / "dm/episode-01/ending/video-pipeline/v5_cycles/textures/moon_sky.png", "moon_sky.jpg"),
-    ]
-    for src, dst_name in jpg_maps:
-        im = Image.open(src).convert("RGB")
-        im.save(stage / "textures" / dst_name, "JPEG", quality=92, optimize=True)
-
-    png_maps = [
-        (REPO / "dm/episode-01/ending/video-pipeline/v6_anime3d/textures/anime_cliff_normal.png", "anime_cliff_normal.png", "RGB", 512),
-        (REPO / "dm/episode-01/ending/video-pipeline/v5_cycles/textures/petal_rgba.png", "petal_rgba.png", "RGBA", 512),
-    ]
-    for src, dst_name, mode, max_dim in png_maps:
-        im = Image.open(src).convert(mode)
-        if max(im.size) > max_dim:
-            im = im.resize((max_dim, max_dim), Image.Resampling.LANCZOS)
-        im.save(stage / "textures" / dst_name, "PNG", optimize=True)
+    for t in sorted((V7_DIR / "textures").glob("*")):
+        if t.is_file():
+            (stage / "textures" / t.name).write_bytes(t.read_bytes())
 
     with tarfile.open(BUNDLE_PATH, "w:gz") as tf:
         for p in sorted(stage.rglob("*")):
