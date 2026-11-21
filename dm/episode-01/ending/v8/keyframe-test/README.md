@@ -1,8 +1,8 @@
-# 原画試作：一瞥（C08）と大渦（C16）— Nano Banana Pro
+# 原画試作：一瞥（C08）と頂点の群舞（C16）— Nano Banana Pro
 
 **DM専用・プレイヤー閲覧禁止。** 2026-11-21 作成。作者承認「1は実施しても良い」（2026-11-21）による試作の手順書。
 
-目的は **G-B（12/01）映像方式の決定** の材料をそろえること。いちばん難しい寄り（C08 一瞥）と引き（C16 大渦）の2枚を Gemini の画像生成（Nano Banana Pro）で作り、同じ鯨に見えるか・設定を守れるか・映えるかを見る。カット内容は [v10 カット割り](../v10-shotlist.md) と [鯨の動き v10](../whale-motion-v10.md) に従う。
+目的は **G-B（12/01）映像方式の決定** の材料をそろえること。いちばん難しい寄り（C08 一瞥）と引き（C16 頂点の群舞。当初は大渦、2026-11-21 に渦なしへ変更）の2枚を Gemini の画像生成（Nano Banana Pro）で作り、同じ鯨に見えるか・設定を守れるか・映えるかを見る。カット内容は [v10 カット割り](../v10-shotlist.md) と [鯨の動き v10](../whale-motion-v10.md) に従う。
 
 ## 渡す画像と役割
 
@@ -13,7 +13,7 @@
 | [refs/WH01_identity_sheet.png](refs/WH01_identity_sheet.png) | 鯨の形（GLB の4方向。目を皮膚の外へ出した版） | 灰色の色・照明・画像内の文字 |
 | [refs/style_ref_painterly.png](refs/style_ref_painterly.png) | 画風（旧採用原画 CUT09 の右端を切り出し。筆致・夜の青・細かなきらめき） | 内容・光条・構図 |
 | [refs/G_C08_glance.png](refs/G_C08_glance.png) | C08 の構図（68 mm、目を右三分割線上） | CG の質感 |
-| [refs/G_C16_mirror.png](refs/G_C16_mirror.png) | C16 の構図（湖のふちから 18 mm。月・光の渦・鯨・湖の映り込み） | 四角い粒（花びらの代役）、右の岩壁 |
+| [refs/G_C16_mirror.png](refs/G_C16_mirror.png) | C16 の当初構図（湖のふちから 18 mm。月・光の柱・鯨・湖の映り込み）。渦は不採用で、現在は採用原画 C16 B を構図の参照にする | 四角い粒（花びらの代役）とその螺旋配置、右の岩壁 |
 | [refs/G_C16_alt_shore_high.png](refs/G_C16_alt_shore_high.png) | C16 の別案（Cam A の高さ） | 同上 |
 
 C16 は二案ある。v10 の指定「岸から 18 mm」を Cam A の高さで撮ると、手前の岸が湖を隠して映り込みが出ない。湖のふちまでカメラを下げた `G_C16_mirror` を本命にした。代わりに頭上の裂け目は画面上端の月だけになる。
@@ -28,7 +28,7 @@ C16 は二案ある。v10 の指定「岸から 18 mm」を Cam A の高さで�
 
 1. **鯨の清書シート（STEP 0）**：形の参照と画風の参照から、この画風の鯨を1枚作る。以降はこの清書を同一性の参照に使う。動画化（Veo の参照画像）にもそのまま使える。
 2. **C08 一瞥**：構図ガイド＋清書シート＋画風の3枚で生成する。
-3. **C16 大渦**：同じく3枚で生成する。
+3. **C16 頂点の群舞**：採用済み（C16 B）。直すときだけ C16 の節に従う。
 4. **直す**：作り直さず、良い1枚を下の「修正の一文」で直していく（1回の修正で直すのは1点）。
 5. **記録**：画像はすべて Drive の `results` に置き、1回ごとに Drive の記録表へ1行足す（消費クレジットも書く）。Claude が [results/](results/README.md) へ移し、作者と判定して判定表に記入する。
 
@@ -83,32 +83,33 @@ Output: 16:9 cinematic still, painterly anime film key frame, low-key lighting, 
 - 斑・瘤・布・水しぶきがない。
 - 暗部が真っ黒につぶれず、頭の丸みが読める（プロジェクターで沈みやすいため）。
 
-## C16 大渦（57–63 秒）
+## C16 頂点の群舞（57–63 秒）
 
-添付順：Image 1 = `G_C16_mirror.png`、Image 2 = 清書シート（なければ `WH01_identity_sheet.png`）、Image 3 = `style_ref_painterly.png`
+**作者決定（2026-11-21）：渦は描かない。** 採用原画は [C16 B](results/C16_B_petals_dense_no_flower.png)。直すときは C16 B を元に「修正の一文」で直し、作り直すときだけ下のプロンプトを使う。当初の「大渦」プロンプトは不採用（git 履歴に残る）。
+
+添付順：Image 1 = `results/C16_B_petals_dense_no_flower.png`、Image 2 = 清書シート（`results/sheet_t01.png`）、Image 3 = `style_ref_painterly.png`
 
 ```text
 Use the attached images with these roles:
-- Image 1: composition guide from a 3D layout. Keep: the camera at the edge of the lake looking slightly up; the full moon in a narrow ceiling rift at the top centre; the spiral vortex rising around the moonbeam; the whale swimming leftward through the middle of the spiral; the mirror reflection in the lower third. The square chips are placeholders for petals. Ignore the rock wall on the right.
+- Image 1: composition and petal density to keep: the camera at the edge of the lake looking slightly up; the full moon in a narrow ceiling rift at the top centre; a thin moonbeam; the whale swimming leftward in the middle; the mirror reflection in the lower third.
 - Image 2: identity of the whale. Use its glowing state. Ignore its background and any text.
 - Image 3: painting style only.
 
-Scene: the climax inside a vast, dark underground cavern. A single shaft of moonlight falls from a narrow rift in the ceiling far above. Around this moonbeam, a giant spiral vortex of flower petals rises toward the moon. The glowing whale glides leftward through the spiral.
-The petals move by the whale's mysterious power, not by wind: they flow in clean, graceful ribbons that follow the whale's path and form two interleaved spiral arms.
-Petals: thousands of small, real white petals from tiny five-petal white flowers, soft and slightly translucent. They do not emit light; they shine only where the whale's light and the moonlight touch them. Among them, tiny golden seeds glow softly and rise like sparks - snow falling upward.
+Scene: the climax inside a vast, dark underground cavern. A single shaft of moonlight falls from a narrow rift in the ceiling far above. The glowing whale glides leftward in front of the moonbeam, and the air around the beam and the whale is filled with a dense, calm swarm of drifting petals. There is no spiral and no vortex: the petals drift together as one quiet swarm, as if held by the whale's mysterious power, not by wind.
+Petals: thousands of small, real white petals, soft and slightly translucent. Only loose petals fly - no whole flowers. They do not emit light; they shine only where the whale's light and the moonlight touch them. Tiny golden seeds glow softly as separate sparks.
 The whale: glowing from within with a pearl-opal light (ice cyan, white pearl, pale cherry, champagne gold) with clear 3D shading; smooth skin; its small eye stays dark.
-The lake: perfectly still, a black mirror reflecting the vortex, the whale and the moon almost symmetrically.
-Darkness: only the vortex and the space around the whale are lit. The cavern walls, the far side and the ceiling around the rift fall into deep darkness; the outer edge of the spiral dissolves into the dark, suggesting a huge unseen space.
+The lake: perfectly still, a black mirror reflecting the petals, the whale and the moon almost symmetrically.
+Darkness: only the petals and the space around the whale are lit. The cavern walls, the far side and the ceiling around the rift fall into deep darkness; the outer edge of the swarm dissolves into the dark, suggesting a huge unseen space.
 
-Do not include: cave walls, cliffs, rock formations, a far shore or any scenery; chaotic wind-blown scatter; pink petals, cherry blossom trees, large leaf-shaped petals; spots, bumps, cloth or veils on the whale; lens flares; text; logos; borders.
+Do not include: a spiral or vortex; cave walls, cliffs, rock formations, a far shore or any scenery; chaotic wind-blown scatter; whole flowers in the air; glowing petals or comet-like trails; pink petals, cherry blossom trees, large leaf-shaped petals; spots, bumps, cloth or veils on the whale; lens flares; text; logos; borders.
 Output: 16:9 cinematic wide still, 18 mm wide-angle look, painterly anime film key frame, deep blacks, high contrast for a projector.
 ```
 
 合格：
-- 月・光の柱・渦・鯨・湖の映り込みがそろい、渦の中心に月光の柱がある（鯨に全部の花びらがまとわりついていない）。
-- 壁・奥・遠い岸が見えない。渦の外縁が闇に溶けている。
-- 花びらは白く小さく、それ自体は光っていない。金の種子だけが光っている。
-- 渦は風で散らかっておらず、帯になって鯨の軌跡に沿っている。
+- 月・光の柱・鯨・湖の映り込みがそろう。花びらは柱と鯨のまわりを満たし、螺旋や渦になっていない（鯨に全部の花びらがまとわりついていない）。
+- 壁・奥・遠い岸が見えない。群れの外縁が闇に溶けている。
+- 花びらは白く小さく、それ自体は光っていない。金の種子だけが光っている。花が丸ごと舞っていない。
+- 群れは風で散らかっておらず、静かに漂っている。
 - 鯨が清書シートと同じ個体に見える（斑・瘤・布なし、オパールの発光）。
 - 一目で「映え」がある。
 
@@ -120,12 +121,14 @@ Output: 16:9 cinematic wide still, 18 mm wide-angle look, painterly anime film k
 |---|---|
 | 斑・瘤・模様が出た | `Make the whale's skin completely smooth: remove all spots, bumps, barnacles and patterns.` |
 | 布・ベール・リボン | `Remove any cloth, veil, ribbon or streamer; the fins must be smooth, solid whale fins.` |
-| 壁や奥が見える | `Darken every cave wall and rock until it disappears into black; only the vortex area stays lit.` |
+| 壁や奥が見える | `Darken every cave wall and rock until it disappears into black; only the petals and the whale stay lit.` |
 | 花びらが光る・ピンク | `Make the petals white and not self-luminous, lit only by the whale and the moon. Keep the small glowing golden seeds.` |
-| 花びらが風で散らかる | `Gather the petals into two clean spiral ribbons that follow the whale's path, as if drawn by an invisible force.` |
+| 花びらが風で散らかる | `Make the petals drift as one calm, dense swarm around the moonbeam and the whale, as if held by an invisible force; no spiral.` |
+| 花が丸ごと舞う | `Replace every whole flower in the air with loose single white petals.` |
+| 手前の花びらが光る・尾を引く | `Make the large blurred foreground petals plain white and not glowing, with no trails; keep the golden seeds as separate tiny sparks.` |
 | 目が人間的・かわいい | `Make the eye smaller, darker and calmer: an animal eye with a single tiny moon reflection, no expression.` |
 | 目に月光が入らない | `Add one tiny point of moonlight reflected in the whale's eye, nowhere else.` |
-| 湖の映り込みがない | `Make the lake a perfectly still black mirror that reflects the vortex, the whale and the moon.` |
+| 湖の映り込みがない | `Make the lake a perfectly still black mirror that reflects the petals, the whale and the moon.` |
 | 鯨の大きさが違う | `Resize the whale to match its size in Image 1.` |
 | 暗すぎて形が読めない | `Lift the mid-tones slightly so the whale's form reads, while keeping deep blacks.` |
 
@@ -144,6 +147,6 @@ C08 と C16 で同じ鯨に見えない場合は、清書シートを作り直�
 ## ガイドの作り方（再現用）
 
 - `scripts/whale_sheet.py`：`wh01_v20_hero.glb` の目を法線方向へ 0.20 m 出し、4方向を 800×450 でレンダーする。4枚を並べて文字を入れたものが `WH01_identity_sheet.png`。
-- `scripts/guide_shots.py`：V7 Step 5C のシーン（`video-pipeline/v7_blender_cycles/`）を組む作業用ハーネスに読み込ませる撮影定義。C08（目の露出・68 mm）、C16 別案（Cam A 高）、C16 本命（湖のふち、`ONLY16B=1`）。花びらの渦は二本腕の螺旋に並べた発光板で、本番の花びらではない。960×540・24 サンプル、CPU で1枚約80秒。
+- `scripts/guide_shots.py`：V7 Step 5C のシーン（`video-pipeline/v7_blender_cycles/`）を組む作業用ハーネスに読み込ませる撮影定義。C08（目の露出・68 mm）、C16 別案（Cam A 高）、C16 本命（湖のふち、`ONLY16B=1`）。花びらの渦は二本腕の螺旋に並べた発光板で、本番の花びらではない（渦は 2026-11-21 に不採用）。960×540・24 サンプル、CPU で1枚約80秒。
 - 修正関数は [../diagnosis/v7_probe_test_shots.py](../diagnosis/v7_probe_test_shots.py)。
 - `style_ref_painterly.png` は旧採用原画 `images/adopted/CUT09_KEY_climax.png` の右上を切り出したもの。旧原画の斑のある鯨・4弁の花・水しぶきを避けるため、鯨の写っていない部分だけを使う。
