@@ -1,0 +1,203 @@
+{
+  "rule": "Infographic §05/§07/§12: Match Blender Cycles 540p lookdev stills within +/-25% of target luminance & ratios using Material Albedo/Emission multipliers ONLY (Exposure & Lights LOCKED!).",
+  "beats": {
+    "beat1_heigei": {
+      "source_art": "v74_master_01_heigei_1795222191019.jpg",
+      "global_mean_luma": 17.7,
+      "regions": {
+        "moon_sky_rift": {
+          "mean_rgb": [
+            102.9,
+            132.0,
+            162.6
+          ],
+          "luma_0_100": 50.2,
+          "p95_luma_0_100": 89.6,
+          "hue_deg": 210.8,
+          "sat_pct": 36.7,
+          "ratio_vs_cliff": 4.97
+        },
+        "cavern_cliff": {
+          "mean_rgb": [
+            18.3,
+            26.8,
+            36.8
+          ],
+          "luma_0_100": 10.1,
+          "p95_luma_0_100": 19.9,
+          "hue_deg": 212.3,
+          "sat_pct": 50.3,
+          "ratio_vs_cliff": 1.0
+        },
+        "mirror_lake": {
+          "mean_rgb": [
+            16.5,
+            31.9,
+            47.7
+          ],
+          "luma_0_100": 11.7,
+          "p95_luma_0_100": 17.6,
+          "hue_deg": 210.4,
+          "sat_pct": 65.4,
+          "ratio_vs_cliff": 1.16
+        },
+        "whale_body": {
+          "mean_rgb": [
+            39.3,
+            54.7,
+            70.3
+          ],
+          "luma_0_100": 20.6,
+          "p95_luma_0_100": 42.9,
+          "hue_deg": 210.2,
+          "sat_pct": 44.0,
+          "ratio_vs_cliff": 2.04
+        },
+        "shore_flowers": {
+          "mean_rgb": [
+            75.7,
+            95.9,
+            104.3
+          ],
+          "luma_0_100": 36.2,
+          "p95_luma_0_100": 84.3,
+          "hue_deg": 197.5,
+          "sat_pct": 27.5,
+          "ratio_vs_cliff": 3.58
+        }
+      }
+    },
+    "beat2_ignite": {
+      "source_art": "v74_master_02_ignite_1795222195685.jpg",
+      "global_mean_luma": 25.1,
+      "regions": {
+        "moon_sky_rift": {
+          "mean_rgb": [
+            123.9,
+            150.6,
+            178.2
+          ],
+          "luma_0_100": 57.6,
+          "p95_luma_0_100": 91.2,
+          "hue_deg": 210.5,
+          "sat_pct": 30.5,
+          "ratio_vs_cliff": 5.54
+        },
+        "cavern_cliff": {
+          "mean_rgb": [
+            18.9,
+            27.6,
+            38.0
+          ],
+          "luma_0_100": 10.4,
+          "p95_luma_0_100": 20.5,
+          "hue_deg": 212.5,
+          "sat_pct": 50.2,
+          "ratio_vs_cliff": 1.0
+        },
+        "mirror_lake": {
+          "mean_rgb": [
+            45.2,
+            62.8,
+            79.1
+          ],
+          "luma_0_100": 23.6,
+          "p95_luma_0_100": 59.5,
+          "hue_deg": 208.9,
+          "sat_pct": 42.8,
+          "ratio_vs_cliff": 2.27
+        },
+        "whale_body": {
+          "mean_rgb": [
+            158.4,
+            177.8,
+            198.3
+          ],
+          "luma_0_100": 68.7,
+          "p95_luma_0_100": 97.3,
+          "hue_deg": 210.8,
+          "sat_pct": 20.1,
+          "ratio_vs_cliff": 6.61
+        },
+        "shore_flowers": {
+          "mean_rgb": [
+            91.3,
+            114.6,
+            123.7
+          ],
+          "luma_0_100": 43.2,
+          "p95_luma_0_100": 94.2,
+          "hue_deg": 196.9,
+          "sat_pct": 26.2,
+          "ratio_vs_cliff": 4.15
+        }
+      }
+    },
+    "beat3_opal_climax": {
+      "source_art": "v75_wide_canyon_03_climax_1795222518457.jpg",
+      "global_mean_luma": 28.2,
+      "regions": {
+        "moon_sky_rift": {
+          "mean_rgb": [
+            131.2,
+            153.4,
+            176.8
+          ],
+          "luma_0_100": 59.0,
+          "p95_luma_0_100": 96.9,
+          "hue_deg": 210.8,
+          "sat_pct": 25.8,
+          "ratio_vs_cliff": 4.88
+        },
+        "cavern_cliff": {
+          "mean_rgb": [
+            27.0,
+            31.4,
+            36.7
+          ],
+          "luma_0_100": 12.1,
+          "p95_luma_0_100": 48.8,
+          "hue_deg": 212.8,
+          "sat_pct": 26.5,
+          "ratio_vs_cliff": 1.0
+        },
+        "mirror_lake": {
+          "mean_rgb": [
+            45.6,
+            59.2,
+            73.2
+          ],
+          "luma_0_100": 22.5,
+          "p95_luma_0_100": 51.6,
+          "hue_deg": 210.4,
+          "sat_pct": 37.7,
+          "ratio_vs_cliff": 1.86
+        },
+        "whale_body": {
+          "mean_rgb": [
+            158.4,
+            168.9,
+            182.9
+          ],
+          "luma_0_100": 65.7,
+          "p95_luma_0_100": 97.1,
+          "hue_deg": 214.3,
+          "sat_pct": 13.4,
+          "ratio_vs_cliff": 5.43
+        },
+        "shore_flowers": {
+          "mean_rgb": [
+            85.9,
+            95.2,
+            97.6
+          ],
+          "luma_0_100": 36.6,
+          "p95_luma_0_100": 93.8,
+          "hue_deg": 192.3,
+          "sat_pct": 12.0,
+          "ratio_vs_cliff": 3.02
+        }
+      }
+    }
+  }
+}

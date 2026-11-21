@@ -1,0 +1,408 @@
+{
+  "shots": {
+    "01_shadow_16s": {
+      "label": "01 (16.0s) Lake Ripples + Giant Submerged Shadow",
+      "measured": {
+        "global_luma": 9.59,
+        "regions": {
+          "moon_sky_rift": {
+            "luma": 15.13,
+            "p95": 19.17,
+            "mean_rgb": [
+              7.6,
+              44.7,
+              69.2
+            ],
+            "ratio_vs_cliff": 2.02
+          },
+          "cavern_cliff": {
+            "luma": 7.5,
+            "p95": 12.02,
+            "mean_rgb": [
+              0.3,
+              22.4,
+              41.9
+            ],
+            "ratio_vs_cliff": 1.0
+          },
+          "mirror_lake": {
+            "luma": 7.45,
+            "p95": 8.34,
+            "mean_rgb": [
+              4.2,
+              21.3,
+              39.6
+            ],
+            "ratio_vs_cliff": 0.99
+          },
+          "whale_body": {
+            "luma": 13.12,
+            "p95": 17.01,
+            "mean_rgb": [
+              2.8,
+              39.3,
+              65.4
+            ],
+            "ratio_vs_cliff": 1.75
+          },
+          "shore_flowers": {
+            "luma": 8.29,
+            "p95": 51.82,
+            "mean_rgb": [
+              13.0,
+              22.7,
+              29.8
+            ],
+            "ratio_vs_cliff": 1.11
+          }
+        }
+      },
+      "comparisons": {}
+    },
+    "02_approach_28s": {
+      "label": "02 (28.0s) Close Foreground Approach & Heigei",
+      "measured": {
+        "global_luma": 10.53,
+        "regions": {
+          "moon_sky_rift": {
+            "luma": 49.23,
+            "p95": 95.69,
+            "mean_rgb": [
+              102.9,
+              129.5,
+              153.1
+            ],
+            "ratio_vs_cliff": 10.3
+          },
+          "cavern_cliff": {
+            "luma": 4.78,
+            "p95": 10.64,
+            "mean_rgb": [
+              0.3,
+              14.1,
+              28.6
+            ],
+            "ratio_vs_cliff": 1.0
+          },
+          "mirror_lake": {
+            "luma": 11.25,
+            "p95": 15.78,
+            "mean_rgb": [
+              2.2,
+              33.8,
+              56.4
+            ],
+            "ratio_vs_cliff": 2.35
+          },
+          "whale_body": {
+            "luma": 15.26,
+            "p95": 23.51,
+            "mean_rgb": [
+              11.4,
+              44.1,
+              68.1
+            ],
+            "ratio_vs_cliff": 3.19
+          },
+          "shore_flowers": {
+            "luma": 3.94,
+            "p95": 7.88,
+            "mean_rgb": [
+              3.9,
+              11.2,
+              16.4
+            ],
+            "ratio_vs_cliff": 0.82
+          }
+        }
+      },
+      "comparisons": {
+        "moon_sky_rift": {
+          "measured_luma": 49.23,
+          "target_luma": 50.2,
+          "err_pct": -1.9,
+          "p95": 95.69,
+          "status": "PASS"
+        },
+        "cavern_cliff": {
+          "measured_luma": 4.78,
+          "target_luma": 10.1,
+          "err_pct": -52.7,
+          "p95": 10.64,
+          "status": "TUNE"
+        },
+        "mirror_lake": {
+          "measured_luma": 11.25,
+          "target_luma": 11.7,
+          "err_pct": -3.8,
+          "p95": 15.78,
+          "status": "PASS"
+        },
+        "whale_body": {
+          "measured_luma": 15.26,
+          "target_luma": 20.6,
+          "err_pct": -25.9,
+          "p95": 23.51,
+          "status": "TUNE"
+        },
+        "shore_flowers": {
+          "measured_luma": 3.94,
+          "target_luma": 36.2,
+          "err_pct": -89.1,
+          "p95": 7.88,
+          "status": "TUNE"
+        }
+      }
+    },
+    "03_turnback_33s": {
+      "label": "03 (33.5s) Graceful Turn-Back Toward Moonbeam",
+      "measured": {
+        "global_luma": 11.35,
+        "regions": {
+          "moon_sky_rift": {
+            "luma": 51.69,
+            "p95": 95.71,
+            "mean_rgb": [
+              111.1,
+              135.4,
+              157.2
+            ],
+            "ratio_vs_cliff": 10.1
+          },
+          "cavern_cliff": {
+            "luma": 5.12,
+            "p95": 10.95,
+            "mean_rgb": [
+              0.3,
+              15.1,
+              30.1
+            ],
+            "ratio_vs_cliff": 1.0
+          },
+          "mirror_lake": {
+            "luma": 11.86,
+            "p95": 16.17,
+            "mean_rgb": [
+              2.8,
+              35.6,
+              58.4
+            ],
+            "ratio_vs_cliff": 2.32
+          },
+          "whale_body": {
+            "luma": 16.92,
+            "p95": 26.56,
+            "mean_rgb": [
+              13.6,
+              48.8,
+              73.9
+            ],
+            "ratio_vs_cliff": 3.3
+          },
+          "shore_flowers": {
+            "luma": 6.34,
+            "p95": 10.63,
+            "mean_rgb": [
+              7.2,
+              17.8,
+              26.7
+            ],
+            "ratio_vs_cliff": 1.24
+          }
+        }
+      },
+      "comparisons": {}
+    },
+    "04_ignite_41s": {
+      "label": "04 (41.0s) Phase 1 Ignition + Shore Awakening",
+      "measured": {
+        "global_luma": 22.82,
+        "regions": {
+          "moon_sky_rift": {
+            "luma": 55.66,
+            "p95": 95.71,
+            "mean_rgb": [
+              122.0,
+              145.4,
+              166.2
+            ],
+            "ratio_vs_cliff": 7.01
+          },
+          "cavern_cliff": {
+            "luma": 7.94,
+            "p95": 14.45,
+            "mean_rgb": [
+              2.7,
+              23.5,
+              39.8
+            ],
+            "ratio_vs_cliff": 1.0
+          },
+          "mirror_lake": {
+            "luma": 20.75,
+            "p95": 29.21,
+            "mean_rgb": [
+              25.9,
+              58.1,
+              81.2
+            ],
+            "ratio_vs_cliff": 2.61
+          },
+          "whale_body": {
+            "luma": 38.72,
+            "p95": 81.97,
+            "mean_rgb": [
+              74.8,
+              103.1,
+              126.1
+            ],
+            "ratio_vs_cliff": 4.88
+          },
+          "shore_flowers": {
+            "luma": 34.64,
+            "p95": 72.8,
+            "mean_rgb": [
+              71.5,
+              91.7,
+              104.1
+            ],
+            "ratio_vs_cliff": 4.36
+          }
+        }
+      },
+      "comparisons": {
+        "moon_sky_rift": {
+          "measured_luma": 55.66,
+          "target_luma": 57.6,
+          "err_pct": -3.4,
+          "p95": 95.71,
+          "status": "PASS"
+        },
+        "cavern_cliff": {
+          "measured_luma": 7.94,
+          "target_luma": 10.4,
+          "err_pct": -23.7,
+          "p95": 14.45,
+          "status": "PASS"
+        },
+        "mirror_lake": {
+          "measured_luma": 20.75,
+          "target_luma": 23.6,
+          "err_pct": -12.1,
+          "p95": 29.21,
+          "status": "PASS"
+        },
+        "whale_body": {
+          "measured_luma": 38.72,
+          "target_luma": 68.7,
+          "err_pct": -43.6,
+          "p95": 81.97,
+          "status": "TUNE"
+        },
+        "shore_flowers": {
+          "measured_luma": 34.64,
+          "target_luma": 43.2,
+          "err_pct": -19.8,
+          "p95": 72.8,
+          "status": "PASS"
+        }
+      }
+    },
+    "05_climax_56s": {
+      "label": "05 (56.0s) Phase 2->3 Pearl-Opal x Golden Snow",
+      "measured": {
+        "global_luma": 25.6,
+        "regions": {
+          "moon_sky_rift": {
+            "luma": 54.02,
+            "p95": 95.63,
+            "mean_rgb": [
+              121.0,
+              140.7,
+              158.3
+            ],
+            "ratio_vs_cliff": 6.3
+          },
+          "cavern_cliff": {
+            "luma": 8.58,
+            "p95": 17.25,
+            "mean_rgb": [
+              9.4,
+              24.1,
+              36.5
+            ],
+            "ratio_vs_cliff": 1.0
+          },
+          "mirror_lake": {
+            "luma": 24.24,
+            "p95": 34.55,
+            "mean_rgb": [
+              43.7,
+              65.1,
+              82.1
+            ],
+            "ratio_vs_cliff": 2.83
+          },
+          "whale_body": {
+            "luma": 43.55,
+            "p95": 82.89,
+            "mean_rgb": [
+              96.8,
+              113.7,
+              126.3
+            ],
+            "ratio_vs_cliff": 5.08
+          },
+          "shore_flowers": {
+            "luma": 45.03,
+            "p95": 73.58,
+            "mean_rgb": [
+              114.2,
+              115.4,
+              111.1
+            ],
+            "ratio_vs_cliff": 5.25
+          }
+        }
+      },
+      "comparisons": {
+        "moon_sky_rift": {
+          "measured_luma": 54.02,
+          "target_luma": 59.0,
+          "err_pct": -8.4,
+          "p95": 95.63,
+          "status": "PASS"
+        },
+        "cavern_cliff": {
+          "measured_luma": 8.58,
+          "target_luma": 12.1,
+          "err_pct": -29.1,
+          "p95": 17.25,
+          "status": "TUNE"
+        },
+        "mirror_lake": {
+          "measured_luma": 24.24,
+          "target_luma": 22.5,
+          "err_pct": 7.7,
+          "p95": 34.55,
+          "status": "PASS"
+        },
+        "whale_body": {
+          "measured_luma": 43.55,
+          "target_luma": 65.7,
+          "err_pct": -33.7,
+          "p95": 82.89,
+          "status": "TUNE"
+        },
+        "shore_flowers": {
+          "measured_luma": 45.03,
+          "target_luma": 36.6,
+          "err_pct": 23.0,
+          "p95": 73.58,
+          "status": "PASS"
+        }
+      }
+    }
+  },
+  "pass_summary": []
+}

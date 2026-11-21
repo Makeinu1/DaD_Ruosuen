@@ -1,0 +1,214 @@
+{
+  "version": "V7.6_90s_Master_Approach_Turnback",
+  "coordinate_system": "Blender Z-up meters (X=right, Y=depth, Z=up, Lake Z=0.0)",
+  "cavern_geology": {
+    "enclosed_perimeter": "100% enclosed 450m wide x 700m deep underground cavern (ZERO side openings/portals to outside sky!)",
+    "width_m": 450.0,
+    "depth_m": 700.0,
+    "lake_size_m": [
+      300.0,
+      500.0
+    ],
+    "max_ceiling_z_m": 190.0,
+    "vertical_canyon_ceiling_fissure": {
+      "description": "Long jagged vertical canyon fissure split overhead in the 190m cavern ceiling opening directly to Full Moon & starry midnight sky",
+      "x_center_m": 18.0,
+      "y_range_m": [
+        55.0,
+        210.0
+      ],
+      "z_range_m": [
+        100.0,
+        185.0
+      ],
+      "width_m": 32.0,
+      "full_moon_pos_m": [
+        24.0,
+        240.0,
+        295.0
+      ]
+    },
+    "P0_direct_moonlight_shore": [
+      3.0,
+      -37.0,
+      1.25
+    ],
+    "S1_dense_flower_shore_bbox": [
+      -64.0,
+      55.0,
+      -36.0,
+      -20.0
+    ],
+    "R1_exit_occluder": {
+      "min": [
+        43.0,
+        48.0,
+        0.0
+      ],
+      "max": [
+        125.0,
+        58.0,
+        78.0
+      ]
+    },
+    "R2_rear_baffle": {
+      "min": [
+        46.0,
+        78.0,
+        0.0
+      ],
+      "max": [
+        53.0,
+        128.0,
+        82.0
+      ]
+    }
+  },
+  "whale_spec": {
+    "id": "WH-01 v2.0 / v2.2",
+    "length_m": 24.0,
+    "wingspan_m": 14.8,
+    "fluke_width_m": 9.0,
+    "veils_or_ribbons": false,
+    "luminescence_phases": [
+      "Phase 0 (0-29.5s): Unlit wet dark blue-grey + pinpoint eye glint",
+      "Phase 1 (29.5-36s): Ice-cyan x Moon-silver x Lavender-violet ripple wave from snout to tail",
+      "Phase 2 (36-44s): Pearl-opal thin-film iridescence + aqua/soft-emerald/sakura breathing aurora pulse",
+      "Phase 3 (44-60s): Warm Pearl-white x Sakura-pink x Champagne-gold blossom resonance (stays lit behind R1/R2)"
+    ]
+  },
+  "flower_spec": {
+    "id": "FL-01 v0.8",
+    "flower_diameter_cm": 4.5,
+    "height_cm": [
+      6.0,
+      8.0
+    ],
+    "closed_state": "Dull grey-brown drooping sepals resembling dried weeds",
+    "density_per_m2": 100,
+    "dispersal": "Real 2cm translucent white petals + 2-3mm softly glowing champagne-gold seed at base"
+  },
+  "production_windows": {
+    "full_master_s": [
+      0.0,
+      90.0
+    ],
+    "full_frames_24fps": 2160,
+    "hero_proof_compact_20s": {
+      "duration_s": 20.0,
+      "frames_24fps": 480,
+      "beats": [
+        {
+          "name": "Beat 1: Breach & Heigei",
+          "hero_s": [
+            0.0,
+            5.0
+          ],
+          "master_s": [
+            19.0,
+            26.5
+          ]
+        },
+        {
+          "name": "Beat 2: Moonlight Ignition",
+          "hero_s": [
+            5.0,
+            10.0
+          ],
+          "master_s": [
+            29.5,
+            35.5
+          ]
+        },
+        {
+          "name": "Beat 3: BELLE Opal Flight",
+          "hero_s": [
+            10.0,
+            16.0
+          ],
+          "master_s": [
+            38.0,
+            46.5
+          ]
+        },
+        {
+          "name": "Beat 4: Golden Snow & Depart",
+          "hero_s": [
+            16.0,
+            20.0
+          ],
+          "master_s": [
+            47.0,
+            56.0
+          ]
+        }
+      ]
+    }
+  },
+  "master_90s_beats": [
+    {
+      "t_s": [
+        0.0,
+        12.0
+      ],
+      "name": "01 Quiet Subterranean Silence (P0 moonlight + grey-brown buds)",
+      "phase": "Phase 0"
+    },
+    {
+      "t_s": [
+        12.0,
+        20.0
+      ],
+      "name": "02 Anomaly & Submerged Shadow Ripples",
+      "phase": "Phase 0"
+    },
+    {
+      "t_s": [
+        20.0,
+        30.0
+      ],
+      "name": "03 Quiet Breach -> Close Foreground Approach & Heigei Gaze",
+      "phase": "Phase 0 (Unlit)"
+    },
+    {
+      "t_s": [
+        30.0,
+        37.0
+      ],
+      "name": "04 Graceful Turn-Back Away from Shore -> Ascending to Moonbeam",
+      "phase": "Phase 0 -> 1"
+    },
+    {
+      "t_s": [
+        37.0,
+        46.0
+      ],
+      "name": "05 Moonlight Contact & Chromatic Awakening Wave + Bloom Begins",
+      "phase": "Phase 1 (Ice-Cyan x Violet)"
+    },
+    {
+      "t_s": [
+        46.0,
+        66.0
+      ],
+      "name": "06 Free BELLE Opal Flight x Full Shore Bloom x Golden Snow",
+      "phase": "Phase 2 (Opal/Aqua) -> Phase 3 (Warm Gold)"
+    },
+    {
+      "t_s": [
+        66.0,
+        80.0
+      ],
+      "name": "07 Exit C Departure Behind R1 Headland (Light Occluded)",
+      "phase": "Phase 3 (Occluded)"
+    },
+    {
+      "t_s": [
+        80.0,
+        90.0
+      ],
+      "name": "08 Dreamlike Aftermath (Cam A Locked, Identical to 0s)",
+      "phase": "Quiet"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+# Obsolete v1-v6 scratch pipelines, downloaded vendor tools, and heavy render/binary outputs
+/assets/
+/audio/
+/out/
+/scripts/
+/v2/
+/v3_animatic/
+/v4_cinematic3d/
+/v5_cycles/
+/v6_anime3d/
+/vendor/
+
+# Keep v7_blender_cycles lightweight on GitHub (exclude .blend, .mp4, .wav, and intermediate dirs)
+v7_blender_cycles/*.blend
+v7_blender_cycles/*.blend1
+v7_blender_cycles/out/step3_greybox/
+v7_blender_cycles/out/step5_lookdev/*.png
+v7_blender_cycles/out/step5b_director_cuts/
+*.mp4
+*.mov
+*.wav
+*.flac
+*.tar.gz
+*.zip
+__pycache__/
