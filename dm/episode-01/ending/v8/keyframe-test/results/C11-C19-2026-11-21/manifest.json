@@ -95,5 +95,22 @@
   "variants": {
     "count": 34,
     "source": "conversation ZIP (original PNG, not yet uploaded to GitHub)"
+  },
+  "legacy_C16": {
+    "state": "Old",
+    "archive_copies": [
+      {
+        "path": "dm/episode-01/ending/v8/keyframe-test/results/Old/C16_B_petals_dense_no_flower.png",
+        "blob_sha": "ea405676ab791fecf2dc8986e4ec6156dfe87627",
+        "source_path_kept": "dm/episode-01/ending/v8/keyframe-test/results/C16_B_petals_dense_no_flower.png"
+      },
+      {
+        "path": "dm/episode-01/ending/v8/keyframe-test/results/Old/C16_t01.png",
+        "blob_sha": "ff5531b78230474a295678de0bdb51aad3f67dd1",
+        "source_path_kept": "dm/episode-01/ending/v8/keyframe-test/results/C16_t01.png"
+      }
+    ],
+    "new_C16": "not_generated_in_this_conversation",
+    "note": "旧C16 2点は正本として採用しない。以前のURLは履歴互換のため保持"
   }
 }
