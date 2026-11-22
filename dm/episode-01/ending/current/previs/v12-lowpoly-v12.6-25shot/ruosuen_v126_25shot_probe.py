@@ -26,7 +26,7 @@ CAMERAS = {
     # Between the approaching whale and the fixed overhead camera B.
     "BRIDGE_PC": ((-60, -80, 4.2), -55, 37, 20),
     # Can the whale's emission and S1 base occupy one continuous world view?
-    "BRIDGE_LIGHT": ((8, -130, 7.0), 31, 25, 24),
+    "BRIDGE_LIGHT": ((8, -130, 7.0), 10, 13, 24),
     # Flowering wave -> macro; do not invent a giant flower.
     "BRIDGE_FLOWER": ((55, -38, 5.5), 23, -4, 40),
     # Wide environmental whale -> telephoto eye trace.
@@ -158,7 +158,7 @@ def projection_diagnostics(sid, tm, cam_name):
             result["proxy_visible_bbox_px"]=[round(min(q[0] for q in inside),1),
                  round(min(q[1] for q in inside),1), round(max(q[0] for q in inside),1),
                  round(max(q[1] for q in inside),1)]
-    for target, pos in (("s1_base",b.S1[0][:3]),("s1_tip",b.S1[4][:3]),
+    for target, pos in (("s1_base",b.S1[0][:3]),("s1_inner",b.S1[3][:3]),("s1_tip",b.S1[4][:3]),
                         ("fissure_anchor",(-5,170,190))):
         q=b.projection(pos,cam,1152,648)
         result[target+"_px"]=[round(x,1) for x in q[:2]] if q else None
