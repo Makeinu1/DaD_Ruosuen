@@ -68,6 +68,10 @@ jobs:
             echo "No changed artifacts"
           else
             git commit -m "assets(previs): preserve full70 B2 movie with approved N14 [skip ci]"
+            # Pull in any branch commits created while this expensive render was running.
+            # No force push; only fast-forward the current PR branch.
+            git fetch origin "refs/heads/previs/full70-v13-n14-20261123:refs/remotes/origin/previs/full70-v13-n14-20261123"
+            git rebase origin/previs/full70-v13-n14-20261123
             git push origin HEAD:previs/full70-v13-n14-20261123
           fi
 
