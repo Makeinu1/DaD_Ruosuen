@@ -1082,12 +1082,64 @@
       },
       "passedCount": 22,
       "count": 22
-    }
+    },
+    "continuousNearpassSampling": {
+      "sampling": "Arc phi=180–360 degrees at 0.1-degree intervals, Z piecewise-linearly between representative stations; anatomical proxy not a whale mesh",
+      "minHeadProxyGroundSurfaceDistance3DM": 2.99,
+      "atPhiDeg": 229.3,
+      "headCenterApproxXYZ": [
+        -57.31,
+        -85.24,
+        8.83
+      ],
+      "minHeadProxyXYSurfaceSignedM": -2.82,
+      "minTorsoProxyGroundSurface3DM": 6.56,
+      "minFinTipProxyGroundSurface3DM": 9.18,
+      "caution": "A negative XY surface distance means the projected head overlaps the party's horizontal point, NOT a 3D collision. The nose/head approximation remains ~3m from ground in 3D; for a tall PC the actual clearance can be much smaller. Do not treat party as fixed-character dimensions."
+    },
+    "lunarBodyFeatureContact": [
+      {
+        "feature": "front rectangular box corner (NON-ANATOMICAL)",
+        "firstPhiDeg": 257.2,
+        "warning": "bounding-volume corner is not guaranteed to exist on actual head or pectoral fin"
+      },
+      {
+        "feature": "head right edge proxy",
+        "firstPhiDeg": 260.8,
+        "approxTimeSec": 20.93
+      },
+      {
+        "feature": "nose midline",
+        "firstPhiDeg": 262.4,
+        "approxTimeSec": 21.17
+      },
+      {
+        "feature": "head left edge proxy",
+        "firstPhiDeg": 263.8,
+        "approxTimeSec": 21.4
+      },
+      {
+        "feature": "right pectoral fin tip",
+        "firstPhiDeg": 265.5,
+        "approxTimeSec": 21.71
+      },
+      {
+        "feature": "torso center",
+        "firstPhiDeg": 273.3,
+        "approxTimeSec": 22.89
+      },
+      {
+        "feature": "tail proxy",
+        "firstPhiDeg": 284.1,
+        "approxTimeSec": 24.59
+      }
+    ]
   },
   "notesV04": [
     "The centerline is within 0.2m of PC in XY at closest approach, while torso Z≈13m above water level. This is NOT a 3D body collision or camera clearance test.",
     "First 20.8s sample remains in shadow, first right head-edge moonlit around ~20.9s, nose midpoint ~21.16s. Full actual whale mesh and thick roof still unverified.",
     "High flight and exit remains same as v0.2 and should be rechecked with the new editing and filming cameras.",
-    "Near-zenith will demand a different camera pitch/shot boundary from the previous v0.3 low-altitude overflight view."
+    "Near-zenith will demand a different camera pitch/shot boundary from the previous v0.3 low-altitude overflight view.",
+    "Rectangular 24×14.8m bounding box corner can enter lunar beam before the anatomical nose at phi257.2; this is an overly conservative box, not a real limb. True glint sequence requires whale mesh/pose verification."
   ]
 }
