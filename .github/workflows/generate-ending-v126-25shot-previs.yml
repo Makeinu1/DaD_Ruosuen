@@ -36,10 +36,8 @@ jobs:
           python-version: '3.11'
       - name: Install renderer dependencies
         run: |
-          python -m pip install --disable-pip-version-check numpy pillow
-          sudo apt-get update -qq
-          sudo apt-get install -y ffmpeg
-          ffmpeg -version | head -n 1
+          python -m pip install --disable-pip-version-check numpy pillow imageio-ffmpeg
+          python -c 'import imageio_ffmpeg; print(imageio_ffmpeg.get_ffmpeg_exe())'
       - name: Generate all 25-cut storyboards, QA, and A/B videos
         shell: bash
         run: |
