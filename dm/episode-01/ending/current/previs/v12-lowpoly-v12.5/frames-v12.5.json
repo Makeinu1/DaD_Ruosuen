@@ -1,0 +1,1217 @@
+{
+  "version": "v12.5 supplementary shots 19-shot 70s comparison",
+  "sources": "v12.4 frontal approach + v12.3 17-shot cameras",
+  "author_approved": false,
+  "shots": [
+    {
+      "id": "N01",
+      "start": 0,
+      "end": 3,
+      "title": "静かな地底湖",
+      "camera": "A",
+      "sample_time": 1.5
+    },
+    {
+      "id": "N02",
+      "start": 3,
+      "end": 5.5,
+      "title": "波紋",
+      "camera": "RIPPLE",
+      "sample_time": 4.3
+    },
+    {
+      "id": "N03",
+      "start": 5.5,
+      "end": 7.5,
+      "title": "巨大な正面の影",
+      "camera": "SUB",
+      "sample_time": 6.2
+    },
+    {
+      "id": "N04A",
+      "start": 7.5,
+      "end": 8.1,
+      "title": "正面・水面突破",
+      "camera": "BREACH_FRONT",
+      "sample_time": 7.85
+    },
+    {
+      "id": "N04B",
+      "start": 8.1,
+      "end": 11,
+      "title": "斜め側面・全身の浮上",
+      "camera": "BREACH_SIDE",
+      "sample_time": 9.6
+    },
+    {
+      "id": "N05",
+      "start": 11,
+      "end": 14,
+      "title": "岸へ迫る",
+      "camera": "APPROACH",
+      "sample_time": 12.5
+    },
+    {
+      "id": "N06",
+      "start": 14,
+      "end": 18,
+      "title": "頭上通過",
+      "camera": "B",
+      "sample_time": 16.5
+    },
+    {
+      "id": "N07",
+      "start": 18,
+      "end": 19.55,
+      "title": "通過後・安堵",
+      "camera": "BEHIND",
+      "sample_time": 19.1
+    },
+    {
+      "id": "N07.5",
+      "start": 19.55,
+      "end": 20.5,
+      "title": "月光空間インサート",
+      "camera": "MOON_BRIDGE",
+      "sample_time": 19.9
+    },
+    {
+      "id": "N08",
+      "start": 20.5,
+      "end": 26,
+      "title": "月光接触・自発光",
+      "camera": "C",
+      "sample_time": 23.2
+    },
+    {
+      "id": "N09",
+      "start": 26,
+      "end": 31,
+      "title": "S1基部への反応",
+      "camera": "D",
+      "sample_time": 28.2
+    },
+    {
+      "id": "N10",
+      "start": 31,
+      "end": 36.5,
+      "title": "岬の開花",
+      "camera": "FLOWERWIDE",
+      "sample_time": 35.9
+    },
+    {
+      "id": "N11",
+      "start": 36.5,
+      "end": 40,
+      "title": "五弁と小果実",
+      "camera": "MACRO",
+      "sample_time": 38.4
+    },
+    {
+      "id": "N12",
+      "start": 40,
+      "end": 43,
+      "title": "白金の花雪",
+      "camera": "PLUME",
+      "sample_time": 41.5
+    },
+    {
+      "id": "N13",
+      "start": 43,
+      "end": 47,
+      "title": "全景",
+      "camera": "E-WIDE",
+      "sample_time": 45
+    },
+    {
+      "id": "N14",
+      "start": 47,
+      "end": 51,
+      "title": "自由遊泳",
+      "camera": "E-TELE",
+      "sample_time": 49.2
+    },
+    {
+      "id": "N15",
+      "start": 51,
+      "end": 57.5,
+      "title": "裂け目へ上昇",
+      "camera": "ASCENT",
+      "sample_time": 54.4
+    },
+    {
+      "id": "N16",
+      "start": 57.5,
+      "end": 64,
+      "title": "裂け目から退場",
+      "camera": "F",
+      "sample_time": 63.8
+    },
+    {
+      "id": "N17",
+      "start": 64,
+      "end": 70,
+      "title": "湖の余韻",
+      "camera": "A",
+      "sample_time": 67
+    }
+  ],
+  "frames": [
+    {
+      "shot": "N01",
+      "time": 1.5,
+      "camera": "A",
+      "filename": "N01-01-01.50s.png",
+      "camera_xyz": [
+        -18,
+        -93,
+        3
+      ],
+      "yaw_deg": -24,
+      "pitch_deg": 18.5,
+      "focal_mm": 18,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 0,
+      "edit_end_s": 3,
+      "edit_hold_s": 3,
+      "narrative_focus": "静かな地底湖"
+    },
+    {
+      "shot": "N02",
+      "time": 3.35,
+      "camera": "RIPPLE",
+      "filename": "N02-01-03.35s.png",
+      "camera_xyz": [
+        -90,
+        -40,
+        2.8
+      ],
+      "yaw_deg": 0,
+      "pitch_deg": -5,
+      "focal_mm": 28,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 3,
+      "edit_end_s": 5.5,
+      "edit_hold_s": 2.5,
+      "narrative_focus": "波紋"
+    },
+    {
+      "shot": "N02",
+      "time": 4.3,
+      "camera": "RIPPLE",
+      "filename": "N02-02-04.30s.png",
+      "camera_xyz": [
+        -90,
+        -40,
+        2.8
+      ],
+      "yaw_deg": 0,
+      "pitch_deg": -5,
+      "focal_mm": 28,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 3,
+      "edit_end_s": 5.5,
+      "edit_hold_s": 2.5,
+      "narrative_focus": "波紋"
+    },
+    {
+      "shot": "N02",
+      "time": 5.3,
+      "camera": "RIPPLE",
+      "filename": "N02-03-05.30s.png",
+      "camera_xyz": [
+        -90,
+        -40,
+        2.8
+      ],
+      "yaw_deg": 0,
+      "pitch_deg": -5,
+      "focal_mm": 28,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 3,
+      "edit_end_s": 5.5,
+      "edit_hold_s": 2.5,
+      "narrative_focus": "波紋"
+    },
+    {
+      "shot": "N03",
+      "time": 5.7,
+      "camera": "SUB",
+      "filename": "N03-01-05.70s.png",
+      "camera_xyz": [
+        -90,
+        -18,
+        3.2
+      ],
+      "yaw_deg": 0,
+      "pitch_deg": -21,
+      "focal_mm": 55,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 5.5,
+      "edit_end_s": 7.5,
+      "edit_hold_s": 2.0,
+      "narrative_focus": "巨大な正面の影"
+    },
+    {
+      "shot": "N03",
+      "time": 6.2,
+      "camera": "SUB",
+      "filename": "N03-02-06.20s.png",
+      "camera_xyz": [
+        -90,
+        -18,
+        3.2
+      ],
+      "yaw_deg": 0,
+      "pitch_deg": -21,
+      "focal_mm": 55,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 5.5,
+      "edit_end_s": 7.5,
+      "edit_hold_s": 2.0,
+      "narrative_focus": "巨大な正面の影"
+    },
+    {
+      "shot": "N03",
+      "time": 7.1,
+      "camera": "SUB",
+      "filename": "N03-03-07.10s.png",
+      "camera_xyz": [
+        -90,
+        -18,
+        3.2
+      ],
+      "yaw_deg": 0,
+      "pitch_deg": -21,
+      "focal_mm": 55,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 5.5,
+      "edit_end_s": 7.5,
+      "edit_hold_s": 2.0,
+      "narrative_focus": "巨大な正面の影"
+    },
+    {
+      "shot": "N04A",
+      "time": 7.55,
+      "camera": "BREACH_FRONT",
+      "filename": "N04A-01-07.55s.png",
+      "camera_xyz": [
+        -90,
+        -18,
+        3.2
+      ],
+      "yaw_deg": 0,
+      "pitch_deg": -5,
+      "focal_mm": 35,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 7.5,
+      "edit_end_s": 8.1,
+      "edit_hold_s": 0.6,
+      "narrative_focus": "正面・水面突破"
+    },
+    {
+      "shot": "N04A",
+      "time": 7.85,
+      "camera": "BREACH_FRONT",
+      "filename": "N04A-02-07.85s.png",
+      "camera_xyz": [
+        -90,
+        -18,
+        3.2
+      ],
+      "yaw_deg": 0,
+      "pitch_deg": -5,
+      "focal_mm": 35,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 7.5,
+      "edit_end_s": 8.1,
+      "edit_hold_s": 0.6,
+      "narrative_focus": "正面・水面突破"
+    },
+    {
+      "shot": "N04A",
+      "time": 8.05,
+      "camera": "BREACH_FRONT",
+      "filename": "N04A-03-08.05s.png",
+      "camera_xyz": [
+        -90,
+        -18,
+        3.2
+      ],
+      "yaw_deg": 0,
+      "pitch_deg": -5,
+      "focal_mm": 35,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 7.5,
+      "edit_end_s": 8.1,
+      "edit_hold_s": 0.6,
+      "narrative_focus": "正面・水面突破"
+    },
+    {
+      "shot": "N04B",
+      "time": 8.2,
+      "camera": "BREACH_SIDE",
+      "filename": "N04B-01-08.20s.png",
+      "camera_xyz": [
+        -40,
+        -15,
+        5
+      ],
+      "yaw_deg": -93,
+      "pitch_deg": 6,
+      "focal_mm": 33,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 8.1,
+      "edit_end_s": 11,
+      "edit_hold_s": 2.9,
+      "narrative_focus": "斜め側面・全身の浮上"
+    },
+    {
+      "shot": "N04B",
+      "time": 8.85,
+      "camera": "BREACH_SIDE",
+      "filename": "N04B-02-08.85s.png",
+      "camera_xyz": [
+        -40,
+        -15,
+        5
+      ],
+      "yaw_deg": -93,
+      "pitch_deg": 6,
+      "focal_mm": 33,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 8.1,
+      "edit_end_s": 11,
+      "edit_hold_s": 2.9,
+      "narrative_focus": "斜め側面・全身の浮上"
+    },
+    {
+      "shot": "N04B",
+      "time": 9.6,
+      "camera": "BREACH_SIDE",
+      "filename": "N04B-03-09.60s.png",
+      "camera_xyz": [
+        -40,
+        -15,
+        5
+      ],
+      "yaw_deg": -93,
+      "pitch_deg": 6,
+      "focal_mm": 33,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 8.1,
+      "edit_end_s": 11,
+      "edit_hold_s": 2.9,
+      "narrative_focus": "斜め側面・全身の浮上"
+    },
+    {
+      "shot": "N04B",
+      "time": 10.5,
+      "camera": "BREACH_SIDE",
+      "filename": "N04B-04-10.50s.png",
+      "camera_xyz": [
+        -40,
+        -15,
+        5
+      ],
+      "yaw_deg": -93,
+      "pitch_deg": 6,
+      "focal_mm": 33,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 8.1,
+      "edit_end_s": 11,
+      "edit_hold_s": 2.9,
+      "narrative_focus": "斜め側面・全身の浮上"
+    },
+    {
+      "shot": "N05",
+      "time": 11.2,
+      "camera": "APPROACH",
+      "filename": "N05-01-11.20s.png",
+      "camera_xyz": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": -43,
+      "pitch_deg": 20,
+      "focal_mm": 28,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 11,
+      "edit_end_s": 14,
+      "edit_hold_s": 3,
+      "narrative_focus": "岸へ迫る"
+    },
+    {
+      "shot": "N05",
+      "time": 12.5,
+      "camera": "APPROACH",
+      "filename": "N05-02-12.50s.png",
+      "camera_xyz": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": -43,
+      "pitch_deg": 20,
+      "focal_mm": 28,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 11,
+      "edit_end_s": 14,
+      "edit_hold_s": 3,
+      "narrative_focus": "岸へ迫る"
+    },
+    {
+      "shot": "N05",
+      "time": 13.9,
+      "camera": "APPROACH",
+      "filename": "N05-03-13.90s.png",
+      "camera_xyz": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": -43,
+      "pitch_deg": 20,
+      "focal_mm": 28,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 11,
+      "edit_end_s": 14,
+      "edit_hold_s": 3,
+      "narrative_focus": "岸へ迫る"
+    },
+    {
+      "shot": "N06",
+      "time": 14.5,
+      "camera": "B",
+      "filename": "N06-01-14.50s.png",
+      "camera_xyz": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": -60,
+      "pitch_deg": 50,
+      "focal_mm": 16,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 14,
+      "edit_end_s": 18,
+      "edit_hold_s": 4,
+      "narrative_focus": "頭上通過"
+    },
+    {
+      "shot": "N06",
+      "time": 15.5,
+      "camera": "B",
+      "filename": "N06-02-15.50s.png",
+      "camera_xyz": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": -60,
+      "pitch_deg": 50,
+      "focal_mm": 16,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 14,
+      "edit_end_s": 18,
+      "edit_hold_s": 4,
+      "narrative_focus": "頭上通過"
+    },
+    {
+      "shot": "N06",
+      "time": 16.5,
+      "camera": "B",
+      "filename": "N06-03-16.50s.png",
+      "camera_xyz": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": -60,
+      "pitch_deg": 50,
+      "focal_mm": 16,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 14,
+      "edit_end_s": 18,
+      "edit_hold_s": 4,
+      "narrative_focus": "頭上通過"
+    },
+    {
+      "shot": "N06",
+      "time": 17.8,
+      "camera": "B",
+      "filename": "N06-04-17.80s.png",
+      "camera_xyz": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": -60,
+      "pitch_deg": 50,
+      "focal_mm": 16,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 14,
+      "edit_end_s": 18,
+      "edit_hold_s": 4,
+      "narrative_focus": "頭上通過"
+    },
+    {
+      "shot": "N07",
+      "time": 18.2,
+      "camera": "BEHIND",
+      "filename": "N07-01-18.20s.png",
+      "camera_xyz": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": 106,
+      "pitch_deg": 38,
+      "focal_mm": 16,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 18,
+      "edit_end_s": 19.55,
+      "edit_hold_s": 1.55,
+      "narrative_focus": "通過後・安堵"
+    },
+    {
+      "shot": "N07",
+      "time": 18.9,
+      "camera": "BEHIND",
+      "filename": "N07-02-18.90s.png",
+      "camera_xyz": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": 106,
+      "pitch_deg": 38,
+      "focal_mm": 16,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 18,
+      "edit_end_s": 19.55,
+      "edit_hold_s": 1.55,
+      "narrative_focus": "通過後・安堵"
+    },
+    {
+      "shot": "N07",
+      "time": 19.48,
+      "camera": "BEHIND",
+      "filename": "N07-03-19.48s.png",
+      "camera_xyz": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": 106,
+      "pitch_deg": 38,
+      "focal_mm": 16,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 18,
+      "edit_end_s": 19.55,
+      "edit_hold_s": 1.55,
+      "narrative_focus": "通過後・安堵"
+    },
+    {
+      "shot": "N07.5",
+      "time": 19.65,
+      "camera": "MOON_BRIDGE",
+      "filename": "N07-5-01-19.65s.png",
+      "camera_xyz": [
+        -7,
+        -145,
+        6
+      ],
+      "yaw_deg": -14,
+      "pitch_deg": 44,
+      "focal_mm": 25,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 19.55,
+      "edit_end_s": 20.5,
+      "edit_hold_s": 0.95,
+      "narrative_focus": "月光空間インサート"
+    },
+    {
+      "shot": "N07.5",
+      "time": 19.9,
+      "camera": "MOON_BRIDGE",
+      "filename": "N07-5-02-19.90s.png",
+      "camera_xyz": [
+        -7,
+        -145,
+        6
+      ],
+      "yaw_deg": -14,
+      "pitch_deg": 44,
+      "focal_mm": 25,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 19.55,
+      "edit_end_s": 20.5,
+      "edit_hold_s": 0.95,
+      "narrative_focus": "月光空間インサート"
+    },
+    {
+      "shot": "N07.5",
+      "time": 20.4,
+      "camera": "MOON_BRIDGE",
+      "filename": "N07-5-03-20.40s.png",
+      "camera_xyz": [
+        -7,
+        -145,
+        6
+      ],
+      "yaw_deg": -14,
+      "pitch_deg": 44,
+      "focal_mm": 25,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 19.55,
+      "edit_end_s": 20.5,
+      "edit_hold_s": 0.95,
+      "narrative_focus": "月光空間インサート"
+    },
+    {
+      "shot": "N08",
+      "time": 20.55,
+      "camera": "C",
+      "filename": "N08-01-20.55s.png",
+      "camera_xyz": [
+        -7,
+        -145,
+        6.0
+      ],
+      "yaw_deg": -14,
+      "pitch_deg": 26,
+      "focal_mm": 18,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 20.5,
+      "edit_end_s": 26,
+      "edit_hold_s": 5.5,
+      "narrative_focus": "月光接触・自発光"
+    },
+    {
+      "shot": "N08",
+      "time": 21.4,
+      "camera": "C",
+      "filename": "N08-02-21.40s.png",
+      "camera_xyz": [
+        -7,
+        -145,
+        6.0
+      ],
+      "yaw_deg": -13.431845544821481,
+      "pitch_deg": 26,
+      "focal_mm": 18,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 20.5,
+      "edit_end_s": 26,
+      "edit_hold_s": 5.5,
+      "narrative_focus": "月光接触・自発光"
+    },
+    {
+      "shot": "N08",
+      "time": 23.2,
+      "camera": "C",
+      "filename": "N08-03-23.20s.png",
+      "camera_xyz": [
+        -7,
+        -145,
+        6.0
+      ],
+      "yaw_deg": -6.5000000000000115,
+      "pitch_deg": 26,
+      "focal_mm": 18,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 20.5,
+      "edit_end_s": 26,
+      "edit_hold_s": 5.5,
+      "narrative_focus": "月光接触・自発光"
+    },
+    {
+      "shot": "N08",
+      "time": 25.5,
+      "camera": "C",
+      "filename": "N08-04-25.50s.png",
+      "camera_xyz": [
+        -7,
+        -145,
+        6.0
+      ],
+      "yaw_deg": 0.9949433169914172,
+      "pitch_deg": 26,
+      "focal_mm": 18,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 20.5,
+      "edit_end_s": 26,
+      "edit_hold_s": 5.5,
+      "narrative_focus": "月光接触・自発光"
+    },
+    {
+      "shot": "N09",
+      "time": 26.5,
+      "camera": "D",
+      "filename": "N09-01-26.50s.png",
+      "camera_xyz": [
+        29.0,
+        -66.0,
+        4.5
+      ],
+      "yaw_deg": 28,
+      "pitch_deg": 2,
+      "focal_mm": 55,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 26,
+      "edit_end_s": 31,
+      "edit_hold_s": 5,
+      "narrative_focus": "S1基部への反応"
+    },
+    {
+      "shot": "N09",
+      "time": 28.2,
+      "camera": "D",
+      "filename": "N09-02-28.20s.png",
+      "camera_xyz": [
+        29.0,
+        -66.0,
+        4.5
+      ],
+      "yaw_deg": 28,
+      "pitch_deg": 2,
+      "focal_mm": 55,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 26,
+      "edit_end_s": 31,
+      "edit_hold_s": 5,
+      "narrative_focus": "S1基部への反応"
+    },
+    {
+      "shot": "N10",
+      "time": 32.0,
+      "camera": "FLOWERWIDE",
+      "filename": "N10-01-32.00s.png",
+      "camera_xyz": [
+        26,
+        -62,
+        12
+      ],
+      "yaw_deg": 30,
+      "pitch_deg": -5,
+      "focal_mm": 26,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 31,
+      "edit_end_s": 36.5,
+      "edit_hold_s": 5.5,
+      "narrative_focus": "岬の開花"
+    },
+    {
+      "shot": "N10",
+      "time": 35.9,
+      "camera": "FLOWERWIDE",
+      "filename": "N10-02-35.90s.png",
+      "camera_xyz": [
+        26,
+        -62,
+        12
+      ],
+      "yaw_deg": 30,
+      "pitch_deg": -5,
+      "focal_mm": 26,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 31,
+      "edit_end_s": 36.5,
+      "edit_hold_s": 5.5,
+      "narrative_focus": "岬の開花"
+    },
+    {
+      "shot": "N11",
+      "time": 38.4,
+      "camera": "MACRO",
+      "filename": "N11-01-38.40s.png",
+      "camera_xyz": [
+        71.8,
+        7.64,
+        3.42
+      ],
+      "yaw_deg": 29,
+      "pitch_deg": -40,
+      "focal_mm": 80,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 36.5,
+      "edit_end_s": 40,
+      "edit_hold_s": 3.5,
+      "narrative_focus": "五弁と小果実"
+    },
+    {
+      "shot": "N12",
+      "time": 41.5,
+      "camera": "PLUME",
+      "filename": "N12-01-41.50s.png",
+      "camera_xyz": [
+        11,
+        -63,
+        6.0
+      ],
+      "yaw_deg": 42,
+      "pitch_deg": 18,
+      "focal_mm": 24,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 40,
+      "edit_end_s": 43,
+      "edit_hold_s": 3,
+      "narrative_focus": "白金の花雪"
+    },
+    {
+      "shot": "N13",
+      "time": 45,
+      "camera": "E-WIDE",
+      "filename": "N13-01-45.00s.png",
+      "camera_xyz": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": 25,
+      "pitch_deg": 31,
+      "focal_mm": 24,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 43,
+      "edit_end_s": 47,
+      "edit_hold_s": 4,
+      "narrative_focus": "全景"
+    },
+    {
+      "shot": "N14",
+      "time": 47.2,
+      "camera": "E-TELE",
+      "filename": "N14-01-47.20s.png",
+      "camera_xyz": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": 25,
+      "pitch_deg": 25.010875,
+      "focal_mm": 95,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 47,
+      "edit_end_s": 51,
+      "edit_hold_s": 4,
+      "narrative_focus": "自由遊泳"
+    },
+    {
+      "shot": "N14",
+      "time": 50.6,
+      "camera": "E-TELE",
+      "filename": "N14-02-50.60s.png",
+      "camera_xyz": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": 25,
+      "pitch_deg": 26.458,
+      "focal_mm": 95,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 47,
+      "edit_end_s": 51,
+      "edit_hold_s": 4,
+      "narrative_focus": "自由遊泳"
+    },
+    {
+      "shot": "N15",
+      "time": 51.1,
+      "camera": "ASCENT",
+      "filename": "N15-01-51.10s.png",
+      "camera_xyz": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": 25,
+      "pitch_deg": 26,
+      "focal_mm": 35,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 51,
+      "edit_end_s": 57.5,
+      "edit_hold_s": 6.5,
+      "narrative_focus": "裂け目へ上昇"
+    },
+    {
+      "shot": "N15",
+      "time": 54.4,
+      "camera": "ASCENT",
+      "filename": "N15-02-54.40s.png",
+      "camera_xyz": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": 25,
+      "pitch_deg": 26,
+      "focal_mm": 35,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 51,
+      "edit_end_s": 57.5,
+      "edit_hold_s": 6.5,
+      "narrative_focus": "裂け目へ上昇"
+    },
+    {
+      "shot": "N15",
+      "time": 57.2,
+      "camera": "ASCENT",
+      "filename": "N15-03-57.20s.png",
+      "camera_xyz": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": 25,
+      "pitch_deg": 26,
+      "focal_mm": 35,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 51,
+      "edit_end_s": 57.5,
+      "edit_hold_s": 6.5,
+      "narrative_focus": "裂け目へ上昇"
+    },
+    {
+      "shot": "N16",
+      "time": 58,
+      "camera": "F",
+      "filename": "N16-01-58.00s.png",
+      "camera_xyz": [
+        -10,
+        -108,
+        5
+      ],
+      "yaw_deg": 0,
+      "pitch_deg": 28,
+      "focal_mm": 50,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 57.5,
+      "edit_end_s": 64,
+      "edit_hold_s": 6.5,
+      "narrative_focus": "裂け目から退場"
+    },
+    {
+      "shot": "N16",
+      "time": 62,
+      "camera": "F",
+      "filename": "N16-02-62.00s.png",
+      "camera_xyz": [
+        -10,
+        -108,
+        5
+      ],
+      "yaw_deg": 0,
+      "pitch_deg": 28,
+      "focal_mm": 50,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 57.5,
+      "edit_end_s": 64,
+      "edit_hold_s": 6.5,
+      "narrative_focus": "裂け目から退場"
+    },
+    {
+      "shot": "N16",
+      "time": 63.8,
+      "camera": "F",
+      "filename": "N16-03-63.80s.png",
+      "camera_xyz": [
+        -10,
+        -108,
+        5
+      ],
+      "yaw_deg": 0,
+      "pitch_deg": 28,
+      "focal_mm": 50,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 57.5,
+      "edit_end_s": 64,
+      "edit_hold_s": 6.5,
+      "narrative_focus": "裂け目から退場"
+    },
+    {
+      "shot": "N17",
+      "time": 67,
+      "camera": "A",
+      "filename": "N17-01-67.00s.png",
+      "camera_xyz": [
+        -18,
+        -93,
+        3
+      ],
+      "yaw_deg": -24,
+      "pitch_deg": 18.5,
+      "focal_mm": 18,
+      "status": "PROVISIONAL; NOT AUTHOR APPROVED",
+      "edit_start_s": 64,
+      "edit_end_s": 70,
+      "edit_hold_s": 6,
+      "narrative_focus": "湖の余韻"
+    }
+  ],
+  "timing_candidates": [
+    {
+      "id": "70s_REBALANCED",
+      "total_s": 70,
+      "N04A": [
+        7.5,
+        8.1
+      ],
+      "N04B": [
+        8.1,
+        11
+      ],
+      "N07": [
+        18,
+        19.55
+      ],
+      "N07.5": [
+        19.55,
+        20.5
+      ],
+      "N08": [
+        20.5,
+        26
+      ],
+      "note": "Strictly unchanged source trajectory / lighting event time. N07 loses 0.95 seconds; compare relief."
+    },
+    {
+      "id": "71.5s_PROPOSAL_ONLY",
+      "total_s": 71.5,
+      "N07": [
+        18,
+        20.0
+      ],
+      "N07.5": [
+        20.0,
+        21.0
+      ],
+      "N08": [
+        21.0,
+        27.0
+      ],
+      "note": "Concept only; needs trajectory+moon-contact retime after the bridge, and all downstream offsets. NOT rendered, NOT verified."
+    }
+  ],
+  "qa": {
+    "shot_count": 19,
+    "keyframe_count": 47,
+    "timeline_contiguous": true,
+    "n04a_camera_const": true,
+    "n04b_camera_const": true,
+    "n07_5_camera_const": true,
+    "n01_n17_camera_equal": true,
+    "n08_source_unchanged": true,
+    "whale_continuity_samples": [
+      {
+        "time_s": 7.1,
+        "center_xyz_m": [
+          -90.0,
+          9.254,
+          -6.508
+        ],
+        "speed_m_per_s": 10.915
+      },
+      {
+        "time_s": 7.5,
+        "center_xyz_m": [
+          -90.0,
+          5.0,
+          -5.0
+        ],
+        "speed_m_per_s": 11.587
+      },
+      {
+        "time_s": 7.85,
+        "center_xyz_m": [
+          -90.0,
+          1.065,
+          -2.555
+        ],
+        "speed_m_per_s": 14.259
+      },
+      {
+        "time_s": 8.1,
+        "center_xyz_m": [
+          -90.0,
+          -1.854,
+          -0.611
+        ],
+        "speed_m_per_s": 13.423
+      },
+      {
+        "time_s": 8.2,
+        "center_xyz_m": [
+          -90.0,
+          -3.0,
+          0.0
+        ],
+        "speed_m_per_s": 12.526
+      },
+      {
+        "time_s": 9,
+        "center_xyz_m": [
+          -90.0,
+          -12.0,
+          3.0
+        ],
+        "speed_m_per_s": 11.338
+      },
+      {
+        "time_s": 11,
+        "center_xyz_m": [
+          -89.385,
+          -30.655,
+          15.807
+        ],
+        "speed_m_per_s": 12.367
+      },
+      {
+        "time_s": 18,
+        "center_xyz_m": [
+          -49.583,
+          -88.442,
+          16.0
+        ],
+        "speed_m_per_s": 8.031
+      },
+      {
+        "time_s": 19.55,
+        "center_xyz_m": [
+          -39.371,
+          -92.22,
+          20.43
+        ],
+        "speed_m_per_s": 7.21
+      },
+      {
+        "time_s": 19.9,
+        "center_xyz_m": [
+          -37.215,
+          -92.882,
+          21.437
+        ],
+        "speed_m_per_s": 6.729
+      },
+      {
+        "time_s": 20.5,
+        "center_xyz_m": [
+          -33.907,
+          -93.604,
+          23.213
+        ],
+        "speed_m_per_s": 6.309
+      }
+    ],
+    "limits": [
+      "No optical water refraction or 3D water impact",
+      "Moon aperture is a thin 2D proxy, not real occlusion",
+      "Body mesh is not WH-01",
+      "N07.5 is a fixed cutaway, not an extra camera movement",
+      "N16 remains incomplete: tail exit NOT demonstrated",
+      "Still frames do not prove edit comfort"
+    ]
+  }
+}
