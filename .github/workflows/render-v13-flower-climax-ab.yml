@@ -1,0 +1,61 @@
+name: Render flowering climax A-B from original v12.5 whale
+on:
+  push:
+    branches:
+      - previs/v13-25shot-from-v125-20261122
+    paths:
+      - .github/workflows/render-v13-flower-climax-ab.yml
+      - dm/episode-01/ending/current/previs/v13-25shot-experiment/ruosuen_flower_showcase_ab.py
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  render-climax:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install numerical lowpoly renderer dependencies
+        run: |
+          python -m pip install --disable-pip-version-check numpy Pillow
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk ffmpeg
+      - name: Run two editorial versions with identical original geometry
+        working-directory: dm/episode-01/ending/current/previs/v13-25shot-experiment
+        run: |
+          python ruosuen_flower_showcase_ab.py --out rendered-climax --start 26 --end 54 --fps 8
+      - name: Verify 28-second moving A/B
+        working-directory: dm/episode-01/ending/current/previs/v13-25shot-experiment
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,subprocess
+          p=Path('rendered-climax/compare_showcase_26-54s.mp4')
+          assert p.exists()
+          j=json.loads(subprocess.check_output([
+              'ffprobe','-v','error','-select_streams','v:0',
+              '-show_entries','stream=nb_frames,width,height,r_frame_rate,duration',
+              '-of','json',str(p)]))['streams'][0]
+          assert int(j['nb_frames'])==224
+          assert j['width']==1280 and j['height']==440 and j['r_frame_rate']=='8/1'
+          qa=json.loads(Path('rendered-climax/flower_showcase_comparison_QA.json').read_text())
+          assert qa['shared_absolute_time_and_whale_pose'] is True
+          assert qa['A_whale_snow_seconds']==8 and qa['B_whale_snow_seconds']==11
+          print('PASS: original whales, common flower visuals, A/B cut timing, 224 frames',flush=True)
+          PY
+      - name: Keep both versions and diagnostics as workflow artifact (DM only)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ruosuen-v13-climax-flowers-8s-vs-11s
+          path: |
+            dm/episode-01/ending/current/previs/v13-25shot-experiment/rendered-climax/*.mp4
+            dm/episode-01/ending/current/previs/v13-25shot-experiment/rendered-climax/*.png
+            dm/episode-01/ending/current/previs/v13-25shot-experiment/rendered-climax/*.json
+            dm/episode-01/ending/current/previs/v13-25shot-experiment/ruosuen_flower_showcase_ab.py
+          if-no-files-found: warn

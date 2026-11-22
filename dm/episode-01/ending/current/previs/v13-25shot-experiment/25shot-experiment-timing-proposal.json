@@ -1,0 +1,261 @@
+{
+  "project": "D&D Ruosuen / 空に降る雪",
+  "version": "v13 25-shot experimental camera-cut proposal",
+  "status": "proposal_for_author_review",
+  "production_source": "GitHub main v12.5 B (PR #39); ruosuen_v12_5_cut_compare.py and unchanged imported renderer",
+  "author_approved_19cut": true,
+  "author_approved_25cut": false,
+  "baseline_shots": 19,
+  "experimental_shots": 25,
+  "new_shot_count": 6,
+  "timing_mode": "Same fixed world time 0–70s; cut ownership only is split; no pose(t) remapping; no shared scene or render rewrite",
+  "duration_s": 70,
+  "camera_values_locked": false,
+  "cuts": [
+    {
+      "id": "N01",
+      "start_s": 0,
+      "end_s": 3,
+      "duration_s": 3,
+      "camera": "A",
+      "added": false
+    },
+    {
+      "id": "N02",
+      "start_s": 3,
+      "end_s": 5.5,
+      "duration_s": 2.5,
+      "camera": "RIPPLE",
+      "added": false
+    },
+    {
+      "id": "N03",
+      "start_s": 5.5,
+      "end_s": 7.5,
+      "duration_s": 2,
+      "camera": "SUB",
+      "added": false
+    },
+    {
+      "id": "N04A",
+      "start_s": 7.5,
+      "end_s": 9.05,
+      "duration_s": 1.55,
+      "camera": "BREACH_FRONT",
+      "added": false
+    },
+    {
+      "id": "N04B",
+      "start_s": 9.05,
+      "end_s": 10.35,
+      "duration_s": 1.3,
+      "camera": "BREACH_THREEQ",
+      "added": false
+    },
+    {
+      "id": "N04.5",
+      "start_s": 10.35,
+      "end_s": 11,
+      "duration_s": 0.65,
+      "camera": null,
+      "added": true,
+      "design": {
+        "purpose": "N04B→N05の巨体スケール・湖岸の位置関係",
+        "camera_intent": "進行軸の同じ側、鯨の胴体と岸の岩を同時にフレームに入れる",
+        "pass": "頭・胴体の連続性と空間の距離を失わない",
+        "reject": "追加によって圧迫感が弱まり、さらにジャンプカットが増える"
+      }
+    },
+    {
+      "id": "N05",
+      "start_s": 11,
+      "end_s": 13.15,
+      "duration_s": 2.15,
+      "camera": "APPROACH",
+      "added": false
+    },
+    {
+      "id": "N05.5",
+      "start_s": 13.15,
+      "end_s": 14,
+      "duration_s": 0.85,
+      "camera": null,
+      "added": true,
+      "design": {
+        "purpose": "N05→N06の固定PC側B視点への視線接続",
+        "camera_intent": "Bに近い撮影位置から少し低い仰角で頭部の頭上への入り方を見せる",
+        "pass": "同じ鯨が観客のほぼ真上を通ると理解できる",
+        "reject": "N06の初見の驚きを先に消費する"
+      }
+    },
+    {
+      "id": "N06",
+      "start_s": 14,
+      "end_s": 18,
+      "duration_s": 4,
+      "camera": "B",
+      "added": false
+    },
+    {
+      "id": "N07",
+      "start_s": 18,
+      "end_s": 19.45,
+      "duration_s": 1.45,
+      "camera": "BEHIND",
+      "added": false
+    },
+    {
+      "id": "N07.5",
+      "start_s": 19.45,
+      "end_s": 20.5,
+      "duration_s": 1.05,
+      "camera": "MOON_ESTABLISH",
+      "added": false
+    },
+    {
+      "id": "N08",
+      "start_s": 20.5,
+      "end_s": 26,
+      "duration_s": 5.5,
+      "camera": "C",
+      "added": false
+    },
+    {
+      "id": "N08.5",
+      "start_s": 26,
+      "end_s": 26.8,
+      "duration_s": 0.8,
+      "camera": null,
+      "added": true,
+      "design": {
+        "purpose": "月光に触れた鯨の自発光が成熟S1群落に届く原因と結果",
+        "camera_intent": "S1成熟蕾を中近景、空の発光鯨を遠景に置く固定カメラ",
+        "pass": "S1が鯨に照らされて咲くと見える／鯨の逆走感が出ない",
+        "reject": "説明的な光線で魔法設定を改変する・N09と重複"
+      }
+    },
+    {
+      "id": "N09",
+      "start_s": 26.8,
+      "end_s": 31,
+      "duration_s": 4.2,
+      "camera": "D",
+      "added": false
+    },
+    {
+      "id": "N10",
+      "start_s": 31,
+      "end_s": 36.5,
+      "duration_s": 5.5,
+      "camera": "FLOWERWIDE",
+      "added": false
+    },
+    {
+      "id": "N10.5",
+      "start_s": 36.5,
+      "end_s": 37.3,
+      "duration_s": 0.8,
+      "camera": null,
+      "added": true,
+      "design": {
+        "purpose": "岬全体の開花から一輪の五弁・果実への空間とサイズ接続",
+        "camera_intent": "S1群落の中景・同じ植物上で寄りすぎない固定カメラ",
+        "pass": "N11接写が同じ群落を見ていると理解できる",
+        "reject": "美しいホールドを削り、花の接写が過多になる"
+      }
+    },
+    {
+      "id": "N11",
+      "start_s": 37.3,
+      "end_s": 40,
+      "duration_s": 2.7,
+      "camera": "MACRO",
+      "added": false
+    },
+    {
+      "id": "N12",
+      "start_s": 40,
+      "end_s": 43,
+      "duration_s": 3,
+      "camera": "PLUME",
+      "added": false
+    },
+    {
+      "id": "N13",
+      "start_s": 43,
+      "end_s": 47,
+      "duration_s": 4,
+      "camera": "E-WIDE",
+      "added": false
+    },
+    {
+      "id": "N14",
+      "start_s": 47,
+      "end_s": 51,
+      "duration_s": 4,
+      "camera": "E-TELE",
+      "added": false
+    },
+    {
+      "id": "N14.5",
+      "start_s": 51,
+      "end_s": 51.85,
+      "duration_s": 0.85,
+      "camera": null,
+      "added": true,
+      "design": {
+        "purpose": "自由遊泳→裂け目への旅立ちで起きるeye traceの跳躍を減らす",
+        "camera_intent": "鯨と非対称裂け目の両方を入れ、動線を先に示す固定画",
+        "pass": "N14終端からN15導入へ視線が自然に移る",
+        "reject": "鯨の自由遊泳の余韻を奪う"
+      }
+    },
+    {
+      "id": "N15",
+      "start_s": 51.85,
+      "end_s": 56.6,
+      "duration_s": 4.75,
+      "camera": "ASCENT",
+      "added": false
+    },
+    {
+      "id": "N15.5",
+      "start_s": 56.6,
+      "end_s": 57.5,
+      "duration_s": 0.9,
+      "camera": null,
+      "added": true,
+      "design": {
+        "purpose": "N15→N16の進入角度・全身クリアランスを見える化",
+        "camera_intent": "斜め後方で吻から尾・胸びれと裂け目入口を同時に観察する固定画",
+        "pass": "尾と胸びれの進行方向が理解できる／不合格の遮蔽を隠さない",
+        "reject": "裂け目が通れる錯覚だけ作り、物理的問題を見逃す"
+      }
+    },
+    {
+      "id": "N16",
+      "start_s": 57.5,
+      "end_s": 64,
+      "duration_s": 6.5,
+      "camera": "F",
+      "added": false
+    },
+    {
+      "id": "N17",
+      "start_s": 64,
+      "end_s": 70,
+      "duration_s": 6,
+      "camera": "A",
+      "added": false
+    }
+  ],
+  "quality_gates": [
+    "All remaining 19-cut shots, when active at identical world time, must reproduce original PNG frame pixels",
+    "All 25 cuts continuous 0..70 seconds without overlap/gap",
+    "One shared v12.5 whale path; no special reposition on cut points",
+    "All 6 provisional camera angles share original scene coordinates; no second whale or fake terrain",
+    "One moving A/B side-by-side 19 vs 25 at same clock time; per-cut motion not static still",
+    "Unresolved N06 actor clearance, N08 occlusion, N16 entire-tail exit still explicitly not passed",
+    "Pages not updated; baseline 19 and source originals preserved"
+  ]
+}

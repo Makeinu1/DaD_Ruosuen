@@ -1,0 +1,76 @@
+name: Render v13 19-vs-25 using original v12.5 Python
+on:
+  push:
+    branches:
+      - previs/v13-25shot-from-v125-20261122
+    paths:
+      - .github/workflows/render-v13-original19-vs-25.yml
+      - dm/episode-01/ending/current/previs/v13-25shot-experiment/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  motion-comparison:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Prepare matching original renderer dependencies
+        run: |
+          python -m pip install --disable-pip-version-check numpy Pillow
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk ffmpeg
+      - name: Confirm exact original v12.5 code still present
+        working-directory: dm/episode-01/ending/current/previs/v12-lowpoly-v12.5-cut-test
+        run: |
+          test -f ruosuen_story_previs.py
+          test -f ruosuen_v12_camera_revision.py
+          test -f ruosuen_v12_4_front_axis.py
+          test -f ruosuen_v12_5_cut_compare.py
+          sha256sum ruosuen*.py
+      - name: Render unmodified-19 vs 25 time-matched animated comparison
+        working-directory: dm/episode-01/ending/current/previs/v13-25shot-experiment
+        run: |
+          python render_19_vs_25_from_original.py --out ./rendered-artifacts --fps 8
+      - name: Verify output frame counts and original scene inheritance
+        working-directory: dm/episode-01/ending/current/previs/v13-25shot-experiment
+        run: |
+          python - <<'PY'
+          import json, subprocess
+          from pathlib import Path
+          out=Path('rendered-artifacts')
+          j=json.loads((out/'camera_qa_25.json').read_text())
+          assert j['original_cuts']==19 and j['new_cuts']==25
+          assert len(j['original_pixel_digests'])==12
+          assert len(j['insert_motion_changed_fraction'])==6
+          assert all(mae==0 for mae in j['saved_original_keyframe_mae'].values())
+          for path in sorted(out.glob('*.mp4')):
+            stream=json.loads(subprocess.check_output(
+                ['ffprobe','-v','error','-show_entries','stream=nb_frames,width,height,r_frame_rate',
+                 '-select_streams','v:0','-of','json',str(path)]))['streams'][0]
+            assert stream['width']==1280 and stream['height']==432
+            if 'FULL_70s' in path.name: assert int(stream['nb_frames'])==560
+            print('VERIFIED VIDEO',path.name,stream,flush=True)
+          print('PASS: 19 original pixels, 6 insert motion and side-by-side MP4 verified',flush=True)
+          PY
+      - name: Save comparison videos, contact sheet and audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ruosuen-original-v125-19-vs-25-animated
+          path: |
+            dm/episode-01/ending/current/previs/v13-25shot-experiment/rendered-artifacts/*.mp4
+            dm/episode-01/ending/current/previs/v13-25shot-experiment/rendered-artifacts/*.png
+            dm/episode-01/ending/current/previs/v13-25shot-experiment/rendered-artifacts/*.json
+            dm/episode-01/ending/current/previs/v13-25shot-experiment/render_19_vs_25_from_original.py
+            dm/episode-01/ending/current/previs/v13-25shot-experiment/25shot-experiment-timing-proposal.json
+            dm/episode-01/ending/current/previs/v12-lowpoly-v12.5-cut-test/ruosuen_story_previs.py
+            dm/episode-01/ending/current/previs/v12-lowpoly-v12.5-cut-test/ruosuen_v12_camera_revision.py
+            dm/episode-01/ending/current/previs/v12-lowpoly-v12.5-cut-test/ruosuen_v12_4_front_axis.py
+            dm/episode-01/ending/current/previs/v12-lowpoly-v12.5-cut-test/ruosuen_v12_5_cut_compare.py
+          if-no-files-found: warn
