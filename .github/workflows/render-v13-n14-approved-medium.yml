@@ -1,0 +1,103 @@
+name: Render and preserve N14 approved medium whale previs
+
+on:
+  push:
+    branches:
+      - previs/v13-25shot-from-v125-20261122
+    paths:
+      - .github/workflows/render-v13-n14-approved-medium.yml
+      - dm/episode-01/ending/current/previs/v13-25shot-experiment/ruosuen_n14_approved_medium.py
+      - dm/episode-01/ending/current/previs/v13-25shot-experiment/ruosuen_whale_natural_swim_comparison.py
+      - dm/episode-01/ending/current/previs/v13-25shot-experiment/ruosuen_flower_snow_B_vs_B2.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: n14-approved-medium-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  preserve-n14:
+    if: github.repository == 'Makeinu1/DaD_Ruosuen'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Check out original v12.5 plus N14 experimental sources
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+
+      - name: Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install lowpoly renderer and video tools
+        run: |
+          python -m pip install --disable-pip-version-check numpy Pillow
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk ffmpeg
+
+      - name: Render author-approved N14 medium framing and retain original v12.5 baseline
+        working-directory: dm/episode-01/ending/current/previs/v13-25shot-experiment
+        run: |
+          python ruosuen_n14_approved_medium.py \
+            --out artifacts/N14-approved-medium --fps 8
+
+      - name: Confirm complete 6-second 16:9 MP4 and PNG outputs
+        working-directory: dm/episode-01/ending/current/previs/v13-25shot-experiment
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json, subprocess
+          root=Path('artifacts/N14-approved-medium')
+          for name in ['N14-natural-glide-approved-medium-45-51s.mp4',
+                       'N14-size-comparison-45-51s.mp4']:
+              p=root/name
+              assert p.is_file() and p.stat().st_size>40000, name
+              stream=json.loads(subprocess.check_output([
+                  'ffprobe','-v','error','-select_streams','v:0',
+                  '-show_entries','stream=width,height,nb_frames,r_frame_rate,duration',
+                  '-of','json',str(p)]))['streams'][0]
+              assert (stream['width'],stream['height'])==(1280,720),stream
+              assert stream['nb_frames']=='48',stream
+              assert stream['r_frame_rate']=='8/1',stream
+              assert abs(float(stream['duration'])-6.)<.001,stream
+              print('PASS:',name,stream,flush=True)
+          for name in ['N14-natural-glide-approved-medium-48s.png',
+                       'N14-size-comparison-48s.png',
+                       'N14-approved-medium-QA.json']:
+              assert (root/name).is_file(),name
+          qa=json.loads((root/'N14-approved-medium-QA.json').read_text())
+          assert qa['author_approved_on_2026_11_22']['size']=='slightly larger / 少し大きい'
+          print('PASS: approved medium, original v12.5 geometry and N14 6-second video')
+          PY
+
+      - name: Preserve generated MP4/PNG/QA under DM-only repository path
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f dm/episode-01/ending/current/previs/v13-25shot-experiment/artifacts/N14-approved-medium
+          if git diff --cached --quiet; then
+            echo "No generated changes to commit"
+          else
+            git commit -m "assets(previs): preserve adopted N14 natural-stroke medium preview [skip ci]"
+            git push origin "HEAD:$GITHUB_REF_NAME"
+          fi
+
+      - name: Keep video and diagnostics as downloadable GitHub Actions artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ruosuen-N14-natural-stroke-approved-medium
+          path: |
+            dm/episode-01/ending/current/previs/v13-25shot-experiment/artifacts/N14-approved-medium/*.mp4
+            dm/episode-01/ending/current/previs/v13-25shot-experiment/artifacts/N14-approved-medium/*.png
+            dm/episode-01/ending/current/previs/v13-25shot-experiment/artifacts/N14-approved-medium/*.json
+            dm/episode-01/ending/current/previs/v13-25shot-experiment/ruosuen_n14_approved_medium.py
+            dm/episode-01/ending/current/previs/v13-25shot-experiment/ruosuen_whale_natural_swim_comparison.py
+            dm/episode-01/ending/current/previs/v13-25shot-experiment/ruosuen_flower_snow_B_vs_B2.py
+          if-no-files-found: error
