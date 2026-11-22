@@ -1,0 +1,592 @@
+{
+  "title": "Episode01 Ending v12.1 director redraw review",
+  "status": "PROPOSED refinements (2026-11-22); v12 author's provisional agreement preserved, exact edit/camera needs preview approval",
+  "targetSeconds": 70,
+  "shots": [
+    {
+      "id": "N01",
+      "start": 0,
+      "end": 3,
+      "duration": 3,
+      "title": "安堵の継承／静かな地底湖",
+      "emotion": "安堵",
+      "camera": "固定 A（N17と完全一致）",
+      "oldIds": [
+        "C01"
+      ],
+      "ideal": "月、P0の若い一輪、ほぼ暗い湖。任務達成の安堵を卓から引き継ぐ。",
+      "gap": "旧Aカメラと新18mm候補の位置が異なる。P0・小さな月・裂け目の共通形状・N17との背景完全一致を検証。",
+      "priority": "高",
+      "imageReferences": [
+        {
+          "oldId": "C01",
+          "urlOrRelativePath": "../v8/keyframe-test/results/C01-C16-2026-11-22/originals/C01.png",
+          "authorStatus": "作者採用／提出PNGと採用画像の同一性未照合",
+          "inThisBranch": true
+        }
+      ],
+      "redrawDirection": {
+        "framing": "P0・湖・小月を抑制的に描き、卓で得た安堵を受け取る",
+        "camera": "固定A／冒頭終幕の同一母版",
+        "continuity": "静かな水滴からN02の波紋へ",
+        "review": "P0を花依頼専用の達成演出にしない"
+      }
+    },
+    {
+      "id": "N02",
+      "start": 3,
+      "end": 5.5,
+      "duration": 2.5,
+      "title": "異変／波紋",
+      "emotion": "違和感",
+      "camera": "固定・低い湖面視点",
+      "oldIds": [
+        "C02",
+        "C02.5"
+      ],
+      "ideal": "水面の小さな異常から円い波紋が広がる。",
+      "gap": "A/B2原画の実体・承認対応未照合。水面の光・距離感がN01と続くこと。",
+      "priority": "中",
+      "imageReferences": [
+        {
+          "oldId": "C02",
+          "urlOrRelativePath": "../v8/keyframe-test/results/C01-C16-2026-11-22/originals/C02.png",
+          "authorStatus": "作者採用A/B対応未照合",
+          "inThisBranch": true
+        },
+        {
+          "oldId": "C02.5",
+          "urlOrRelativePath": "../v8/keyframe-test/results/C01-C16-2026-11-22/originals/C02.5.png",
+          "authorStatus": "追加候補・A/B対応未照合",
+          "inThisBranch": true
+        }
+      ],
+      "redrawDirection": {
+        "framing": "月光に映る波紋一つだけを主役にする",
+        "camera": "固定／水面低位置",
+        "continuity": "波紋と低音をN03の影へ先行させる",
+        "review": "C02/C02.5採用原画対応未照合"
+      }
+    },
+    {
+      "id": "N03",
+      "start": 5.5,
+      "end": 7.5,
+      "duration": 2,
+      "title": "水面下の巨大な影",
+      "emotion": "不安",
+      "camera": "固定・岸側の暗い視点",
+      "oldIds": [
+        "C03"
+      ],
+      "ideal": "全貌を示さず、巨大な影だけを湖面下で見せる。",
+      "gap": "旧水中影を新しい湖→岸への進行方向へ合わせ、背中の早期水面突出を防ぐ。",
+      "priority": "中",
+      "imageReferences": [
+        {
+          "oldId": "C03",
+          "urlOrRelativePath": "https://raw.githubusercontent.com/Makeinu1/DaD_Ruosuen/b0322124b9bedf5e3233934d4879148bac671d53/dm/episode-01/ending/v8/keyframe-test/results/C03-C08-2026-11-21/C03.png",
+          "authorStatus": "作者確定／PR27固定SHA",
+          "inThisBranch": false
+        }
+      ],
+      "redrawDirection": {
+        "framing": "巨大な影は水面下、形と全身を隠す",
+        "camera": "固定／暗い岸側",
+        "continuity": "影が水を割る方向をN04へ繋ぐ",
+        "review": "E01=6.5sの浮上を映さない遮蔽が必要"
+      }
+    },
+    {
+      "id": "N04",
+      "start": 7.5,
+      "end": 11,
+      "duration": 3.5,
+      "title": "浮上／水幕と巨体",
+      "emotion": "驚愕",
+      "camera": "固定・水面を低く見る",
+      "oldIds": [
+        "C04"
+      ],
+      "ideal": "巨大な身体が水を割り、水幕を落とす。非発光で威嚇しない。",
+      "gap": "以前の浮上の月光・位置は旧案。今回の陸地側光路ではまだ受光せず、濡れ肌の反射のみ。",
+      "priority": "中",
+      "imageReferences": [
+        {
+          "oldId": "C04",
+          "urlOrRelativePath": "https://raw.githubusercontent.com/Makeinu1/DaD_Ruosuen/b0322124b9bedf5e3233934d4879148bac671d53/dm/episode-01/ending/v8/keyframe-test/results/C03-C08-2026-11-21/C04.png",
+          "authorStatus": "作者確定／PR27固定SHA",
+          "inThisBranch": false
+        }
+      ],
+      "redrawDirection": {
+        "framing": "濡れた巨体と水幕、光源は月の反射だけ",
+        "camera": "固定／低い湖面",
+        "continuity": "水の落下音→N05の空中音へ",
+        "review": "攻撃的な牙・咆哮・早期自発光なし"
+      }
+    },
+    {
+      "id": "N05",
+      "start": 11,
+      "end": 14,
+      "duration": 3,
+      "title": "離水／岸に迫る",
+      "emotion": "警戒上昇",
+      "camera": "固定・地上からの別角度",
+      "oldIds": [
+        "C05",
+        "C06"
+      ],
+      "ideal": "鯨が浮き上がり、自分たちに近づく。編集で距離を省略する。",
+      "gap": "旧上昇画や接近画の視点では新R70m陸側円弧と位置関係が異なる。全身を早く見せ切らない。",
+      "priority": "高",
+      "imageReferences": [
+        {
+          "oldId": "C05",
+          "urlOrRelativePath": "https://raw.githubusercontent.com/Makeinu1/DaD_Ruosuen/b0322124b9bedf5e3233934d4879148bac671d53/dm/episode-01/ending/v8/keyframe-test/results/C03-C08-2026-11-21/C05.png",
+          "authorStatus": "作者確定／PR27固定SHA",
+          "inThisBranch": false
+        },
+        {
+          "oldId": "C06",
+          "urlOrRelativePath": "https://raw.githubusercontent.com/Makeinu1/DaD_Ruosuen/b0322124b9bedf5e3233934d4879148bac671d53/dm/episode-01/ending/v8/keyframe-test/results/C03-C08-2026-11-21/C06.png",
+          "authorStatus": "作者確定／PR27固定SHA",
+          "inThisBranch": false
+        }
+      ],
+      "redrawDirection": {
+        "framing": "浮いた鯨が岸へ接近、全貌はまだ明かさない",
+        "camera": "固定／岸・横からの別角度",
+        "continuity": "N06のB眼高へ進行方向と音響を接続",
+        "review": "接近は自然な泳ぎ、急停止・急加速なし"
+      }
+    },
+    {
+      "id": "N06",
+      "start": 14,
+      "end": 18,
+      "duration": 4,
+      "title": "ほぼ真上の巨大な通過",
+      "emotion": "緊張の頂点",
+      "camera": "固定 B：PC眼高・16mm・仰角50°候補",
+      "oldIds": [
+        "C07",
+        "C06"
+      ],
+      "ideal": "巨大頭部・腹・胸びれの一部が画面を覆い、自然に通過。フルシルエットは見せない。",
+      "gap": "旧C07は巨大顔の近接、旧C06は接近。新軌道の見上げ角約88.8°と完全に合う原画はない。**新しいB画角の原画が必要**。一瞥を強制しない。",
+      "priority": "最優先",
+      "imageReferences": [
+        {
+          "oldId": "C07",
+          "urlOrRelativePath": "https://raw.githubusercontent.com/Makeinu1/DaD_Ruosuen/b0322124b9bedf5e3233934d4879148bac671d53/dm/episode-01/ending/v8/keyframe-test/results/C03-C08-2026-11-21/C07.png",
+          "authorStatus": "作者確定／PR27固定SHA",
+          "inThisBranch": false
+        },
+        {
+          "oldId": "C06",
+          "urlOrRelativePath": "https://raw.githubusercontent.com/Makeinu1/DaD_Ruosuen/b0322124b9bedf5e3233934d4879148bac671d53/dm/episode-01/ending/v8/keyframe-test/results/C03-C08-2026-11-21/C06.png",
+          "authorStatus": "作者確定／PR27固定SHA",
+          "inThisBranch": false
+        }
+      ],
+      "redrawDirection": {
+        "framing": "鯨の頭・腹・胸びれの断片が真上を通り抜ける",
+        "camera": "**固定B／16mm・PC眼高**、体はフレームを超える",
+        "continuity": "E04=14.5→E05=16.5→E06=18、風圧音をN07へ",
+        "review": "Bから月は屋根に遮られる。3Dの頭と岩・PC安全距離未確認"
+      }
+    },
+    {
+      "id": "N07",
+      "start": 18,
+      "end": 20.5,
+      "duration": 2.5,
+      "title": "通過後／攻撃しなかった",
+      "emotion": "不安が緩む",
+      "camera": "固定・岸からの切り返し",
+      "oldIds": [
+        "C10"
+      ],
+      "ideal": "鯨の尾が横切り、何もせず進んでいく。観客の認識を少し変える。",
+      "gap": "旧C10は遠ざかる背中の参考だけ。冒険者の頭上を通過したことが分かる新しい空間・鯨の向きの画が必要。",
+      "priority": "最優先",
+      "imageReferences": [
+        {
+          "oldId": "C10",
+          "urlOrRelativePath": "../v8/keyframe-test/results/C01-C16-2026-11-22/originals/C11.png",
+          "authorStatus": "旧保存名C11.png・作者はC10に割当",
+          "inThisBranch": true
+        }
+      ],
+      "redrawDirection": {
+        "framing": "巨大な尾が抜け、何事もなく進む。観客が襲撃を諦める",
+        "camera": "固定／陸地側切り返し",
+        "continuity": "N08の月光へ繋げるが別の岸カメラをPC視点と呼ばない",
+        "review": "安心と神秘を1秒で同時に説明しない"
+      }
+    },
+    {
+      "id": "N08",
+      "start": 20.5,
+      "end": 26,
+      "duration": 5.5,
+      "title": "陸地の月光／鯨が自ら輝く",
+      "emotion": "畏敬への反転",
+      "camera": "**緩い右パン C**：約15°/4〜5秒、18mm・仰角40°候補",
+      "oldIds": [
+        "C10",
+        "C11",
+        "C11.5"
+      ],
+      "ideal": "陸地上空で頭の縁→吻先→全身、自然月光への受光から自発光へ。",
+      "gap": "旧C11は旧光路の発光画。**陸地上空の受光・小さな月・頭→尾の光の順序**へ修正し、パン中の鯨の造形と背景を維持。",
+      "priority": "最優先",
+      "imageReferences": [
+        {
+          "oldId": "C10",
+          "urlOrRelativePath": "../v8/keyframe-test/results/C01-C16-2026-11-22/originals/C11.png",
+          "authorStatus": "旧保存名C11.png・作者はC10に割当",
+          "inThisBranch": true
+        },
+        {
+          "oldId": "C11",
+          "urlOrRelativePath": "../v8/keyframe-test/results/C11-C19-2026-11-21/selected/C11.png",
+          "authorStatus": "11/21暫定採用",
+          "inThisBranch": true
+        },
+        {
+          "oldId": "C11.5",
+          "urlOrRelativePath": "../v8/keyframe-test/results/C11-C19-2026-11-21/selected/C11_5.png",
+          "authorStatus": "11/21暫定採用",
+          "inThisBranch": true
+        }
+      ],
+      "redrawDirection": {
+        "framing": "月光が吻先へ触れ、鯨内部の光が尾まで広がる",
+        "camera": "**Cパン約15°／5.5秒内の4〜5秒**、地上18mm・仰角40°候補",
+        "continuity": "受光20.93s→吻先21.17s→尾24.59s。N09へは花の反応でカット",
+        "review": "光路は陸地上空・月は小さい。外光と内光を混同しない"
+      }
+    },
+    {
+      "id": "N09",
+      "start": 26,
+      "end": 31,
+      "duration": 5,
+      "title": "鯨の光がS1基部を開花させる",
+      "emotion": "理解と驚き",
+      "camera": "固定 D：岸側20mm・方位+50°候補",
+      "oldIds": [
+        "C12"
+      ],
+      "ideal": "自発光鯨と成熟花の基部を同じ画に配置、初めの花が開く。",
+      "gap": "旧C12に新岬位置は未反映。自然月光でなく**鯨の光が届いた群落**から段階的に開花させる。",
+      "priority": "高",
+      "imageReferences": [
+        {
+          "oldId": "C12",
+          "urlOrRelativePath": "../v8/keyframe-test/results/C11-C19-2026-11-21/selected/C12.png",
+          "authorStatus": "暫定採用",
+          "inThisBranch": true
+        }
+      ],
+      "redrawDirection": {
+        "framing": "鯨からの照明が閉蕾を変化させる（S1基部）",
+        "camera": "**固定D**。鯨は画面右端・花は下側",
+        "continuity": "Cの鯨が右へ、Dで左へ見かけ方向が反転。動作マッチせず『光を受ける花』に切る",
+        "review": "S1aは25.5s頃から光圏。P0をここに混ぜない"
+      }
+    },
+    {
+      "id": "N10",
+      "start": 31,
+      "end": 36.5,
+      "duration": 5.5,
+      "title": "開花が花の岬へ広がる",
+      "emotion": "奇跡の拡張",
+      "camera": "固定・S1の花寄りインサート",
+      "oldIds": [
+        "C12",
+        "C13"
+      ],
+      "ideal": "基部→中腹→岬先端へ開花の波。散布体の離脱前兆。",
+      "gap": "S1は右手の陸地がさらに湖へ突き出した岬。五弁・果実の位置を正本に合わせ、地形を人工的な花壇にしない。",
+      "priority": "高",
+      "imageReferences": [
+        {
+          "oldId": "C12",
+          "urlOrRelativePath": "../v8/keyframe-test/results/C11-C19-2026-11-21/selected/C12.png",
+          "authorStatus": "暫定採用",
+          "inThisBranch": true
+        },
+        {
+          "oldId": "C13",
+          "urlOrRelativePath": "../v8/keyframe-test/results/C11-C19-2026-11-21/selected/C13.png",
+          "authorStatus": "採用",
+          "inThisBranch": true
+        }
+      ],
+      "redrawDirection": {
+        "framing": "S1の開花が基部→中腹→岬先端まで広がる",
+        "camera": "固定／岬の中広角＋奥行き",
+        "continuity": "**S1先端への光は35.7秒、36.5秒まで画を残す**。N11へ花の寄りでカット",
+        "review": "花径4.5cm・草丈6〜8cmの撮影仮寸法、均一同時開花禁止"
+      }
+    },
+    {
+      "id": "N11",
+      "start": 36.5,
+      "end": 40,
+      "duration": 3.5,
+      "title": "花弁と果実の離脱／一瞬の静止",
+      "emotion": "息をのむ静寂",
+      "camera": "固定・低い植物接写",
+      "oldIds": [
+        "C13"
+      ],
+      "ideal": "成熟花の本物の花弁＋付け根の果実が離れ、最後の約1秒だけ止まる。",
+      "gap": "花全体を飛ばさない。別の透明な種翼や魔法の金粉ではない。果実だけ微光。",
+      "priority": "中",
+      "imageReferences": [
+        {
+          "oldId": "C13",
+          "urlOrRelativePath": "../v8/keyframe-test/results/C11-C19-2026-11-21/selected/C13.png",
+          "authorStatus": "採用",
+          "inThisBranch": true
+        }
+      ],
+      "redrawDirection": {
+        "framing": "実花弁+付け根の小果実が離れ、短い間だけ浮く",
+        "camera": "固定／S1成熟花の地表インサート",
+        "continuity": "離脱→0.5〜1秒の緩い間→N12へ流れる",
+        "review": "PC肉眼の視点ではない。果実だけ微光、別種の種翼なし"
+      }
+    },
+    {
+      "id": "N12",
+      "start": 40,
+      "end": 43,
+      "duration": 3,
+      "title": "白金の花吹雪が空間へ広がる",
+      "emotion": "感動の頂点へ",
+      "camera": "固定・広い岸の視点",
+      "oldIds": [
+        "C14",
+        "C16"
+      ],
+      "ideal": "広がる花吹雪。単なる追走ではなく自然で不均一な浮遊・拡散。",
+      "gap": "旧C14の**全花弁が一斉に鯨へ向き直りリボン化する芝居は不要**。白・淡金と密度だけを参考。",
+      "priority": "高",
+      "imageReferences": [
+        {
+          "oldId": "C14",
+          "urlOrRelativePath": "../v8/keyframe-test/results/C11-C19-2026-11-21/candidate/C14_latest_test.png",
+          "authorStatus": "作者採用（candidateは旧フォルダ名）",
+          "inThisBranch": true
+        },
+        {
+          "oldId": "C16",
+          "urlOrRelativePath": "../v8/keyframe-test/results/C01-C16-2026-11-22/originals/C16.png",
+          "authorStatus": "11/22採用2枚目とPNGの同一性未照合",
+          "inThisBranch": true
+        }
+      ],
+      "redrawDirection": {
+        "framing": "花雪がS1から上がり、やがて降り始める。粒子の奥行き",
+        "camera": "固定／広い岸カメラ",
+        "continuity": "近景・中景・遠景の3層で高い鯨と重ねる。N13へ音と粒子を継続",
+        "review": "100mまで全花弁が数秒で移動する設定を作らない。鯨への追走無し"
+      }
+    },
+    {
+      "id": "N13",
+      "start": 43,
+      "end": 47,
+      "duration": 4,
+      "title": "光る鯨と花吹雪の全景",
+      "emotion": "陶酔",
+      "camera": "固定・高い空間を見渡す",
+      "oldIds": [
+        "C15"
+      ],
+      "ideal": "花畑を画面に出さず、高い湖上を泳ぐ鯨を見せる。",
+      "gap": "発光した鯨が主要光源。以前のショットのS1から花弁が飛んできたことと高度を接続する。",
+      "priority": "中",
+      "imageReferences": [
+        {
+          "oldId": "C15",
+          "urlOrRelativePath": "../v8/keyframe-test/results/C11-C19-2026-11-21/selected/C15.png",
+          "authorStatus": "採用",
+          "inThisBranch": true
+        }
+      ],
+      "redrawDirection": {
+        "framing": "広い高空で鯨が小さく見え、花雪の空間スケールを示す",
+        "camera": "固定／E系の**24mmワイド**",
+        "continuity": "N14で同じ鯨を望遠寄りに切る。主役は空間と空雪",
+        "review": "花畑は画面外。遠い壁は暗く"
+      }
+    },
+    {
+      "id": "N14",
+      "start": 47,
+      "end": 51,
+      "duration": 4,
+      "title": "花吹雪の中の自由遊泳",
+      "emotion": "美を味わう",
+      "camera": "**微ティルト E**：約5°だけ上へ",
+      "oldIds": [
+        "C16",
+        "C15"
+      ],
+      "ideal": "白金の高密度な花吹雪の中、ゆっくり泳ぐ鯨を見上げる。",
+      "gap": "11/22作者採用『2枚目』とGitHub C16.pngの同一性未照合。花の形・白金花吹雪・鯨の光・カメラ運動を再検査。",
+      "priority": "高",
+      "imageReferences": [
+        {
+          "oldId": "C16",
+          "urlOrRelativePath": "../v8/keyframe-test/results/C01-C16-2026-11-22/originals/C16.png",
+          "authorStatus": "11/22採用2枚目とPNGの同一性未照合",
+          "inThisBranch": true
+        },
+        {
+          "oldId": "C15",
+          "urlOrRelativePath": "../v8/keyframe-test/results/C11-C19-2026-11-21/selected/C15.png",
+          "authorStatus": "採用",
+          "inThisBranch": true
+        }
+      ],
+      "redrawDirection": {
+        "framing": "高空の発光鯨を大きく、白金の花雪に包まれた姿を味わう",
+        "camera": "**地上70mm候補、仰角25°→26.5°の微ティルト約1.5°**",
+        "continuity": "E16=47sの見上げ25.31°→E18=51sで26.82°、主役を画面に残してN15へ",
+        "review": "旧24mmでは鯨が約7%幅。70mmで粗い全身約20%幅。実メッシュ再確認"
+      }
+    },
+    {
+      "id": "N15",
+      "start": 51,
+      "end": 57.5,
+      "duration": 6.5,
+      "title": "裂け目への上昇／別れの予感",
+      "emotion": "名残惜しさ",
+      "camera": "固定・地上の高角",
+      "oldIds": [
+        "C17"
+      ],
+      "ideal": "白金花吹雪が自然に散る中、遠ざかる鯨が裂け目へ向かう。",
+      "gap": "一本の非対称な亀裂へ。全粒子を鯨に追走させず、遠い壁まで明るくしない。",
+      "priority": "中",
+      "imageReferences": [
+        {
+          "oldId": "C17",
+          "urlOrRelativePath": "../v8/keyframe-test/results/C11-C19-2026-11-21/selected/C17.png",
+          "authorStatus": "採用",
+          "inThisBranch": true
+        }
+      ],
+      "redrawDirection": {
+        "framing": "鯨が遠ざかり、花雪が降り続ける。追走せずに見送る",
+        "camera": "固定／高角の陸上カメラ",
+        "continuity": "E18=51→E19=55→E20=58。音が少しずつ遠のく",
+        "review": "花雪全体が鯨を追尾しない"
+      }
+    },
+    {
+      "id": "N16",
+      "start": 57.5,
+      "end": 64,
+      "duration": 6.5,
+      "title": "裂け目から完全退場",
+      "emotion": "見送り",
+      "camera": "固定 F：50mm・仰角37°候補",
+      "oldIds": [
+        "C18"
+      ],
+      "ideal": "小さな月の近くで全身が岩の裂け目を抜け、尾まで夜空へ。",
+      "gap": "旧C18の裂け目形状と天井の厚みを修正。月の円盤を不自然に巨大化させない。**胸びれ・尾が岩と接触しない新原画／3D確認が必要**。",
+      "priority": "最優先",
+      "imageReferences": [
+        {
+          "oldId": "C18",
+          "urlOrRelativePath": "../v8/keyframe-test/results/C11-C19-2026-11-21/selected/C18.png",
+          "authorStatus": "採用",
+          "inThisBranch": true
+        }
+      ],
+      "redrawDirection": {
+        "framing": "小さな月の近くで一本の裂け目から尾まで消える",
+        "camera": "固定F／50mm・仰角37°候補",
+        "continuity": "E20=58→E21=62→E22=64。N17へ音の余韻を残す",
+        "review": "**鯨中心Z224m≠全身退場の証明**。厚い岩盤・尾・ひれの3D検証が必要"
+      }
+    },
+    {
+      "id": "N17",
+      "start": 64,
+      "end": 70,
+      "duration": 6,
+      "title": "静かな地底湖／最後の花弁",
+      "emotion": "余韻",
+      "camera": "固定 A：N01と位置・レンズ・方向完全同一",
+      "oldIds": [
+        "C19",
+        "C01"
+      ],
+      "ideal": "冒頭と同じ湖、P0は咲いたまま。花弁一片が残り、映像外の冒険へ返す。",
+      "gap": "C19の対岸・多段の岩棚・水晶状の物体を削除。N01と同じ母版。小さな月を保ち、最後の果実の微光は弱く。エンドカード無し。",
+      "priority": "最優先",
+      "imageReferences": [
+        {
+          "oldId": "C19",
+          "urlOrRelativePath": "../v8/keyframe-test/results/C11-C19-2026-11-21/selected/C19.png",
+          "authorStatus": "月を小さくした採用画／背景修正課題あり",
+          "inThisBranch": true
+        },
+        {
+          "oldId": "C01",
+          "urlOrRelativePath": "../v8/keyframe-test/results/C01-C16-2026-11-22/originals/C01.png",
+          "authorStatus": "作者採用／提出PNGと採用画像の同一性未照合",
+          "inThisBranch": true
+        }
+      ],
+      "redrawDirection": {
+        "framing": "N01と完全同じ湖に、最後の白い散布体一つだけ残る",
+        "camera": "固定A／母版・月・P0・岩・水際はN01と同じ",
+        "continuity": "果実の微光が消え、水滴の残響でゲーム卓へ戻す",
+        "review": "C19の対岸・岩棚・水晶を除去。P0は若齢で散布なし"
+      }
+    }
+  ],
+  "cameraMotionShots": {
+    "pan": [
+      "N08"
+    ],
+    "tilt": [
+      "N14"
+    ]
+  },
+  "referenceInventory": "../v8/keyframe-contact-2026-11-22.md",
+  "referenceSpatial": "../v8/overhead-moonbeam-flight-camera-review-v04-2026-11-22.md",
+  "reviewedSkills": [
+    {
+      "source": ".agents/skills/illustration-composition/SKILL.md",
+      "use": "emotion then moment, 3 separate composition candidates on hero scenes, limited 3-5 values, screen direction and depth, negative space"
+    },
+    {
+      "source": "https://github.com/LottieFiles/motion-design-skill/blob/main/skills/motion-design/SKILL.md",
+      "use": "emotion / action / reaction / resolution, silhouette staging and secondary motion; UI millisecond rules not transferred to cinematic shots"
+    }
+  ],
+  "changesFromV12": [
+    "N01 2→3s for transition from actual play",
+    "N06 until18s to cover E06 exit",
+    "N10 ends36.5s to include S1 tip bloom at35.7s",
+    "N11 5→3.5s for faster bloom-to-snow rhythm",
+    "N13 24mm environmental wide vs N14 70mm closer whale",
+    "N14 micro tilt reduced from ~5° to ~1.5° to follow actual E16-E18 elevation",
+    "N16 given 6.5s instead of6s, no claim tail clearance verified"
+  ]
+}
