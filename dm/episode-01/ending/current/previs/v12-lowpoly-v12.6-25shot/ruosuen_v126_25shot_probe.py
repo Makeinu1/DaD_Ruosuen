@@ -15,6 +15,7 @@ import subprocess
 import sys
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
+import imageio_ffmpeg
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'v12-lowpoly-v12.5-cut-test'))
 import ruosuen_v12_5_cut_compare as ref
 
@@ -191,7 +192,7 @@ def xy_plan(out):
 def render_video(path, duration, variant, fps=4, size=(640,360)):
     is_split=(variant=="comparison")
     width=size[0]*(2 if is_split else 1)
-    cmd=["ffmpeg","-hide_banner","-loglevel","error","-y","-f","rawvideo",
+    cmd=[imageio_ffmpeg.get_ffmpeg_exe(),"-hide_banner","-loglevel","error","-y","-f","rawvideo",
          "-pix_fmt","rgb24","-s",f"{width}x{size[1]}","-r",str(fps),
          "-i","-","-an","-c:v","libx264","-preset","veryfast",
          "-crf","25","-pix_fmt","yuv420p","-movflags","+faststart",str(path)]
