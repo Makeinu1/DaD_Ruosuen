@@ -1,0 +1,38 @@
+{
+  "context": "DM episode-01 ending N14, original v12.5 world imported, 19-cut source untouched",
+  "author_approved_on_2026_11_22": {
+    "acting": "baleen-like dorsoventral tail strokes, single stroke followed by glide",
+    "camera": "side-follow ②",
+    "size": "slightly larger / 少し大きい",
+    "absolute_time_s": [
+      45.0,
+      51.0
+    ]
+  },
+  "approved_camera_params_relative_m": [
+    -12.5,
+    37.5,
+    7.8,
+    41.0
+  ],
+  "rendered_motion": "glide variant from ruosuen_whale_natural_swim_comparison.py",
+  "visual_snow": "B2 from ruosuen_flower_snow_B_vs_B2.py",
+  "fps": 8,
+  "video_streams": {
+    "N14-natural-glide-approved-medium-45-51s.mp4": {
+      "width": 1280,
+      "height": 720,
+      "r_frame_rate": "8/1",
+      "duration": "6.000000",
+      "nb_frames": "48"
+    },
+    "N14-size-comparison-45-51s.mp4": {
+      "width": 1280,
+      "height": 720,
+      "r_frame_rate": "8/1",
+      "duration": "6.000000",
+      "nb_frames": "48"
+    }
+  },
+  "status": "previs locked for N14 framing and acting only; not final storyboard/camera lens calibration"
+}
