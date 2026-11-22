@@ -1,5 +1,7 @@
 # 第一話エンディング『空に降る雪』（仮題）
 
+> **2026-11-22 地上カメラ撮影検証（図入り）**：**[v0.3：冒険者頭上通過→陸地で発光→S1開花→高空→裂け目退場](v8/ground-camera-overland-projection-review-v03-2026-11-22.md)**／[6構図の画面比較図](v8/diagrams/overland-camera-contact-v03.svg)。v0.2統一空間から画角を解析した後続案。作者はカメラ／旧原画の差替えと正式70秒尺をまだ承認していない。
+
 > **2026-11-22 最新の舞台・運動検討入口**：**[湖岸・冒険者・斜めの月光・鯨の航跡・S1花の岬の統一空間v0.2（図面付き）](v8/cavern-overland-moonlight-layout-v02-2026-11-22.md)**。**頭上通過→陸地上空で初点火→S1の開花→裂け目へ退場**する新しい作者の演出方針を基礎にした。細かいXYZ値・月角・70秒はまだ未承認で、下記の旧80秒／100秒案と混同しない。
 
 > **2026-11-22 現行制作への入口**： [原画付きカット一覧](v8/keyframe-contact-2026-11-22.md)／[鯨の設定集](v8/whale-setting-current.md)／[空雪花](flower.md)／[洞窟・裂け目・月と光](v8/cavern-moonlight-current.md)／[鯨の動線](v8/whale-motion-v10.md)／[カメラ・カット構成](v8/camera-shot-review.md)／**[C04〜C18・図入り三次元飛行検証（2026-11-22）](v8/c04-c18-flight-spatial-verification-2026-11-22.md)**／**[19カット・100秒再設計 v11（未承認）](v8/retiming-v11-100s-review-2026-11-22.md)**。
