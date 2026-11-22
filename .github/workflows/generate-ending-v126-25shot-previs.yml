@@ -15,6 +15,10 @@ on:
       - 'dm/episode-01/ending/current/previs/v12-lowpoly-v12.6-25shot/ruosuen_v126_25shot_probe.py'
       - '.github/workflows/generate-ending-v126-25shot-previs.yml'
 
+concurrency:
+  group: ending-v126-25shot-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
 
@@ -25,6 +29,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: art/ending-v126-25shot-experiment-20261122
           persist-credentials: true
       - uses: actions/setup-python@v5
         with:
@@ -32,6 +37,8 @@ jobs:
       - name: Install renderer dependencies
         run: |
           python -m pip install --disable-pip-version-check numpy pillow
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg
           ffmpeg -version | head -n 1
       - name: Generate all 25-cut storyboards, QA, and A/B videos
         shell: bash
