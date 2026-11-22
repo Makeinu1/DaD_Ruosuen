@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>空に降る雪 — N06 低ポリ撮影プレビズ v0.1</title>
+<style>
+:root{color-scheme:dark;--bg:#0c1520;--panel:#142331;--line:#385267;--txt:#e7e9e5;--muted:#a6b9c5;--accent:#d6b276;--blue:#88bada;--green:#83bfaa}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;color:var(--txt)}
+header{max-width:1460px;margin:0 auto;padding:22px 20px 13px;display:flex;align-items:end;justify-content:space-between;gap:12px;flex-wrap:wrap}h1{font-size:24px;line-height:1.25;margin:3px 0 5px;font-weight:680;letter-spacing:.01em}.eyebrow{font-size:10px;letter-spacing:.18em;color:var(--accent);font-weight:700}.sub{margin:0;color:var(--muted);font-size:12px;line-height:1.7}.tag{font-size:11px;border:1px solid #527084;padding:7px 10px;border-radius:30px;color:#b6d3df}
+main{max-width:1460px;margin:0 auto;padding:0 20px 24px}.workspace{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(310px,1fr);gap:14px}.panel{background:var(--panel);border:1px solid #294459;border-radius:14px;overflow:hidden}.panelhead{padding:13px 16px 11px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #294459;gap:8px}.panelhead strong{font-size:13px}.panelhead small{font-size:11px;color:var(--muted)}.panelinfo{padding:9px 14px 12px;font-size:11px;color:var(--muted);line-height:1.6;min-height:53px}canvas{display:block;width:100%;touch-action:pan-y}#camera{aspect-ratio:16/9;background:#101f2f}#plan{aspect-ratio:1.12/1;background:#1b3141}.controls{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(310px,1fr);gap:14px;margin-top:14px}.controlmain,.controlside{padding:16px}.topline{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:13px;flex-wrap:wrap}h2{font-size:15px;margin:0}.chip{font-size:11px;border:1px solid #385267;background:#1c3242;border-radius:7px;padding:6px 9px;color:#dbe5e5}.btnrow{display:flex;flex-wrap:wrap;gap:7px;margin:11px 0}.btn{font:inherit;background:#284557;border:1px solid #47677b;border-radius:8px;color:#e4ecf0;padding:8px 11px;font-size:12px;cursor:pointer}.btn:hover{background:#335e71}.btn.active{border-color:var(--accent);background:#574b35;color:#ffe5bb}.gold{background:#57452d;border-color:#a58353}.field{display:grid;grid-template-columns:135px minmax(0,1fr) 76px;align-items:center;column-gap:9px;margin:11px 0}.field label{font-size:12px;color:#d6e1e6}.field output{font-size:12px;text-align:right;font-variant-numeric:tabular-nums;color:#efd9b7}.field input[type=range]{width:100%;accent-color:#d9b57c;cursor:pointer}input[type=checkbox]{accent-color:#d9b57c}.fieldgrid{display:grid;grid-template-columns:1fr 1fr;gap:0 17px}.fieldgrid .field{grid-template-columns:90px minmax(0,1fr) 63px}.tiny{font-size:11px;color:#aabec9;line-height:1.75}.readout{background:#0e1d2b;border:1px solid #294459;padding:12px 14px;border-radius:10px;margin-top:10px}.readout .num{font-size:18px;font-weight:690;color:#e4c69d;font-variant-numeric:tabular-nums}.readgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.caption{font-size:10px;color:var(--muted);margin-bottom:3px}.rule{height:1px;background:#2b4658;margin:15px 0}.checkrow{display:flex;align-items:center;gap:9px;font-size:12px;cursor:pointer;color:#dfebed;margin:9px 0}.foot{padding:12px 0;color:#91a9b8;font-size:11px;line-height:1.7}.legend{display:flex;flex-wrap:wrap;gap:13px;font-size:11px;color:var(--muted);margin-top:8px}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;vertical-align:middle;margin-right:4px}.footer-note{border-left:2px solid var(--accent);padding-left:11px;margin:15px 0 0;color:#c4ced2;font-size:11px;line-height:1.8}
+@media(max-width:950px){.workspace,.controls{grid-template-columns:1fr}.fieldgrid{grid-template-columns:1fr 1fr}.fieldgrid .field{grid-template-columns:80px minmax(0,1fr) 52px}}@media(max-width:620px){h1{font-size:21px}main{padding:0 11px 22px}header{padding:19px 12px 11px}.fieldgrid{grid-template-columns:1fr}.fieldgrid .field{grid-template-columns:108px 1fr 60px}.panelinfo{min-height:auto}.controlmain,.controlside{padding:13px}}
+</style>
+</head>
+<body>
+<header>
+<div><div class="eyebrow">RUOSUEN · EPISODE 01 · ENDING PREVIS</div><h1>N06｜頭上通過 — 低ポリ撮影検証</h1><p class="sub">低精細・編集可能な3D代理モデル。平面図と固定カメラBを同期。完成原画ではありません。</p></div>
+<span class="tag">DRAFT / 撮影用の仮値</span>
+</header>
+<main>
+<div class="workspace">
+<section class="panel"><div class="panelhead"><strong>01 · カメラBから見た画面</strong><small id="shotStatus">16:9 · 16mm · FIXED</small></div><canvas id="camera" width="1024" height="576" aria-label="カメラBから見た低ポリゴン鯨のプレビュー"></canvas><div class="panelinfo">鯨が画面を占める割合と、頭部・腹・胸びれの見え方を確認。<strong>発光なし、月なし、花なし。</strong> 細部より位置・向き・離隔を優先。</div></section>
+<section class="panel"><div class="panelhead"><strong>02 · 上面配置（+Y＝湖の奥）</strong><small id="planStatus">地形・航跡・カメラ</small></div><canvas id="plan" width="640" height="574" aria-label="湖、陸地、鯨の移動軌跡、カメラの位置を示す平面図"></canvas><div class="panelinfo">灰＝岸・陸地、青＝湖、<span style="color:#85b8d3">●</span>＝鯨中心、<span style="color:#d2b37d">◆</span>＝カメラB。画角の扇形は<strong>水平方位の概念図</strong>で、地表投影ではありません。</div></section>
+</div>
+<div class="controls">
+<section class="panel controlmain"><div class="topline"><h2>03 · 再生とフレーム切り替え</h2><span id="moment" class="chip">16.5 s · E05付近</span></div>
+<div class="field"><label for="time">時刻</label><input id="time" type="range" min="14" max="18" step="0.05" value="16.5"><output id="timeOut">16.50 s</output></div>
+<div class="btnrow"><button class="btn" data-jump="14.5">E04 · 接近</button><button class="btn active" data-jump="16.5">E05 · 真上</button><button class="btn" data-jump="18">E06 · 退場方向</button><button id="play" class="btn">▶ 再生</button><button id="reset" class="btn">初期値に戻す</button></div>
+<div class="legend"><span><i class="dot" style="background:#8ebfdd"></i>鯨の胴中心</span><span><i class="dot" style="background:#eed3a0"></i>冒険者側の固定カメラ</span><span><i class="dot" style="background:#9cccb6"></i>進行方向</span></div>
+<div class="rule"></div>
+<div class="topline"><h2>04 · カメラBの微調整</h2><span class="tiny">時間を変えてもカメラ位置は固定</span></div>
+<div class="fieldgrid">
+<div class="field"><label for="yaw">水平方位</label><input type="range" id="yaw" min="-110" max="20" step="1" value="-60"><output id="yawOut"></output></div>
+<div class="field"><label for="pitch">仰角</label><input type="range" id="pitch" min="20" max="88" step="1" value="50"><output id="pitchOut"></output></div>
+<div class="field"><label for="focal">焦点距離</label><input type="range" id="focal" min="10" max="50" step="1" value="16"><output id="focalOut"></output></div>
+<div class="field"><label for="camZ">カメラ高さZ</label><input type="range" id="camZ" min="2.5" max="12" step="0.1" value="4.1"><output id="camZOut"></output></div>
+<div class="field"><label for="camX">カメラX補正</label><input type="range" id="camX" min="-12" max="12" step="0.5" value="0"><output id="camXOut"></output></div>
+<div class="field"><label for="camY">カメラY補正</label><input type="range" id="camY" min="-12" max="12" step="0.5" value="0"><output id="camYOut"></output></div>
+</div>
+<div class="rule"></div>
+<div class="topline"><h2>05 · 鯨の姿勢・位置調整（代理）</h2><span class="tiny">全長24m／胸びれ全幅14.8m</span></div>
+<div class="fieldgrid">
+<div class="field"><label for="whaleX">鯨のX補正</label><input type="range" id="whaleX" min="-12" max="12" step="0.5" value="0"><output id="whaleXOut"></output></div>
+<div class="field"><label for="whaleY">鯨のY補正</label><input type="range" id="whaleY" min="-12" max="12" step="0.5" value="0"><output id="whaleYOut"></output></div>
+<div class="field"><label for="whaleZ">鯨のZ補正</label><input type="range" id="whaleZ" min="-7" max="14" step="0.5" value="0"><output id="whaleZOut"></output></div>
+<div class="field"><label for="heading">向きの補正</label><input type="range" id="heading" min="-40" max="40" step="1" value="0"><output id="headingOut"></output></div>
+<div class="field"><label for="roll">ロール補正</label><input type="range" id="roll" min="-35" max="35" step="1" value="0"><output id="rollOut"></output></div>
+<div class="field"><label for="finSweep">胸びれ後退角</label><input type="range" id="finSweep" min="-30" max="30" step="1" value="0"><output id="finSweepOut"></output></div>
+</div>
+</section>
+<aside class="panel controlside"><div class="topline"><h2>06 · 確認値</h2><span class="chip">XYZ · m</span></div>
+<div class="readgrid"><div><div class="caption">鯨中心 Z</div><div id="readZ" class="num">11.50 m</div></div><div><div class="caption">眼高との高低差</div><div id="readDZ" class="num">7.40 m</div></div><div><div class="caption">水平偏差</div><div id="readXY" class="num">2.72 m</div></div></div>
+<div class="readout"><div class="caption">鯨中心（X, Y, Z）</div><div id="whaleCoords" style="font-size:13px;font-variant-numeric:tabular-nums;margin:4px 0 12px"></div><div class="caption">カメラB（X, Y, Z）</div><div id="camCoords" style="font-size:13px;font-variant-numeric:tabular-nums;margin-top:4px"></div></div>
+<div class="rule"></div>
+<label class="checkrow"><input type="checkbox" id="guides" checked>構図ガイド線・中心点を表示</label>
+<label class="checkrow"><input type="checkbox" id="mesh" checked>ポリゴン面の境界線を表示</label>
+<label class="checkrow"><input type="checkbox" id="path" checked>平面図の航跡・地点を表示</label>
+<div class="btnrow"><button class="btn gold" id="savePng">カメラ画をPNG保存</button><button class="btn" id="saveJson">設定をJSON保存</button></div>
+<p class="tiny" id="feedback">変更した値は両方のビューへ即時反映します。</p>
+<div class="footer-note"><strong>注意：</strong>これは設定資料に基づく<strong>幾何学的な代理形状</strong>です。WH-01の完成3Dモデルではなく、近接距離・岩盤との衝突・カメラ内の全てのシルエットを保証しません。作者が採用した原画には変更を加えていません。数値・レンズはv0.4/v12.1の未確定値です。</div></aside>
+</div>
+<div class="foot">出典：『空に降る雪』v12／v12.1・カメラ投影監査v0.4。固定Bの元座標 (-58, -84, 4.1)、方位 -60°、仰角50°、16mm。中心点 E04・E05・E06 は数値資料を使用。補間・姿勢・メッシュは今回の検証用仮実装です。<br>本HTMLは単体オフライン動作。外部の3Dライブラリ・通信・画像生成APIは利用しません。</div>
+</main>
+<script>
+'use strict';
+const $=s=>document.getElementById(s);
+const keys=['time','yaw','pitch','focal','camZ','camX','camY','whaleX','whaleY','whaleZ','heading','roll','finSweep'];
+const defaults={time:16.5,yaw:-60,pitch:50,focal:16,camZ:4.1,camX:0,camY:0,whaleX:0,whaleY:0,whaleZ:0,heading:0,roll:0,finSweep:0};
+const keyframes=[
+{t:12.5,x:-85.778,y:-48.941,z:18,id:'E03'},
+{t:14.5,x:-73.623,y:-69.995,z:15,id:'E04'},
+{t:16.5,x:-60.15,y:-82.341,z:11.5,id:'E05'},
+{t:18,x:-49.583,y:-88.442,z:16,id:'E06'},
+{t:19.75,x:-38.117,y:-92.615,z:21,id:'E07'},
+{t:20.8,x:-32.155,y:-93.937,z:24,id:'E08'}];
+const shore=[[-160,25],[-135,-3],[-115,-15],[-95,-22],[-85,-26],[-70,-46],[-55,-61],[-40,-65],[-20,-69],[0,-64],[20,-42],[35,-30],[50,-12],[62,3],[72,15],[78,29],[85,38],[92,32],[100,20],[115,15],[132,43],[151,100],[165,200]];
+const s1=[[40,-52],[55,-28],[66,4],[72,8],[85,30],[90,25]];
+const rad=d=>d*Math.PI/180, clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const add=(a,b)=>a.map((n,i)=>n+b[i]),sub=(a,b)=>a.map((n,i)=>n-b[i]),mul=(a,k)=>a.map(n=>n*k),dot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2];
+const cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
+const norm=a=>{let l=Math.hypot(...a);return l<1e-9?[1,0,0]:mul(a,1/l)};
+function val(k){return Number($(k).value)}
+function snapshot(){return Object.fromEntries(keys.map(k=>[k,val(k)]))}
+function keyState(t){
+ let i=0;while(i<keyframes.length-2 && t>keyframes[i+1].t)i++;
+ const p=keyframes[i],q=keyframes[i+1],prev=keyframes[Math.max(0,i-1)],next=keyframes[Math.min(keyframes.length-1,i+2)];
+ const h=q.t-p.t,v=clamp((t-p.t)/h,0,1);
+ const positions=[],deltas=[];
+ for(const key of ['x','y','z']){
+ const m0=(q[key]-prev[key])/(q.t-prev.t),m1=(next[key]-p[key])/(next.t-p.t);
+ positions.push((2*v**3-3*v**2+1)*p[key]+(v**3-2*v**2+v)*h*m0+(-2*v**3+3*v**2)*q[key]+(v**3-v**2)*h*m1);
+ deltas.push((6*v*v-6*v)*(p[key]-q[key])/h+(3*v*v-4*v+1)*m0+(3*v*v-2*v)*m1);
+ }
+ return {pos:positions,velocity:deltas};
+}
+function whalePose(s){
+ let k=keyState(s.time);let cp=add(k.pos,[s.whaleX,s.whaleY,s.whaleZ]);let hd=Math.atan2(k.velocity[1],k.velocity[0])+rad(s.heading);
+ let f=norm([Math.cos(hd),Math.sin(hd), k.velocity[2]/Math.max(1,Math.hypot(k.velocity[0],k.velocity[1]))]);
+ let side=norm([-Math.sin(hd),Math.cos(hd),0]);let up=norm(cross(f,side));let r=rad(s.roll),rotSide=add(mul(side,Math.cos(r)),mul(up,Math.sin(r))),rotUp=add(mul(up,Math.cos(r)),mul(side,-Math.sin(r)));
+ return {center:cp,f,side:rotSide,up:rotUp,world(p){return add(cp,add(mul(f,p[0]),add(mul(rotSide,p[1]),mul(rotUp,p[2]))))}};
+}
+const stations=[[-11.55,.16,.19,.15],[-10.1,.38,.38,.15],[-8.5,.86,.8,.14],[-6.5,1.52,1.4,.12],[-4,2.07,1.95,.03],[-1.4,2.26,2.21,0],[1.5,2.27,2.15,-.06],[4,2.14,1.98,-.17],[6.4,1.88,1.70,-.38],[8.5,1.76,1.55,-.57],[10,1.68,1.35,-.68],[11.25,1.35,1.06,-.74],[12,.78,.58,-.75],[12.3,.12,.1,-.75]];
+function profile(u){for(let i=0;i<stations.length-1;i++){if(u<=stations[i+1][0]){let a=stations[i],b=stations[i+1],v=clamp((u-a[0])/(b[0]-a[0]),0,1);return [u,a[1]+v*(b[1]-a[1]),a[2]+v*(b[2]-a[2]),a[3]+v*(b[3]-a[3])]} }return [...stations.at(-1)]}
+const whaleGeom=(()=>{
+ let faces=[],lines=[],n=12;
+ let rings=stations.map(([u,w,h,z])=>Array.from({length:n},(_,j)=>[u,w*Math.cos(2*Math.PI*j/n),z+h*Math.sin(2*Math.PI*j/n)]));
+ const tri=(a,b,c,kind)=>faces.push({a,b,c,kind});
+ for(let i=0;i<rings.length-1;i++){for(let j=0;j<n;j++){let jj=(j+1)%n;tri(rings[i][j],rings[i][jj],rings[i+1][jj],'body');tri(rings[i][j],rings[i+1][jj],rings[i+1][j],'body')}}
+ const addFin=(sign)=>{
+ let A=[3.25,sign*1.8,-.65],B=[2.6,sign*3.75,-.75],C=[-.75,sign*6.5,-1.2],D=[-2.45,sign*7.4,-1.3],E=[-3.8,sign*6.8,-1.25],F=[-2.6,sign*3.45,-.8],G=[.1,sign*1.9,-.62];
+ let arr=[A,B,C,D,E,F,G],c=[-1.0,sign*4.35,-.97];
+ arr.forEach((p,i)=>{let p2=arr[(i+1)%arr.length];tri(c,p,p2,'fin')});
+ let arr2=arr.map(q=>[q[0],q[1],q[2]-.17]),c2=[c[0],c[1],c[2]-.17];
+ arr2.forEach((p,i)=>tri(c2,arr2[(i+1)%arr2.length],p,'fin'));
+ arr.forEach((p,i)=>{let ii=(i+1)%arr.length;tri(p,arr2[i],arr2[ii],'finEdge');tri(p,arr2[ii],arr[ii],'finEdge')});
+ };
+ addFin(-1);addFin(1);
+ const tail=(sign)=>{
+ const A=[-11.2,0,.16],B=[-10.75,sign*1.3,.18],C=[-11.2,sign*3.5,.19],D=[-12.02,sign*4.5,.23],E=[-11.6,sign*3.0,.08],F=[-11.1,sign*.55,.06];
+ const arr=[A,B,C,D,E,F],c=[-11.4,sign*2.2,.1];arr.forEach((p,i)=>tri(c,p,arr[(i+1)%arr.length],'tail'));
+ }; tail(-1);tail(1);
+ tri([-5.7,-.4,1.75],[-5.9,0,2.48],[-3.95,0,1.94],'dorsal');tri([-5.7,.4,1.75],[-3.95,0,1.94],[-5.9,0,2.48],'dorsal');
+ // Belly grooves, only from u=-4.2 to u=+6.8. None extend to snout.
+ for(let a of [209,234,270,306,331]){
+ const theta=rad(a),line=[];
+ for(let i=0;i<=25;i++){let u=-4.2+i*11/25,[_,w,h,z]=profile(u);line.push([u,w*Math.cos(theta)*1.005,z+h*Math.sin(theta)*1.005])}
+ lines.push({points:line,kind:'groove'});
+ }
+ // Small eyes: schematic dark spots at upper-front sides.
+ for(let sign of [-1,1]){
+ let eye=[];for(let j=0;j<=12;j++){let a=j/12*2*Math.PI;eye.push([9.3+.28*Math.cos(a),sign*1.59,.3+.22*Math.sin(a)])}
+ lines.push({points:eye,kind:'eye'});
+ }
+ return {faces,lines};
+})();
+function camBasis(s){let p=rad(s.pitch),y=rad(s.yaw),front=[Math.sin(y)*Math.cos(p),Math.cos(y)*Math.cos(p),Math.sin(p)],right=[Math.cos(y),-Math.sin(y),0],up=norm(cross(right,front));return {pos:[-58+s.camX,-84+s.camY,s.camZ],front,right,up}}
+function toCam(w,c){let d=sub(w,c.pos);return [dot(d,c.right),dot(d,c.up),dot(d,c.front)]}
+function nearClip(poly,minZ=.12){let res=[];for(let i=0;i<poly.length;i++){let a=poly[i],b=poly[(i+1)%poly.length],aa=a[2]>=minZ,bb=b[2]>=minZ;if(aa)res.push(a);if(aa!==bb){let t=(minZ-a[2])/(b[2]-a[2]);res.push(add(a,mul(sub(b,a),t)))}}return res}
+function project(v,s,W,H){let k=s.focal/36*W,ky=s.focal/20.25*H;return [W/2+v[0]/v[2]*k,H/2-v[1]/v[2]*ky]}
+const rgb={body:[86,114,132],fin:[76,109,127],finEdge:[57,86,105],tail:[90,122,137],dorsal:[75,103,121]};
+function drawCamera(s){const cvs=$('camera'),W=cvs.width,H=cvs.height,ctx=cvs.getContext('2d'),cb=camBasis(s),wp=whalePose(s);
+ let grd=ctx.createLinearGradient(0,0,0,H);grd.addColorStop(0,'#102031');grd.addColorStop(1,'#1a2e3c');ctx.fillStyle=grd;ctx.fillRect(0,0,W,H);
+ // Distant cave shape indicates environment, not approved roof geometry.
+ ctx.fillStyle='#243848';ctx.globalAlpha=.42;ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(W*.23,0);ctx.lineTo(W*.12,H*.12);ctx.lineTo(0,H*.31);ctx.closePath();ctx.fill();ctx.beginPath();ctx.moveTo(W*.77,0);ctx.lineTo(W,0);ctx.lineTo(W,H*.24);ctx.lineTo(W*.90,H*.13);ctx.closePath();ctx.fill();ctx.globalAlpha=1;
+ const all=[];
+ for(const f of whaleGeom.faces){let world=[wp.world(f.a),wp.world(f.b),wp.world(f.c)],local=world.map(p=>toCam(p,cb)),clipped=nearClip(local);if(clipped.length<3)continue;
+ let n=norm(cross(sub(world[1],world[0]),sub(world[2],world[0])));
+ // Two sided stylized diffuse, never emissive.
+ let light=.70+.18*Math.abs(dot(n,norm([.3,.25,.92])))+.06*Math.abs(dot(n,norm([-.2,-.4,.2])));light=clamp(light,.60,.96);
+ const base=rgb[f.kind],color=`rgb(${base.map(v=>Math.floor(v*light)).join(',')})`;
+ for(let j=1;j<clipped.length-1;j++){
+ const tri=[clipped[0],clipped[j],clipped[j+1]],avg=tri.reduce((v,p)=>v+p[2],0)/3;
+ all.push({points:tri.map(p=>project(p,s,W,H)),avg,color,kind:f.kind});
+ }
+ }
+ all.sort((a,b)=>b.avg-a.avg);
+ all.forEach(t=>{ctx.beginPath();t.points.forEach((p,i)=>i?ctx.lineTo(...p):ctx.moveTo(...p));ctx.closePath();ctx.fillStyle=t.color;ctx.fill();if($('mesh').checked){ctx.strokeStyle=t.kind==='body'?'rgba(12,30,43,.22)':'rgba(9,27,41,.25)';ctx.lineWidth=.7;ctx.stroke()}});
+ // Faint grooves in underside, only visible against projected surface; no emissive marks.
+ whaleGeom.lines.forEach(line=>{let old=null;ctx.beginPath();for(let q of line.points){let v=toCam(wp.world(q),cb);if(v[2]<.12){old=null;continue}let p=project(v,s,W,H);if(old)ctx.lineTo(...p);else ctx.moveTo(...p);old=p}ctx.strokeStyle=line.kind==='eye'?'rgba(15,29,42,.75)':'rgba(34,57,74,.39)';ctx.lineWidth=line.kind==='eye'?2.4:1.2;ctx.stroke()});
+ if($('guides').checked){ctx.save();ctx.strokeStyle='rgba(189,209,218,.18)';ctx.lineWidth=1;ctx.setLineDash([6,7]);for(let a=1;a<3;a++){let x=W*a/3,y=H*a/3;ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}ctx.setLineDash([]);ctx.strokeStyle='rgba(223,191,138,.65)';ctx.beginPath();ctx.moveTo(W/2-7,H/2);ctx.lineTo(W/2+7,H/2);ctx.moveTo(W/2,H/2-7);ctx.lineTo(W/2,H/2+7);ctx.stroke();let wc=toCam(wp.center,cb);if(wc[2]>.12){let pp=project(wc,s,W,H);ctx.beginPath();ctx.arc(...pp,5,0,Math.PI*2);ctx.fillStyle='#d6b680';ctx.fill();ctx.strokeStyle='#172a37';ctx.stroke()}
+ // Head direction arrow is a diagnostic, NOT an anatomical feature.
+ let head=toCam(wp.world([11,0,0]),cb),tail=toCam(wp.world([-7,0,0]),cb);if(head[2]>.12&&tail[2]>.12){let a=project(tail,s,W,H),b=project(head,s,W,H);ctx.beginPath();ctx.moveTo(...a);ctx.lineTo(...b);ctx.strokeStyle='rgba(161,206,176,.58)';ctx.lineWidth=1.7;ctx.setLineDash([9,7]);ctx.stroke();ctx.setLineDash([]);let ang=Math.atan2(b[1]-a[1],b[0]-a[0]);ctx.beginPath();ctx.moveTo(...b);ctx.lineTo(b[0]-11*Math.cos(ang-.42),b[1]-11*Math.sin(ang-.42));ctx.moveTo(...b);ctx.lineTo(b[0]-11*Math.cos(ang+.42),b[1]-11*Math.sin(ang+.42));ctx.stroke()}
+ ctx.restore()}
+ ctx.fillStyle='rgba(9,21,31,.67)';ctx.fillRect(15,13,295,65);ctx.fillStyle='#c6d6dd';ctx.font='600 17px system-ui';ctx.fillText(`N06   ${s.time.toFixed(2)} s`,28,38);ctx.font='13px system-ui';ctx.fillStyle='#a9c2cf';ctx.fillText(`B FIXED  /  ${s.focal}mm  /  ↑ ${s.pitch}°`,28,60);
+ ctx.font='13px system-ui';ctx.fillStyle='#a8b9c4';ctx.fillText('WH-01 geometry proxy · NO SELF-LUMINESCENCE',16,H-16);
+ $('shotStatus').textContent=`16:9 · ${s.focal}mm · FIXED`;
+}
+function drawPlan(s){const c=$('plan'),ctx=c.getContext('2d'),W=c.width,H=c.height;
+ const worldBounds={xmin:-122,xmax:38,ymin:-122,ymax:64};
+ const toP=([x,y])=>[(x-worldBounds.xmin)/(worldBounds.xmax-worldBounds.xmin)*W,H-(y-worldBounds.ymin)/(worldBounds.ymax-worldBounds.ymin)*H];
+ ctx.fillStyle='#25485a';ctx.fillRect(0,0,W,H);
+ // The land occupies one side of the shoreline; schematic matches current top-down spatial notes.
+ ctx.beginPath();const first=toP(shore[0]);ctx.moveTo(...first);shore.slice(1).forEach(q=>ctx.lineTo(...toP(q)));ctx.lineTo(...toP([worldBounds.xmax,worldBounds.ymin]));ctx.lineTo(...toP([worldBounds.xmin,worldBounds.ymin]));ctx.closePath();ctx.fillStyle='#55584c';ctx.fill();
+ ctx.beginPath();shore.forEach((q,i)=>i?ctx.lineTo(...toP(q)):ctx.moveTo(...toP(q)));ctx.lineWidth=3;ctx.strokeStyle='#7299a6';ctx.stroke();
+ // Grid for metric use.
+ ctx.lineWidth=.6;ctx.strokeStyle='rgba(216,231,230,.12)';ctx.font='11px system-ui';ctx.fillStyle='#b5cbd1';
+ for(let x=-120;x<=40;x+=20){let px=toP([x,0])[0];ctx.beginPath();ctx.moveTo(px,0);ctx.lineTo(px,H);ctx.stroke();if(px>18&&px<W-18)ctx.fillText(`${x}`,px+2,H-8)}
+ for(let y=-120;y<=60;y+=20){let py=toP([0,y])[1];ctx.beginPath();ctx.moveTo(0,py);ctx.lineTo(W,py);ctx.stroke();if(py>20&&py<H-20)ctx.fillText(`${y}`,7,py-5)}
+ // flower sites P0 and S1; neither visible in upward B camera.
+ s1.forEach(p=>{let v=toP(p);ctx.fillStyle='#caaf76';ctx.beginPath();ctx.arc(...v,4,0,2*Math.PI);ctx.fill()});let p0=toP([-18,-83]);ctx.beginPath();ctx.arc(...p0,5,0,2*Math.PI);ctx.fillStyle='#ebd08c';ctx.fill();ctx.font='13px system-ui';ctx.fillStyle='#f0daaa';ctx.fillText('P0',p0[0]+9,p0[1]-7);
+ if($('path').checked){ctx.beginPath();for(let t=12.5;t<=20.8;t+=.05){let k=keyState(t).pos,p=toP(k);if(t===12.5)ctx.moveTo(...p);else ctx.lineTo(...p)}ctx.lineWidth=3.6;ctx.strokeStyle='#eacb96';ctx.stroke();keyframes.filter(o=>o.t>=14.5&&o.t<=20.8).forEach(o=>{let p=toP([o.x,o.y]);ctx.beginPath();ctx.arc(...p,8,0,2*Math.PI);ctx.fillStyle=o.id==='E05'?'#d8ab6e':'#90bcda';ctx.fill();ctx.strokeStyle='#122b3c';ctx.lineWidth=1.5;ctx.stroke();ctx.font='bold 11px system-ui';ctx.fillStyle='#f8fbf8';ctx.fillText(o.id,p[0]+10,p[1]+3)})}
+ // camera approximate horizontal heading wedge -- NOT ground footprint.
+ const cb=camBasis(s),cam=toP(cb.pos),fov=2*Math.atan(36/(2*s.focal)),left=rad(s.yaw)-fov/2,right=rad(s.yaw)+fov/2;
+ ctx.fillStyle='rgba(218,183,124,.14)';ctx.beginPath();ctx.moveTo(...cam);for(let i=0;i<=20;i++){let a=left+(right-left)*i/20;ctx.lineTo(...toP([cb.pos[0]+30*Math.sin(a),cb.pos[1]+30*Math.cos(a)]))}ctx.closePath();ctx.fill();
+ ctx.strokeStyle='#efcc90';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(...cam);ctx.lineTo(...toP([cb.pos[0]+24*Math.sin(rad(s.yaw)),cb.pos[1]+24*Math.cos(rad(s.yaw))]));ctx.stroke();ctx.beginPath();ctx.arc(...cam,6,0,Math.PI*2);ctx.fillStyle='#f1ce91';ctx.fill();ctx.strokeStyle='#172739';ctx.stroke();ctx.font='bold 13px system-ui';ctx.fillStyle='#f6e8d1';ctx.fillText('CAM B',cam[0]-18,cam[1]+23);
+ const wp=whalePose(s);
+ // top-down projected real proxy silhouettes, not separate artistic sketch.
+ const projectedFaces=whaleGeom.faces.map(f=>({p:[f.a,f.b,f.c].map(a=>toP(wp.world(a))),z:([f.a,f.b,f.c].map(a=>wp.world(a)[2]).reduce((a,b)=>a+b,0)/3),kind:f.kind})).sort((a,b)=>a.z-b.z);
+ for(let ff of projectedFaces){ctx.beginPath();ff.p.forEach((p,i)=>i?ctx.lineTo(...p):ctx.moveTo(...p));ctx.closePath();ctx.fillStyle=ff.kind==='body'?'#86b4ca':ff.kind==='dorsal'?'#51788f':'#80a9be';ctx.fill();ctx.strokeStyle='rgba(15,39,52,.20)';ctx.lineWidth=.4;ctx.stroke()}
+ const ctr=toP(wp.center);ctx.beginPath();ctx.arc(...ctr,4,0,2*Math.PI);ctx.fillStyle='#e6c386';ctx.fill();
+ const head=toP(wp.world([11.7,0,0]));ctx.strokeStyle='#193344';ctx.lineWidth=2.3;ctx.beginPath();ctx.moveTo(...ctr);ctx.lineTo(...head);ctx.stroke();
+ ctx.fillStyle='#dce9ed';ctx.font='14px system-ui';ctx.fillText('湖・+Y ↑',W-96,25);ctx.fillText('陸地',16,H-28);
+ $('planStatus').textContent='地表境界 · v0.4暫定';
+}
+function updateRead(s){const w=whalePose(s).center,c=camBasis(s).pos;let xy=Math.hypot(w[0]-c[0],w[1]-c[1]);$('whaleCoords').textContent=w.map(v=>v.toFixed(2)).join(' / ');$('camCoords').textContent=c.map(v=>v.toFixed(2)).join(' / ');$('readZ').textContent=`${w[2].toFixed(2)} m`;$('readDZ').textContent=`${(w[2]-c[2]).toFixed(2)} m`;$('readXY').textContent=`${xy.toFixed(2)} m`;
+ for(const k of keys){let fmt=Number(val(k)).toFixed(k==='time'?2:1);if($(`${k}Out`)){let suffix=k==='time'?' s':k==='yaw'||k==='pitch'||k==='heading'||k==='roll'||k==='finSweep'?'°':k==='focal'?' mm':' m';$(`${k}Out`).textContent=fmt+suffix}}
+ let nearest=keyframes.reduce((a,b)=>Math.abs(a.t-s.time)<Math.abs(b.t-s.time)?a:b);$('moment').textContent=`${s.time.toFixed(2)} s · ${nearest.id}付近`;document.querySelectorAll('[data-jump]').forEach(b=>b.classList.toggle('active',Math.abs(Number(b.dataset.jump)-s.time)<.05));}
+function redraw(){const s=snapshot();updateRead(s);drawCamera(s);drawPlan(s)}
+keys.forEach(k=>$(k).addEventListener('input',redraw));['guides','mesh','path'].forEach(k=>$(k).addEventListener('change',redraw));
+document.querySelectorAll('[data-jump]').forEach(b=>b.addEventListener('click',()=>{$('time').value=b.dataset.jump;redraw()}));
+$('reset').addEventListener('click',()=>{Object.entries(defaults).forEach(([k,v])=>$(k).value=v);redraw();$('feedback').textContent='初期値（v0.4カメラB／E05）へ戻しました。'});
+function download(data,name,mime){let a=document.createElement('a'),url=URL.createObjectURL(new Blob([data],{type:mime}));a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+$('savePng').addEventListener('click',()=>{$('camera').toBlob(blob=>{if(!blob)return;let u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=`N06_B_${snapshot().time.toFixed(2)}s.png`;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)},'image/png');$('feedback').textContent='現在のカメラ画像をPNGに書き出しました。'});
+$('saveJson').addEventListener('click',()=>{let s=snapshot(),k=keyState(s.time),payload={project:'DaD_Ruosuen',shot:'N06',status:'provisional, author review pending',reference:'v12/v12.1 and spatial/camera audit v0.4',camera:{x:-58+s.camX,y:-84+s.camY,z:s.camZ,yawDeg:s.yaw,pitchDeg:s.pitch,lensMm:s.focal,sensorMm:[36,20.25],static:true},whale:{timeSec:s.time,centerXYZ:k.pos.map((v,i)=>v+[s.whaleX,s.whaleY,s.whaleZ][i]),headingAdjustmentDeg:s.heading,rollDeg:s.roll,finSweepDeg:s.finSweep,proxyLengthM:24,proxyFinSpanM:14.8},controls:s};download(JSON.stringify(payload,null,2),'N06_camera_B_previs_settings.json','application/json');$('feedback').textContent='座標・画角・姿勢をJSONで書き出しました。'});
+let playing=false,lastTime=0;
+$('play').addEventListener('click',()=>{playing=!playing;lastTime=0;$('play').textContent=playing?'■ 停止':'▶ 再生';if(playing)requestAnimationFrame(loop)});
+function loop(ms){if(!playing)return;let d=lastTime?Math.min((ms-lastTime)/1000,.075):0;lastTime=ms;let t=val('time')+d*.65;if(t>=18)t=14;$('time').value=t;redraw();requestAnimationFrame(loop)}
+redraw();
+</script>
+</body></html>
