@@ -1,0 +1,611 @@
+{
+  "title": "Episode01 overland moonbeam ground-camera 2.5D projection audit",
+  "date": "2026-11-22",
+  "status": "UNAPPROVED CINEMATOGRAPHY CANDIDATES; manual point- and box-proxy perspective with a single thin roof plane. Not render or final camera validation.",
+  "sourceSpatialGeometry": "diagrams/overland-moonbeam-spatial-v02.json",
+  "optics": {
+    "projection": "perspective pinhole",
+    "sensorWidthMm": 36,
+    "sensorHeightMm": 20.25,
+    "frameWidthPx": 1920,
+    "frameHeightPx": 1080,
+    "cameraYawDeg": "0 is +Y into lake, positive turns right",
+    "pitchDeg": "0 horizontal, positive tilt upward",
+    "normalizedScreen": "nx -1..+1 left..right; ny -1..+1 bottom..top; beyond ±1 is off frame"
+  },
+  "cameras": [
+    {
+      "id": "A-old",
+      "title": "Legacy establishing / return",
+      "pos": {
+        "x": -10,
+        "y": -108,
+        "z": 5
+      },
+      "yawDeg": 0,
+      "pitchDeg": 18,
+      "focalMm": 20,
+      "reference": "historical provisional, not adopted",
+      "targets": [
+        "P0",
+        "moon"
+      ],
+      "horizontalFovDeg": 83.97,
+      "verticalFovDeg": 53.7,
+      "moonDirectVisibility": {
+        "roofY": 90.32,
+        "visible": true,
+        "edgeMarginM": 10.48
+      },
+      "projected": {
+        "P0": {
+          "inFront": true,
+          "nx": -0.389,
+          "ny": -0.915,
+          "onScreen": true,
+          "pixelX": 586.5,
+          "pixelY": 1033.8,
+          "depthM": 22.85
+        },
+        "moon": {
+          "inFront": true,
+          "nx": 0,
+          "ny": 0.921,
+          "onScreen": true,
+          "pixelX": 960,
+          "pixelY": 42.6,
+          "depthM": null
+        }
+      }
+    },
+    {
+      "id": "A-revised",
+      "title": "Candidate establishing / return",
+      "pos": {
+        "x": -18,
+        "y": -93,
+        "z": 3
+      },
+      "yawDeg": 0,
+      "pitchDeg": 18.5,
+      "focalMm": 18,
+      "reference": "proposed alternative: static C01 and C19, same exact optics",
+      "targets": [
+        "P0",
+        "moon"
+      ],
+      "horizontalFovDeg": 90,
+      "verticalFovDeg": 58.72,
+      "moonDirectVisibility": {
+        "roofY": 107.46,
+        "visible": true,
+        "edgeMarginM": 12.97
+      },
+      "projected": {
+        "P0": {
+          "inFront": true,
+          "nx": 0,
+          "ny": -0.799,
+          "onScreen": true,
+          "pixelX": 960,
+          "pixelY": 971.7,
+          "depthM": 9.17
+        },
+        "moon": {
+          "inFront": true,
+          "nx": 0,
+          "ny": 0.81,
+          "onScreen": true,
+          "pixelX": 960,
+          "pixelY": 102.5,
+          "depthM": null
+        }
+      }
+    },
+    {
+      "id": "B-overfly",
+      "title": "Ground eye-level giant overflight",
+      "pos": {
+        "x": -54,
+        "y": -85,
+        "z": 4.1
+      },
+      "yawDeg": 0,
+      "pitchDeg": 35,
+      "focalMm": 20,
+      "reference": "party ground Z2.5 + eye 1.6m; partial whale intentionally fills or leaves frame",
+      "targets": [
+        "E04",
+        "E05",
+        "E06"
+      ],
+      "horizontalFovDeg": 83.97,
+      "verticalFovDeg": 53.7,
+      "moonDirectVisibility": {
+        "roofY": 114.28,
+        "visible": false,
+        "edgeMarginM": -17.57
+      },
+      "projected": {
+        "E04": {
+          "inFront": true,
+          "nx": -0.816,
+          "ny": -0.4,
+          "onScreen": true,
+          "pixelX": 177.1,
+          "pixelY": 756,
+          "depthM": 26.73
+        },
+        "E05": {
+          "inFront": true,
+          "nx": -0.468,
+          "ny": -0.162,
+          "onScreen": true,
+          "pixelX": 511.1,
+          "pixelY": 627.5,
+          "depthM": 14.61
+        },
+        "E06": {
+          "inFront": true,
+          "nx": 0.402,
+          "ny": 0.969,
+          "onScreen": true,
+          "pixelX": 1346.3,
+          "pixelY": 16.5,
+          "depthM": 12.2
+        }
+      }
+    },
+    {
+      "id": "C-moon",
+      "title": "Cut to ground moonlight contact",
+      "pos": {
+        "x": -10,
+        "y": -108,
+        "z": 5
+      },
+      "yawDeg": -10,
+      "pitchDeg": 32,
+      "focalMm": 18,
+      "reference": "separate shore viewpoint; +15 degree pan over 5 sec to keep E09 in frame",
+      "targets": [
+        "moon",
+        "E07",
+        "E08",
+        "E09",
+        "E10"
+      ],
+      "yawPanByStation": {
+        "E09": 5,
+        "E10": 5
+      },
+      "horizontalFovDeg": 90,
+      "verticalFovDeg": 58.72,
+      "moonDirectVisibility": {
+        "roofY": 90.32,
+        "visible": true,
+        "edgeMarginM": 10.48
+      },
+      "projected": {
+        "moon": {
+          "inFront": true,
+          "nx": 0.131,
+          "ny": 0.36,
+          "onScreen": true,
+          "pixelX": 1085.4,
+          "pixelY": 345.8,
+          "depthM": null
+        },
+        "E07": {
+          "inFront": true,
+          "nx": -0.688,
+          "ny": -0.119,
+          "onScreen": true,
+          "pixelX": 299.1,
+          "pixelY": 604.3,
+          "depthM": 33.82
+        },
+        "E08": {
+          "inFront": true,
+          "nx": -0.528,
+          "ny": 0.081,
+          "onScreen": true,
+          "pixelX": 453.4,
+          "pixelY": 496.4,
+          "depthM": 33.43
+        },
+        "E09": {
+          "inFront": true,
+          "nx": 0.313,
+          "ny": 0.258,
+          "onScreen": true,
+          "pixelX": 1260.8,
+          "pixelY": 400.5,
+          "depthM": 36.75
+        },
+        "E10": {
+          "inFront": true,
+          "nx": 0.405,
+          "ny": 0.228,
+          "onScreen": true,
+          "pixelX": 1349.1,
+          "pixelY": 417.1,
+          "depthM": 39.16
+        }
+      }
+    },
+    {
+      "id": "D-flower",
+      "title": "Ground view whale and S1 sequence",
+      "pos": {
+        "x": -54,
+        "y": -85,
+        "z": 4.1
+      },
+      "yawDeg": 43,
+      "pitchDeg": 14,
+      "focalMm": 20,
+      "reference": "moon deliberately off-frame; direct light cause is whale body",
+      "targets": [
+        "E10",
+        "E11",
+        "E14",
+        "S1a",
+        "S1e"
+      ],
+      "horizontalFovDeg": 83.97,
+      "verticalFovDeg": 53.7,
+      "moonDirectVisibility": {
+        "roofY": 114.28,
+        "visible": false,
+        "edgeMarginM": -17.57
+      },
+      "projected": {
+        "E10": {
+          "inFront": true,
+          "nx": 0.89,
+          "ny": 0.523,
+          "onScreen": true,
+          "pixelX": 1814.2,
+          "pixelY": 257.4,
+          "depthM": 51.9
+        },
+        "E11": {
+          "inFront": true,
+          "nx": 0.586,
+          "ny": 0.129,
+          "onScreen": true,
+          "pixelX": 1522.1,
+          "pixelY": 470.4,
+          "depthM": 88.13
+        },
+        "E14": {
+          "inFront": true,
+          "nx": 0.181,
+          "ny": -0.063,
+          "onScreen": true,
+          "pixelX": 1133.3,
+          "pixelY": 574.2,
+          "depthM": 132.34
+        },
+        "S1a": {
+          "inFront": true,
+          "nx": 0.602,
+          "ny": -0.519,
+          "onScreen": true,
+          "pixelX": 1537.9,
+          "pixelY": 820.1,
+          "depthM": 85.36
+        },
+        "S1e": {
+          "inFront": true,
+          "nx": 0.149,
+          "ny": -0.505,
+          "onScreen": true,
+          "pixelX": 1103,
+          "pixelY": 812.9,
+          "depthM": 173.32
+        }
+      }
+    },
+    {
+      "id": "E-high",
+      "title": "High swim with no shoreline flower patch",
+      "pos": {
+        "x": -54,
+        "y": -85,
+        "z": 4.1
+      },
+      "yawDeg": 25,
+      "pitchDeg": 31,
+      "focalMm": 24,
+      "reference": "exclude S1 from frame; do not reveal whole cave",
+      "targets": [
+        "E16",
+        "E17",
+        "E18",
+        "S1a",
+        "S1e"
+      ],
+      "horizontalFovDeg": 73.74,
+      "verticalFovDeg": 45.75,
+      "moonDirectVisibility": {
+        "roofY": 114.28,
+        "visible": false,
+        "edgeMarginM": -17.57
+      },
+      "projected": {
+        "E16": {
+          "inFront": true,
+          "nx": 0.092,
+          "ny": -0.229,
+          "onScreen": true,
+          "pixelX": 1048.2,
+          "pixelY": 663.4,
+          "depthM": 233.36
+        },
+        "E17": {
+          "inFront": true,
+          "nx": 0.065,
+          "ny": -0.205,
+          "onScreen": true,
+          "pixelX": 1022,
+          "pixelY": 650.7,
+          "depthM": 244.73
+        },
+        "E18": {
+          "inFront": true,
+          "nx": -0.044,
+          "ny": -0.17,
+          "onScreen": true,
+          "pixelX": 917.4,
+          "pixelY": 631.7,
+          "depthM": 277.55
+        },
+        "S1a": {
+          "inFront": true,
+          "nx": 1.607,
+          "ny": -1.476,
+          "onScreen": false,
+          "pixelX": 2502.5,
+          "pixelY": 1336.9,
+          "depthM": 59.12
+        },
+        "S1e": {
+          "inFront": true,
+          "nx": 0.742,
+          "ny": -1.446,
+          "onScreen": false,
+          "pixelX": 1671.9,
+          "pixelY": 1320.9,
+          "depthM": 139.13
+        }
+      }
+    },
+    {
+      "id": "F-exit",
+      "title": "Upward cut from a ground shore camera",
+      "pos": {
+        "x": -10,
+        "y": -108,
+        "z": 5
+      },
+      "yawDeg": 0,
+      "pitchDeg": 37,
+      "focalMm": 50,
+      "reference": "moon small and distinct from the much larger whale silhouette",
+      "targets": [
+        "moon",
+        "E20",
+        "E21",
+        "E22"
+      ],
+      "horizontalFovDeg": 39.6,
+      "verticalFovDeg": 22.9,
+      "moonDirectVisibility": {
+        "roofY": 90.32,
+        "visible": true,
+        "edgeMarginM": 10.48
+      },
+      "projected": {
+        "moon": {
+          "inFront": true,
+          "nx": 0,
+          "ny": 0.519,
+          "onScreen": true,
+          "pixelX": 960,
+          "pixelY": 259.7,
+          "depthM": null
+        },
+        "E20": {
+          "inFront": true,
+          "nx": 0.165,
+          "ny": -0.463,
+          "onScreen": true,
+          "pixelX": 1118.8,
+          "pixelY": 790.3,
+          "depthM": 335.95
+        },
+        "E21": {
+          "inFront": true,
+          "nx": 0.058,
+          "ny": -0.233,
+          "onScreen": true,
+          "pixelX": 1015.4,
+          "pixelY": 665.7,
+          "depthM": 354.5
+        },
+        "E22": {
+          "inFront": true,
+          "nx": -0.067,
+          "ny": -0.053,
+          "onScreen": true,
+          "pixelX": 896,
+          "pixelY": 568.7,
+          "depthM": 369.17
+        }
+      }
+    }
+  ],
+  "whaleBoxTests": [
+    {
+      "cameraId": "B-overfly",
+      "stationId": "E05",
+      "proxyScreenBounds": {
+        "xmin": -1.65,
+        "xmax": 0.71,
+        "ymin": -0.92,
+        "ymax": 3.23
+      },
+      "allBoundsInside": false
+    },
+    {
+      "cameraId": "C-moon",
+      "stationId": "E08",
+      "proxyScreenBounds": {
+        "xmin": -1.07,
+        "xmax": -0.1,
+        "ymin": -0.29,
+        "ymax": 0.68
+      },
+      "allBoundsInside": false
+    },
+    {
+      "cameraId": "C-moon",
+      "stationId": "E09",
+      "proxyScreenBounds": {
+        "xmin": -0.07,
+        "xmax": 0.75,
+        "ymin": -0.13,
+        "ymax": 0.88
+      },
+      "allBoundsInside": true
+    },
+    {
+      "cameraId": "C-moon",
+      "stationId": "E10",
+      "proxyScreenBounds": {
+        "xmin": 0.04,
+        "xmax": 0.81,
+        "ymin": -0.14,
+        "ymax": 0.82
+      },
+      "allBoundsInside": true
+    },
+    {
+      "cameraId": "D-flower",
+      "stationId": "E11",
+      "proxyScreenBounds": {
+        "xmin": 0.42,
+        "xmax": 0.8,
+        "ymin": 0,
+        "ymax": 0.3
+      },
+      "allBoundsInside": true
+    },
+    {
+      "cameraId": "D-flower",
+      "stationId": "E14",
+      "proxyScreenBounds": {
+        "xmin": 0.06,
+        "xmax": 0.3,
+        "ymin": -0.14,
+        "ymax": 0.03
+      },
+      "allBoundsInside": true
+    },
+    {
+      "cameraId": "F-exit",
+      "stationId": "E21",
+      "proxyScreenBounds": {
+        "xmin": -0.05,
+        "xmax": 0.17,
+        "ymin": -0.35,
+        "ymax": -0.11
+      },
+      "allBoundsInside": true
+    },
+    {
+      "cameraId": "F-exit",
+      "stationId": "E22",
+      "proxyScreenBounds": {
+        "xmin": -0.17,
+        "xmax": 0.03,
+        "ymin": -0.15,
+        "ymax": 0.05
+      },
+      "allBoundsInside": true
+    }
+  ],
+  "findings": {
+    "cameraComparison": {
+      "oldCamP0DistanceM": 26.4,
+      "candidateCamP0DistanceM": 10,
+      "flowerAssumedDiameterOrHeightM": 0.5,
+      "old20mmP0SizePixels": 20.2,
+      "new18mmP0SizePixels": 48,
+      "old20mmMoonDiameterPixels": 9.3,
+      "new18mmMoonDiameterPixels": 8.4
+    },
+    "moonBrightnessAndSizeNote": "0.5 deg astronomical angular diameter assumed for camera pixel estimate; this is a visual resolution approximation, not astrophysical size in cave",
+    "firstContact": "nose x/y/z midpoint starts entering at E08, but nonzero head width can put an edge in moonlight already at E07",
+    "cameraBVisibleMoonPhysical": false,
+    "exits": {
+      "E21": {
+        "crossesRoof": true,
+        "intersection": [
+          -3.19,
+          163.19
+        ],
+        "opening": [
+          -61.46,
+          27.88
+        ],
+        "visible": true
+      },
+      "E22": {
+        "crossesRoof": true,
+        "intersection": [
+          -17.49,
+          143.08
+        ],
+        "opening": [
+          -55.42,
+          26.54
+        ],
+        "visible": true
+      }
+    },
+    "exitMoonWhaleApparent": {
+      "E22DistanceM": 369.3,
+      "whaleLengthUpperBoundAngularDeg": 3.72,
+      "moonAngularDiameterDeg": 0.5,
+      "relativeApproxRatio": 7.4,
+      "warning": "Length 24m / range is a broadside upper-bound proxy; whale cannot be fully contained in the real lunar disc at this range."
+    }
+  },
+  "checks": {
+    "CamA new P0 & moon within 10% safe frame": true,
+    "old 20mm close to frame vertical boundaries": true,
+    "Cam A proposed moon ray unblocked": true,
+    "B moon from eye physically blocked by roof": true,
+    "B E04 to E06 centers in frame": true,
+    "C direct moon visible through roof": true,
+    "C moon, E08, E09 & E10 center in frame (pan)": true,
+    "D whale & S1 base+tip in frame": true,
+    "E flower groups outside high swim shot": true,
+    "E whale high center in frame": true,
+    "F moon, whale rim+exit in same frame": true,
+    "F E21/E22 line of sight clears nominal slit": true
+  },
+  "warnings": [
+    "CamA 20mm fits P0 and moon only 4% away from top and bottom of frame. P0 may be illegibly small; actual flower scale unapproved.",
+    "A moving physical eye-level camera does not need to show the moon. Party ground viewpoint is in roof shadow and lunar disc is blocked.",
+    "C camera is about 50m from PC, so treat as deliberate new shore vantage and match cut on whale motion; do not claim same literal PC eyes.",
+    "At first light C full whale is partly cropped at E08; a gentle pan can keep later full-body envelope in frame. This is not necessarily an error because nose close-up can be desirable.",
+    "The moon at true 0.5 deg is 8-23 pixels for 18-50mm and is far smaller than the apparent 24m whale. Full whale *inside* disc is physically implausible.",
+    "The official v0.2 light test samples only the center and nose. The head edge can receive direct moonlight before nose center.",
+    "2D roof plane allows photon path only in the approximation; thick irregular rocks and dynamic mesh remain untested.",
+    "C01 and C19 require identical A candidate settings. Alternative A proposal is not yet author-approved."
+  ]
+}
