@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1310" height="770" viewBox="0 0 1310 770">
+<title>Moonlight Y-Z ray cross-section — overland beam study</title>
+<rect width="1310" height="770" fill="#172E3F"/>
+<text x="45" y="47" font-size="30" font-weight="700" fill="#F5F2EA">MOONLIGHT / SECTION Y–Z</text>
+<text x="47" y="78" fill="#BCD0DA" font-size="17">Side projection near X ≈ −18m; actual X-boundaries tested separately</text>
+<rect x="100" y="181.2" width="515.55" height="93.60000000000002" fill="#6A6867" stroke="#99908B"/>
+<rect x="925.75" y="181.2" width="70.5" height="93.60000000000002" fill="#6A6867" stroke="#99908B"/>
+<text x="514.5" y="222.8" fill="#BAC0C5" font-size="14">ROCK CANOPY</text>
+<text x="932.8000000000001" y="222.8" fill="#BAC0C5" font-size="14">ROCK</text>
+<path d="M100 670 L248.95000000000002 670 L248.95000000000002 742 L100 742 Z" fill="#77715B" stroke="#BDB18E" stroke-width="2"/>
+<path d="M248.95000000000002 670 H1190 V742 H248.95000000000002 Z" fill="#254E62"/>
+<path d="M100 670 H1190" fill="none" stroke="#A7C7D5" stroke-opacity=".55" stroke-width="2"/>
+<path d="M213.7 665.84 L687.3096 274.8 L815.3000000000001 170.79999999999995" stroke="#F7E5AB" stroke-width="3.5" stroke-dasharray="9 4" fill="none"/>
+<path d="M207.0025 628.4 L635.2665000000001 274.8 L777.7 170.79999999999995" stroke="#FFD68C" stroke-width="2.8" stroke-dasharray="5 5" fill="none"/>
+<circle cx="213.7" cy="665.84" r="7" fill="#FFF7BD" stroke="#F4D69C" stroke-width="2"/>
+<circle cx="207.0025" cy="628.4" r="9" fill="#F4D6A2" stroke="#182E40" stroke-width="2"/>
+<ellipse cx="239.55" cy="646.08" rx="29" ry="13" fill="#98B8CB" stroke="#D4E9F0" stroke-width="2" opacity=".8"/>
+<circle cx="209" cy="663.76" r="6.5" fill="#EDAB95"/>
+<circle cx="852.9" cy="204.07999999999998" r="10" fill="#F4D6A2"/>
+<path d="M209 607.6 L209 661.68" stroke="#DEA77D" stroke-dasharray="4 3"/>
+<text x="173.75" y="633.88" font-size="15" fill="#F8D1BA">Party</text>
+<text x="157.3" y="541.04" font-size="15" fill="#DFD5B7">Near-shore land</text>
+<text x="201.95" y="689.84" font-size="16" fill="#FCEFC3">P0 young flower</text>
+<text x="232.5" y="590.4" font-size="15" fill="#EDE6D7">Nose enters light</text>
+<text x="810.6" y="188.07999999999998" font-size="16" fill="#F6D8AB">Whale exits</text>
+<text x="796.5" y="295.59999999999997" font-size="17" fill="#C4D6E3">Single fissure</text>
+<path d="M643.75 514 L726 546" stroke="#FFE8A6" stroke-width="2"/>
+<text x="714.25" y="570" font-size="16" fill="#FFE8A6">43° elevation</text>
+<text x="106" y="140" fill="#DDE8ED" font-size="16">Z = 190m fissure rim</text>
+<text x="105" y="698" fill="#C4D8E2" font-size="15">−125m Y (inland)</text>
+<text x="965" y="698" fill="#C4D8E2" font-size="15">+250m Y (lakeward) →</text>
+<text x="100" y="733" fill="#F9B8A3" font-size="15">CAUTION: roof thickness, real terrain shadows and full-body collision are not ray-traced here.</text></svg>
