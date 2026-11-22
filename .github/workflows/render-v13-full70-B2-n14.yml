@@ -1,0 +1,84 @@
+name: Render Ruosuen full 70s lowpoly with adopted N14
+
+on:
+  push:
+    branches:
+      - previs/full70-v13-n14-20261123
+    paths:
+      - .github/workflows/render-v13-full70-B2-n14.yml
+      - dm/episode-01/ending/current/previs/v13-25shot-experiment/render_full70_B2_n14.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ruosuen-full70-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  full70:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Check out existing v12.5 and v13 Python sources
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install lowpoly renderer dependencies and ffmpeg
+        run: |
+          python -m pip install --disable-pip-version-check numpy Pillow
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk ffmpeg
+
+      - name: Render the complete 70 second 25 shot provisional B edit
+        working-directory: dm/episode-01/ending/current/previs/v13-25shot-experiment
+        run: |
+          python render_full70_B2_n14.py --out artifacts/full70-B2-N14 --fps 8
+
+      - name: Validate video dimensions, duration, and file count
+        working-directory: dm/episode-01/ending/current/previs/v13-25shot-experiment
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('artifacts/full70-B2-N14')
+          qa=json.loads((root/'full70-B2-N14-QA.json').read_text())
+          assert qa['frames']==560 and qa['duration_s']==70 and qa['cut_count']==25
+          assert qa['source_whale_path_unchanged'] is True
+          assert qa['storyboard_approved_25cut'] is False
+          assert qa['N14_author_approved']['acting']=='natural vertical fluke stroke then glide'
+          assert (root/'full70-B2-N14-approved-medium-1280x720-8fps.mp4').stat().st_size>100000
+          assert (root/'full70-28timepoints.png').is_file()
+          print('PASS: complete 70s full-frame movie, 560 moving frames, N14 approved size')
+          PY
+
+      - name: Preserve MP4 PNG QA in GitHub DM-only path
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f dm/episode-01/ending/current/previs/v13-25shot-experiment/artifacts/full70-B2-N14
+          if git diff --cached --quiet; then
+            echo "No changed artifacts"
+          else
+            git commit -m "assets(previs): preserve full70 B2 movie with approved N14 [skip ci]"
+            git push origin HEAD:previs/full70-v13-n14-20261123
+          fi
+
+      - name: Keep full video and diagnostics as downloadable workflow artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ruosuen-full70-lowpoly-B2-N14
+          path: |
+            dm/episode-01/ending/current/previs/v13-25shot-experiment/artifacts/full70-B2-N14/*.mp4
+            dm/episode-01/ending/current/previs/v13-25shot-experiment/artifacts/full70-B2-N14/*.png
+            dm/episode-01/ending/current/previs/v13-25shot-experiment/artifacts/full70-B2-N14/*.json
+            dm/episode-01/ending/current/previs/v13-25shot-experiment/render_full70_B2_n14.py
+          if-no-files-found: warn
