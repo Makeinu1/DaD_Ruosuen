@@ -1,0 +1,234 @@
+{
+  "version": "v12.4 FRONT APPROACH CAMERA TEST",
+  "status": "AUTHOR REVIEW ONLY / NOT APPROVED",
+  "unchanged": "N04 onward cinematic cameras and original v12.3 frames; WH-01 scale and anatomy proxy",
+  "changed": "N01 and N17 matched yaw; N02/N03 cameras align to approaching whale on X=-90 axis; expanding wavefronts; early interpolation continuous; underwater whale remains level then eases to original breach pose by 7.7s",
+  "cameras": {
+    "A": {
+      "xyz": [
+        -18,
+        -93,
+        3
+      ],
+      "yaw": -24,
+      "pitch": 18.5,
+      "focal_mm": 18
+    },
+    "RIPPLE": {
+      "xyz": [
+        -90,
+        -40,
+        2.8
+      ],
+      "yaw": 0,
+      "pitch": -5,
+      "focal_mm": 28
+    },
+    "SUB": {
+      "xyz": [
+        -90,
+        -18,
+        3.2
+      ],
+      "yaw": 0,
+      "pitch": -21,
+      "focal_mm": 55
+    }
+  },
+  "stations_pre_4_5s": [
+    [
+      -1.0,
+      -90,
+      73,
+      -12
+    ],
+    [
+      0.0,
+      -90,
+      65,
+      -12
+    ],
+    [
+      3.0,
+      -90,
+      42,
+      -10
+    ]
+  ],
+  "frames": [
+    {
+      "shot": "N01",
+      "time": 1.5,
+      "camera": "A",
+      "filename": "N01-01-01.50s.png",
+      "camera_xyz": [
+        -18,
+        -93,
+        3
+      ],
+      "yaw_deg": -24,
+      "pitch_deg": 18.5,
+      "focal_mm": 18,
+      "note": "N01=N17 fixed A; N02/N03 face-on vs whale route"
+    },
+    {
+      "shot": "N02",
+      "time": 3.35,
+      "camera": "RIPPLE",
+      "filename": "N02-01-03.35s.png",
+      "camera_xyz": [
+        -90,
+        -40,
+        2.8
+      ],
+      "yaw_deg": 0,
+      "pitch_deg": -5,
+      "focal_mm": 28,
+      "note": "N01=N17 fixed A; N02/N03 face-on vs whale route"
+    },
+    {
+      "shot": "N02",
+      "time": 4.3,
+      "camera": "RIPPLE",
+      "filename": "N02-02-04.30s.png",
+      "camera_xyz": [
+        -90,
+        -40,
+        2.8
+      ],
+      "yaw_deg": 0,
+      "pitch_deg": -5,
+      "focal_mm": 28,
+      "note": "N01=N17 fixed A; N02/N03 face-on vs whale route"
+    },
+    {
+      "shot": "N02",
+      "time": 5.3,
+      "camera": "RIPPLE",
+      "filename": "N02-03-05.30s.png",
+      "camera_xyz": [
+        -90,
+        -40,
+        2.8
+      ],
+      "yaw_deg": 0,
+      "pitch_deg": -5,
+      "focal_mm": 28,
+      "note": "N01=N17 fixed A; N02/N03 face-on vs whale route"
+    },
+    {
+      "shot": "N03",
+      "time": 5.7,
+      "camera": "SUB",
+      "filename": "N03-01-05.70s.png",
+      "camera_xyz": [
+        -90,
+        -18,
+        3.2
+      ],
+      "yaw_deg": 0,
+      "pitch_deg": -21,
+      "focal_mm": 55,
+      "note": "N01=N17 fixed A; N02/N03 face-on vs whale route"
+    },
+    {
+      "shot": "N03",
+      "time": 6.2,
+      "camera": "SUB",
+      "filename": "N03-02-06.20s.png",
+      "camera_xyz": [
+        -90,
+        -18,
+        3.2
+      ],
+      "yaw_deg": 0,
+      "pitch_deg": -21,
+      "focal_mm": 55,
+      "note": "N01=N17 fixed A; N02/N03 face-on vs whale route"
+    },
+    {
+      "shot": "N03",
+      "time": 7.1,
+      "camera": "SUB",
+      "filename": "N03-03-07.10s.png",
+      "camera_xyz": [
+        -90,
+        -18,
+        3.2
+      ],
+      "yaw_deg": 0,
+      "pitch_deg": -21,
+      "focal_mm": 55,
+      "note": "N01=N17 fixed A; N02/N03 face-on vs whale route"
+    },
+    {
+      "shot": "N04",
+      "time": 8.0,
+      "camera": "BREACH",
+      "filename": "N04-01-08.00s.png",
+      "camera_xyz": [
+        -56,
+        -39,
+        4.8
+      ],
+      "yaw_deg": -62,
+      "pitch_deg": 17,
+      "focal_mm": 24,
+      "note": "N04 unchanged camera; continuity reference"
+    },
+    {
+      "shot": "N17",
+      "time": 67.0,
+      "camera": "A",
+      "filename": "N17-01-67.00s.png",
+      "camera_xyz": [
+        -18,
+        -93,
+        3
+      ],
+      "yaw_deg": -24,
+      "pitch_deg": 18.5,
+      "focal_mm": 18,
+      "note": "N01=N17 fixed A; N02/N03 face-on vs whale route"
+    }
+  ],
+  "axis_validation": [
+    {
+      "t_s": 5.7,
+      "whale_center_m": [
+        -90.0,
+        19.588,
+        -9.04
+      ],
+      "front_approach_off_axis_deg": 0.0,
+      "camera_range_m": 37.59
+    },
+    {
+      "t_s": 6.2,
+      "whale_center_m": [
+        -90.0,
+        16.94,
+        -8.587
+      ],
+      "front_approach_off_axis_deg": 0.0,
+      "camera_range_m": 34.94
+    },
+    {
+      "t_s": 7.1,
+      "whale_center_m": [
+        -90.0,
+        9.254,
+        -6.508
+      ],
+      "front_approach_off_axis_deg": 0.0,
+      "camera_range_m": 27.25
+    }
+  ],
+  "limitations": [
+    "N03 proxy does not perform physically accurate water refraction, opacity or occlusion",
+    "N02/N03 cameras change viewing position at a cut; no dolly",
+    "N03→N04 cut angle and scale remain to be judged",
+    "A matching N01=N17 is preserved, but adopted C01/C19 source art has not been pixel compared",
+    "N01 N02 should not show whale clearly before N03"
+  ]
+}
