@@ -1,0 +1,191 @@
+{
+  "scope": "Low-poly PROXY ONLY; not WH-01 3D full mesh or 3D roof collision approval",
+  "camera_B_initial": {
+    "xyz_m": [
+      -58,
+      -84,
+      4.1
+    ],
+    "lens_mm": 16,
+    "yaw_deg": -60,
+    "pitch_deg": 50
+  },
+  "N06": {
+    "lowest_sample_mesh_to_eye_m": 4.29,
+    "compared_v04_spherical_head_proxy": "v0.4 reports 1.4m possible eye proximity and 2.99m above representative ground, geometry differs; DO NOT infer human-safe clearance",
+    "result": "INCONCLUSIVE: WH01 anatomical mesh, PC body and fin sweep not inspected"
+  },
+  "N08": {
+    "head_contact_reference_s": 20.93,
+    "nose_midpoint_reference_s": 21.17,
+    "model_self_emission_starts_s": 21.17,
+    "status": "PROVISIONAL: 3D thick roof shadow path not tested"
+  },
+  "N10": {
+    "S1_a_bloom_reference_s": 25.5,
+    "S1_tip_bloom_reference_s": 35.7,
+    "candidate_shot_end_s": 36.5
+  },
+  "N13_N14": {
+    "wide_mm": 24,
+    "tele_mm": 70,
+    "tele_tilt_deg": 1.5,
+    "status": "PROVISIONAL"
+  },
+  "N16": {
+    "thin_roof_z_m": 190,
+    "thick_roof_geometry": "NOT INCLUDED",
+    "rim_intersection_and_tail_clearance": "NOT VERIFIED; vertical apex and 2D opening tests are insufficient"
+  },
+  "N01_N17": {
+    "camera_initial_xyz_identical": true,
+    "yaw_pitch_lens_identical": true,
+    "background": "same scene function; N17 retains only one final petal"
+  },
+  "samples": [
+    {
+      "t": 14.5,
+      "min_vertex_z_m": 11.47,
+      "min_mesh_eye_distance_m": 12.39,
+      "min_fissure_margin_xy_m": null,
+      "all_proxy_vertices_above_thin_roof_z190": false,
+      "all_proxy_vertices_inside_2d_aperture": false
+    },
+    {
+      "t": 15,
+      "min_vertex_z_m": 9.52,
+      "min_mesh_eye_distance_m": 7.5,
+      "min_fissure_margin_xy_m": null,
+      "all_proxy_vertices_above_thin_roof_z190": false,
+      "all_proxy_vertices_inside_2d_aperture": false
+    },
+    {
+      "t": 15.5,
+      "min_vertex_z_m": 8.24,
+      "min_mesh_eye_distance_m": 4.29,
+      "min_fissure_margin_xy_m": null,
+      "all_proxy_vertices_above_thin_roof_z190": false,
+      "all_proxy_vertices_inside_2d_aperture": false
+    },
+    {
+      "t": 16,
+      "min_vertex_z_m": 8.21,
+      "min_mesh_eye_distance_m": 4.39,
+      "min_fissure_margin_xy_m": null,
+      "all_proxy_vertices_above_thin_roof_z190": false,
+      "all_proxy_vertices_inside_2d_aperture": false
+    },
+    {
+      "t": 16.5,
+      "min_vertex_z_m": 9.25,
+      "min_mesh_eye_distance_m": 5.29,
+      "min_fissure_margin_xy_m": null,
+      "all_proxy_vertices_above_thin_roof_z190": false,
+      "all_proxy_vertices_inside_2d_aperture": false
+    },
+    {
+      "t": 17,
+      "min_vertex_z_m": 8.38,
+      "min_mesh_eye_distance_m": 5.34,
+      "min_fissure_margin_xy_m": null,
+      "all_proxy_vertices_above_thin_roof_z190": false,
+      "all_proxy_vertices_inside_2d_aperture": false
+    },
+    {
+      "t": 17.8,
+      "min_vertex_z_m": 10.43,
+      "min_mesh_eye_distance_m": 6.8,
+      "min_fissure_margin_xy_m": null,
+      "all_proxy_vertices_above_thin_roof_z190": false,
+      "all_proxy_vertices_inside_2d_aperture": false
+    },
+    {
+      "t": 18,
+      "min_vertex_z_m": 11.7,
+      "min_mesh_eye_distance_m": 7.72,
+      "min_fissure_margin_xy_m": null,
+      "all_proxy_vertices_above_thin_roof_z190": false,
+      "all_proxy_vertices_inside_2d_aperture": false
+    },
+    {
+      "t": 20.8,
+      "min_vertex_z_m": 19.81,
+      "min_mesh_eye_distance_m": 22.51,
+      "min_fissure_margin_xy_m": null,
+      "all_proxy_vertices_above_thin_roof_z190": false,
+      "all_proxy_vertices_inside_2d_aperture": false
+    },
+    {
+      "t": 21.4,
+      "min_vertex_z_m": 22.17,
+      "min_mesh_eye_distance_m": 27.26,
+      "min_fissure_margin_xy_m": null,
+      "all_proxy_vertices_above_thin_roof_z190": false,
+      "all_proxy_vertices_inside_2d_aperture": false
+    },
+    {
+      "t": 23.2,
+      "min_vertex_z_m": 24.04,
+      "min_mesh_eye_distance_m": 38.61,
+      "min_fissure_margin_xy_m": null,
+      "all_proxy_vertices_above_thin_roof_z190": false,
+      "all_proxy_vertices_inside_2d_aperture": false
+    },
+    {
+      "t": 25.5,
+      "min_vertex_z_m": 26.49,
+      "min_mesh_eye_distance_m": 54.89,
+      "min_fissure_margin_xy_m": null,
+      "all_proxy_vertices_above_thin_roof_z190": false,
+      "all_proxy_vertices_inside_2d_aperture": false
+    },
+    {
+      "t": 35.7,
+      "min_vertex_z_m": 28.31,
+      "min_mesh_eye_distance_m": 123.74,
+      "min_fissure_margin_xy_m": null,
+      "all_proxy_vertices_above_thin_roof_z190": false,
+      "all_proxy_vertices_inside_2d_aperture": false
+    },
+    {
+      "t": 58,
+      "min_vertex_z_m": 171.89,
+      "min_mesh_eye_distance_m": 314.41,
+      "min_fissure_margin_xy_m": 11.6,
+      "all_proxy_vertices_above_thin_roof_z190": false,
+      "all_proxy_vertices_inside_2d_aperture": true
+    },
+    {
+      "t": 60,
+      "min_vertex_z_m": 182.86,
+      "min_mesh_eye_distance_m": 322.07,
+      "min_fissure_margin_xy_m": 18.05,
+      "all_proxy_vertices_above_thin_roof_z190": false,
+      "all_proxy_vertices_inside_2d_aperture": true
+    },
+    {
+      "t": 62,
+      "min_vertex_z_m": 195.41,
+      "min_mesh_eye_distance_m": 330.5,
+      "min_fissure_margin_xy_m": 23.65,
+      "all_proxy_vertices_above_thin_roof_z190": true,
+      "all_proxy_vertices_inside_2d_aperture": true
+    },
+    {
+      "t": 63.8,
+      "min_vertex_z_m": 213.27,
+      "min_mesh_eye_distance_m": 342.14,
+      "min_fissure_margin_xy_m": 22.72,
+      "all_proxy_vertices_above_thin_roof_z190": true,
+      "all_proxy_vertices_inside_2d_aperture": true
+    },
+    {
+      "t": 64,
+      "min_vertex_z_m": 215.13,
+      "min_mesh_eye_distance_m": 343.33,
+      "min_fissure_margin_xy_m": 20.53,
+      "all_proxy_vertices_above_thin_roof_z190": true,
+      "all_proxy_vertices_inside_2d_aperture": true
+    }
+  ]
+}
