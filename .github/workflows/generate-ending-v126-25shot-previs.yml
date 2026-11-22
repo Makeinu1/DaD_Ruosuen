@@ -8,6 +8,13 @@ on:
       - 'dm/episode-01/ending/current/previs/v12-lowpoly-v12.6-25shot/ruosuen_v126_25shot_probe.py'
       - '.github/workflows/generate-ending-v126-25shot-previs.yml'
 
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main]
+    paths:
+      - 'dm/episode-01/ending/current/previs/v12-lowpoly-v12.6-25shot/ruosuen_v126_25shot_probe.py'
+      - '.github/workflows/generate-ending-v126-25shot-previs.yml'
+
 permissions:
   contents: write
 
