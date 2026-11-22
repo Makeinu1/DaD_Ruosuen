@@ -1,6 +1,6 @@
 # 第一話エンディング『空に降る雪』（仮題）
 
-> **2026-11-22 現行制作への入口**： [原画付きカット一覧](v8/keyframe-contact-2026-11-22.md)／[鯨の設定集](v8/whale-setting-current.md)／[空雪花](flower.md)／[洞窟・裂け目・月と光](v8/cavern-moonlight-current.md)／[鯨の動線](v8/whale-motion-v10.md)／[カメラ・カット構成](v8/camera-shot-review.md)／**[C04〜C18・図入り三次元飛行検証（2026-11-22）](v8/c04-c18-flight-spatial-verification-2026-11-22.md)**。
+> **2026-11-22 現行制作への入口**： [原画付きカット一覧](v8/keyframe-contact-2026-11-22.md)／[鯨の設定集](v8/whale-setting-current.md)／[空雪花](flower.md)／[洞窟・裂け目・月と光](v8/cavern-moonlight-current.md)／[鯨の動線](v8/whale-motion-v10.md)／[カメラ・カット構成](v8/camera-shot-review.md)／**[C04〜C18・図入り三次元飛行検証（2026-11-22）](v8/c04-c18-flight-spatial-verification-2026-11-22.md)**／**[19カット・100秒再設計 v11（未承認）](v8/retiming-v11-100s-review-2026-11-22.md)**。
 >
 > **2026-11-22 作者決定**：『空に降る雪』は**依頼内容によらない単一のエンディング映像**。依頼別の虹跳魚・オーロラ等への映像分岐案は旧案。**採用・試作原画から得た発見で先に設定を再検討し、次に原画・カットを再評価する**。これまでの採用原画は検討の基準として尊重しつつ、映像の最終設定を原画だけから自動確定しない。第一話の依頼設計は[DM全体設計](../README.md)を参照。
 >
