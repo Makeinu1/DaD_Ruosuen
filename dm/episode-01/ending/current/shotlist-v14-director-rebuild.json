@@ -1,0 +1,225 @@
+{
+  "project": "D&D Ruosuen / 空に降る雪",
+  "version": "v14 director rebuild",
+  "date": "2026-11-23",
+  "status": "作者が方針を承認（2026-11-23）。秒数・座標・レンズは暫定",
+  "duration_s": 70.0,
+  "cut_count": 19,
+  "rules": {
+    "time": "カット間の時間省略を認める（世界時刻≠編集時刻）",
+    "camera": "固定が基本。動くのはR09パン、R15横並走、R16数m前進のみ",
+    "petals": "鯨の光の中（約65m）は導かれ、外は純粋な花吹雪、力が去ると落下",
+    "max_cut_s": 7.5
+  },
+  "cuts": [
+    {
+      "id": "R01",
+      "start_s": 0.0,
+      "end_s": 2.0,
+      "duration_s": 2.0,
+      "replaces": "N01",
+      "camera": "固定A（R19と同一）",
+      "whale": "不在",
+      "flora_light_sound": "柔らかい月光、小さな月、天井から一滴と波紋",
+      "camera_motion": "fixed"
+    },
+    {
+      "id": "R02",
+      "start_s": 2.0,
+      "end_s": 4.0,
+      "duration_s": 2.0,
+      "replaces": "新",
+      "camera": "月光の縁を地面近くから挿入",
+      "whale": "不在",
+      "flora_light_sound": "月光の中で一輪（P0）だけ開き、影の蕾は閉じている。葉の水滴が震える",
+      "camera_motion": "fixed"
+    },
+    {
+      "id": "R03",
+      "start_s": 4.0,
+      "end_s": 6.5,
+      "duration_s": 2.5,
+      "replaces": "N02",
+      "camera": "水面すれすれ",
+      "whale": "不在",
+      "flora_light_sound": "一滴より大きな波紋が下から届く",
+      "camera_motion": "fixed"
+    },
+    {
+      "id": "R04",
+      "start_s": 6.5,
+      "end_s": 8.5,
+      "duration_s": 2.0,
+      "replaces": "N03",
+      "camera": "正面",
+      "whale": "月光の水面を暗い塊が横切る（形を読ませない）",
+      "flora_light_sound": "—",
+      "camera_motion": "fixed"
+    },
+    {
+      "id": "R05",
+      "start_s": 8.5,
+      "end_s": 11.5,
+      "duration_s": 3.0,
+      "replaces": "N04A",
+      "camera": "低い湖面・正面",
+      "whale": "浅い角度で重く浮上、水の幕、跳ねない",
+      "flora_light_sound": "水の崩落音",
+      "camera_motion": "fixed"
+    },
+    {
+      "id": "R06",
+      "start_s": 11.5,
+      "end_s": 14.5,
+      "duration_s": 3.0,
+      "replaces": "N04B+N05",
+      "camera": "岸の斜めの別地点",
+      "whale": "尾が水の糸を引いて離れ、螺旋で宙へ",
+      "flora_light_sound": "暗い巨体の縁だけ光る",
+      "camera_motion": "fixed"
+    },
+    {
+      "id": "R07",
+      "start_s": 14.5,
+      "end_s": 19.0,
+      "duration_s": 4.5,
+      "replaces": "N06",
+      "camera": "固定B（PCの目の高さ・16mm）",
+      "whale": "減速して真上を通過、暗い瞳が止まらずに通り過ぎる",
+      "flora_light_sound": "水滴が落ちる、頂点でほぼ無音",
+      "camera_motion": "fixed"
+    },
+    {
+      "id": "R08",
+      "start_s": 19.0,
+      "end_s": 21.5,
+      "duration_s": 2.5,
+      "replaces": "N07+N07.5",
+      "camera": "同じ地点から振り返り",
+      "whale": "尾が抜ける、唯一の速い一漕ぎで月光へ",
+      "flora_light_sound": "行き先の月光が同じ画に入る",
+      "camera_motion": "fixed"
+    },
+    {
+      "id": "R09",
+      "start_s": 21.5,
+      "end_s": 26.5,
+      "duration_s": 5.0,
+      "replaces": "N08",
+      "camera": "カメラC・約15°パン",
+      "whale": "月光に触れ、吻先から尾へ発光（Phase1→2）",
+      "flora_light_sound": "小さな月と同一画面、主題が初めて長調",
+      "camera_motion": "pan"
+    },
+    {
+      "id": "R10",
+      "start_s": 26.5,
+      "end_s": 29.5,
+      "duration_s": 3.0,
+      "replaces": "N08.5+N09",
+      "camera": "S1基部の地面近く",
+      "whale": "画面の端から光を差し込む",
+      "flora_light_sound": "蕾が光を受け花茎が起きて開く",
+      "camera_motion": "fixed"
+    },
+    {
+      "id": "R11",
+      "start_s": 29.5,
+      "end_s": 35.0,
+      "duration_s": 5.5,
+      "replaces": "N10",
+      "camera": "岬の中広角",
+      "whale": "岸すれすれを左→右、漕ぐたびに光が脈打つ",
+      "flora_light_sound": "光の跡を追って先端まで開花、湖面に映る",
+      "camera_motion": "fixed"
+    },
+    {
+      "id": "R12",
+      "start_s": 35.0,
+      "end_s": 37.0,
+      "duration_s": 2.0,
+      "replaces": "N11",
+      "camera": "花際の挿入（PC視点ではない）",
+      "whale": "画面外",
+      "flora_light_sound": "花弁と果実が離れ約1秒静止（導かれる花弁の目印）",
+      "camera_motion": "fixed"
+    },
+    {
+      "id": "R13",
+      "start_s": 37.0,
+      "end_s": 40.0,
+      "duration_s": 3.0,
+      "replaces": "N12",
+      "camera": "岬の低い位置、手前に花弁",
+      "whale": "湖上で大きく旋回",
+      "flora_light_sound": "光の中は導かれ、外は純粋な花吹雪として舞い上がる",
+      "camera_motion": "fixed"
+    },
+    {
+      "id": "R14",
+      "start_s": 40.0,
+      "end_s": 44.0,
+      "duration_s": 4.0,
+      "replaces": "N13",
+      "camera": "PC側の岸から見上げ",
+      "whale": "高度30〜70mで群れの中を横切る",
+      "flora_light_sound": "外縁が闇に溶ける、湖面に逆さの雪",
+      "camera_motion": "fixed"
+    },
+    {
+      "id": "R15",
+      "start_s": 44.0,
+      "end_s": 51.0,
+      "duration_s": 7.0,
+      "replaces": "N14",
+      "camera": "横並走＋手前の花弁（作者承認の画角）",
+      "whale": "一漕ぎ→滑空、画面内で漂う",
+      "flora_light_sound": "鯨の周りは導かれ、手前と奥は純粋",
+      "camera_motion": "follow"
+    },
+    {
+      "id": "R16",
+      "start_s": 51.0,
+      "end_s": 55.5,
+      "duration_s": 4.5,
+      "replaces": "新（旧C16の役割）",
+      "camera": "湖のふち18mm、数m前進",
+      "whale": "月光の前を泳ぐ",
+      "flora_light_sound": "頂点：高密度の群舞、上下対称の映り込み、最も明るい",
+      "camera_motion": "dolly"
+    },
+    {
+      "id": "R17",
+      "start_s": 55.5,
+      "end_s": 60.0,
+      "duration_s": 4.5,
+      "replaces": "N15",
+      "camera": "地上から見上げ",
+      "whale": "月光に沿って昇る、光が天蓋と裂け目の縁に届く",
+      "flora_light_sound": "一部は鯨について昇り、残りは落下へ",
+      "camera_motion": "fixed"
+    },
+    {
+      "id": "R18",
+      "start_s": 60.0,
+      "end_s": 65.0,
+      "duration_s": 5.0,
+      "replaces": "N16",
+      "camera": "固定F・50mm",
+      "whale": "岩縁を越え尾びれが最後に消える、消灯しない",
+      "flora_light_sound": "花雪の一部が夜空へ（タイトル回収）",
+      "camera_motion": "fixed"
+    },
+    {
+      "id": "R19",
+      "start_s": 65.0,
+      "end_s": 70.0,
+      "duration_s": 5.0,
+      "replaces": "N17",
+      "camera": "固定A（R01と同一）",
+      "whale": "不在",
+      "flora_light_sound": "元の静かな洞窟、最後の一枚が水面に落ちて波紋、暗転",
+      "camera_motion": "fixed"
+    }
+  ]
+}
