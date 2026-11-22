@@ -1,0 +1,65 @@
+name: Generate episode 01 ending v12.6 25-shot previs
+
+on:
+  push:
+    branches:
+      - art/ending-v126-25shot-experiment-20261122
+    paths:
+      - 'dm/episode-01/ending/current/previs/v12-lowpoly-v12.6-25shot/ruosuen_v126_25shot_probe.py'
+      - '.github/workflows/generate-ending-v126-25shot-previs.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  render-and-commit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install renderer dependencies
+        run: |
+          python -m pip install --disable-pip-version-check numpy pillow
+          ffmpeg -version | head -n 1
+      - name: Generate all 25-cut storyboards, QA, and A/B videos
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -u dm/episode-01/ending/current/previs/v12-lowpoly-v12.6-25shot/ruosuen_v126_25shot_probe.py \
+            --out dm/episode-01/ending/current/previs/v12-lowpoly-v12.6-25shot \
+            --videos
+      - name: Validate output count and timeline
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          d=pathlib.Path('dm/episode-01/ending/current/previs/v12-lowpoly-v12.6-25shot')
+          q=json.loads((d/'qa-25shot.json').read_text())
+          assert len(q['cuts'])==25
+          assert sum(x['new_test_insert'] for x in q['cuts'])==6
+          assert q['structure_author_approved'] is False
+          for n in ['25cut-70s-4fps.mp4','25cut-80s-4fps.mp4','compare-19-vs-25-70s-4fps.mp4',
+                    'overview-25shot.png','insert-18frames-contact.png','camera-plan-25shot.png']:
+              assert (d/n).is_file() and (d/n).stat().st_size>1000,n
+          for i,x in enumerate(q['cuts']):
+              if i: assert abs(q['cuts'][i-1]['end_s']-x['start_s'])<1e-8
+          assert q['cuts'][0]['start_s']==0 and q['cuts'][-1]['end_s']==70
+          assert len(list((d/'keyframes').glob('*.png')))==43
+          print('QA PASS: 25 cuts, 6 new, 43 PNG frames, 3 MP4 videos')
+          PY
+      - name: Commit deterministic render outputs to same PR branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dm/episode-01/ending/current/previs/v12-lowpoly-v12.6-25shot/
+          if ! git diff --cached --quiet; then
+            git commit -m "previs(ending): render 25-shot low-poly QA and 19-vs-25 comparison"
+            git push origin HEAD:art/ending-v126-25shot-experiment-20261122
+          fi
