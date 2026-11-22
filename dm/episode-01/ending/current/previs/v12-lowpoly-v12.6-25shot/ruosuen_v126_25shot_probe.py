@@ -12,8 +12,10 @@ import argparse
 import json
 import math
 import subprocess
+import sys
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'v12-lowpoly-v12.5-cut-test'))
 import ruosuen_v12_5_cut_compare as ref
 
 b = ref.b
