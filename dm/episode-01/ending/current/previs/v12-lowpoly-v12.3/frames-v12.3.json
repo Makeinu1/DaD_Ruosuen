@@ -1,0 +1,584 @@
+{
+  "version": "v12.3-CAMERA-REVIEW-CANDIDATE",
+  "date": "2026-11-22",
+  "fps": "keyframe stills only",
+  "source": "v12 author provisional + v12.1 timing candidate; adapted v12.2 proxy; not WH-01",
+  "frames": [
+    {
+      "shot": "N01",
+      "time": 1.5,
+      "camera": "A",
+      "filename": "N01-01-01.50s.png",
+      "camera_xyz": [
+        -18,
+        -93,
+        3
+      ],
+      "yaw_deg": 0,
+      "pitch_deg": 18.5,
+      "focal_mm": 18,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N02",
+      "time": 4.3,
+      "camera": "RIPPLE",
+      "filename": "N02-01-04.30s.png",
+      "camera_xyz": [
+        -62,
+        -63,
+        2.8
+      ],
+      "yaw_deg": -25,
+      "pitch_deg": -5,
+      "focal_mm": 35,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N03",
+      "time": 6.2,
+      "camera": "SUB",
+      "filename": "N03-01-06.20s.png",
+      "camera_xyz": [
+        -66,
+        -57,
+        4.3
+      ],
+      "yaw_deg": -31,
+      "pitch_deg": -4,
+      "focal_mm": 28,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N04",
+      "time": 8.0,
+      "camera": "BREACH",
+      "filename": "N04-01-08.00s.png",
+      "camera_xyz": [
+        -56,
+        -39,
+        4.8
+      ],
+      "yaw_deg": -62,
+      "pitch_deg": 17,
+      "focal_mm": 24,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N04",
+      "time": 9.0,
+      "camera": "BREACH",
+      "filename": "N04-02-09.00s.png",
+      "camera_xyz": [
+        -56,
+        -39,
+        4.8
+      ],
+      "yaw_deg": -62,
+      "pitch_deg": 17,
+      "focal_mm": 24,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N04",
+      "time": 10.3,
+      "camera": "BREACH",
+      "filename": "N04-03-10.30s.png",
+      "camera_xyz": [
+        -56,
+        -39,
+        4.8
+      ],
+      "yaw_deg": -62,
+      "pitch_deg": 17,
+      "focal_mm": 24,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N05",
+      "time": 11.2,
+      "camera": "APPROACH",
+      "filename": "N05-01-11.20s.png",
+      "camera_xyz": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": -43,
+      "pitch_deg": 20,
+      "focal_mm": 28,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N05",
+      "time": 12.5,
+      "camera": "APPROACH",
+      "filename": "N05-02-12.50s.png",
+      "camera_xyz": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": -43,
+      "pitch_deg": 20,
+      "focal_mm": 28,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N05",
+      "time": 13.9,
+      "camera": "APPROACH",
+      "filename": "N05-03-13.90s.png",
+      "camera_xyz": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": -43,
+      "pitch_deg": 20,
+      "focal_mm": 28,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N06",
+      "time": 14.5,
+      "camera": "B",
+      "filename": "N06-01-14.50s.png",
+      "camera_xyz": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": -60,
+      "pitch_deg": 50,
+      "focal_mm": 16,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N06",
+      "time": 15.5,
+      "camera": "B",
+      "filename": "N06-02-15.50s.png",
+      "camera_xyz": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": -60,
+      "pitch_deg": 50,
+      "focal_mm": 16,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N06",
+      "time": 16.5,
+      "camera": "B",
+      "filename": "N06-03-16.50s.png",
+      "camera_xyz": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": -60,
+      "pitch_deg": 50,
+      "focal_mm": 16,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N06",
+      "time": 17.8,
+      "camera": "B",
+      "filename": "N06-04-17.80s.png",
+      "camera_xyz": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": -60,
+      "pitch_deg": 50,
+      "focal_mm": 16,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N07",
+      "time": 18.2,
+      "camera": "BEHIND",
+      "filename": "N07-01-18.20s.png",
+      "camera_xyz": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": 106,
+      "pitch_deg": 38,
+      "focal_mm": 16,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N07",
+      "time": 19.2,
+      "camera": "BEHIND",
+      "filename": "N07-02-19.20s.png",
+      "camera_xyz": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": 106,
+      "pitch_deg": 38,
+      "focal_mm": 16,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N07",
+      "time": 20.2,
+      "camera": "BEHIND",
+      "filename": "N07-03-20.20s.png",
+      "camera_xyz": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": 106,
+      "pitch_deg": 38,
+      "focal_mm": 16,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N08",
+      "time": 20.55,
+      "camera": "C",
+      "filename": "N08-01-20.55s.png",
+      "camera_xyz": [
+        -7,
+        -145,
+        6.0
+      ],
+      "yaw_deg": -14,
+      "pitch_deg": 26,
+      "focal_mm": 18,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N08",
+      "time": 21.4,
+      "camera": "C",
+      "filename": "N08-02-21.40s.png",
+      "camera_xyz": [
+        -7,
+        -145,
+        6.0
+      ],
+      "yaw_deg": -13.431845544821481,
+      "pitch_deg": 26,
+      "focal_mm": 18,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N08",
+      "time": 23.2,
+      "camera": "C",
+      "filename": "N08-03-23.20s.png",
+      "camera_xyz": [
+        -7,
+        -145,
+        6.0
+      ],
+      "yaw_deg": -6.5000000000000115,
+      "pitch_deg": 26,
+      "focal_mm": 18,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N08",
+      "time": 25.5,
+      "camera": "C",
+      "filename": "N08-04-25.50s.png",
+      "camera_xyz": [
+        -7,
+        -145,
+        6.0
+      ],
+      "yaw_deg": 0.9949433169914172,
+      "pitch_deg": 26,
+      "focal_mm": 18,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N09",
+      "time": 26.5,
+      "camera": "D",
+      "filename": "N09-01-26.50s.png",
+      "camera_xyz": [
+        29.0,
+        -66.0,
+        4.5
+      ],
+      "yaw_deg": 28,
+      "pitch_deg": 2,
+      "focal_mm": 55,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N09",
+      "time": 28.2,
+      "camera": "D",
+      "filename": "N09-02-28.20s.png",
+      "camera_xyz": [
+        29.0,
+        -66.0,
+        4.5
+      ],
+      "yaw_deg": 28,
+      "pitch_deg": 2,
+      "focal_mm": 55,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N10",
+      "time": 32.0,
+      "camera": "FLOWERWIDE",
+      "filename": "N10-01-32.00s.png",
+      "camera_xyz": [
+        26,
+        -62,
+        12
+      ],
+      "yaw_deg": 30,
+      "pitch_deg": -5,
+      "focal_mm": 26,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N10",
+      "time": 35.9,
+      "camera": "FLOWERWIDE",
+      "filename": "N10-02-35.90s.png",
+      "camera_xyz": [
+        26,
+        -62,
+        12
+      ],
+      "yaw_deg": 30,
+      "pitch_deg": -5,
+      "focal_mm": 26,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N11",
+      "time": 38.4,
+      "camera": "MACRO",
+      "filename": "N11-01-38.40s.png",
+      "camera_xyz": [
+        71.8,
+        7.64,
+        3.42
+      ],
+      "yaw_deg": 29,
+      "pitch_deg": -40,
+      "focal_mm": 80,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N12",
+      "time": 41.5,
+      "camera": "PLUME",
+      "filename": "N12-01-41.50s.png",
+      "camera_xyz": [
+        11,
+        -63,
+        6.0
+      ],
+      "yaw_deg": 42,
+      "pitch_deg": 18,
+      "focal_mm": 24,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N13",
+      "time": 45,
+      "camera": "E-WIDE",
+      "filename": "N13-01-45.00s.png",
+      "camera_xyz": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": 25,
+      "pitch_deg": 31,
+      "focal_mm": 24,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N14",
+      "time": 47.2,
+      "camera": "E-TELE",
+      "filename": "N14-01-47.20s.png",
+      "camera_xyz": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": 25,
+      "pitch_deg": 25.010875,
+      "focal_mm": 95,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N14",
+      "time": 50.6,
+      "camera": "E-TELE",
+      "filename": "N14-02-50.60s.png",
+      "camera_xyz": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": 25,
+      "pitch_deg": 26.458,
+      "focal_mm": 95,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N15",
+      "time": 51.1,
+      "camera": "ASCENT",
+      "filename": "N15-01-51.10s.png",
+      "camera_xyz": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": 25,
+      "pitch_deg": 26,
+      "focal_mm": 35,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N15",
+      "time": 54.4,
+      "camera": "ASCENT",
+      "filename": "N15-02-54.40s.png",
+      "camera_xyz": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": 25,
+      "pitch_deg": 26,
+      "focal_mm": 35,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N15",
+      "time": 57.2,
+      "camera": "ASCENT",
+      "filename": "N15-03-57.20s.png",
+      "camera_xyz": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": 25,
+      "pitch_deg": 26,
+      "focal_mm": 35,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N16",
+      "time": 58.0,
+      "camera": "F",
+      "filename": "N16-01-58.00s.png",
+      "camera_xyz": [
+        -10,
+        -108,
+        5
+      ],
+      "yaw_deg": 0,
+      "pitch_deg": 28,
+      "focal_mm": 50,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N16",
+      "time": 62.0,
+      "camera": "F",
+      "filename": "N16-02-62.00s.png",
+      "camera_xyz": [
+        -10,
+        -108,
+        5
+      ],
+      "yaw_deg": 0,
+      "pitch_deg": 28,
+      "focal_mm": 50,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N16",
+      "time": 63.8,
+      "camera": "F",
+      "filename": "N16-03-63.80s.png",
+      "camera_xyz": [
+        -10,
+        -108,
+        5
+      ],
+      "yaw_deg": 0,
+      "pitch_deg": 28,
+      "focal_mm": 50,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    },
+    {
+      "shot": "N17",
+      "time": 67.0,
+      "camera": "A",
+      "filename": "N17-01-67.00s.png",
+      "camera_xyz": [
+        -18,
+        -93,
+        3
+      ],
+      "yaw_deg": 0,
+      "pitch_deg": 18.5,
+      "focal_mm": 18,
+      "status": "PROVISIONAL: no author camera approval",
+      "changes": "camera continuity v12.3 comparison"
+    }
+  ]
+}
