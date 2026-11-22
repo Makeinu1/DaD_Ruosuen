@@ -582,6 +582,44 @@
       "moonAngularDiameterDeg": 0.5,
       "relativeApproxRatio": 7.4,
       "warning": "Length 24m / range is a broadside upper-bound proxy; whale cannot be fully contained in the real lunar disc at this range."
+    },
+    "nearOverheadGeometryAudit": {
+      "status": "IMPORTANT FINDING; OLD v0.2 is a close overhead-adjacent pass, not direct zenith. Proposed shift has NOT been fully retested; do not silently adopt.",
+      "currentV02": {
+        "firstArcCenterXY": [
+          -20,
+          -15
+        ],
+        "radiusM": 70,
+        "partyXY": [
+          -54,
+          -85
+        ],
+        "centerlineNearestHorizontalOffsetM": 7.82,
+        "approxPeakEyeElevationDeg": 55.8,
+        "headProxyNoseSideClearanceXYM": 3.46,
+        "headRightEdgeReceivesLunarRayByE07": true,
+        "firstHeadRightEdgeContactApproxTimeS": 19.815
+      },
+      "oneCandidateRevision": {
+        "firstArcCenterXY": [
+          -20,
+          -23
+        ],
+        "radiusM": 70,
+        "partyXY": [
+          -58,
+          -85
+        ],
+        "centerlineNearestHorizontalOffsetM": 2.72,
+        "approxPeakEyeElevationDeg": 73.1,
+        "headProxyNoseSideClearanceXYM": 3.56,
+        "headRightEdgeBeamMarginAtPhi255M": -4.1,
+        "headRightEdgeBeamMarginAtPhi260M": 0.16,
+        "noseCenterBeamMarginAtPhi260M": -1.74,
+        "interpretation": "The revised path would better represent directly overhead and avoid early light at E07, but lunar onset shifts later. Coastline land check, all six camera views, S1 exposure, timestamps and 3D clearance MUST be recomputed before adopting."
+      },
+      "comparisonCaveat": "Peak eye elevation based on a piecewise-linear torso-height interpolation and a 2D orbit nearest approach; not an actual 3D animation or mesh occlusion."
     }
   },
   "checks": {
