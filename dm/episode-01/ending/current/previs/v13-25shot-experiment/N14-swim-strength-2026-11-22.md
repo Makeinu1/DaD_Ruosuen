@@ -36,3 +36,24 @@
 - **推奨はまだ暫定**：「まず1.5倍で感覚が改善するか」を見て、別軸の上下推進へ進む価値を議論。過度な振幅の2.2倍を無条件採用しない。
 
 関連：[25カットと見せ場の全体設計](25shot-cut-design-proposal-2026-11-22.md) ／ [採用19カットPython](../v12-lowpoly-v12.5-cut-test/ruosuen_v12_5_cut_compare.py)。
+
+## 2026-11-22 生体運動の再調査：尾の左右振りは主役にしない（監督レビュー・未採用）
+
+作者の問い：「鯨の自然の動き方はどれだろう。横の動きだけか？ 縦の動きは？」
+
+**科学的確認**：現生鯨類の主推進は、上下（dorsoventral）の背骨・尾柄運動と、水平に広がる尾びれの上下ストローク。頭は比較的安定し、運動の振幅は身体の後方が大きい。胸びれは主として方向・安定化に使う。身体の左右方向への旋回と、内側へ傾くバンクは実際に見られるが、通常の前進を魚のような左右の尾振り中心で表現するのは妥当でない。上昇・下降の全身進路変化（ピッチ）は、尾びれの周期的上下運動とは区別する。
+- Smithsonian Ocean: https://ocean.si.edu/ocean-life/marine-mammals/whales
+- Whale and Dolphin Conservation: https://uk.whales.org/whales-dolphins/why-do-whale-and-dolphin-tails-go-up-and-down/
+- Stabilization mechanism in swimming odontocete cetaceans (Marine Mammal Science 2003): https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1748-7692.2003.tb01318.x
+- Scaling of oscillatory kinematics and Froude efficiency in baleen whales: https://pmc.ncbi.nlm.nih.gov/articles/PMC8317509/
+- Body Flexibility Enhances Maneuverability in the World's Largest Predator: https://academic.oup.com/icb/article/59/1/48/5184268
+
+**既存の試作に対する修正**：`SWIM`／1.5倍／2.2倍では、元の変形波の`y`成分（左右）を増幅していた。そのため自然な鯨の泳ぎとしては**大きくしても問題の解決にならない**。先に尾柄の局所上下`z`変位と尾びれの迎角の遅れを主アニメーションにし、頭のブレを抑える必要がある。尾の位置変化が表現できるよう局所セグメント／ボーン化も必要。
+
+**次の比較の候補（未採用）**：
+1. 既存「空を泳ぐ」＝旧左右振り（問題点を明示した比較基準）。
+2. 上下推進主体：ゆっくりした大きめの尾の上下ストローク、頭部は安定、胸びれの小調整。
+3. 上下推進＋短いグライド：尾の数ストローク後に推進を休め、花雪の中を滑空する余韻を置く。
+4. 上下推進＋緩い方向転換／バンク：旋回時のみ左右進路をわずかに曲げる。カメラの座標はバンクに回り込まず、鯨の動きを見えるよう維持。
+
+見せ場のアニメーションは**非現実の空中遊泳**だが、自然な鯨の身体語彙から出発するのが監督方針。ストローク周期・振幅・高低差は実験値であり作者確定ではない。採用済み19カット、v13 25カット原本、WH-01・S1設定を変えない。
