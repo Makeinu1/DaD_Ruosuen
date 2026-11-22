@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
-import sys,json,math
+import sys,json,math,argparse
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 import numpy as np
 from trimesh.triangles import closest_point
 from ruosuen_story_previs import *
 
-out=Path('/mnt/data/ruosuen_v12_previs');out.mkdir(exist_ok=True)
+arg=argparse.ArgumentParser(description='Validate low-poly proxy and create top-down scene map')
+arg.add_argument('--out',default='./previs-output')
+out=Path(arg.parse_args().out);out.mkdir(parents=True,exist_ok=True)
 # Comparative 3D-proxy checks. NOT clearance certification of WH-01 or thick ceiling geometry.
 def world_mesh(t):
  cp,f,sd,up=pose(t)
