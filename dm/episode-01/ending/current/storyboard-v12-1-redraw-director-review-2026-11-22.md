@@ -2,7 +2,7 @@
 
 > **DM専用・プレイヤー閲覧禁止。** **本資料は「次に絵コンテを作り直す前の赤入れ・演出設計」**。原画を新たに生成した資料ではない。作者が仮決定した[17ショット／70秒v12](storyboard-v12-70s-provisional-2026-11-22.md)の骨格を守りつつ、検出した不連続を解くための**v12.1修正候補**を示す。タイミング・レンズ・画角・描き直し優先順は**作者未承認の提案**であり、原画の作者採用を上書きしない。
 >
-> **適用したスキル**：リポジトリ標準の[illustration-composition](../../../.agents/skills/illustration-composition/SKILL.md)（感情・象徴的瞬間・3構図案・3〜5階調・負の空間・作画QA）と、公開の[LottieFiles Motion Design Skill](https://github.com/LottieFiles/motion-design-skill/blob/main/skills/motion-design/SKILL.md)（主動作／副次動作／環境動作、予兆→行動→反応→収束、スロウイン／スロウアウト）を**設計原理として参照**した。後者の**UI向け数百ミリ秒の規定を映画の秒数へ機械的に転用していない**。
+> **適用したスキル**：リポジトリ標準の[illustration-composition](../../../../.agents/skills/illustration-composition/SKILL.md)（感情・象徴的瞬間・3構図案・3〜5階調・負の空間・作画QA）と、公開の[LottieFiles Motion Design Skill](https://github.com/LottieFiles/motion-design-skill/blob/main/skills/motion-design/SKILL.md)（主動作／副次動作／環境動作、予兆→行動→反応→収束、スロウイン／スロウアウト）を**設計原理として参照**した。後者の**UI向け数百ミリ秒の規定を映画の秒数へ機械的に転用していない**。
 
 ## 総合判定
 
