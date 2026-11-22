@@ -1,0 +1,40 @@
+{
+  "name": "空に降る雪 full70 lowpoly previs",
+  "source": "GitHub main v12.5 original + merged PR #41 experimental sources",
+  "duration_s": 70,
+  "frames": 560,
+  "fps": 8,
+  "screen": [
+    1280,
+    720
+  ],
+  "cut_count": 25,
+  "storyboard_approved_25cut": false,
+  "source_whale_path_unchanged": true,
+  "timeline": "provisional B: N13 40-45s / N14 45-51s",
+  "N14_author_approved": {
+    "camera": "side-follow ②",
+    "size": "slightly larger",
+    "acting": "natural vertical fluke stroke then glide",
+    "time_s": [
+      45,
+      51
+    ]
+  },
+  "flower_snow": "B2 white/gold, visualization-only unapproved particle density",
+  "soundtrack": "none",
+  "original_v12_5_12_probes_unchanged": true,
+  "unresolved": [
+    "N13 to N14 to N14.5 camera continuity",
+    "N06 PC proximity",
+    "N08 occlusion",
+    "N16 whole-tail exit"
+  ],
+  "video": {
+    "width": 1280,
+    "height": 720,
+    "r_frame_rate": "8/1",
+    "duration": "70.000000",
+    "nb_frames": "560"
+  }
+}
