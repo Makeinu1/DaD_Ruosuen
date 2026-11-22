@@ -1,0 +1,102 @@
+{
+  "project": "Makeinu1/DaD_Ruosuen",
+  "shot": "N06",
+  "status": "PROVISIONAL: author requested low-poly workflow; concrete camera and model unapproved",
+  "date": "2026-11-22",
+  "coordinate_system": "X right facing lake; Y toward lake; Z up (meters)",
+  "N06_timing": {
+    "v12": [
+      14,
+      17.5
+    ],
+    "v12_1_candidate": [
+      14,
+      18
+    ]
+  },
+  "initial_frame_s": 16.5,
+  "camera_B": {
+    "xyz_m": [
+      -58,
+      -84,
+      4.1
+    ],
+    "yaw_deg": -60,
+    "pitch_deg": 50,
+    "focal_mm": 16,
+    "sensor_mm": [
+      36,
+      20.25
+    ],
+    "fixed": true
+  },
+  "whale_proxy": {
+    "length_m": 24,
+    "fin_span_m": 14.8,
+    "max_body_width_m": 4.5,
+    "non_emissive": true,
+    "mesh": "artist-authored low polygon placeholder, not WH-01 final mesh"
+  },
+  "stations": [
+    {
+      "id": "E03",
+      "t_s": 12.5,
+      "xyz_m": [
+        -85.778,
+        -48.941,
+        18
+      ]
+    },
+    {
+      "id": "E04",
+      "t_s": 14.5,
+      "xyz_m": [
+        -73.623,
+        -69.995,
+        15
+      ]
+    },
+    {
+      "id": "E05",
+      "t_s": 16.5,
+      "xyz_m": [
+        -60.15,
+        -82.341,
+        11.5
+      ]
+    },
+    {
+      "id": "E06",
+      "t_s": 18,
+      "xyz_m": [
+        -49.583,
+        -88.442,
+        16
+      ]
+    },
+    {
+      "id": "E07",
+      "t_s": 19.75,
+      "xyz_m": [
+        -38.117,
+        -92.615,
+        21
+      ]
+    },
+    {
+      "id": "E08",
+      "t_s": 20.8,
+      "xyz_m": [
+        -32.155,
+        -93.937,
+        24
+      ]
+    }
+  ],
+  "limitations": [
+    "Interpolator is cubic Hermite proposed by this study, not authoritative route curve",
+    "Near distance and anatomical fidelity require true 3D mesh check",
+    "Background roof is abstract, no moon visible in camera B",
+    "Path graph supplied by author is reference for visualization style only, not adopted newer route"
+  ]
+}
