@@ -1,0 +1,854 @@
+{
+  "project": "D&D Ruosuen / 空に降る雪",
+  "version": "v12.5-B-19shot-vs-A-17shot",
+  "author_approved": false,
+  "A_shots": 17,
+  "B_shots": 19,
+  "A_duration_s": 70,
+  "B_duration_s": 70,
+  "single_shared_whale_path": true,
+  "source": "main v12.4 frontend trajectory + v12.3 scene and 3D low-poly proxy",
+  "warnings": [
+    "N04A large head is due to camera perspective; near collision not validated",
+    "N04B head may leave upper edge of frame",
+    "N07.5 explicitly excludes whale to test environmental insert",
+    "B N07 reduced to 1.45s; emotional relief may be too short",
+    "N16 tail disappearance and thick ceiling remain unverified",
+    "B adds 2 cuts but keeps 70-second provisional duration",
+    "Author approved 19-cut B editorial structure on 2026-11-22; this manifest retains provisional camera and duration values."
+  ],
+  "cuts": [
+    {
+      "version": "A",
+      "id": "N01",
+      "start": 0,
+      "end": 3,
+      "camera": "A",
+      "XYZ_m": [
+        -18,
+        -93,
+        3
+      ],
+      "yaw_deg": -24,
+      "pitch_deg": 18.5,
+      "focal_mm": 18,
+      "camera_motion": false,
+      "author_approved": false
+    },
+    {
+      "version": "A",
+      "id": "N02",
+      "start": 3,
+      "end": 5.5,
+      "camera": "RIPPLE",
+      "XYZ_m": [
+        -90,
+        -40,
+        2.8
+      ],
+      "yaw_deg": 0,
+      "pitch_deg": -5,
+      "focal_mm": 28,
+      "camera_motion": false,
+      "author_approved": false
+    },
+    {
+      "version": "A",
+      "id": "N03",
+      "start": 5.5,
+      "end": 7.5,
+      "camera": "SUB",
+      "XYZ_m": [
+        -90,
+        -18,
+        3.2
+      ],
+      "yaw_deg": 0,
+      "pitch_deg": -21,
+      "focal_mm": 55,
+      "camera_motion": false,
+      "author_approved": false,
+      "whale_center_start_xy_px": [
+        576,
+        220.5
+      ],
+      "whale_center_end_xy_px": [
+        576,
+        282.8
+      ]
+    },
+    {
+      "version": "A",
+      "id": "N04",
+      "start": 7.5,
+      "end": 11,
+      "camera": "BREACH",
+      "XYZ_m": [
+        -56,
+        -39,
+        4.8
+      ],
+      "yaw_deg": -62,
+      "pitch_deg": 17,
+      "focal_mm": 24,
+      "camera_motion": false,
+      "author_approved": false,
+      "whale_center_start_xy_px": [
+        958.9,
+        729.9
+      ],
+      "whale_center_end_xy_px": [
+        399.5,
+        309.5
+      ]
+    },
+    {
+      "version": "A",
+      "id": "N05",
+      "start": 11,
+      "end": 14,
+      "camera": "APPROACH",
+      "XYZ_m": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": -43,
+      "pitch_deg": 20,
+      "focal_mm": 28,
+      "camera_motion": false,
+      "author_approved": false,
+      "whale_center_start_xy_px": [
+        772.4,
+        465
+      ],
+      "whale_center_end_xy_px": [
+        541.1,
+        261.9
+      ]
+    },
+    {
+      "version": "A",
+      "id": "N06",
+      "start": 14,
+      "end": 18,
+      "camera": "B",
+      "XYZ_m": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": -60,
+      "pitch_deg": 50,
+      "focal_mm": 16,
+      "camera_motion": false,
+      "author_approved": false,
+      "whale_center_start_xy_px": [
+        707.4,
+        564.2
+      ],
+      "whale_center_end_xy_px": [
+        634.5,
+        -2154.7
+      ]
+    },
+    {
+      "version": "A",
+      "id": "N07",
+      "start": 18,
+      "end": 20.5,
+      "camera": "BEHIND",
+      "XYZ_m": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": 106,
+      "pitch_deg": 38,
+      "focal_mm": 16,
+      "camera_motion": false,
+      "author_approved": false,
+      "whale_center_start_xy_px": [
+        644.2,
+        199.7
+      ],
+      "whale_center_end_xy_px": [
+        617.7,
+        336.9
+      ]
+    },
+    {
+      "version": "A",
+      "id": "N08",
+      "start": 20.5,
+      "end": 26,
+      "camera": "C",
+      "XYZ_m": [
+        -7,
+        -145,
+        6
+      ],
+      "yaw_deg": -6.260674417036695,
+      "pitch_deg": 26,
+      "focal_mm": 18,
+      "camera_motion": true,
+      "author_approved": false,
+      "whale_center_start_xy_px": [
+        441.7,
+        414.8
+      ],
+      "whale_center_end_xy_px": [
+        711.2,
+        353
+      ]
+    },
+    {
+      "version": "A",
+      "id": "N09",
+      "start": 26,
+      "end": 31,
+      "camera": "D",
+      "XYZ_m": [
+        29,
+        -66,
+        4.5
+      ],
+      "yaw_deg": 28,
+      "pitch_deg": 2,
+      "focal_mm": 55,
+      "camera_motion": false,
+      "author_approved": false,
+      "whale_center_start_xy_px": null,
+      "whale_center_end_xy_px": [
+        1243.3,
+        -2094.3
+      ]
+    },
+    {
+      "version": "A",
+      "id": "N10",
+      "start": 31,
+      "end": 36.5,
+      "camera": "FLOWERWIDE",
+      "XYZ_m": [
+        26,
+        -62,
+        12
+      ],
+      "yaw_deg": 30,
+      "pitch_deg": -5,
+      "focal_mm": 26,
+      "camera_motion": false,
+      "author_approved": false,
+      "whale_center_start_xy_px": [
+        1189,
+        -830.4
+      ],
+      "whale_center_end_xy_px": [
+        451.4,
+        -57.1
+      ]
+    },
+    {
+      "version": "A",
+      "id": "N11",
+      "start": 36.5,
+      "end": 40,
+      "camera": "MACRO",
+      "XYZ_m": [
+        71.8,
+        7.64,
+        3.42
+      ],
+      "yaw_deg": 29,
+      "pitch_deg": -40,
+      "focal_mm": 80,
+      "camera_motion": false,
+      "author_approved": false,
+      "whale_center_start_xy_px": null,
+      "whale_center_end_xy_px": null
+    },
+    {
+      "version": "A",
+      "id": "N12",
+      "start": 40,
+      "end": 43,
+      "camera": "PLUME",
+      "XYZ_m": [
+        11,
+        -63,
+        6
+      ],
+      "yaw_deg": 42,
+      "pitch_deg": 18,
+      "focal_mm": 24,
+      "camera_motion": false,
+      "author_approved": false,
+      "whale_center_start_xy_px": [
+        333.9,
+        198.8
+      ],
+      "whale_center_end_xy_px": [
+        269.9,
+        150.4
+      ]
+    },
+    {
+      "version": "A",
+      "id": "N13",
+      "start": 43,
+      "end": 47,
+      "camera": "E-WIDE",
+      "XYZ_m": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": 25,
+      "pitch_deg": 31,
+      "focal_mm": 24,
+      "camera_motion": false,
+      "author_approved": false,
+      "whale_center_start_xy_px": [
+        727.6,
+        442.9
+      ],
+      "whale_center_end_xy_px": [
+        642.4,
+        399.3
+      ]
+    },
+    {
+      "version": "A",
+      "id": "N14",
+      "start": 47,
+      "end": 51,
+      "camera": "E-TELE",
+      "XYZ_m": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": 25,
+      "pitch_deg": 25.75,
+      "focal_mm": 95,
+      "camera_motion": true,
+      "author_approved": false,
+      "whale_center_start_xy_px": [
+        834.8,
+        301.6
+      ],
+      "whale_center_end_xy_px": [
+        521,
+        307.3
+      ]
+    },
+    {
+      "version": "A",
+      "id": "N15",
+      "start": 51,
+      "end": 57.5,
+      "camera": "ASCENT",
+      "XYZ_m": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": 25,
+      "pitch_deg": 26,
+      "focal_mm": 35,
+      "camera_motion": false,
+      "author_approved": false,
+      "whale_center_start_xy_px": [
+        554.6,
+        307.6
+      ],
+      "whale_center_end_xy_px": [
+        407.6,
+        183.9
+      ]
+    },
+    {
+      "version": "A",
+      "id": "N16",
+      "start": 57.5,
+      "end": 64,
+      "camera": "F",
+      "XYZ_m": [
+        -10,
+        -108,
+        5
+      ],
+      "yaw_deg": 0,
+      "pitch_deg": 28,
+      "focal_mm": 50,
+      "camera_motion": false,
+      "author_approved": false,
+      "whale_center_start_xy_px": [
+        679.6,
+        233.1
+      ],
+      "whale_center_end_xy_px": [
+        537.9,
+        88.8
+      ]
+    },
+    {
+      "version": "A",
+      "id": "N17",
+      "start": 64,
+      "end": 70,
+      "camera": "A",
+      "XYZ_m": [
+        -18,
+        -93,
+        3
+      ],
+      "yaw_deg": -24,
+      "pitch_deg": 18.5,
+      "focal_mm": 18,
+      "camera_motion": false,
+      "author_approved": false
+    },
+    {
+      "version": "B",
+      "id": "N01",
+      "start": 0,
+      "end": 3,
+      "camera": "A",
+      "XYZ_m": [
+        -18,
+        -93,
+        3
+      ],
+      "yaw_deg": -24,
+      "pitch_deg": 18.5,
+      "focal_mm": 18,
+      "camera_motion": false,
+      "author_approved": false
+    },
+    {
+      "version": "B",
+      "id": "N02",
+      "start": 3,
+      "end": 5.5,
+      "camera": "RIPPLE",
+      "XYZ_m": [
+        -90,
+        -40,
+        2.8
+      ],
+      "yaw_deg": 0,
+      "pitch_deg": -5,
+      "focal_mm": 28,
+      "camera_motion": false,
+      "author_approved": false
+    },
+    {
+      "version": "B",
+      "id": "N03",
+      "start": 5.5,
+      "end": 7.5,
+      "camera": "SUB",
+      "XYZ_m": [
+        -90,
+        -18,
+        3.2
+      ],
+      "yaw_deg": 0,
+      "pitch_deg": -21,
+      "focal_mm": 55,
+      "camera_motion": false,
+      "author_approved": false,
+      "whale_center_start_xy_px": [
+        576,
+        220.5
+      ],
+      "whale_center_end_xy_px": [
+        576,
+        282.8
+      ]
+    },
+    {
+      "version": "B",
+      "id": "N04A",
+      "start": 7.5,
+      "end": 9.05,
+      "camera": "BREACH_FRONT",
+      "XYZ_m": [
+        -90,
+        -24,
+        3.2
+      ],
+      "yaw_deg": 0,
+      "pitch_deg": 5,
+      "focal_mm": 28,
+      "camera_motion": false,
+      "author_approved": false,
+      "whale_center_start_xy_px": [
+        576,
+        662.9
+      ],
+      "whale_center_end_xy_px": [
+        575.9,
+        403.5
+      ]
+    },
+    {
+      "version": "B",
+      "id": "N04B",
+      "start": 9.05,
+      "end": 11,
+      "camera": "BREACH_THREEQ",
+      "XYZ_m": [
+        -70,
+        -42,
+        5
+      ],
+      "yaw_deg": -48,
+      "pitch_deg": 20,
+      "focal_mm": 24,
+      "camera_motion": false,
+      "author_approved": false,
+      "whale_center_start_xy_px": [
+        778.8,
+        643.4
+      ],
+      "whale_center_end_xy_px": [
+        438.8,
+        245.2
+      ]
+    },
+    {
+      "version": "B",
+      "id": "N05",
+      "start": 11,
+      "end": 14,
+      "camera": "APPROACH",
+      "XYZ_m": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": -43,
+      "pitch_deg": 20,
+      "focal_mm": 28,
+      "camera_motion": false,
+      "author_approved": false,
+      "whale_center_start_xy_px": [
+        772.4,
+        465
+      ],
+      "whale_center_end_xy_px": [
+        541.1,
+        261.9
+      ]
+    },
+    {
+      "version": "B",
+      "id": "N06",
+      "start": 14,
+      "end": 18,
+      "camera": "B",
+      "XYZ_m": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": -60,
+      "pitch_deg": 50,
+      "focal_mm": 16,
+      "camera_motion": false,
+      "author_approved": false,
+      "whale_center_start_xy_px": [
+        707.4,
+        564.2
+      ],
+      "whale_center_end_xy_px": [
+        634.5,
+        -2154.7
+      ]
+    },
+    {
+      "version": "B",
+      "id": "N07",
+      "start": 18,
+      "end": 19.45,
+      "camera": "BEHIND",
+      "XYZ_m": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": 106,
+      "pitch_deg": 38,
+      "focal_mm": 16,
+      "camera_motion": false,
+      "author_approved": false,
+      "whale_center_start_xy_px": [
+        644.2,
+        199.7
+      ],
+      "whale_center_end_xy_px": [
+        632,
+        310.3
+      ]
+    },
+    {
+      "version": "B",
+      "id": "N07.5",
+      "start": 19.45,
+      "end": 20.5,
+      "camera": "MOON_ESTABLISH",
+      "XYZ_m": [
+        -7,
+        -145,
+        6
+      ],
+      "yaw_deg": -14,
+      "pitch_deg": 39,
+      "focal_mm": 28,
+      "camera_motion": false,
+      "author_approved": false
+    },
+    {
+      "version": "B",
+      "id": "N08",
+      "start": 20.5,
+      "end": 26,
+      "camera": "C",
+      "XYZ_m": [
+        -7,
+        -145,
+        6
+      ],
+      "yaw_deg": -6.260674417036695,
+      "pitch_deg": 26,
+      "focal_mm": 18,
+      "camera_motion": true,
+      "author_approved": false,
+      "whale_center_start_xy_px": [
+        441.7,
+        414.8
+      ],
+      "whale_center_end_xy_px": [
+        711.2,
+        353
+      ]
+    },
+    {
+      "version": "B",
+      "id": "N09",
+      "start": 26,
+      "end": 31,
+      "camera": "D",
+      "XYZ_m": [
+        29,
+        -66,
+        4.5
+      ],
+      "yaw_deg": 28,
+      "pitch_deg": 2,
+      "focal_mm": 55,
+      "camera_motion": false,
+      "author_approved": false,
+      "whale_center_start_xy_px": null,
+      "whale_center_end_xy_px": [
+        1243.3,
+        -2094.3
+      ]
+    },
+    {
+      "version": "B",
+      "id": "N10",
+      "start": 31,
+      "end": 36.5,
+      "camera": "FLOWERWIDE",
+      "XYZ_m": [
+        26,
+        -62,
+        12
+      ],
+      "yaw_deg": 30,
+      "pitch_deg": -5,
+      "focal_mm": 26,
+      "camera_motion": false,
+      "author_approved": false,
+      "whale_center_start_xy_px": [
+        1189,
+        -830.4
+      ],
+      "whale_center_end_xy_px": [
+        451.4,
+        -57.1
+      ]
+    },
+    {
+      "version": "B",
+      "id": "N11",
+      "start": 36.5,
+      "end": 40,
+      "camera": "MACRO",
+      "XYZ_m": [
+        71.8,
+        7.64,
+        3.42
+      ],
+      "yaw_deg": 29,
+      "pitch_deg": -40,
+      "focal_mm": 80,
+      "camera_motion": false,
+      "author_approved": false,
+      "whale_center_start_xy_px": null,
+      "whale_center_end_xy_px": null
+    },
+    {
+      "version": "B",
+      "id": "N12",
+      "start": 40,
+      "end": 43,
+      "camera": "PLUME",
+      "XYZ_m": [
+        11,
+        -63,
+        6
+      ],
+      "yaw_deg": 42,
+      "pitch_deg": 18,
+      "focal_mm": 24,
+      "camera_motion": false,
+      "author_approved": false,
+      "whale_center_start_xy_px": [
+        333.9,
+        198.8
+      ],
+      "whale_center_end_xy_px": [
+        269.9,
+        150.4
+      ]
+    },
+    {
+      "version": "B",
+      "id": "N13",
+      "start": 43,
+      "end": 47,
+      "camera": "E-WIDE",
+      "XYZ_m": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": 25,
+      "pitch_deg": 31,
+      "focal_mm": 24,
+      "camera_motion": false,
+      "author_approved": false,
+      "whale_center_start_xy_px": [
+        727.6,
+        442.9
+      ],
+      "whale_center_end_xy_px": [
+        642.4,
+        399.3
+      ]
+    },
+    {
+      "version": "B",
+      "id": "N14",
+      "start": 47,
+      "end": 51,
+      "camera": "E-TELE",
+      "XYZ_m": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": 25,
+      "pitch_deg": 25.75,
+      "focal_mm": 95,
+      "camera_motion": true,
+      "author_approved": false,
+      "whale_center_start_xy_px": [
+        834.8,
+        301.6
+      ],
+      "whale_center_end_xy_px": [
+        521,
+        307.3
+      ]
+    },
+    {
+      "version": "B",
+      "id": "N15",
+      "start": 51,
+      "end": 57.5,
+      "camera": "ASCENT",
+      "XYZ_m": [
+        -58,
+        -84,
+        4.1
+      ],
+      "yaw_deg": 25,
+      "pitch_deg": 26,
+      "focal_mm": 35,
+      "camera_motion": false,
+      "author_approved": false,
+      "whale_center_start_xy_px": [
+        554.6,
+        307.6
+      ],
+      "whale_center_end_xy_px": [
+        407.6,
+        183.9
+      ]
+    },
+    {
+      "version": "B",
+      "id": "N16",
+      "start": 57.5,
+      "end": 64,
+      "camera": "F",
+      "XYZ_m": [
+        -10,
+        -108,
+        5
+      ],
+      "yaw_deg": 0,
+      "pitch_deg": 28,
+      "focal_mm": 50,
+      "camera_motion": false,
+      "author_approved": false,
+      "whale_center_start_xy_px": [
+        679.6,
+        233.1
+      ],
+      "whale_center_end_xy_px": [
+        537.9,
+        88.8
+      ]
+    },
+    {
+      "version": "B",
+      "id": "N17",
+      "start": 64,
+      "end": 70,
+      "camera": "A",
+      "XYZ_m": [
+        -18,
+        -93,
+        3
+      ],
+      "yaw_deg": -24,
+      "pitch_deg": 18.5,
+      "focal_mm": 18,
+      "camera_motion": false,
+      "author_approved": false
+    }
+  ],
+  "selected_structure": "B",
+  "selected_structure_shots": 19,
+  "structure_author_approved": true,
+  "structure_approval_date": "2026-11-22",
+  "structure_approval_scope": "Shot count, order and dramatic function only; N04A/N04B and N07.5 retained. Per-cut camera, shot timing, lens, full WH-01 geometry, moonlight occlusion, collision and final animation remain unapproved.",
+  "shot_camera_timing_locked": false
+}
