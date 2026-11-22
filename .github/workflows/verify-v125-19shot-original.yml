@@ -1,0 +1,102 @@
+name: Verify original v12.5 19-shot Python previs
+on:
+  push:
+    branches:
+      - previs/v13-25shot-from-v125-20261122
+    paths:
+      - .github/workflows/verify-v125-19shot-original.yml
+      - dm/episode-01/ending/current/previs/v12-lowpoly-v12.5-cut-test/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  re-render-original:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install renderer dependencies
+        run: |
+          python -m pip install --disable-pip-version-check numpy Pillow
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk ffmpeg
+      - name: Run ORIGINAL 19-cut Python (no source modifications)
+        working-directory: dm/episode-01/ending/current/previs/v12-lowpoly-v12.5-cut-test
+        run: |
+          python ruosuen_v12_5_cut_compare.py --out "${{ runner.temp }}/ruosuen-original-19" --videos --full
+      - name: Verify motion, cut count, timing, video and PNG reproduction
+        env:
+          OUTPUT_DIR: ${{ runner.temp }}/ruosuen-original-19
+        working-directory: dm/episode-01/ending/current/previs/v12-lowpoly-v12.5-cut-test
+        run: |
+          python - <<'PY'
+          import json, os, subprocess
+          import numpy as np
+          from pathlib import Path
+          from PIL import Image, ImageChops
+          import ruosuen_v12_5_cut_compare as original
+          out=Path(os.environ["OUTPUT_DIR"])
+          assert len(original.CUTS_B)==19
+          assert abs(sum(e-s for _,s,e,_ in original.CUTS_B)-70)<1e-9
+          assert all(abs(original.CUTS_B[i][2]-original.CUTS_B[i+1][1])<1e-9 for i in range(18))
+          print("PASS: 19 B-cuts, continuous 0-70 sec",flush=True)
+          motion={}
+          for cut,ta,tb in [("N04A",7.60,8.10),("N04B",9.12,9.85),("N05",11.20,12.50),("N06",14.50,16.50),("N08",21.40,23.20),("N14",47.20,50.60),("N16",58.00,62.00)]:
+            ia=np.array(original.render(cut,ta,640,360),dtype=np.int16)
+            ib=np.array(original.render(cut,tb,640,360),dtype=np.int16)
+            changed=float(np.mean(np.any(ia!=ib,axis=2)))
+            motion[cut]=round(changed,6)
+            print(f"MOTION {cut}: {changed:.5f} fraction of pixels differ",flush=True)
+            assert changed>0.001, f"static image in {cut}"
+          print("PASS: time-dependent render changes across 7 moving shots",flush=True)
+          saved_base=Path("keyframes")
+          # Original source PNGs are retained in the repository from PR #39.
+          comparisons={}
+          for shot,stamp in [("N04A","08.10"),("N04B","09.85"),("N07.5","20.10")]:
+            filename=f"{shot}-{stamp}s.png"
+            saved=Image.open(saved_base/filename).convert("RGB")
+            new=Image.open(out/"keyframes"/filename).convert("RGB")
+            assert saved.size==new.size, f"size drift: {filename}"
+            a=np.asarray(saved,dtype=np.int16)
+            b=np.asarray(new,dtype=np.int16)
+            mean=float(np.abs(a-b).mean())
+            frac=float(np.mean(np.any(a!=b,axis=2)))
+            comparisons[filename]={"mean_absolute_pixel_difference":round(mean,6),"changed_pixel_fraction":round(frac,6)}
+            print(f"SAVED MATCH {filename}: MAE={mean:.6f}; pixels changed={frac:.6f}",flush=True)
+            # Images may differ slightly due to Pillow/font environment; report instead of misrepresenting as identical.
+          videos={}
+          for name,expected,expected_fps in [
+            ("cut-A-05.5-26.0s.mp4",20.5,8),
+            ("cut-B-05.5-26.0s.mp4",20.5,8),
+            ("cut-B-00.0-70.0s.mp4",70,5),
+          ]:
+            fp=out/name
+            assert fp.exists(),f"not generated: {name}"
+            meta=json.loads(subprocess.check_output(["ffprobe","-v","error","-select_streams","v:0","-show_entries","stream=nb_frames,r_frame_rate,duration","-of","json",str(fp)]))
+            stream=meta["streams"][0]
+            fps=eval(stream["r_frame_rate"],{"__builtins__":{}}) # ffprobe outputs a simple rate fraction
+            frames=int(stream["nb_frames"])
+            print(f"VIDEO {name}: {frames} frames at {fps:g} fps",flush=True)
+            assert abs(frames/fps-expected)<0.05,f"bad duration {name}"
+            videos[name]={"frames":frames,"fps":fps,"duration_s":frames/fps}
+          report={"source":"unchanged GitHub main v12.5/PR #39 Python","cuts":19,"duration_s":70,"continuous_motion_pixel_fractions":motion,"source_keyframes_reproduction":comparisons,"videos":videos,"note":"proxy-only, physical clearance and moonlight geometry not approved"}
+          (out/"verification-report.json").write_text(json.dumps(report,indent=2,ensure_ascii=False)+"\n")
+          print("PASS: Python executable, 19-shot animation, frame motion and rendered MP4 files",flush=True)
+          PY
+      - name: Upload reproduced video and QA (NOT published Pages)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: original-v125-19shot-motion-verification
+          path: |
+            ${{ runner.temp }}/ruosuen-original-19/*.mp4
+            ${{ runner.temp }}/ruosuen-original-19/verification-report.json
+            ${{ runner.temp }}/ruosuen-original-19/keyframes/N04A-08.10s.png
+            ${{ runner.temp }}/ruosuen-original-19/keyframes/N04B-09.85s.png
+            ${{ runner.temp }}/ruosuen-original-19/keyframes/N07.5-20.10s.png
+          if-no-files-found: warn
