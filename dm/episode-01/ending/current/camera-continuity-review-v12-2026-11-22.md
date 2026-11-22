@@ -51,6 +51,6 @@
 
 ## 使用スキル
 
-- リポジトリ[`illustration-composition`](../../../.agents/skills/illustration-composition/SKILL.md)は感情／構図の基準。
-- このPRに追加した[カメラ連続性QAスキル](../../../.agents/skills/cinematic-camera-continuity/SKILL.md)を以後の検証に適用。
+- リポジトリ[`illustration-composition`](../../../../.agents/skills/illustration-composition/SKILL.md)は感情／構図の基準。
+- このPRに追加した[カメラ連続性QAスキル](../../../../.agents/skills/cinematic-camera-continuity/SKILL.md)を以後の検証に適用。
 - 外部参考：[shot-director](https://github.com/AustinZ21/cinematic-skills/blob/main/skills/shot-director/SKILL.md)、[storyboard-creation](https://github.com/inference-sh/skills/blob/main/guides/video/storyboard-creation/SKILL.md)、[storyboard-shot-breakdown](https://github.com/0xsline/OpenChatCut/blob/main/src/agent/skills/storyboard-shot-breakdown/SKILL.md)。参照先の一般則より作者の世界観・演出承認を優先。
