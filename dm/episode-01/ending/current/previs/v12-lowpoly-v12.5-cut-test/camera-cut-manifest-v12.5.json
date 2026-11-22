@@ -14,7 +14,8 @@
     "N07.5 explicitly excludes whale to test environmental insert",
     "B N07 reduced to 1.45s; emotional relief may be too short",
     "N16 tail disappearance and thick ceiling remain unverified",
-    "B adds 2 cuts but keeps 70-second provisional duration"
+    "B adds 2 cuts but keeps 70-second provisional duration",
+    "Author approved 19-cut B editorial structure on 2026-11-22; this manifest retains provisional camera and duration values."
   ],
   "cuts": [
     {
@@ -68,11 +69,11 @@
       "camera_motion": false,
       "author_approved": false,
       "whale_center_start_xy_px": [
-        576.0,
+        576,
         220.5
       ],
       "whale_center_end_xy_px": [
-        576.0,
+        576,
         282.8
       ]
     },
@@ -119,7 +120,7 @@
       "author_approved": false,
       "whale_center_start_xy_px": [
         772.4,
-        465.0
+        465
       ],
       "whale_center_end_xy_px": [
         541.1,
@@ -185,7 +186,7 @@
       "XYZ_m": [
         -7,
         -145,
-        6.0
+        6
       ],
       "yaw_deg": -6.260674417036695,
       "pitch_deg": 26,
@@ -198,7 +199,7 @@
       ],
       "whale_center_end_xy_px": [
         711.2,
-        353.0
+        353
       ]
     },
     {
@@ -208,8 +209,8 @@
       "end": 31,
       "camera": "D",
       "XYZ_m": [
-        29.0,
-        -66.0,
+        29,
+        -66,
         4.5
       ],
       "yaw_deg": 28,
@@ -240,7 +241,7 @@
       "camera_motion": false,
       "author_approved": false,
       "whale_center_start_xy_px": [
-        1189.0,
+        1189,
         -830.4
       ],
       "whale_center_end_xy_px": [
@@ -276,7 +277,7 @@
       "XYZ_m": [
         11,
         -63,
-        6.0
+        6
       ],
       "yaw_deg": 42,
       "pitch_deg": 18,
@@ -338,7 +339,7 @@
         301.6
       ],
       "whale_center_end_xy_px": [
-        521.0,
+        521,
         307.3
       ]
     },
@@ -460,11 +461,11 @@
       "camera_motion": false,
       "author_approved": false,
       "whale_center_start_xy_px": [
-        576.0,
+        576,
         220.5
       ],
       "whale_center_end_xy_px": [
-        576.0,
+        576,
         282.8
       ]
     },
@@ -485,7 +486,7 @@
       "camera_motion": false,
       "author_approved": false,
       "whale_center_start_xy_px": [
-        576.0,
+        576,
         662.9
       ],
       "whale_center_end_xy_px": [
@@ -502,7 +503,7 @@
       "XYZ_m": [
         -70,
         -42,
-        5.0
+        5
       ],
       "yaw_deg": -48,
       "pitch_deg": 20,
@@ -536,7 +537,7 @@
       "author_approved": false,
       "whale_center_start_xy_px": [
         772.4,
-        465.0
+        465
       ],
       "whale_center_end_xy_px": [
         541.1,
@@ -589,7 +590,7 @@
         199.7
       ],
       "whale_center_end_xy_px": [
-        632.0,
+        632,
         310.3
       ]
     },
@@ -602,7 +603,7 @@
       "XYZ_m": [
         -7,
         -145,
-        6.0
+        6
       ],
       "yaw_deg": -14,
       "pitch_deg": 39,
@@ -619,7 +620,7 @@
       "XYZ_m": [
         -7,
         -145,
-        6.0
+        6
       ],
       "yaw_deg": -6.260674417036695,
       "pitch_deg": 26,
@@ -632,7 +633,7 @@
       ],
       "whale_center_end_xy_px": [
         711.2,
-        353.0
+        353
       ]
     },
     {
@@ -642,8 +643,8 @@
       "end": 31,
       "camera": "D",
       "XYZ_m": [
-        29.0,
-        -66.0,
+        29,
+        -66,
         4.5
       ],
       "yaw_deg": 28,
@@ -674,7 +675,7 @@
       "camera_motion": false,
       "author_approved": false,
       "whale_center_start_xy_px": [
-        1189.0,
+        1189,
         -830.4
       ],
       "whale_center_end_xy_px": [
@@ -710,7 +711,7 @@
       "XYZ_m": [
         11,
         -63,
-        6.0
+        6
       ],
       "yaw_deg": 42,
       "pitch_deg": 18,
@@ -772,7 +773,7 @@
         301.6
       ],
       "whale_center_end_xy_px": [
-        521.0,
+        521,
         307.3
       ]
     },
@@ -843,5 +844,11 @@
       "camera_motion": false,
       "author_approved": false
     }
-  ]
+  ],
+  "selected_structure": "B",
+  "selected_structure_shots": 19,
+  "structure_author_approved": true,
+  "structure_approval_date": "2026-11-22",
+  "structure_approval_scope": "Shot count, order and dramatic function only; N04A/N04B and N07.5 retained. Per-cut camera, shot timing, lens, full WH-01 geometry, moonlight occlusion, collision and final animation remain unapproved.",
+  "shot_camera_timing_locked": false
 }
