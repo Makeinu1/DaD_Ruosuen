@@ -30,7 +30,7 @@ assert [c[0] for c in CUTS25 if c[0] not in {"N04.5","N05.5","N08.5","N10.5","N1
 EXPERIMENT_CAMERAS={
     "N04.5": ((-64.0,-56.0,6.4), -38.0, 20.0, 22.0),
     "N05.5": ((-58.0,-84.0,4.1), -51.0, 34.0, 23.0),
-    "N08.5": ((10.0,-116.0,5.0), 18.0, 12.0, 20.0),
+    "N08.5": ((105.0,35.0,10.0), -135.0, 2.0, 30.0),
     "N10.5": ((45.0,-32.0,6.0), 42.0, -6.0, 35.0),
     "N14.5": ((-58.0,-84.0,4.1), 25.0, 27.0, 55.0),
     "N15.5": ((10.0,-40.0,20.0), 0.0, 39.0, 35.0),
@@ -176,7 +176,8 @@ def comp_frame(t):
     sidA=at(CUTS19,t)
     sidB=at(CUTS25,t)
     a=frame19(t)
-    z=frame25(t)
+    # Existing 19 shots share identical images; reuse the exact source frame.
+    z=a if sidA==sidB else frame25(t)
     both=Image.new("RGB",(1280,360))
     both.paste(a,(0,0));both.paste(z,(640,0))
     top=f"LEFT  Original approved v12.5 B / 19 cuts   |   RIGHT  v13 diagnostic / 25 cuts"
