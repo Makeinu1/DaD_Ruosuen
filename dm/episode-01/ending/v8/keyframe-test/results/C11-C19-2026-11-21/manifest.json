@@ -48,12 +48,14 @@
     {
       "cut": "C14",
       "filename": "C14_latest_test.png",
-      "decision": "unconfirmed",
+      "decision": "approved",
       "bytes": 2228161,
       "sha256": "a2167bb077fd201c9d927aedbdf2244c98b3286da1b8ba9392b19983f913fe5f",
       "github_path": "dm/episode-01/ending/v8/keyframe-test/results/C11-C19-2026-11-21/candidate/C14_latest_test.png",
       "github_binary_status": "UPLOADED_VERIFIED_GIT_BLOB_SHA1_AND_SIZE",
-      "github_git_blob_sha1": "9fa93550c52cf0125af261649b5af19b7febc971"
+      "github_git_blob_sha1": "9fa93550c52cf0125af261649b5af19b7febc971",
+      "decision_updated_at": "2026-11-22",
+      "decision_source": "Author approval of existing C14_latest_test.png; source path and binary unchanged"
     },
     {
       "cut": "C15",

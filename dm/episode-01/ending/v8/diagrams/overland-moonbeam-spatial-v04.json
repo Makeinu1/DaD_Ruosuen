@@ -1,0 +1,956 @@
+{
+  "title": "Episode-01 ending overland near-zenith whale flight, moonlight and flowers v0.4",
+  "date": "2026-11-22",
+  "status": "PROPOSED NUMERICAL AND CAMERA REDESIGN, NOT AUTHOR-APPROVED. First arc shifted 10m inland; party representative moved 4.1m left/1m toward lake to centerline near-zenith. Historic v0.2 retained as comparison.",
+  "coordinateSystem": "X right facing lake, Y lakeward, Z upward; lake Z=0, meters; shoreline is Y=coastlineY(X), land side Y<coastlineY",
+  "adoptedScale": {
+    "caveWidthM": 450,
+    "caveDepthM": 650,
+    "lakeWidthApproxM": 300,
+    "lakeLengthApproxM": 500,
+    "roofHeightRangeM": [
+      160,
+      220
+    ],
+    "fissureRimReferenceM": 190,
+    "whaleLengthM": 24,
+    "whaleFinSpanM": 14.8
+  },
+  "provisionalBounds": {
+    "caveX": [
+      -225,
+      225
+    ],
+    "caveY": [
+      -140,
+      510
+    ],
+    "lakeBulkApproxX": [
+      -150,
+      150
+    ],
+    "lakeBulkApproxY": [
+      -30,
+      470
+    ]
+  },
+  "moon": {
+    "azimuth": "toward positive Y (lakeward)",
+    "elevationDeg": 43.01,
+    "toMoonPerMeterVertical": {
+      "dx": 0,
+      "dy": 1.072,
+      "dz": 1
+    },
+    "beamGeometry": "Parallel point rays through an ideal 2D roof plane at Z190. NOT a 3D ray tracer or thick-roof shadow test."
+  },
+  "shorelineControlPointsXY": [
+    [
+      -160,
+      25
+    ],
+    [
+      -135,
+      -3
+    ],
+    [
+      -115,
+      -15
+    ],
+    [
+      -95,
+      -22
+    ],
+    [
+      -85,
+      -26
+    ],
+    [
+      -70,
+      -46
+    ],
+    [
+      -55,
+      -61
+    ],
+    [
+      -40,
+      -65
+    ],
+    [
+      -20,
+      -69
+    ],
+    [
+      0,
+      -64
+    ],
+    [
+      20,
+      -42
+    ],
+    [
+      35,
+      -30
+    ],
+    [
+      50,
+      -12
+    ],
+    [
+      62,
+      3
+    ],
+    [
+      72,
+      15
+    ],
+    [
+      78,
+      29
+    ],
+    [
+      85,
+      38
+    ],
+    [
+      92,
+      32
+    ],
+    [
+      100,
+      20
+    ],
+    [
+      115,
+      15
+    ],
+    [
+      132,
+      43
+    ],
+    [
+      151,
+      100
+    ],
+    [
+      165,
+      200
+    ]
+  ],
+  "roofSingleFissureSectionsY_Xleft_Xright": [
+    [
+      24,
+      -9,
+      15
+    ],
+    [
+      70,
+      -11,
+      17
+    ],
+    [
+      100,
+      -25,
+      21
+    ],
+    [
+      135,
+      -53,
+      26
+    ],
+    [
+      165,
+      -62,
+      28
+    ],
+    [
+      185,
+      -57,
+      30
+    ],
+    [
+      210,
+      -24,
+      22
+    ],
+    [
+      250,
+      -8,
+      14
+    ]
+  ],
+  "locations": {
+    "adventurerProxy": {
+      "x": -58,
+      "y": -84,
+      "z": 2.5
+    },
+    "CamA": {
+      "x": -10,
+      "y": -108,
+      "z": 5
+    },
+    "P0YoungFlower": {
+      "x": -18,
+      "y": -83,
+      "z": 2
+    },
+    "S1MatureFlowerInstances": [
+      {
+        "id": "S1a",
+        "label": "mature base",
+        "x": 40,
+        "y": -52,
+        "z": 3
+      },
+      {
+        "id": "S1b",
+        "label": "mature lower bank",
+        "x": 55,
+        "y": -28,
+        "z": 3
+      },
+      {
+        "id": "S1c",
+        "label": "mature shoulder",
+        "x": 66,
+        "y": 4,
+        "z": 3
+      },
+      {
+        "id": "S1d",
+        "label": "mature promontory inner",
+        "x": 72,
+        "y": 8,
+        "z": 3
+      },
+      {
+        "id": "S1e",
+        "label": "mature promontory tip",
+        "x": 85,
+        "y": 30,
+        "z": 3
+      },
+      {
+        "id": "S1f",
+        "label": "mature tip side",
+        "x": 90,
+        "y": 25,
+        "z": 3
+      }
+    ],
+    "CamAOriginal": {
+      "x": -10,
+      "y": -108,
+      "z": 5
+    },
+    "CamAAlternative": {
+      "x": -18,
+      "y": -93,
+      "z": 3
+    },
+    "CamACurrentForCameraReview": "CamAAlternative"
+  },
+  "whaleCenterline": {
+    "geometry": [
+      {
+        "shape": "straight",
+        "from": [
+          -90,
+          15
+        ],
+        "to": [
+          -90,
+          -25
+        ]
+      },
+      {
+        "shape": "arc",
+        "center": [
+          -20,
+          -25
+        ],
+        "radius": 70,
+        "phiDeg": [
+          180,
+          360
+        ]
+      },
+      {
+        "shape": "straight",
+        "from": [
+          50,
+          -25
+        ],
+        "to": [
+          50,
+          110
+        ]
+      },
+      {
+        "shape": "arc",
+        "center": [
+          -30,
+          110
+        ],
+        "radius": 80,
+        "phiDeg": [
+          0,
+          82
+        ]
+      }
+    ],
+    "stations": [
+      {
+        "id": "E01",
+        "timeSec": 6.5,
+        "x": -90,
+        "y": 15,
+        "z": 3,
+        "phase": "breach above lake",
+        "planDistanceFromE01M": 0
+      },
+      {
+        "id": "E02",
+        "timeSec": 10.5,
+        "x": -90,
+        "y": -25,
+        "z": 14,
+        "phase": "shore-side waterline approach, still above lake",
+        "planDistanceFromE01M": 40,
+        "fromPrevious": {
+          "durationS": 4,
+          "planarDistanceM": 40,
+          "verticalDifferenceM": 11,
+          "approx3DAverageSpeedMps": 10.37
+        }
+      },
+      {
+        "id": "E03",
+        "timeSec": 12.5,
+        "x": -85.778,
+        "y": -48.941,
+        "z": 18,
+        "phase": "near-shore approach",
+        "planDistanceFromE01M": 64.43,
+        "fromPrevious": {
+          "durationS": 2,
+          "planarDistanceM": 24.43,
+          "verticalDifferenceM": 4,
+          "approx3DAverageSpeedMps": 12.38
+        }
+      },
+      {
+        "id": "E04",
+        "timeSec": 14.5,
+        "x": -73.623,
+        "y": -69.995,
+        "z": 15,
+        "phase": "giant near-camera shadow",
+        "planDistanceFromE01M": 88.87,
+        "fromPrevious": {
+          "durationS": 2,
+          "planarDistanceM": 24.43,
+          "verticalDifferenceM": -3,
+          "approx3DAverageSpeedMps": 12.31
+        }
+      },
+      {
+        "id": "E05",
+        "timeSec": 16.5,
+        "x": -60.15,
+        "y": -82.341,
+        "z": 11.5,
+        "phase": "near-vertical overflight above adventurer representative point",
+        "planDistanceFromE01M": 107.2,
+        "fromPrevious": {
+          "durationS": 2,
+          "planarDistanceM": 18.33,
+          "verticalDifferenceM": -3.5,
+          "approx3DAverageSpeedMps": 9.33
+        }
+      },
+      {
+        "id": "E06",
+        "timeSec": 18,
+        "x": -49.583,
+        "y": -88.442,
+        "z": 16,
+        "phase": "non-hostile overflight complete",
+        "planDistanceFromE01M": 119.41,
+        "fromPrevious": {
+          "durationS": 1.5,
+          "planarDistanceM": 12.22,
+          "verticalDifferenceM": 4.5,
+          "approx3DAverageSpeedMps": 8.68
+        }
+      },
+      {
+        "id": "E07",
+        "timeSec": 19.75,
+        "x": -38.117,
+        "y": -92.615,
+        "z": 21,
+        "phase": "last shadow before moonlight",
+        "planDistanceFromE01M": 131.63,
+        "fromPrevious": {
+          "durationS": 1.75,
+          "planarDistanceM": 12.22,
+          "verticalDifferenceM": 5,
+          "approx3DAverageSpeedMps": 7.54
+        }
+      },
+      {
+        "id": "E08",
+        "timeSec": 20.8,
+        "x": -32.155,
+        "y": -93.937,
+        "z": 24,
+        "phase": "last shadow just before the right head edge first catches moonlight",
+        "planDistanceFromE01M": 137.74,
+        "fromPrevious": {
+          "durationS": 1.05,
+          "planarDistanceM": 6.11,
+          "verticalDifferenceM": 3,
+          "approx3DAverageSpeedMps": 6.48
+        }
+      },
+      {
+        "id": "E08a",
+        "timeSec": 21.16,
+        "x": -29.36,
+        "y": -94.371,
+        "z": 24.386,
+        "phase": "nose midpoint crosses direct moonlight (head's right edge entered ~20.9s)",
+        "fromPrevious": {
+          "durationS": 0.36,
+          "planarDistanceM": 2.83,
+          "verticalDifferenceM": 0.39,
+          "approx3DAverageSpeedMps": 7.93
+        },
+        "planDistanceFromE01M": 140.57
+      },
+      {
+        "id": "E09",
+        "timeSec": 25.5,
+        "x": 3.941,
+        "y": -90.778,
+        "z": 29,
+        "phase": "glow spreads through body",
+        "planDistanceFromE01M": 174.39,
+        "fromPrevious": {
+          "durationS": 4.34,
+          "planarDistanceM": 33.82,
+          "verticalDifferenceM": 4.61,
+          "approx3DAverageSpeedMps": 7.87
+        }
+      },
+      {
+        "id": "E10",
+        "timeSec": 26,
+        "x": 8.472,
+        "y": -88.948,
+        "z": 30,
+        "phase": "S1 base begins bloom",
+        "planDistanceFromE01M": 179.28,
+        "fromPrevious": {
+          "durationS": 0.5,
+          "planarDistanceM": 4.89,
+          "verticalDifferenceM": 1,
+          "approx3DAverageSpeedMps": 9.98
+        }
+      },
+      {
+        "id": "E11",
+        "timeSec": 29.5,
+        "x": 37.341,
+        "y": -65.15,
+        "z": 31,
+        "phase": "bloom along protruding shore",
+        "planDistanceFromE01M": 217.15,
+        "fromPrevious": {
+          "durationS": 3.5,
+          "planarDistanceM": 37.87,
+          "verticalDifferenceM": 1,
+          "approx3DAverageSpeedMps": 10.82
+        }
+      },
+      {
+        "id": "E12",
+        "timeSec": 31.5,
+        "x": 45.778,
+        "y": -48.941,
+        "z": 32,
+        "phase": "flower expansion",
+        "planDistanceFromE01M": 235.48,
+        "fromPrevious": {
+          "durationS": 2,
+          "planarDistanceM": 18.33,
+          "verticalDifferenceM": 1,
+          "approx3DAverageSpeedMps": 9.18
+        }
+      },
+      {
+        "id": "E13",
+        "timeSec": 33,
+        "x": 48.937,
+        "y": -37.155,
+        "z": 33,
+        "phase": "tip flower approach",
+        "planDistanceFromE01M": 247.69,
+        "fromPrevious": {
+          "durationS": 1.5,
+          "planarDistanceM": 12.22,
+          "verticalDifferenceM": 1,
+          "approx3DAverageSpeedMps": 8.17
+        }
+      },
+      {
+        "id": "E14",
+        "timeSec": 35.7,
+        "x": 50,
+        "y": -9,
+        "z": 32,
+        "phase": "reaches lake-side shoreline while illuminating S1 promontory tip",
+        "planDistanceFromE01M": 275.91,
+        "fromPrevious": {
+          "durationS": 2.7,
+          "planarDistanceM": 28.22,
+          "verticalDifferenceM": -1,
+          "approx3DAverageSpeedMps": 10.46
+        }
+      },
+      {
+        "id": "E15",
+        "timeSec": 40,
+        "x": 50,
+        "y": 30,
+        "z": 55,
+        "phase": "petals rise over lake",
+        "planDistanceFromE01M": 314.91,
+        "fromPrevious": {
+          "durationS": 4.3,
+          "planarDistanceM": 39,
+          "verticalDifferenceM": 23,
+          "approx3DAverageSpeedMps": 10.53
+        }
+      },
+      {
+        "id": "E16",
+        "timeSec": 47,
+        "x": 50,
+        "y": 100,
+        "z": 105,
+        "phase": "high free swim",
+        "planDistanceFromE01M": 384.91,
+        "fromPrevious": {
+          "durationS": 7,
+          "planarDistanceM": 70,
+          "verticalDifferenceM": 50,
+          "approx3DAverageSpeedMps": 12.29
+        }
+      },
+      {
+        "id": "E17",
+        "timeSec": 48,
+        "x": 50,
+        "y": 110,
+        "z": 112,
+        "phase": "enter wide ascent arc",
+        "planDistanceFromE01M": 394.91,
+        "fromPrevious": {
+          "durationS": 1,
+          "planarDistanceM": 10,
+          "verticalDifferenceM": 7,
+          "approx3DAverageSpeedMps": 12.21
+        }
+      },
+      {
+        "id": "E18",
+        "timeSec": 51,
+        "x": 42.505,
+        "y": 143.809,
+        "z": 130,
+        "phase": "higher lake arc",
+        "planDistanceFromE01M": 429.82,
+        "fromPrevious": {
+          "durationS": 3,
+          "planarDistanceM": 34.91,
+          "verticalDifferenceM": 18,
+          "approx3DAverageSpeedMps": 13.09
+        }
+      },
+      {
+        "id": "E19",
+        "timeSec": 55,
+        "x": 21.423,
+        "y": 171.284,
+        "z": 160,
+        "phase": "approaching fissure",
+        "planDistanceFromE01M": 464.73,
+        "fromPrevious": {
+          "durationS": 4,
+          "planarDistanceM": 34.91,
+          "verticalDifferenceM": 30,
+          "approx3DAverageSpeedMps": 11.51
+        }
+      },
+      {
+        "id": "E20",
+        "timeSec": 58,
+        "x": 10,
+        "y": 179.282,
+        "z": 182,
+        "phase": "fissure entry; front body",
+        "planDistanceFromE01M": 478.69,
+        "fromPrevious": {
+          "durationS": 3,
+          "planarDistanceM": 13.96,
+          "verticalDifferenceM": 22,
+          "approx3DAverageSpeedMps": 8.69
+        }
+      },
+      {
+        "id": "E21",
+        "timeSec": 62,
+        "x": -2.638,
+        "y": 185.175,
+        "z": 205,
+        "phase": "center above rim; body in opening",
+        "planDistanceFromE01M": 492.65,
+        "fromPrevious": {
+          "durationS": 4,
+          "planarDistanceM": 13.96,
+          "verticalDifferenceM": 23,
+          "approx3DAverageSpeedMps": 6.73
+        }
+      },
+      {
+        "id": "E22",
+        "timeSec": 64,
+        "x": -18.866,
+        "y": 189.221,
+        "z": 224,
+        "phase": "entire whale above rim; final tail clearance",
+        "planDistanceFromE01M": 509.41,
+        "fromPrevious": {
+          "durationS": 2,
+          "planarDistanceM": 16.76,
+          "verticalDifferenceM": 19,
+          "approx3DAverageSpeedMps": 12.67
+        }
+      }
+    ],
+    "bodyProxy": {
+      "lengthM": 24,
+      "finSpanM": 14.8,
+      "headForwardOffsetM": 11,
+      "headVerticalOffsetM": -4,
+      "headSkinProxyRadiusM": 3.5
+    }
+  },
+  "openGates": [
+    "3D thick-roof, sloping edge, full whale mesh and fin/tail swept collision",
+    "moon visible and P0 framing in SAME actual camera, including 20mm 16:9 vertical FOV",
+    "physical blossom light threshold, not merely 65m filming heuristic",
+    "full P0 direct-moon footprint and every flower S1, plus rocks/penumbra",
+    "yaw/roll/pitch and body speed/acceleration easing between exact event stations",
+    "continuous plume travel of petals from S1 to the high lake shots",
+    "70s emotional beat timing provisional; exact shot count and source stills unassigned",
+    "new near-zenith camera B fit and natural edit to moon camera C",
+    "actual head 3D extent and gradual nose-first self-luminosity trigger"
+  ],
+  "firstOrderTestsV04": {
+    "comparison": {
+      "oldArcCenterXY": [
+        -20,
+        -15
+      ],
+      "newArcCenterXY": [
+        -20,
+        -25
+      ],
+      "oldPartyXY": [
+        -54,
+        -85
+      ],
+      "newPartyXY": [
+        -58,
+        -84
+      ],
+      "oldNearCenterlineLateralM": 7.82,
+      "newNearCenterlineLateralM": 0.178,
+      "eyeViewElevationDeg": 88.78,
+      "horizontalProxyHeadSkinM": 4.79
+    },
+    "moonChecks": {
+      "P0": {
+        "roofIntersectionXYZ": [
+          -18,
+          118.54,
+          190
+        ],
+        "leftBound": -39.829,
+        "rightBound": 23.648,
+        "marginM": 21.829,
+        "lit": true
+      },
+      "party": {
+        "roofIntersectionXYZ": [
+          -58,
+          117,
+          190
+        ],
+        "leftBound": -38.6,
+        "rightBound": 23.429,
+        "marginM": -19.4,
+        "lit": false
+      },
+      "CamALegacy": {
+        "roofIntersectionXYZ": [
+          -10,
+          90.32,
+          190
+        ],
+        "leftBound": -20.483,
+        "rightBound": 19.709,
+        "marginM": 10.483,
+        "lit": true
+      },
+      "CamAAlternative": {
+        "roofIntersectionXYZ": [
+          -18,
+          107.46,
+          190
+        ],
+        "leftBound": -30.971,
+        "rightBound": 22.066,
+        "marginM": 12.971,
+        "lit": true
+      },
+      "headEdgeE07": {
+        "roofIntersectionXYZ": [
+          -26.72,
+          92.89,
+          190
+        ],
+        "leftBound": -21.683,
+        "rightBound": 20.052,
+        "marginM": -5.033,
+        "lit": false
+      },
+      "headEdgeE08": {
+        "roofIntersectionXYZ": [
+          -20.8,
+          89.35,
+          190
+        ],
+        "leftBound": -20.029,
+        "rightBound": 19.58,
+        "marginM": -0.773,
+        "lit": false
+      },
+      "headCenterE08": {
+        "roofIntersectionXYZ": [
+          -21.32,
+          86.39,
+          190
+        ],
+        "leftBound": -18.65,
+        "rightBound": 19.186,
+        "marginM": -2.672,
+        "lit": false
+      },
+      "headCenterE08a": {
+        "roofIntersectionXYZ": [
+          -18.46,
+          85.98,
+          190
+        ],
+        "leftBound": -18.459,
+        "rightBound": 19.131,
+        "marginM": 0.001,
+        "lit": true
+      },
+      "headOutsideAtE08": {
+        "roofIntersectionXYZ": [
+          -21.84,
+          83.44,
+          190
+        ],
+        "leftBound": -17.271,
+        "rightBound": 18.792,
+        "marginM": -4.572,
+        "lit": false
+      },
+      "S1": {
+        "S1a": {
+          "roofIntersectionXYZ": [
+            40,
+            148.46,
+            190
+          ],
+          "leftBound": -57.039,
+          "rightBound": 26.898,
+          "marginM": -13.102,
+          "lit": false
+        },
+        "S1b": {
+          "roofIntersectionXYZ": [
+            55,
+            172.46,
+            190
+          ],
+          "leftBound": -60.134,
+          "rightBound": 28.746,
+          "marginM": -26.254,
+          "lit": false
+        },
+        "S1c": {
+          "roofIntersectionXYZ": [
+            66,
+            204.46,
+            190
+          ],
+          "leftBound": -31.308,
+          "rightBound": 23.772,
+          "marginM": -42.228,
+          "lit": false
+        },
+        "S1d": {
+          "roofIntersectionXYZ": [
+            72,
+            208.46,
+            190
+          ],
+          "leftBound": -26.028,
+          "rightBound": 22.492,
+          "marginM": -49.508,
+          "lit": false
+        },
+        "S1e": {
+          "roofIntersectionXYZ": [
+            85,
+            230.46,
+            190
+          ],
+          "leftBound": -15.814,
+          "rightBound": 17.907,
+          "marginM": -67.093,
+          "lit": false
+        },
+        "S1f": {
+          "roofIntersectionXYZ": [
+            90,
+            225.46,
+            190
+          ],
+          "leftBound": -17.814,
+          "rightBound": 18.907,
+          "marginM": -71.093,
+          "lit": false
+        }
+      }
+    },
+    "bloomDistancesM": {
+      "S1BaseFromE10": 55.57,
+      "S1PromontoryFromE14": 59.89
+    },
+    "flightDistanceM": 509.41,
+    "averageHorizontalSpeedMps": 8.86,
+    "tests": {
+      "all": {
+        "party on land": true,
+        "CamA legacy on land": true,
+        "CamA alternate on land": true,
+        "P0 on land": true,
+        "E01 breach on lake": true,
+        "S1 all on land": true,
+        "P0 direct moonlight": true,
+        "S1 all shadow under moon": true,
+        "party under roof lunar shadow": true,
+        "first arc nearest lateral offset below 1m": true,
+        "eye-view zenith angle above 85deg": true,
+        "head face horizontal proxy separation 3–5m": true,
+        "nose underside above local ground 2.5 to 3.0m": true,
+        "head right edge still in shadow E07": true,
+        "head right edge still in shadow E08": true,
+        "nose midpoint in shadow E08": true,
+        "nose midpoint in direct lunar beam E08a": true,
+        "first mature S1 flower within 65m of E10": true,
+        "mature S1 promontory tip within 65m of E14": true,
+        "radius >=70m for each turn": true,
+        "no representative average speed exceeds 20mps": true,
+        "all event times monotonic": true
+      },
+      "passedCount": 22,
+      "count": 22
+    },
+    "continuousNearpassSampling": {
+      "sampling": "Arc phi=180–360 degrees at 0.1-degree intervals, Z piecewise-linearly between representative stations; anatomical proxy not a whale mesh",
+      "minHeadProxyGroundSurfaceDistance3DM": 2.99,
+      "atPhiDeg": 229.3,
+      "headCenterApproxXYZ": [
+        -57.31,
+        -85.24,
+        8.83
+      ],
+      "minHeadProxyXYSurfaceSignedM": -2.82,
+      "minTorsoProxyGroundSurface3DM": 6.56,
+      "minFinTipProxyGroundSurface3DM": 9.18,
+      "caution": "A negative XY surface distance means the projected head overlaps the party's horizontal point, NOT a 3D collision. The nose/head approximation remains ~3m from ground in 3D; for a tall PC the actual clearance can be much smaller. Do not treat party as fixed-character dimensions."
+    },
+    "lunarBodyFeatureContact": [
+      {
+        "feature": "front rectangular box corner (NON-ANATOMICAL)",
+        "firstPhiDeg": 257.2,
+        "warning": "bounding-volume corner is not guaranteed to exist on actual head or pectoral fin"
+      },
+      {
+        "feature": "head right edge proxy",
+        "firstPhiDeg": 260.8,
+        "approxTimeSec": 20.93
+      },
+      {
+        "feature": "nose midline",
+        "firstPhiDeg": 262.4,
+        "approxTimeSec": 21.17
+      },
+      {
+        "feature": "head left edge proxy",
+        "firstPhiDeg": 263.8,
+        "approxTimeSec": 21.4
+      },
+      {
+        "feature": "right pectoral fin tip",
+        "firstPhiDeg": 265.5,
+        "approxTimeSec": 21.71
+      },
+      {
+        "feature": "torso center",
+        "firstPhiDeg": 273.3,
+        "approxTimeSec": 22.89
+      },
+      {
+        "feature": "tail proxy",
+        "firstPhiDeg": 284.1,
+        "approxTimeSec": 24.59
+      }
+    ]
+  },
+  "notesV04": [
+    "The centerline is within 0.2m of PC in XY at closest approach, while torso Z≈13m above water level. This is NOT a 3D body collision or camera clearance test.",
+    "First 20.8s sample remains in shadow, first right head-edge moonlit around ~20.9s, nose midpoint ~21.16s. Full actual whale mesh and thick roof still unverified.",
+    "High flight and exit remains same as v0.2 and should be rechecked with the new editing and filming cameras.",
+    "Near-zenith will demand a different camera pitch/shot boundary from the previous v0.3 low-altitude overflight view.",
+    "Rectangular 24×14.8m bounding box corner can enter lunar beam before the anatomical nose at phi257.2; this is an overly conservative box, not a real limb. True glint sequence requires whale mesh/pose verification."
+  ],
+  "legacyComparisonFile": "diagrams/overland-moonbeam-spatial-v02.json",
+  "adoptionStatusByScope": {
+    "approvedPreviously": "rough cavern and lake sizes, single asymmetric fissure, S1 protruding shore, whale 24m, flower properties",
+    "authorRequestedDirection": "whale crosses directly over adventurers, then receives lunar light over land before illuminating flowers and exiting",
+    "underDiscussion": "specific moon azimuth/elevation, camera lenses/coordinates, near-zenith orbit and every numeric station, nominal 70 seconds",
+    "historical": "v0.2 non-zenith arc and older 100s concept remain available in separate files"
+  }
+}

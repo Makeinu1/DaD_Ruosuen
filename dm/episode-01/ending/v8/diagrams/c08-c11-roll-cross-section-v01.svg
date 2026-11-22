@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="455" viewBox="0 0 1100 455">
+<title>Whale Local-Axis Banking — schematic only</title>
+<rect width="1100" height="455" fill="#142d3e"/>
+<text x="45" y="43" font-size="28" fill="#f0eee7" font-weight="700">C08–C11  /  LOCAL-AXIS BANKING</text>
+<text x="45" y="77" font-size="16" fill="#adbfcb">Cross-section looking along the whale's forward axis. Shore on the left; lake on the right.</text>
+<g><rect x="34" y="115" width="225" height="260" fill="#214055" stroke="#527488" rx="14" opacity=".8"/>
+<text x="145" y="146" text-anchor="middle" fill="#eff3f5" font-size="22" font-weight="700">C08</text>
+<text x="145" y="169" text-anchor="middle" fill="#f4d19a" font-size="17">0° bank</text>
+<line x1="50" y1="319" x2="240" y2="319" stroke="#b3baa5" stroke-dasharray="4 4"/>
+<line x1="91" y1="235" x2="199" y2="235" stroke="#8fd1ec" stroke-width="12" stroke-linecap="round"/>
+<ellipse cx="145" cy="235" rx="30" ry="27" fill="#cbdce3" stroke="#97adba" stroke-width="2"/>
+<path d="M145 235 L145 274" stroke="#e4a477" stroke-width="6" stroke-linecap="round"/>
+<circle cx="145" cy="274" r="6" fill="#e4a477"/>
+<text x="145" y="356" text-anchor="middle" fill="#e8ecf1" font-size="16">Glance</text>
+</g><g><rect x="292" y="115" width="225" height="260" fill="#214055" stroke="#527488" rx="14" opacity=".8"/>
+<text x="403" y="146" text-anchor="middle" fill="#eff3f5" font-size="22" font-weight="700">C09</text>
+<text x="403" y="169" text-anchor="middle" fill="#f4d19a" font-size="17">-80° bank</text>
+<line x1="308" y1="319" x2="498" y2="319" stroke="#b3baa5" stroke-dasharray="4 4"/>
+<line x1="393.6" y1="181.8" x2="412.4" y2="288.2" stroke="#8fd1ec" stroke-width="12" stroke-linecap="round"/>
+<ellipse cx="403" cy="235" rx="30" ry="27" fill="#cbdce3" stroke="#97adba" stroke-width="2"/>
+<path d="M403 235 L364.6 241.8" stroke="#e4a477" stroke-width="6" stroke-linecap="round"/>
+<circle cx="364.6" cy="241.8" r="6" fill="#e4a477"/>
+<text x="403" y="356" text-anchor="middle" fill="#e8ecf1" font-size="16">Bank / yaw</text>
+</g><g><rect x="550" y="115" width="225" height="260" fill="#214055" stroke="#527488" rx="14" opacity=".8"/>
+<text x="661" y="146" text-anchor="middle" fill="#eff3f5" font-size="22" font-weight="700">C10</text>
+<text x="661" y="169" text-anchor="middle" fill="#f4d19a" font-size="17">-35° bank</text>
+<line x1="566" y1="319" x2="756" y2="319" stroke="#b3baa5" stroke-dasharray="4 4"/>
+<line x1="616.8" y1="204" x2="705.2" y2="266" stroke="#8fd1ec" stroke-width="12" stroke-linecap="round"/>
+<ellipse cx="661" cy="235" rx="30" ry="27" fill="#cbdce3" stroke="#97adba" stroke-width="2"/>
+<path d="M661 235 L638.6 266.9" stroke="#e4a477" stroke-width="6" stroke-linecap="round"/>
+<circle cx="638.6" cy="266.9" r="6" fill="#e4a477"/>
+<text x="661" y="356" text-anchor="middle" fill="#e8ecf1" font-size="16">Straighten</text>
+</g><g><rect x="808" y="115" width="225" height="260" fill="#214055" stroke="#527488" rx="14" opacity=".8"/>
+<text x="919" y="146" text-anchor="middle" fill="#eff3f5" font-size="22" font-weight="700">C11</text>
+<text x="919" y="169" text-anchor="middle" fill="#f4d19a" font-size="17">0° bank</text>
+<line x1="824" y1="319" x2="1014" y2="319" stroke="#b3baa5" stroke-dasharray="4 4"/>
+<line x1="865" y1="235" x2="973" y2="235" stroke="#8fd1ec" stroke-width="12" stroke-linecap="round"/>
+<ellipse cx="919" cy="235" rx="30" ry="27" fill="#cbdce3" stroke="#97adba" stroke-width="2"/>
+<path d="M919 235 L919 274" stroke="#e4a477" stroke-width="6" stroke-linecap="round"/>
+<circle cx="919" cy="274" r="6" fill="#e4a477"/>
+<text x="919" y="356" text-anchor="middle" fill="#e8ecf1" font-size="16">Moonlight</text>
+</g>
+<text x="40" y="413" font-size="16" fill="#e4a477">Orange line = belly direction · Blue = left/right pectoral fins · Bank sign is a local convention.</text>
+<text x="40" y="440" font-size="15" fill="#f6b8a1">PROPOSED −80° example, not yet an approved roll angle. Yaw and pitch happen simultaneously.</text>
+</svg>

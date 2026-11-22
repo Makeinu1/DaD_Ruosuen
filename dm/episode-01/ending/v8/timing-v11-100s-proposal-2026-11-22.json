@@ -1,0 +1,519 @@
+{
+  "title": "空に降る雪 — C01-C19 retimed proposal v11",
+  "status": "UNAPPROVED TIMING PROPOSAL. Storyboard/keyframes and adopted geography decisions retain their respective statuses.",
+  "date": "2026-11-22",
+  "fps": 24,
+  "totalSeconds": 100,
+  "totalFrames": 2400,
+  "referenceGeometry": "diagrams/c04-c18-geometry-v01.json",
+  "originalDurationSeconds": 80,
+  "guidingConstraints": [
+    "All current C01–C19 shot IDs retained; no extra C02.5/C11.5 inserted",
+    "Each shot duration <=7s, compatible with historical 8s clip production constraint",
+    "C08 continues forward; no physical stop",
+    "C09 roll and yaw as a compound motion; no sudden U-turn",
+    "C10 rear silhouette before main ignition",
+    "C11 ignition at low altitude; C12 promontory blooms as whale moves away",
+    "C15 high swim without flower beds; C16 gold-and-white dense scattering; C18 exits through single fissure",
+    "C19 reuses C01 Cam A and finishes without end card",
+    "Final times subject to light-onset geometric gate and 3D rig verification"
+  ],
+  "shots": [
+    {
+      "id": "C01",
+      "startS": 0,
+      "endS": 5,
+      "durationS": 5,
+      "startFrame": 0,
+      "endFrameExclusive": 120,
+      "originalStartS": 0,
+      "originalEndS": 6,
+      "originalDurationS": 6,
+      "deltaDurationS": -1,
+      "beatJapanese": "月光のP0、静かな湖。反復するC19用同一Cam A",
+      "beatEnglish": "Opening stillness / P0",
+      "pathStationTimeS": null
+    },
+    {
+      "id": "C02",
+      "startS": 5,
+      "endS": 9,
+      "durationS": 4,
+      "startFrame": 120,
+      "endFrameExclusive": 216,
+      "originalStartS": 6,
+      "originalEndS": 10,
+      "originalDurationS": 4,
+      "deltaDurationS": 0,
+      "beatJapanese": "水面に波紋。違和感を導入",
+      "beatEnglish": "Ripples",
+      "pathStationTimeS": null
+    },
+    {
+      "id": "C03",
+      "startS": 9,
+      "endS": 13,
+      "durationS": 4,
+      "startFrame": 216,
+      "endFrameExclusive": 312,
+      "originalStartS": 10,
+      "originalEndS": 14,
+      "originalDurationS": 4,
+      "deltaDurationS": 0,
+      "beatJapanese": "水面下の巨大な影。姿はまだ明かさない",
+      "beatEnglish": "Submerged shadow",
+      "pathStationTimeS": null
+    },
+    {
+      "id": "C04",
+      "startS": 13,
+      "endS": 19,
+      "durationS": 6,
+      "startFrame": 312,
+      "endFrameExclusive": 456,
+      "originalStartS": 14,
+      "originalEndS": 18,
+      "originalDurationS": 4,
+      "deltaDurationS": 2,
+      "beatJapanese": "左沖から水面を割って静かに浮上。浅い離水",
+      "beatEnglish": "Surface breach",
+      "pathStationTimeS": 16
+    },
+    {
+      "id": "C05",
+      "startS": 19,
+      "endS": 25,
+      "durationS": 6,
+      "startFrame": 456,
+      "endFrameExclusive": 600,
+      "originalStartS": 18,
+      "originalEndS": 21,
+      "originalDurationS": 3,
+      "deltaDurationS": 3,
+      "beatJapanese": "助走し、尾を残して浮上。乾かぬ巨体が岸へ進む",
+      "beatEnglish": "Takeoff and approach",
+      "pathStationTimeS": 22.2
+    },
+    {
+      "id": "C06",
+      "startS": 25,
+      "endS": 31,
+      "durationS": 6,
+      "startFrame": 600,
+      "endFrameExclusive": 744,
+      "originalStartS": 21,
+      "originalEndS": 25,
+      "originalDurationS": 4,
+      "deltaDurationS": 2,
+      "beatJapanese": "巨大な影が岸へ接近。月光を遮る表現は別途遮蔽チェック",
+      "beatEnglish": "Approach",
+      "pathStationTimeS": 28
+    },
+    {
+      "id": "C07",
+      "startS": 31,
+      "endS": 35,
+      "durationS": 4,
+      "startFrame": 744,
+      "endFrameExclusive": 840,
+      "originalStartS": 25,
+      "originalEndS": 28,
+      "originalDurationS": 3,
+      "deltaDurationS": 1,
+      "beatJapanese": "鼻先が冒険者の目前へ。危険な近さを体感",
+      "beatEnglish": "Close passage",
+      "pathStationTimeS": 33
+    },
+    {
+      "id": "C08",
+      "startS": 35,
+      "endS": 37,
+      "durationS": 2,
+      "startFrame": 840,
+      "endFrameExclusive": 888,
+      "originalStartS": 28,
+      "originalEndS": 32,
+      "originalDurationS": 4,
+      "deltaDurationS": -2,
+      "beatJapanese": "完全停止しない。0.5〜0.8秒ほど視線が交わる。音楽の全休止",
+      "beatEnglish": "The glance",
+      "pathStationTimeS": 36.2
+    },
+    {
+      "id": "C09",
+      "startS": 37,
+      "endS": 41,
+      "durationS": 4,
+      "startFrame": 888,
+      "endFrameExclusive": 984,
+      "originalStartS": 32,
+      "originalEndS": 35,
+      "originalDurationS": 3,
+      "deltaDurationS": 1,
+      "beatJapanese": "身体の長軸ロール＋ヨー旋回＋上昇。腹と胸びれを提示",
+      "beatEnglish": "Compound roll",
+      "pathStationTimeS": 39
+    },
+    {
+      "id": "C10",
+      "startS": 41,
+      "endS": 44,
+      "durationS": 3,
+      "startFrame": 984,
+      "endFrameExclusive": 1056,
+      "originalStartS": 35,
+      "originalEndS": 37,
+      "originalDurationS": 2,
+      "deltaDurationS": 1,
+      "beatJapanese": "湖側へ抜ける後ろ姿。月光の直前を短くつなぐ",
+      "beatEnglish": "Moonward silhouette",
+      "pathStationTimeS": 41.6
+    },
+    {
+      "id": "C11",
+      "startS": 44,
+      "endS": 50,
+      "durationS": 6,
+      "startFrame": 1056,
+      "endFrameExclusive": 1200,
+      "originalStartS": 37,
+      "originalEndS": 41,
+      "originalDurationS": 4,
+      "deltaDurationS": 2,
+      "beatJapanese": "吻先→胴→尾へ順に自発光。月光の縁に入る",
+      "beatEnglish": "Moonlight ignition",
+      "pathStationTimeS": 47.5
+    },
+    {
+      "id": "C12",
+      "startS": 50,
+      "endS": 56,
+      "durationS": 6,
+      "startFrame": 1200,
+      "endFrameExclusive": 1344,
+      "originalStartS": 41,
+      "originalEndS": 44.5,
+      "originalDurationS": 3.5,
+      "deltaDurationS": 2.5,
+      "beatJapanese": "S1の突出した花の岬を照らし、先端→基部へ波状開花",
+      "beatEnglish": "Flower promontory",
+      "pathStationTimeS": 53
+    },
+    {
+      "id": "C13",
+      "startS": 56,
+      "endS": 60,
+      "durationS": 4,
+      "startFrame": 1344,
+      "endFrameExclusive": 1440,
+      "originalStartS": 44.5,
+      "originalEndS": 47,
+      "originalDurationS": 2.5,
+      "deltaDurationS": 1.5,
+      "beatJapanese": "花弁と淡金の果実が離れ、空中で約1秒ためを作る",
+      "beatEnglish": "Petal suspension",
+      "pathStationTimeS": 58.4
+    },
+    {
+      "id": "C14",
+      "startS": 60,
+      "endS": 66,
+      "durationS": 6,
+      "startFrame": 1440,
+      "endFrameExclusive": 1584,
+      "originalStartS": 47,
+      "originalEndS": 52,
+      "originalDurationS": 5,
+      "deltaDurationS": 1,
+      "beatJapanese": "花弁が鯨へ呼応して向き直り、自然な流れに変わる",
+      "beatEnglish": "Petal response",
+      "pathStationTimeS": 63
+    },
+    {
+      "id": "C15",
+      "startS": 66,
+      "endS": 73,
+      "durationS": 7,
+      "startFrame": 1584,
+      "endFrameExclusive": 1752,
+      "originalStartS": 52,
+      "originalEndS": 57,
+      "originalDurationS": 5,
+      "deltaDurationS": 2,
+      "beatJapanese": "湖上の高空へ上昇。岸の花畑はフレームに入れない",
+      "beatEnglish": "High free swim",
+      "pathStationTimeS": 69.5
+    },
+    {
+      "id": "C16",
+      "startS": 73,
+      "endS": 79,
+      "durationS": 6,
+      "startFrame": 1752,
+      "endFrameExclusive": 1896,
+      "originalStartS": 57,
+      "originalEndS": 63,
+      "originalDurationS": 6,
+      "deltaDurationS": 0,
+      "beatJapanese": "白基調・淡金の高密度で自然に広がる花吹雪と鯨",
+      "beatEnglish": "Snowfall peak",
+      "pathStationTimeS": 76.1
+    },
+    {
+      "id": "C17",
+      "startS": 79,
+      "endS": 86,
+      "durationS": 7,
+      "startFrame": 1896,
+      "endFrameExclusive": 2064,
+      "originalStartS": 63,
+      "originalEndS": 68,
+      "originalDurationS": 5,
+      "deltaDurationS": 2,
+      "beatJapanese": "泳ぎながら旋回・上昇し、裂け目の広部を目指す",
+      "beatEnglish": "Ascent",
+      "pathStationTimeS": 82.5
+    },
+    {
+      "id": "C18",
+      "startS": 86,
+      "endS": 93,
+      "durationS": 7,
+      "startFrame": 2064,
+      "endFrameExclusive": 2232,
+      "originalStartS": 68,
+      "originalEndS": 73,
+      "originalDurationS": 5,
+      "deltaDurationS": 2,
+      "beatJapanese": "天井の厚い裂け目をくぐり、尾まで夜空へ消える",
+      "beatEnglish": "Sky exit",
+      "pathStationTimeS": 89.4
+    },
+    {
+      "id": "C19",
+      "startS": 93,
+      "endS": 100,
+      "durationS": 7,
+      "startFrame": 2232,
+      "endFrameExclusive": 2400,
+      "originalStartS": 73,
+      "originalEndS": 80,
+      "originalDurationS": 7,
+      "deltaDurationS": 0,
+      "beatJapanese": "C01と同一Cam A。花びら一枚、静寂へ戻る",
+      "beatEnglish": "Return and proof",
+      "pathStationTimeS": null
+    }
+  ],
+  "pathStations": [
+    {
+      "id": "C04",
+      "timeS": 16,
+      "horizontalPathDistanceM": 0,
+      "zAboveLakeM": 4
+    },
+    {
+      "id": "C05",
+      "timeS": 22.2,
+      "horizontalPathDistanceM": 42,
+      "zAboveLakeM": 14,
+      "fromPrev": {
+        "dtS": 6.2,
+        "horizontalM": 42,
+        "altitudeChangeM": 10,
+        "avgPlanarSpeedMps": 6.77,
+        "avg3dProxySpeedMps": 6.96
+      }
+    },
+    {
+      "id": "C06",
+      "timeS": 28,
+      "horizontalPathDistanceM": 96.45,
+      "zAboveLakeM": 19,
+      "fromPrev": {
+        "dtS": 5.8,
+        "horizontalM": 54.45,
+        "altitudeChangeM": 5,
+        "avgPlanarSpeedMps": 9.39,
+        "avg3dProxySpeedMps": 9.43
+      }
+    },
+    {
+      "id": "C07",
+      "timeS": 33,
+      "horizontalPathDistanceM": 138.34,
+      "zAboveLakeM": 13,
+      "fromPrev": {
+        "dtS": 5,
+        "horizontalM": 41.89,
+        "altitudeChangeM": -6,
+        "avgPlanarSpeedMps": 8.38,
+        "avg3dProxySpeedMps": 8.46
+      }
+    },
+    {
+      "id": "C08",
+      "timeS": 36.2,
+      "horizontalPathDistanceM": 167.66,
+      "zAboveLakeM": 9,
+      "fromPrev": {
+        "dtS": 3.2,
+        "horizontalM": 29.32,
+        "altitudeChangeM": -4,
+        "avgPlanarSpeedMps": 9.16,
+        "avg3dProxySpeedMps": 9.25
+      }
+    },
+    {
+      "id": "C09",
+      "timeS": 39,
+      "horizontalPathDistanceM": 188.61,
+      "zAboveLakeM": 14,
+      "fromPrev": {
+        "dtS": 2.8,
+        "horizontalM": 20.95,
+        "altitudeChangeM": 5,
+        "avgPlanarSpeedMps": 7.48,
+        "avg3dProxySpeedMps": 7.69
+      }
+    },
+    {
+      "id": "C10",
+      "timeS": 41.6,
+      "horizontalPathDistanceM": 198.38,
+      "zAboveLakeM": 20,
+      "fromPrev": {
+        "dtS": 2.6,
+        "horizontalM": 9.77,
+        "altitudeChangeM": 6,
+        "avgPlanarSpeedMps": 3.76,
+        "avg3dProxySpeedMps": 4.41
+      }
+    },
+    {
+      "id": "C11",
+      "timeS": 47.5,
+      "horizontalPathDistanceM": 234.68,
+      "zAboveLakeM": 25,
+      "fromPrev": {
+        "dtS": 5.9,
+        "horizontalM": 36.3,
+        "altitudeChangeM": 5,
+        "avgPlanarSpeedMps": 6.15,
+        "avg3dProxySpeedMps": 6.21
+      }
+    },
+    {
+      "id": "C12",
+      "timeS": 53,
+      "horizontalPathDistanceM": 261.21,
+      "zAboveLakeM": 30,
+      "fromPrev": {
+        "dtS": 5.5,
+        "horizontalM": 26.53,
+        "altitudeChangeM": 5,
+        "avgPlanarSpeedMps": 4.82,
+        "avg3dProxySpeedMps": 4.91
+      }
+    },
+    {
+      "id": "C13",
+      "timeS": 58.4,
+      "horizontalPathDistanceM": 293.33,
+      "zAboveLakeM": 42,
+      "fromPrev": {
+        "dtS": 5.4,
+        "horizontalM": 32.12,
+        "altitudeChangeM": 12,
+        "avgPlanarSpeedMps": 5.95,
+        "avg3dProxySpeedMps": 6.35
+      }
+    },
+    {
+      "id": "C14",
+      "timeS": 63,
+      "horizontalPathDistanceM": 323.33,
+      "zAboveLakeM": 70,
+      "fromPrev": {
+        "dtS": 4.6,
+        "horizontalM": 30,
+        "altitudeChangeM": 28,
+        "avgPlanarSpeedMps": 6.52,
+        "avg3dProxySpeedMps": 8.92
+      }
+    },
+    {
+      "id": "C15",
+      "timeS": 69.5,
+      "horizontalPathDistanceM": 358.33,
+      "zAboveLakeM": 105,
+      "fromPrev": {
+        "dtS": 6.5,
+        "horizontalM": 35,
+        "altitudeChangeM": 35,
+        "avgPlanarSpeedMps": 5.38,
+        "avg3dProxySpeedMps": 7.61
+      }
+    },
+    {
+      "id": "C16",
+      "timeS": 76.1,
+      "horizontalPathDistanceM": 383.46,
+      "zAboveLakeM": 133,
+      "fromPrev": {
+        "dtS": 6.6,
+        "horizontalM": 25.13,
+        "altitudeChangeM": 28,
+        "avgPlanarSpeedMps": 3.81,
+        "avg3dProxySpeedMps": 5.7
+      }
+    },
+    {
+      "id": "C17",
+      "timeS": 82.5,
+      "horizontalPathDistanceM": 414.18,
+      "zAboveLakeM": 164,
+      "fromPrev": {
+        "dtS": 6.4,
+        "horizontalM": 30.72,
+        "altitudeChangeM": 31,
+        "avgPlanarSpeedMps": 4.8,
+        "avg3dProxySpeedMps": 6.82
+      }
+    },
+    {
+      "id": "C18",
+      "timeS": 89.4,
+      "horizontalPathDistanceM": 442.1,
+      "zAboveLakeM": 195,
+      "fromPrev": {
+        "dtS": 6.9,
+        "horizontalM": 27.92,
+        "altitudeChangeM": 31,
+        "avgPlanarSpeedMps": 4.05,
+        "avg3dProxySpeedMps": 6.05
+      }
+    },
+    {
+      "id": "EXIT",
+      "timeS": 93,
+      "horizontalPathDistanceM": 456.07,
+      "zAboveLakeM": 222,
+      "fromPrev": {
+        "dtS": 3.6,
+        "horizontalM": 13.97,
+        "altitudeChangeM": 27,
+        "avgPlanarSpeedMps": 3.88,
+        "avg3dProxySpeedMps": 8.44
+      }
+    }
+  ],
+  "interpolatedPathAssumptions": {
+    "planarPiecewiseCircleRadiusM": 80,
+    "breakthroughPoint": "EXIT after C18 center crosses fissure rim",
+    "velocityEstimate": "Interval-average proxy; not instantaneous speed, actual curve arc length, easing or acceleration.",
+    "moonIngressWarning": "The v0.1 geometric model puts the nose at lunar edge near phi293-295, about t41.8-42.1s, whereas C11 proposed start is 44s. Need adjust moon-edge geometry or re-cut C10/C11; no premature self-emission in approved visual continuity.",
+    "entryShadowWarning": "C04/C06 lighting may be incompatible with a true direct moonbeam occlusion; correct set and camera projection when rendering.",
+    "endCameraWarning": "C18 moon disc alignment may require separate grounded angle; final camera decision not made."
+  }
+}

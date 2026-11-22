@@ -1,0 +1,7 @@
+# アーカイブに移動：ground-camera-overland-projection-review-v03-2026-11-22.md
+
+> **DM専用。過去版／現行の制作仕様ではありません。**
+
+旧版の全文は[2026-11-22以前の記録](../archive/2026-11-22-pre-v12/v8/ground-camera-overland-projection-review-v03-2026-11-22.md)へ移動しました。新しい[**17ショットの絵コンテ v12**](../current/storyboard-v12-70s-provisional-2026-11-22.md)と[旧原画との差分](../current/art-gap-audit-v12-2026-11-22.md)を参照してください。
+
+旧版の採用原画・歴史的な決定や修正経緯を消したわけではありません。**旧番号・旧尺・旧軌道の仕様を現在の制作へ自動で持ち込まないこと。**
