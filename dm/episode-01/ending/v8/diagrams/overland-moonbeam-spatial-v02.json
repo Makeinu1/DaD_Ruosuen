@@ -306,7 +306,7 @@
         "x": -90,
         "y": -15,
         "z": 14,
-        "phase": "tangent arrival over shore",
+        "phase": "approach tangent near waterline (still lake-side)",
         "planDistanceFromE01M": 30,
         "fromPrevious": {
           "durationS": 4,
