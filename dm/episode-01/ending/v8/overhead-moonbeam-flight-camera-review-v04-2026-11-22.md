@@ -11,7 +11,7 @@
 
 ![修正した平面航跡・旧案との比較](diagrams/overland-moonbeam-plan-v04.svg)
 
-[平面図を原寸で開く](diagrams/overland-moonbeam-plan-v04.svg)
+[平面図を原寸で開く](diagrams/overland-moonbeam-plan-v04.svg)／[高度と70秒作業案の対応図](diagrams/overland-moonbeam-altitude-v04.svg)
 
 ## 月光のタイミング：「頭を先に照らす」は維持できるか
 
