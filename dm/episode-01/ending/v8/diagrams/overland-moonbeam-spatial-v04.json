@@ -249,7 +249,8 @@
       "x": -18,
       "y": -93,
       "z": 3
-    }
+    },
+    "CamACurrentForCameraReview": "CamAAlternative"
   },
   "whaleCenterline": {
     "geometry": [
@@ -649,203 +650,6 @@
       "headSkinProxyRadiusM": 3.5
     }
   },
-  "firstOrderTests": {
-    "moonRayChecks": {
-      "party": {
-        "intersectionZ190": [
-          -54,
-          116
-        ],
-        "openingXatY": [
-          -37.8,
-          23.29
-        ],
-        "inDirectBeam": false,
-        "marginToNearestEdgeM": -16.2
-      },
-      "CamA": {
-        "intersectionZ190": [
-          -10,
-          90.32
-        ],
-        "openingXatY": [
-          -20.48,
-          19.71
-        ],
-        "inDirectBeam": true,
-        "marginToNearestEdgeM": 10.48
-      },
-      "P0": {
-        "intersectionZ190": [
-          -18,
-          118.54
-        ],
-        "openingXatY": [
-          -39.83,
-          23.65
-        ],
-        "inDirectBeam": true,
-        "marginToNearestEdgeM": 21.83
-      },
-      "S1": {
-        "S1a": {
-          "intersectionZ190": [
-            40,
-            148.46
-          ],
-          "openingXatY": [
-            -57.04,
-            26.9
-          ],
-          "inDirectBeam": false,
-          "marginToNearestEdgeM": -13.1
-        },
-        "S1b": {
-          "intersectionZ190": [
-            55,
-            172.46
-          ],
-          "openingXatY": [
-            -60.13,
-            28.75
-          ],
-          "inDirectBeam": false,
-          "marginToNearestEdgeM": -26.25
-        },
-        "S1c": {
-          "intersectionZ190": [
-            66,
-            204.46
-          ],
-          "openingXatY": [
-            -31.31,
-            23.77
-          ],
-          "inDirectBeam": false,
-          "marginToNearestEdgeM": -42.23
-        },
-        "S1d": {
-          "intersectionZ190": [
-            72,
-            208.46
-          ],
-          "openingXatY": [
-            -26.03,
-            22.49
-          ],
-          "inDirectBeam": false,
-          "marginToNearestEdgeM": -49.51
-        },
-        "S1e": {
-          "intersectionZ190": [
-            85,
-            230.46
-          ],
-          "openingXatY": [
-            -15.81,
-            17.91
-          ],
-          "inDirectBeam": false,
-          "marginToNearestEdgeM": -67.09
-        },
-        "S1f": {
-          "intersectionZ190": [
-            90,
-            225.46
-          ],
-          "openingXatY": [
-            -17.81,
-            18.91
-          ],
-          "inDirectBeam": false,
-          "marginToNearestEdgeM": -71.09
-        }
-      },
-      "whaleBefore": {
-        "intersectionZ190": [
-          -38.12,
-          98.55
-        ],
-        "openingXatY": [
-          -24.32,
-          20.81
-        ],
-        "inDirectBeam": false,
-        "marginToNearestEdgeM": -13.79
-      },
-      "noseBefore": {
-        "intersectionZ190": [
-          -27.49,
-          99.99
-        ],
-        "openingXatY": [
-          -25,
-          21
-        ],
-        "inDirectBeam": false,
-        "marginToNearestEdgeM": -2.49
-      },
-      "whaleAtIgnition": {
-        "intersectionZ190": [
-          -32.16,
-          94.02
-        ],
-        "openingXatY": [
-          -22.21,
-          20.2
-        ],
-        "inDirectBeam": false,
-        "marginToNearestEdgeM": -9.95
-      },
-      "noseAtIgnition": {
-        "intersectionZ190": [
-          -21.32,
-          96.39
-        ],
-        "openingXatY": [
-          -23.32,
-          20.52
-        ],
-        "inDirectBeam": true,
-        "marginToNearestEdgeM": 1.99
-      }
-    },
-    "nearpass": {
-      "noseXYDistanceMinusProxySkinM": 3.46,
-      "noseUndersideAbovePartyLandM": 2.95,
-      "eyeAbovePartyLandM": 4.5,
-      "torsoCenterAbovePartyLandM": 9
-    },
-    "flowerLight": {
-      "E10toS1baseM": 49.49,
-      "E14toS1tipM": 57.37,
-      "clearIlluminationCandidateM": 65
-    },
-    "totalHorizontalCenterlineM": 489.41,
-    "centerlineMeanPlanarSpeedFromE01toE22": 8.51,
-    "testResults": {
-      "party on land": true,
-      "P0 on land": true,
-      "CamA on land": true,
-      "breach in lake": true,
-      "S1 all on land": true,
-      "P0 sees moon": true,
-      "CamA sees moon": true,
-      "party moon shadow": true,
-      "all mature S1 shadow": true,
-      "before head not in beam": true,
-      "first-contact nose in beam": true,
-      "first-contact body center still shadow": true,
-      "PC nose horizontal skin 3 to 5m": true,
-      "PC nose underside 2.5 to 3m": true,
-      "PC eye height 4 to 5m": true,
-      "S1 base <65m from E10": true,
-      "S1 tip <65m from E14": true,
-      "first arc radius >=70m": true,
-      "second arc radius >=70m": true,
-      "no segment >20m/s average": true
-    }
-  },
   "openGates": [
     "3D thick-roof, sloping edge, full whale mesh and fin/tail swept collision",
     "moon visible and P0 framing in SAME actual camera, including 20mm 16:9 vertical FOV",
@@ -1141,5 +945,12 @@
     "High flight and exit remains same as v0.2 and should be rechecked with the new editing and filming cameras.",
     "Near-zenith will demand a different camera pitch/shot boundary from the previous v0.3 low-altitude overflight view.",
     "Rectangular 24×14.8m bounding box corner can enter lunar beam before the anatomical nose at phi257.2; this is an overly conservative box, not a real limb. True glint sequence requires whale mesh/pose verification."
-  ]
+  ],
+  "legacyComparisonFile": "diagrams/overland-moonbeam-spatial-v02.json",
+  "adoptionStatusByScope": {
+    "approvedPreviously": "rough cavern and lake sizes, single asymmetric fissure, S1 protruding shore, whale 24m, flower properties",
+    "authorRequestedDirection": "whale crosses directly over adventurers, then receives lunar light over land before illuminating flowers and exiting",
+    "underDiscussion": "specific moon azimuth/elevation, camera lenses/coordinates, near-zenith orbit and every numeric station, nominal 70 seconds",
+    "historical": "v0.2 non-zenith arc and older 100s concept remain available in separate files"
+  }
 }
