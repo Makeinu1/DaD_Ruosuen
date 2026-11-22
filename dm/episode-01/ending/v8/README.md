@@ -1,6 +1,6 @@
 # 第一話エンディング v8 改訂案・上映までの制作計画（検討中）
 
-> **2026-11-22 制作整理**：本書のv8・75秒案とV7・90秒案は制作履歴です。最新の検討起点は[作者が仮決めしたv10（約80秒・19カット）](v10-shotlist.md)。[全原画一覧](keyframe-contact-2026-11-22.md)／[鯨の設定](whale-setting-current.md)／[空雪花の設定](../flower.md)／[洞窟・裂け目・月・光](cavern-moonlight-current.md)／[鯨の動線](whale-motion-v10.md)／[カメラ・感情・カット構成](camera-shot-review.md)／**[C04〜C18・図入り飛行検証（2026-11-22）](c04-c18-flight-spatial-verification-2026-11-22.md)**を現行の作業入口とする。**原画の採用もカット構成の確定ではない**。
+> **2026-11-22 制作整理**：本書のv8・75秒案とV7・90秒案は制作履歴です。最新の検討起点は[作者が仮決めしたv10（約80秒・19カット）](v10-shotlist.md)。[全原画一覧](keyframe-contact-2026-11-22.md)／[鯨の設定](whale-setting-current.md)／[空雪花の設定](../flower.md)／[洞窟・裂け目・月・光](cavern-moonlight-current.md)／[鯨の動線](whale-motion-v10.md)／[カメラ・感情・カット構成](camera-shot-review.md)／**[C04〜C18・図入り飛行検証（2026-11-22）](c04-c18-flight-spatial-verification-2026-11-22.md)**／**[v11・100秒カット再設計（未承認）](retiming-v11-100s-review-2026-11-22.md)**を現行の作業入口とする。**原画の採用もカット構成の確定ではない**。
 
 
 **DM専用・ネタバレ注意。プレイヤーは閲覧しないこと。公開Pages・`SECTIONS`・`llms.txt` へ組み込まないこと。**
