@@ -126,38 +126,61 @@ P0 = p0_position()
 # ---------------------------------------------------------------- whale path
 # Waypoints (x, y, z, target speed m/s). A single continuous world path; the edit samples
 # windows of it with time ellipsis between some cuts (v14 rule).
-WAYPOINTS = [
-    # underwater: along the shore heading west-north-west, passing UNDER the moonlit water
-    # near the shore (the only lit water), then turning north
-    (32, -28, -12, 4.0), (12, -47, -10.5, 4.0), (-10, -57, -8.5, 3.8), (-27, -55, -6.0, 3.6),
-    (-37, -46, -3.0, 3.4),
-    # quiet emergence just west of the moonlight edge, heading north (away from the shore)
-    (-42, -33, 0.8, 3.4), (-44, -20, 4.0, 3.6),
-    # one rising counter-clockwise spiral (radius ~40-45 m) that brings it back towards
-    # the adventurers from the west: the 'spiral into the air' of v10
-    (-54, 0, 7.0, 4.0), (-74, 15, 9.5, 4.4), (-98, 16, 11.5, 4.6), (-118, 2, 13.5, 4.8),
-    (-127, -22, 15.0, 5.0), (-121, -48, 16.0, 5.0), (-104, -70, 16.5, 5.2), (-82, -82, 15.0, 5.4),
-    # right over the adventurers heading east
-    (-58, -84.5, 12.0, 5.8),
-    # the one strong stroke: arc to the south-east, then head-first into the moon beam over land
-    (-44, -90, 12.6, 5.6), (-33, -100, 14.2, 5.4), (-25, -112, 16.4, 5.0), (-15, -122, 18.8, 4.6),
-    (0, -128, 21.0, 4.4), (16, -124, 22.0, 4.6), (29, -111, 22.0, 4.9), (37, -92, 21.3, 5.4),
-    (42, -68, 20.6, 6.2),
+def _arc(cx, cy, R, a0, a1, z0, z1, v0, v1, step=9.0):
+    """Waypoints along a horizontal circular arc (angles in degrees, counter-clockwise if a1 > a0)."""
+    n = max(2, int(abs(math.radians(a1 - a0)) * R / step) + 1)
+    out = []
+    for k in range(n + 1):
+        u = k / n; a = math.radians(a0 + (a1 - a0) * u)
+        out.append((cx + R * math.cos(a), cy + R * math.sin(a), z0 + (z1 - z0) * u, v0 + (v1 - v0) * u))
+    return out
+
+def _line(p0, p1, step=12.0):
+    p0 = np.asarray(p0, float); p1 = np.asarray(p1, float)
+    n = max(1, int(np.linalg.norm(p1[:2] - p0[:2]) / step))
+    return [tuple(p0 + (p1 - p0) * k / n) for k in range(n + 1)]
+
+# Waypoints (x, y, z, target speed m/s). A single continuous world path; the edit samples
+# windows of it with time ellipsis between some cuts (v14 rule). Turns that are on screen
+# keep a radius of at least 2 body lengths (whale-motion-v10: >= 48 m).
+WAYPOINTS = (
+    # under water: from the south-east, crossing UNDER the diagonal band of moonlit water
+    # heading north-west (R03 swell, R04 dark mass); the turn to face the shore is under
+    # water and off screen
+    [(30, -44, -12.0, 4.0), (12, -44, -11.0, 4.0), (-6, -38, -9.6, 3.9), (-22, -30, -8.0, 3.7),
+     (-36, -17, -6.6, 3.5)]
+    + _arc(-50.0, -21.0, 12.0, 63, 180, -5.8, -4.0, 3.4, 3.3, step=6.0)
+    # quiet emergence facing the adventurers on the shore (~48 m away), heading south:
+    # a straight run through the surface (no turn on screen, R05)
+    + [(-62, -28, -2.4, 3.3), (-62, -36, 0.8, 3.3), (-62, -44, 4.6, 3.5), (-62.5, -51, 7.4, 3.8)]
+    # one rising clockwise turn over the west shore ('spiral into the air'), out of the
+    # moonlight, passing over its own emergence point ~10 m higher (off screen)
+    + [(-70, -59, 9.4, 4.0), (-88, -60, 11.0, 4.3), (-102, -51, 12.0, 4.5), (-105, -33, 12.6, 4.6),
+       (-95, -17, 13.0, 4.7), (-79, -11, 13.3, 4.8), (-66, -18, 13.5, 4.9), (-60.5, -33, 13.6, 4.9)]
+    # it lines up with the adventurers and glides straight at them, right over their heads
+    + [(-59, -50, 13.8, 5.0), (-58.5, -62, 13.8, 5.0), (-58.2, -72, 13.7, 5.0), (-58.05, -79, 13.65, 5.1)]
+    # the one strong stroke and a wide semicircle (R = 47.5 m) to the south: it crosses the
+    # narrow moon strip head-first near its south end (contact), then north into the cape
+    + _arc(-10.5, -84.5, 47.5, 180, 360, 13.6, 21.0, 5.4, 5.0)
+    + [(38.5, -70, 21.0, 5.6), (42, -54, 20.4, 6.4)]
     # skimming the S1 cape base -> tip
-    (50, -38, 20.0, 7.0), (60, -16, 20.0, 7.0), (70, 4, 20.5, 7.0), (80, 22, 22.0, 6.8), (88, 38, 24.0, 6.2),
-    # wide left turn over the lake (R13)
-    (96, 62, 28.0, 5.6), (89, 86, 33.0, 5.2), (69, 100, 38.0, 5.0), (43, 99, 42.0, 5.0), (20, 89, 45.0, 4.9),
-    # climax crossing to the west through the petal swarm (R14-R16)
-    (0, 75, 47.0, 4.8), (-22, 65, 49.0, 4.8), (-44, 63, 51.0, 4.8),
-    # right turn to the north and climb through the wide part of the fissure (R17-R18)
-    (-63, 71, 56.0, 5.0), (-73, 90, 64.0, 5.2), (-70, 112, 76.0, 5.4), (-58, 130, 92.0, 5.5),
-    (-42, 144, 112.0, 5.6), (-30, 154, 134.0, 5.6), (-22, 162, 156.0, 5.5), (-17, 169, 178.0, 5.4),
-    (-15, 181, 200.0, 5.3), (-13, 193, 222.0, 5.3),
+    + [(50, -38, 20.0, 7.0), (60, -16, 20.0, 7.0), (70, 4, 20.5, 7.0), (80, 22, 22.0, 6.8), (86, 36, 24.0, 6.4)]
+    # the wide left turn over the lake (R13): a 48 m arc entered along the cape heading
+    + _arc(48.0, 68.5, 48.0, -24, 125, 25.5, 40.0, 6.0, 5.0)
+    # climax crossing to the west through the petal swarm (R14-R15), sinking in one
+    # straight descending line (the arc's tangent) to the mirror lake
+    + [(0.0, 93.5, 37.0, 4.9), (-20.5, 79.1, 30.0, 4.8), (-38.5, 66.5, 22.0, 4.8)]
+    # the climax (R16): low over the mirror lake, ~15 m up, then a right turn to the north
+    + [(-57.3, 53.3, 15.0, 4.8), (-72, 52, 18.0, 5.0), (-84, 64, 24.0, 5.0)]
+    # and the climb through the wide part of the fissure (R17-R18)
+    + [(-82, 88, 36.0, 5.2), (-77, 108, 57.0, 5.4), (-63, 126, 80.0, 5.5), (-45, 142, 106.0, 5.6),
+       (-30, 154, 134.0, 5.6), (-22, 162, 156.0, 5.5), (-17, 169, 178.0, 5.4),
+       (-15, 181, 200.0, 5.3), (-13, 193, 222.0, 5.3)]
     # out of the narrow top slot, then levels off to the west over the rock: from the cave
     # floor the head disappears behind the thick rim first and the flukes last (R18)
-    (-18, 202, 238.0, 6.0), (-34, 209, 246.0, 6.6), (-56, 214, 252.0, 6.8), (-80, 218, 257.0, 6.8),
-    (-108, 222, 261.0, 6.8), (-140, 226, 265.0, 6.8),
-]
+    + [(-18, 202, 238.0, 6.0), (-34, 209, 246.0, 6.6), (-56, 214, 252.0, 6.8), (-80, 218, 257.0, 6.8),
+       (-108, 222, 261.0, 6.8), (-140, 226, 265.0, 6.8)]
+)
 
 def _catmull(pts, n=40):
     """Centripetal Catmull-Rom through pts (M,3); returns dense samples (K,3)."""
