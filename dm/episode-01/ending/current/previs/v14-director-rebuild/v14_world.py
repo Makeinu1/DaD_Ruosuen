@@ -135,6 +135,21 @@ def _arc(cx, cy, R, a0, a1, z0, z1, v0, v1, step=9.0):
         out.append((cx + R * math.cos(a), cy + R * math.sin(a), z0 + (z1 - z0) * u, v0 + (v1 - v0) * u))
     return out
 
+def _spiral(cx, cy, R, a0, a1, z0, z1, s0, v0, v1, step=8.0, ease=0.15):
+    """Climbing circular arc whose climb gradient eases from s0 (dz per metre) up to the
+    steady gradient that reaches z1 at the end - no kink where a gentler climb joins it."""
+    L = abs(math.radians(a1 - a0)) * R
+    s1 = s0 + (z1 - z0 - s0 * L) / (L * (1 - ease / 2))
+    n = max(2, int(L / step) + 1)
+    u = np.linspace(0, 1, 2001)
+    slope = s0 + (s1 - s0) * smooth(u / ease)
+    zc = z0 + np.concatenate([[0], np.cumsum((slope[1:] + slope[:-1]) / 2 * np.diff(u) * L)])
+    out = []
+    for k in range(n + 1):
+        uk = k / n; a = math.radians(a0 + (a1 - a0) * uk)
+        out.append((cx + R * math.cos(a), cy + R * math.sin(a), float(np.interp(uk, u, zc)), v0 + (v1 - v0) * uk))
+    return out
+
 def _line(p0, p1, step=12.0):
     p0 = np.asarray(p0, float); p1 = np.asarray(p1, float)
     n = max(1, int(np.linalg.norm(p1[:2] - p0[:2]) / step))
@@ -168,19 +183,16 @@ WAYPOINTS = (
     + [(38.5, -70, 21.0, 5.6), (42, -54, 20.4, 6.4)]
     # skimming the S1 cape base -> tip
     + [(50, -38, 20.0, 7.0), (60, -16, 20.0, 7.0), (70, 4, 20.5, 7.0), (80, 22, 22.0, 6.8), (86, 36, 24.0, 6.4)]
-    # the wide left turn over the lake (R13): a 48 m arc entered along the cape heading
-    + _arc(48.0, 68.5, 48.0, -24, 125, 25.5, 40.0, 6.0, 5.0)
-    # climax crossing to the west through the petal swarm (R14-R15), sinking in one
-    # straight descending line (the arc's tangent) to the mirror lake
-    + [(0.0, 93.5, 34.5, 4.9), (-20.5, 79.1, 24.0, 4.8)]
-    # the climax (R16): its lowest point (~20 m) over the mirror lake, then - still inside the
-    # swarm - it lifts its head and starts to climb (v14.3: the ascent begins in the climax,
-    # so the exit is not sudden), turning right towards the fissure off screen
-    + [(-30, 72.5, 20.5, 4.8), (-41, 64.5, 25.0, 4.8), (-52, 59, 32.0, 4.9), (-63, 57, 40.0, 5.0),
-       (-74, 62, 49.0, 5.0), (-82, 76, 58.0, 5.1)]
-    # and the climb through the wide part of the fissure (R17-R18)
-    + [(-82, 92, 68.0, 5.2), (-77, 108, 79.0, 5.4), (-63, 126, 94.0, 5.5), (-45, 142, 113.0, 5.6),
-       (-30, 154, 134.0, 5.6), (-22, 162, 156.0, 5.5), (-17, 169, 178.0, 6.0),
+    # v14.6: from the cape tip it never goes down again. A climbing left turn (R = 50 m,
+    # entered along the cape heading) carries it over the lake towards the west, rising
+    # through the lifting petals (R13, with one slow roll) ...
+    + _arc(40.0, 55.7, 50.0, -15, 112, 25.5, 50.0, 6.2, 6.4)
+    # ... the climbing crossing to the west (R14 telephoto, R15 passing the camera) ...
+    + [(2.8, 94.6, 54.0, 7.2), (-15.8, 87.1, 58.5, 8.6), (-34.3, 79.6, 63.0, 8.8)]
+    # ... and a rising right-hand spiral (R = 48 m) towards the fissure, steeper from the
+    # climax on (R16 passes over the camera into the sky), joining the climb to the opening
+    + _spiral(-52.3, 124.1, 48.0, -68, -250, 63.0, 128.0, 0.225, 8.4, 6.2)[1:]
+    + [(-48.0, 166.0, 138.0, 6.0), (-31.0, 163.0, 149.0, 5.8), (-22.0, 163.0, 160.0, 5.6), (-17, 169, 178.0, 6.0),
        (-15, 181, 200.0, 11.0), (-13, 193, 222.0, 20.0)]
     # v14.5: out of the narrow top slot it does not level off; it keeps the same straight line
     # (elevation ~61 deg, the line it has climbed since z=178) and flies on towards the moon,

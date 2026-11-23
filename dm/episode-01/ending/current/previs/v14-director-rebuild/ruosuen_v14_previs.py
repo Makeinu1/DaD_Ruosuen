@@ -194,10 +194,19 @@ def r18_merge(t):
     flash = float(math.exp(-((t - tm - 0.05) / 0.4) ** 2))
     return lift, fade, flash
 
+# v14.6: the bloom comes in beats. On each of these strokes the whale's light flares, and every
+# closed bud the flare reaches opens at once (light is the cause, FL-01): in R10 the first
+# beat over the cape base; in R11 three more, which between them open all the land in view.
+BLOOM_BEATS = [(27.6, 40.0), (30.2, 38.0), (31.6, 46.0), (33.0, 58.0)]   # (film s, reach m)
+BEAT_TAU = [(tau_of(ft), R) for ft, R in BLOOM_BEATS]
+
+def flare(tau):
+    return float(sum(math.exp(-((tau - tb) / 0.28) ** 2) for tb, _ in BEAT_TAU))
+
 def whale_light(tau):
     """(position, intensity) of the whale as a moving light source."""
     p = PATH.pos(tau)
-    I = float(smooth((tau - EV['contact'] - 1.0) / 4.0)) * (1 + 0.25 * float(pulse(tau))) * (1 + 0.30 * climax(tau))
+    I = float(smooth((tau - EV['contact'] - 1.0) / 4.0)) * (1 + 0.25 * float(pulse(tau))) * (1 + 0.30 * climax(tau)) * (1 + 0.9 * flare(tau))
     return p, I
 
 def glance_roll(tau):
@@ -208,13 +217,22 @@ def glance_roll(tau):
     fall = 1 - smooth((tau - (EV['over'] + 0.2)) / 1.5)
     return math.radians(16.0) * float(rise * fall)
 
+ROLL_FILM = (39.0, 3.2)  # v14.6: one slow full roll in R13 (start in film s, duration s)
+
+def joy_roll(tau):
+    """v14.6: the petals let go and the whale, climbing through them, turns over once -
+    a slow full roll to the left (into its turn), belly up at the middle. Not a must-have
+    of the old C09 back roll; here it is a moment of release after the bloom."""
+    r0 = TAU0['R13'] + (ROLL_FILM[0] - T['R13'][0])
+    return -2 * math.pi * float(smooth((tau - r0) / ROLL_FILM[1]))
+
 def glide(tau):
     """1 while the whale glides straight at the adventurers without stroking (R06-R07)."""
     a = EV['over'] - 8.0; b = EV['over'] + 0.8
     return float(smooth((tau - a) / 1.2) * (1 - smooth((tau - b) / 1.0)))
 
 def whale_world(tau):
-    fr = PATH.frame(tau, extra_roll=glance_roll(tau))
+    fr = PATH.frame(tau, extra_roll=glance_roll(tau) + joy_roll(tau))
     amp = 1.9 * (1 - 0.8 * glide(tau))
     Vb = w.deform(w.BODY_V, tau, PATH, amp=amp)
     Ve = w.deform(w.EYE_V, tau, PATH, amp=amp)
@@ -247,6 +265,15 @@ def _flowers():
     x = sx + RNG.normal(0, 7.0, m); y = sy + RNG.normal(0, 7.0, m)
     ok = keep(x, y)
     pts.append(np.column_stack([x[ok], y[ok]]))
+    # v14.6: the colony is not only the band along the cape. It covers the near-shore ledges of
+    # the whole east bank that the cameras see (FL-01 v0.8: dense colonies continuing along the
+    # shore into the dark), in patches like moss in the cracks of the rock
+    m = 30000
+    x = RNG.uniform(20, 150, 4 * m); y = RNG.uniform(-100, 70, 4 * m)
+    d = w.shore_y(x) - y
+    patch = 0.5 + 0.5 * np.sin(x * 0.21 + 2.0 * np.sin(y * 0.13)) * np.sin(y * 0.17 + 1.7 * np.cos(x * 0.11))
+    ok = (d > 0.5) & (d < 68) & (RNG.random(4 * m) < 0.30 + 0.70 * patch)
+    pts.append(np.column_stack([x[ok], y[ok]])[:m])
     P = np.vstack(pts)
     z = w.ground_z(P[:, 0], P[:, 1]) + 0.06
     return np.column_stack([P, z])
@@ -256,35 +283,28 @@ NF = len(FLOWERS)
 MATURE = RNG.random(NF) < 0.8
 BLOOM_R = 34.0
 
+def _beat_open(P, jitter):
+    """Bloom time of each point: the first beat whose flare reaches it (+ the few hundredths of
+    a second the opening takes to start, a little later farther from the light)."""
+    to = np.full(len(P), np.inf)
+    for tb, R in BEAT_TAU:
+        d = np.linalg.norm(P - PATH.pos(tb), axis=1)
+        newly = (d < R) & ~np.isfinite(to)
+        to[newly] = tb + 0.03 + 0.004 * d[newly] + RNG.uniform(0.0, jitter, newly.sum())
+    return to
+
 def _bloom_times():
-    tau_open = np.full(NF, np.inf)
-    for t in np.arange(EV['contact'], EV['tip'] + 12, 0.1):
-        p, I = whale_light(t)
-        if I < 0.3:
-            continue
-        d = np.linalg.norm(FLOWERS - p, axis=1)
-        lit = I / (1 + (d / BLOOM_R) ** 2)
-        newly = (lit > 0.5) & ~np.isfinite(tau_open)
-        tau_open[newly] = t + RNG.uniform(0.0, 0.6, newly.sum())
-    return tau_open
+    return _beat_open(FLOWERS, 0.08)
 
 TAU_OPEN = _bloom_times()
 
 # close-up flowers placed in front of the insert cameras (same colony / same rules)
 def flower_open(tau, idx=None):
     to = TAU_OPEN if idx is None else TAU_OPEN[idx]
-    return smooth((tau - to) / 1.5)
+    return smooth((tau - to) / 0.8)          # v14.6: all at once, in under a second
 
 def bloom_times_for(P):
-    to = np.full(len(P), np.inf)
-    for t in np.arange(EV['contact'], EV['tip'] + 12, 0.05):
-        p, I = whale_light(t)
-        if I < 0.3:
-            continue
-        lit = I / (1 + (np.linalg.norm(P - p, axis=1) / BLOOM_R) ** 2)
-        newly = (lit > 0.5) & ~np.isfinite(to)
-        to[newly] = t + RNG.uniform(0.0, 0.25, newly.sum())
-    return to
+    return _beat_open(P, 0.05)
 
 def insert_flowers(cam, n, dmin, dmax, spread, seed, keep_out=None):
     r = np.random.default_rng(seed)
@@ -304,6 +324,8 @@ class Petals:
     free fall once the whale is gone. Simulated in WORLD time."""
     def __init__(self):
         src = np.where(MATURE & np.isfinite(TAU_OPEN))[0]
+        if len(src) > 31000:            # v14.6: more colony, same simulated budget (~124k flakes)
+            src = np.sort(np.random.default_rng(7).choice(src, 31000, replace=False))
         per = 4
         self.src = np.repeat(src, per)
         n = len(self.src)
@@ -699,29 +721,37 @@ def make_cameras():
                      wp(TAU0['R09'] + 0.6) + np.array([3, 0, 9.5]), wp(TAU0['R09'] + 4.8) + np.array([8, 0, 10.5]), 28)
     b = wp(EV['base'])
     gb = GZ(b[0] - 6, b[1] - 9)
-    C['R10'] = C_static((b[0] - 6.0, b[1] - 9.0, gb + 0.32), (b[0] - 3.5, b[1] - 5.0, gb + 0.45), 24)
+    # R10 (v14.6): down among the buds of the base colony, just above them: a bed of grey-brown,
+    # nodding buds that look like dead grass fills the frame; the whale passes overhead out of
+    # frame, its light floods in from the top, flares once - and every bud opens at once
+    gb = GZ(b[0] - 4.0, b[1] - 7.0)
+    C['R10'] = C_static((b[0] - 4.0, b[1] - 7.0, gb + 0.22), (b[0] - 3.0, b[1] - 4.2, gb - 0.50), 24)
     C['R11'] = C_static((100.0, -36.0, 14.0), (70.0, 6.0, 6.0), 24)
     tip = np.array([85.0, 30.0]); gt = GZ(78.0, 20.0)
     C['R12'] = C_static((78.0 - 0.09, 20.0 - 0.12, gt + 0.245), (78.0, 20.0, gt + 0.065), 80)
-    # R13: among the flowers at the cape tip: the colony letting go in the lower part of the
-    # frame, the whale turning above it (18 mm, ~20 deg up)
-    m13 = wp(TAU0['R13'] + 2.2); c13 = np.array([78.0, 12.0, GZ(78.0, 12.0) + 0.6])
-    C['R13'] = C_static(tuple(c13), (m13[0], m13[1], c13[2] + np.linalg.norm(m13[:2] - c13[:2]) * math.tan(math.radians(14))), 24)
+    # R13 (v14.6): low over the dark lake, looking back at the cape: the whole colony lets go
+    # along the horizon and the whale comes towards us out of it, climbing, and turns over
+    # once in the rising petals. Static: it rises through the frame and leaves at the top.
+    c13 = np.array([28.7, 119.7, 1.0])
+    b13, p13 = math.radians(-42.0), math.radians(20.0)
+    C['R13'] = C_static(tuple(c13), tuple(c13 + 100 * np.array([math.cos(b13) * math.cos(p13), math.sin(b13) * math.cos(p13), math.sin(p13)])), 24)
     C['R14'] = C_static((-30.0, -58.0, GZ(-30, -58) + 1.7), wp(TAU0['R14'] + 2.0) + np.array([0, 0, -1]), 90)
-    C['R15'] = C_follow()
-    # R16: lake edge, 18 mm, a few metres forward; whale + mirror image + moonlit water
-    # low over the water, ~55 m south of the whale, a few metres forward: whale + mirror image
-    # R16: lake level, 18 mm, a few metres forward; as the whale lifts its head out of its
-    # mirror image the camera tilts up with it (the reflection leaves the bottom of frame)
-    c16a = np.array([-42.0, 30.0, 1.1]); c16b = np.array([-42.0, 33.5, 1.0])
-    t16a = wp(TAU0['R16'] + 1.2) * np.array([1, 1, 0]) + np.array([0, 0, 2.5])
-    p16e = wp(TAU0['R16'] + (T['R16'][1] - T['R16'][0]))
-    t16b = p16e * np.array([1, 1, 0]) + np.array([0, 0, p16e[2] * 0.55])
-    def r16(t, tau, a=c16a, b=c16b, ta=t16a, tb=t16b, s0=T['R16'][0], s1=T['R16'][1]):
-        u = smooth((t - s0) / (s1 - s0))
-        k = smooth((t - s0 - 0.9) / (s1 - s0 - 1.4))
-        return Cam(lerp(a, b, u), target=lerp(ta, tb, k), lens=18)
-    C['R16'] = r16
+    # R15 (v14.6): 'like filming a train' - a fixed camera just off its line, a little below
+    # it: the head comes in at the right edge, the whole body slides past ~10 m away, climbing
+    # up and to the left, and the flukes go out at the left
+    a15 = TAU0['R15'] + 3.3
+    P15 = PATH.pos(a15); h15 = unit(PATH.vel(a15) * np.array([1, 1, 0])); n15 = np.array([-h15[1], h15[0], 0])
+    n15 = n15 if n15[1] < 0 else -n15
+    c15 = P15 + 10.0 * n15 + np.array([0, 0, -2.0])
+    a_ = math.radians(75.0); look15 = -h15 * math.cos(a_) - n15 * math.sin(a_)
+    C['R15'] = C_static(tuple(c15), tuple(c15 + look15 * 50 + np.array([0, 0, 4.0])), 20)
+    # R16 (v14.6, the climax): fixed, ~12 m under the line it is climbing, looking back and up
+    # at it: it comes up out of the bottom of the frame, its lit belly passes right over us
+    # (the brightest frame of the film) and the flukes go out at the top - into the sky
+    a16 = TAU0['R16']
+    P16 = PATH.pos(a16 + 3.6); h16 = unit(PATH.vel(a16 + 3.6) * np.array([1, 1, 0]))
+    c16 = P16 + np.array([0, 0, -12.0]) + 3.0 * np.array([-h16[1], h16[0], 0])
+    C['R16'] = C_static(tuple(c16), tuple(PATH.pos(a16 + 0.4) + np.array([0, 0, 14.0])), 18)
     # R17 (v14.4): 'as if it were heading for the moon' - the camera rises behind and below the
     # climbing whale, slower than it, looking up its line of travel: the whale pulls away up the
     # fissure towards the moon composed in the opening ahead, the lit rock walls around it
@@ -752,7 +782,7 @@ class Renderer:
         # close-up flowers in front of the insert cameras (R10 bloom wave, R12 macro)
         self.inserts = {}
         c10 = self.cams['R10'](T['R10'][0], TAU0['R10'])
-        P10 = insert_flowers(c10, 70, 0.35, 4.5, 0.75, 10)
+        P10 = insert_flowers(c10, 900, 0.25, 5.5, 1.0, 10)
         self.inserts['R10'] = (P10, bloom_times_for(P10), RNG.random(len(P10)) < 0.85)
         c12 = self.cams['R12'](T['R12'][0], TAU0['R12'])
         hero = np.array([[78.0, 20.0, GZ(78.0, 20.0)]])
@@ -818,7 +848,7 @@ class Renderer:
         sky = 0.40 * upn                                   # faint light from the night sky above
         lit = skin0 * (ambient + sky + 0.9 * ml * lam)[:, None] + np.array([120, 138, 160])[None, :] * (rim * (0.24 + 0.4 * upn + 0.6 * ml))[:, None]
         form = 0.40 + 0.60 * facing                        # keep the 3D form inside the glow
-        col = lit * (1 - g[:, None]) + emis * (g * 0.70 * form * (1 + 0.18 * pul) * (1 + 0.22 * climax(tau)))[:, None]
+        col = lit * (1 - g[:, None]) + emis * (g * 0.70 * form * (1 + 0.18 * pul) * (1 + 0.22 * climax(tau)) * (1 + 0.45 * flare(tau)))[:, None]
         col = tone(col)
         under = cen[:, 2] < -0.05 if not mirror else np.zeros(len(cen), bool)
         if under.any():
@@ -995,7 +1025,7 @@ class Renderer:
             self.draw_petals(A2, cam, pe, tau, far_of=1e9, part='near', mirror=True)
             A += A2 * (np.asarray(water_mask).astype(np.float32)[..., None] / 255) * (0.62 if cam.pos[2] < 2.0 else 0.42)
         # --- the air full of lit petals glows around the whale (R13-R16; the climax R16 most)
-        kg = {'R13': 0.10, 'R14': 0.12, 'R15': 0.12, 'R16': 0.26}.get(cid, 0.0)
+        kg = {'R13': 0.10, 'R14': 0.12, 'R15': 0.12, 'R16': 0.34}.get(cid, 0.0)
         if kg > 0 and wl_I > 0.05:
             sx, sy, sz = cam.proj(wl_p[None], W, H)
             if sz[0] > 1.0:
@@ -1010,7 +1040,7 @@ class Renderer:
             ex_, ey_ = float(np.clip(sx[0], -0.3 * W, 1.3 * W)), float(np.clip(sy[0], -0.6 * H, 1.3 * H))
             dd = np.sqrt((xx - ex_) ** 2 + (yy - ey_) ** 2) / W
             tint = np.array([150, 175, 205], np.float32) * (1 - opal_mix(tau)) + np.array([196, 204, 222], np.float32) * opal_mix(tau)
-            A += (np.exp(-(dd / 0.45) ** 2) * 0.20 * wl_I)[..., None] * tint
+            A += (np.exp(-(dd / 0.45) ** 2) * 0.11 * wl_I)[..., None] * tint      # v14.6: R16 stays the brightest
         # --- moon beam volume and dust
         q = 4
         acc = np.zeros((H // q, W // q), np.float32)
@@ -1278,10 +1308,10 @@ class Renderer:
         if len(tiny) and img is not None:
             o = op[tiny]; L = np.minimum(1.4, light[tiny]); rl = rel[tiny]
             c = (np.array([236, 230, 212])[None, :] * (0.12 + 0.88 * L)[:, None] * (o * (1 - 0.75 * rl))[:, None] +
-                 np.array([86, 76, 62])[None, :] * (0.15 + 0.6 * L)[:, None] * (1 - o)[:, None] +
+                 np.array([86, 76, 62])[None, :] * (0.30 + 0.7 * L)[:, None] * (1 - o)[:, None] +
                  np.array([70, 80, 66])[None, :] * (0.15 + 0.5 * L)[:, None] * (o * 0.75 * rl)[:, None])
             # sub-pixel coverage; each previs sample stands for several real flowers of the dense colony
-            cov = np.clip((size_all[tiny] * (0.5 + 0.5 * o)) ** 2 / 3.0 * (1 + 5 * o), 0.15 + 0.30 * o, 1.0)
+            cov = np.clip((size_all[tiny] * (0.5 + 0.5 * o)) ** 2 / 3.0 * (1 + 5 * o), 0.30 + 0.15 * o, 1.0)
             arr = np.asarray(img).astype(np.float32)
             xi = np.clip(np.round(x[tiny]).astype(int), 0, W - 1); yi = np.clip(np.round(y[tiny]).astype(int), 0, H - 1)
             order_t = np.argsort(-z[tiny])
@@ -1319,7 +1349,7 @@ class Renderer:
                 dr.ellipse((px[0] - r, py[0] - r, px[0] + r, py[0] + r), fill=(236, 232, 214))
         if cid in self.inserts:
             P, to, mat = self.inserts[cid]
-            o = smooth((tau - to) / 1.2)
+            o = smooth((tau - to) / 0.8)
             Lw = wl_I * 1.4 / (1 + (np.linalg.norm(P - wl_p, axis=1) / 26) ** 2)
             Lm = 1.3 * w.moonlit(P + np.array([0, 0, 0.2]))
             xx, yy, zz = cam.proj(P, W, H)
