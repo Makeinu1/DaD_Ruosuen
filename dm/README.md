@@ -13,4 +13,8 @@
 - [空雪花の設定](episode-01/ending/flower.md)：現在値と旧案の区別
 - [原画台帳](episode-01/ending/art-manifest.md)：生成ID・採否・利用区分
 
+- [第一話のNPC導入・予定外訪問の対応案](episode-01/npc-hooks.md)：ベル・タッカーの依頼と各組織の情報収集案（未採用の詳細を区別）。
+
+- [ベルとタッカーの演技ガイド・掛け合い集](npcs/bell-tucker-roleplay.md)：口調、7場面の会話例、即興演技早見表。
+
 運用規約：[WORLD_POLICY.md](../WORLD_POLICY.md)。
