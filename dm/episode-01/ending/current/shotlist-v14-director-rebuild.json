@@ -194,10 +194,10 @@
       "end_s": 60.0,
       "duration_s": 4.5,
       "replaces": "N15",
-      "camera": "湖面から望遠（85mm）で見上げ",
-      "whale": "月光に沿って天井のすぐ下まで昇る（約150→175m）、光が岩壁と裂け目の縁に届く",
+      "camera": "昇る鯨の後ろ下から、鯨の進む先を見上げる（24mm、鯨よりゆっくり昇る）",
+      "whale": "月へ向かうように裂け目を昇り、開口部の大きな月を目指して遠ざかる（約150→175m）",
       "flora_light_sound": "一部は鯨について昇り、残りは落下へ",
-      "camera_motion": "fixed"
+      "camera_motion": "crane (rising behind the whale)"
     },
     {
       "id": "R18",

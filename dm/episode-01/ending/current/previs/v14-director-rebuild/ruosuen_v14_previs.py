@@ -171,7 +171,12 @@ def pulse(tau, x_local=None):
     u = np.mod(base - lag, 1.0)
     return np.exp(-(u / 0.07) ** 2) + np.exp(-((u - 1) / 0.07) ** 2)
 
-MOON_R_DEG = 2.4      # angular radius of the (symbolic) moon disc; the real moon is ~0.26 deg
+MOON_R_DEG = 2.4      # angular radius of the moon where a cut does not compose it (real moon ~0.26 deg)
+# v14.4: the moon is a composed symbol (in the manner of SHAFT / TYPE-MOON): per cut it is as
+# large as fits completely inside the visible opening, up to this radius (fraction of the frame
+# height), placed near its true direction - in R17 where the whale is heading - and anchored in
+# the opening, so the rock rim never cuts it. The moonlight direction itself stays physical.
+MOON_TARGET = {'R01': 0.17, 'R19': 0.17, 'R09': 0.15, 'R17': 0.20, 'R18': 0.30}
 
 def climax(tau):
     """0..1: the whale's light swells at the climax (R16) and settles again after it."""
@@ -706,7 +711,15 @@ def make_cameras():
         k = smooth((t - s0 - 0.9) / (s1 - s0 - 1.4))
         return Cam(lerp(a, b, u), target=lerp(ta, tb, k), lens=18)
     C['R16'] = r16
-    C['R17'] = C_static((-32.0, 90.0, 1.2), wp(TAU0['R17'] + 2.3) + np.array([0, 0, 8.0]), 85)
+    # R17 (v14.4): 'as if it were heading for the moon' - the camera rises behind and below the
+    # climbing whale, slower than it, looking up its line of travel: the whale pulls away up the
+    # fissure towards the moon composed in the opening ahead, the lit rock walls around it
+    p17 = PATH.pos(TAU0['R17']); v17 = unit(PATH.vel(TAU0['R17']))
+    c17a = p17 - v17 * 34.0 + np.array([0, 0, -3.0]); c17b = c17a + v17 * 12.0
+    t17 = PATH.pos(TAU0['R17'] + 2.25) + v17 * 120.0
+    def r17(t, tau, a=c17a, b=c17b, tg=t17, s0=T['R17'][0], s1=T['R17'][1]):
+        return Cam(lerp(a, b, smooth((t - s0) / (s1 - s0))), target=tg, lens=24)
+    C['R17'] = r17
     # R18: placed so that the whale crosses the small moon as it passes the top rim
     ex = PATH.pos(EV['top'] + 0.8)
     c18 = ex - w.MOON_DIR * ((ex[2] - 1.8) / w.MOON_DIR[2])
@@ -878,26 +891,8 @@ class Renderer:
             okz = sz > 0
             splat(add, sx[okz], sy[okz], (np.array([210, 220, 240])[None, :] * sb[okz, None] * 0.55), W, H)
             A += add * hole[..., None]
-            # the moon, drawn symbolically large (~9x its true size: 4.8 deg across), seen only
-            # through the opening: the thick rock rim may cover part of it
-            mx, my, mz = cam.proj((cam.pos + w.MOON_DIR * 1e5)[None], W, H)
-            if mz[0] > 0:
-                f_px = cam.lens / 36 * W
-                rr = max(4.0, f_px * math.tan(math.radians(MOON_R_DEG)))
-                yy, xx = np.ogrid[:H, :W]
-                ux, uy = (xx - mx[0]) / rr, (yy - my[0]) / rr
-                dd = np.sqrt(ux ** 2 + uy ** 2)
-                disk = clamp((1.0 + 1.2 / rr - dd) * rr / 1.6)
-                limb = 0.78 + 0.22 * np.sqrt(clamp(1 - dd ** 2))                 # limb darkening
-                maria = 1.0
-                for (cx_, cy_, r_, k_) in ((-0.28, -0.22, 0.30, 0.20), (0.18, -0.30, 0.22, 0.16),
-                                           (0.05, 0.12, 0.34, 0.14), (-0.35, 0.30, 0.18, 0.12), (0.38, 0.22, 0.16, 0.10)):
-                    maria = maria - k_ * np.exp(-(((ux - cx_) ** 2 + (uy - cy_) ** 2) / r_ ** 2) * 2.2)
-                face = disk * limb * maria
-                hb = np.asarray(Image.fromarray((hole * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(max(2.0, rr * 0.35)))).astype(np.float32) / 255
-                halo = (np.exp(-((dd - 1.0).clip(0) / 0.55) ** 2) * 0.30 + np.exp(-(dd / 3.2) ** 2) * 0.10) * (1 - disk)
-                A += face[..., None] * np.array([232, 228, 206], np.float32) * hole[..., None] * 0.97
-                A += halo[..., None] * np.array([130, 140, 160], np.float32) * np.maximum(hole, 0.55 * hb)[..., None]
+            # the moon as a composed symbol (v14.4): see draw_moon
+            self.draw_moon(A, cam, cid, hole)
             img = Image.fromarray(np.clip(A, 0, 255).astype(np.uint8)); dr = ImageDraw.Draw(img)
         # --- canopy rock lit by the whale on the way out (R17/R18)
         wl_p, wl_I = whale_light(tau)
@@ -1054,6 +1049,86 @@ class Renderer:
         self.label(img, cid, t)
         info.update(cut=cid, t=round(t, 4), tau=round(tau, 3))
         return img, info
+
+    # ------------------------------------------------------------------ moon
+    def hole_mask(self, cam):
+        W, H = self.W, self.H
+        bot = cam.poly2d(np.array(w.rim_polygon(w.RIM_Z)), W, H)
+        top = cam.poly2d(np.array(w.rim_polygon(w.TOP_Z)), W, H)
+        if not (bot and top):
+            return None
+        mb = Image.new('L', (W, H), 0); ImageDraw.Draw(mb).polygon(bot, fill=255)
+        mt = Image.new('L', (W, H), 0); ImageDraw.Draw(mt).polygon(top, fill=255)
+        return np.minimum(np.asarray(mb), np.asarray(mt)).astype(np.float32) / 255
+
+    def moon_layout(self, cid):
+        """Once per cut: choose where the moon sits in the opening and how big it is. Returns a
+        world anchor point inside the opening and an angular radius (or None)."""
+        if not hasattr(self, '_moon'):
+            self._moon = {}
+        if cid in self._moon:
+            return self._moon[cid]
+        from scipy.ndimage import distance_transform_edt
+        W, H = self.W, self.H
+        s0, s1 = T[cid]; tm = s0 + 0.5 * (s1 - s0)
+        cam = self.cams[cid](tm, tau_of(tm))
+        hole = self.hole_mask(cam)
+        out = None
+        if hole is not None and hole.sum() > 30:
+            fx = cam.lens / 36 * W
+            q = 2
+            dt = distance_transform_edt(hole[::q, ::q] > 0.5) * q
+            if cid == 'R17':                                 # where the whale is heading
+                tauc = tau_of(tm); P = PATH.pos(tauc) + unit(PATH.vel(tauc)) * 400.0
+            elif cid == 'R18':                               # behind the whale as it crosses
+                P = PATH.pos(TAU0['R18'] + 0.9)
+            else:
+                P = cam.pos + w.MOON_DIR * 1e5
+            px, py, pz = cam.proj(P[None], W, H)
+            pref = np.array([px[0], py[0]]) if pz[0] > 0 else np.array([W / 2, H / 3])
+            target = MOON_TARGET.get(cid, 0.0) * H
+            if target <= 0:
+                target = fx * math.tan(math.radians(MOON_R_DEG))
+            yy, xx = np.mgrid[0:dt.shape[0], 0:dt.shape[1]] * q
+            dist = np.hypot(xx - pref[0], yy - pref[1])
+            score = np.minimum(dt, target * 1.08) - 0.12 * dist
+            k = np.unravel_index(int(np.argmax(score)), dt.shape)
+            cxy = np.array([xx[k], yy[k]], float); r = min(target, 0.92 * dt[k])
+            if r >= 4:
+                d = unit(cam.f + cam.r * ((cxy[0] - W / 2) / fx) + cam.u * (-(cxy[1] - H / 2) / fx))
+                sdist = (w.TOP_Z + 25.0 - cam.pos[2]) / max(d[2], 0.05)   # anchor just beyond the top rim
+                out = (cam.pos + d * sdist, math.atan(r / fx))
+        self._moon[cid] = out
+        return out
+
+    def draw_moon(self, A, cam, cid, hole):
+        W, H = self.W, self.H
+        lay = self.moon_layout(cid)
+        if lay is None:
+            return
+        Q, ang = lay
+        mx, my, mz = cam.proj(Q[None], W, H)
+        if mz[0] <= 0:
+            return
+        rr = cam.lens / 36 * W * math.tan(ang)
+        yy, xx = np.ogrid[:H, :W]
+        ux, uy = (xx - mx[0]) / rr, (yy - my[0]) / rr
+        dd = np.sqrt(ux ** 2 + uy ** 2)
+        disk = clamp((1.0 + 1.2 / rr - dd) * rr / 1.6)
+        limb = 0.80 + 0.20 * np.sqrt(clamp(1 - dd ** 2))
+        maria = 1.0
+        for (cx_, cy_, r_, k_) in ((-0.28, -0.22, 0.30, 0.22), (0.18, -0.30, 0.22, 0.18),
+                                   (0.05, 0.12, 0.34, 0.15), (-0.35, 0.30, 0.18, 0.13), (0.38, 0.22, 0.16, 0.10)):
+            maria = maria - k_ * np.exp(-(((ux - cx_) ** 2 + (uy - cy_) ** 2) / r_ ** 2) * 2.2)
+        face = disk * limb * maria
+        # a hard-edged, luminous disc with a tight bright ring and a wide soft glow: the glow is
+        # allowed over the rock rim (it is light, not the disc)
+        ring = np.exp(-((dd - 1.0).clip(0) / 0.08) ** 2) * (1 - disk) * 0.55
+        glow = np.exp(-((dd - 1.0).clip(0) / 0.7) ** 2) * 0.26 + np.exp(-(dd / 3.0) ** 2) * 0.10
+        hsoft = np.asarray(Image.fromarray((hole * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(max(2.0, rr * 0.4)))).astype(np.float32) / 255
+        A += face[..., None] * np.array([236, 232, 212], np.float32) * hole[..., None]
+        A += ring[..., None] * np.array([220, 225, 235], np.float32) * hole[..., None]
+        A += (glow * (1 - disk))[..., None] * np.array([120, 134, 160], np.float32) * np.maximum(hole, 0.6 * hsoft)[..., None]
 
     # ------------------------------------------------------------------ details
     def canopy_light(self, cam, tau, wl_p, wl_I):
