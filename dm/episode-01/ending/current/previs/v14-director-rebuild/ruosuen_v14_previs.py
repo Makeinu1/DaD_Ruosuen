@@ -128,7 +128,7 @@ def build_tau0(E):
     t0['R15'] = t0['R14'] + (T['R15'][0] - T['R14'][0])   # continuous
     t0['R16'] = t0['R15'] + (T['R16'][0] - T['R15'][0])   # continuous
     t0['R17'] = E['lip'] - 8.0                           # just below the ceiling: its light reaches the rock
-    t0['R18'] = E['top'] - 1.3                             # crosses the moon ~60.6 s, flukes vanish ~64.6 s
+    t0['R18'] = E['lip'] + 0.3                             # in the slot, ~40 m from the camera
     t0['R19'] = E['top'] + 300.0                           # long ellipsis: the cave is quiet again
     return t0
 
@@ -182,6 +182,17 @@ def climax(tau):
     """0..1: the whale's light swells at the climax (R16) and settles again after it."""
     a = TAU0['R16']; b = a + (T['R16'][1] - T['R16'][0])
     return float(smooth((tau - a + 0.6) / 1.4) * (1 - smooth((tau - b - 0.5) / 2.0)))
+
+R18_MERGE = 3.7      # s into R18: the whale, small at the centre of the moon, melts into it
+
+def r18_merge(t):
+    """(lift, fade, flash) for the end of R18: the whale's colour rises to the moon's, then
+    its outline goes, with one soft breath of light; its light is absorbed, never switched off."""
+    tm = T['R18'][0] + R18_MERGE
+    lift = float(smooth((t - (tm - 0.8)) / 0.8))
+    fade = float(smooth((t - (tm - 0.25)) / 0.55))
+    flash = float(math.exp(-((t - tm - 0.05) / 0.4) ** 2))
+    return lift, fade, flash
 
 def whale_light(tau):
     """(position, intensity) of the whale as a moving light source."""
@@ -720,10 +731,15 @@ def make_cameras():
     def r17(t, tau, a=c17a, b=c17b, tg=t17, s0=T['R17'][0], s1=T['R17'][1]):
         return Cam(lerp(a, b, smooth((t - s0) / (s1 - s0))), target=tg, lens=24)
     C['R17'] = r17
-    # R18: placed so that the whale crosses the small moon as it passes the top rim
-    ex = PATH.pos(EV['top'] + 0.8)
-    c18 = ex - w.MOON_DIR * ((ex[2] - 1.8) / w.MOON_DIR[2])
-    C['R18'] = C_static(tuple(c18), tuple(c18 + w.MOON_DIR * 100.0 + np.array([0, 0, -6.0])), 50)
+    # R18 (v14.5): the camera stops just under the opening, beside the whale's line, and lets
+    # it go: the whale passes it, climbs out of the slot and flies straight on along EXIT_DIR,
+    # shrinking towards the vanishing point of that line, where the moon is composed (dead
+    # centre of the frame). It never leaves the opening - it goes into the moon.
+    u = w.EXIT_DIR
+    n_up = unit(np.array([0, 0, 1.0]) - u[2] * u)
+    base = np.array([-15.0, 181.0, 200.0]) - u * ((200.0 - 160.0) / u[2])
+    c18 = base + 4.5 * (0.3 * np.array([1.0, 0, 0]) + 0.95 * n_up)
+    C['R18'] = C_static(tuple(c18), tuple(c18 + u * 100.0), 40)
     C['R19'] = lambda t, tau: camA
     return C
 
@@ -892,13 +908,16 @@ class Renderer:
             splat(add, sx[okz], sy[okz], (np.array([210, 220, 240])[None, :] * sb[okz, None] * 0.55), W, H)
             A += add * hole[..., None]
             # the moon as a composed symbol (v14.4): see draw_moon
-            self.draw_moon(A, cam, cid, hole)
+            self.draw_moon(A, cam, cid, hole, t)
             img = Image.fromarray(np.clip(A, 0, 255).astype(np.uint8)); dr = ImageDraw.Draw(img)
         # --- canopy rock lit by the whale on the way out (R17/R18)
         wl_p, wl_I = whale_light(tau)
         if cid in ('R17', 'R18') and wl_I > 0.05:
             A = np.asarray(img).astype(np.float32)
-            A += self.canopy_light(cam, tau, wl_p, wl_I) * (1 - (hole if hole is not None else 0))[..., None]
+            # R18: the camera is inside the slot, close to the light; keep the rock darker than
+            # the moon so that the moon stays the brightest thing in the frame
+            kc = 0.5 if cid == 'R18' else 1.0
+            A += self.canopy_light(cam, tau, wl_p, wl_I * kc) * (1 - (hole if hole is not None else 0))[..., None]
             img = Image.fromarray(np.clip(A, 0, 255).astype(np.uint8)); dr = ImageDraw.Draw(img)
         # --- water & land
         wpts = cam.poly2d(WATER_POLY, W, H)
@@ -1024,6 +1043,14 @@ class Renderer:
                 A = A - m[..., None] * np.clip(lum - 8, 0, None) * 0.7
                 img = Image.fromarray(np.clip(A, 0, 255).astype(np.uint8))
             else:
+                if cid == 'R18':
+                    lift, fade, _ = r18_merge(t)
+                    if lift > 0 or fade > 0:
+                        wa = np.asarray(wimg).astype(np.float32)
+                        wa[..., :3] = wa[..., :3] * (1 - lift) + np.array([236, 232, 212], np.float32) * 0.98 * lift
+                        wa[..., 3] *= 1 - fade
+                        wimg = Image.fromarray(np.clip(wa, 0, 255).astype(np.uint8), 'RGBA')
+                        wem = Image.fromarray((np.asarray(wem).astype(np.float32) * (1 - fade)).astype(np.uint8))
                 img.paste(wimg, (0, 0), wimg)
                 # bloom following the body shape (not a fixed circle)
                 if info.get('bbox'):
@@ -1080,8 +1107,8 @@ class Renderer:
             dt = distance_transform_edt(hole[::q, ::q] > 0.5) * q
             if cid == 'R17':                                 # where the whale is heading
                 tauc = tau_of(tm); P = PATH.pos(tauc) + unit(PATH.vel(tauc)) * 400.0
-            elif cid == 'R18':                               # behind the whale as it crosses
-                P = PATH.pos(TAU0['R18'] + 0.9)
+            elif cid == 'R18':                               # the end of the whale's line
+                P = cam.pos + w.EXIT_DIR * 1e5
             else:
                 P = cam.pos + w.MOON_DIR * 1e5
             px, py, pz = cam.proj(P[None], W, H)
@@ -1093,6 +1120,8 @@ class Renderer:
             dist = np.hypot(xx - pref[0], yy - pref[1])
             score = np.minimum(dt, target * 1.08) - 0.12 * dist
             k = np.unravel_index(int(np.argmax(score)), dt.shape)
+            if cid == 'R18':                                 # exactly where the whale's line ends
+                k = (int(np.clip(round(pref[1] / q), 0, dt.shape[0] - 1)), int(np.clip(round(pref[0] / q), 0, dt.shape[1] - 1)))
             cxy = np.array([xx[k], yy[k]], float); r = min(target, 0.92 * dt[k])
             if r >= 4:
                 d = unit(cam.f + cam.r * ((cxy[0] - W / 2) / fx) + cam.u * (-(cxy[1] - H / 2) / fx))
@@ -1101,7 +1130,7 @@ class Renderer:
         self._moon[cid] = out
         return out
 
-    def draw_moon(self, A, cam, cid, hole):
+    def draw_moon(self, A, cam, cid, hole, t=None):
         W, H = self.W, self.H
         lay = self.moon_layout(cid)
         if lay is None:
@@ -1117,8 +1146,13 @@ class Renderer:
         disk = clamp((1.0 + 1.2 / rr - dd) * rr / 1.6)
         limb = 0.80 + 0.20 * np.sqrt(clamp(1 - dd ** 2))
         maria = 1.0
-        for (cx_, cy_, r_, k_) in ((-0.28, -0.22, 0.30, 0.22), (0.18, -0.30, 0.22, 0.18),
-                                   (0.05, 0.12, 0.34, 0.15), (-0.35, 0.30, 0.18, 0.13), (0.38, 0.22, 0.16, 0.10)):
+        # the near side as seen from the north (v14.5): one large dark sweep upper left
+        # (Imbrium/Procellarum), a chain on the right (Serenitatis-Tranquillitatis-Fecunditatis),
+        # small Crisium near the right limb, bright southern highlands - the familiar moon
+        # (the rabbit), not two eyes and a mouth
+        for (cx_, cy_, r_, k_) in ((-0.40, -0.02, 0.34, 0.17), (-0.20, -0.32, 0.24, 0.19), (-0.48, 0.28, 0.18, 0.10),
+                                   (0.16, -0.26, 0.16, 0.17), (0.28, -0.02, 0.18, 0.15), (0.44, 0.20, 0.11, 0.11),
+                                   (0.62, -0.24, 0.08, 0.12), (-0.14, 0.34, 0.12, 0.08)):
             maria = maria - k_ * np.exp(-(((ux - cx_) ** 2 + (uy - cy_) ** 2) / r_ ** 2) * 2.2)
         face = disk * limb * maria
         # a hard-edged, luminous disc with a tight bright ring and a wide soft glow: the glow is
@@ -1126,9 +1160,35 @@ class Renderer:
         ring = np.exp(-((dd - 1.0).clip(0) / 0.08) ** 2) * (1 - disk) * 0.55
         glow = np.exp(-((dd - 1.0).clip(0) / 0.7) ** 2) * 0.26 + np.exp(-(dd / 3.0) ** 2) * 0.10
         hsoft = np.asarray(Image.fromarray((hole * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(max(2.0, rr * 0.4)))).astype(np.float32) / 255
+        swell = 0.0
+        if cid == 'R18' and t is not None:
+            tm = T['R18'][0] + R18_MERGE
+            swell = float(math.exp(-((t - tm - 0.15) / 0.7) ** 2))
+            face = face * (1 + 0.05 * swell)
+            glow = glow * (1 + 0.7 * swell)
         A += face[..., None] * np.array([236, 232, 212], np.float32) * hole[..., None]
         A += ring[..., None] * np.array([220, 225, 235], np.float32) * hole[..., None]
         A += (glow * (1 - disk))[..., None] * np.array([120, 134, 160], np.float32) * np.maximum(hole, 0.6 * hsoft)[..., None]
+        if cid == 'R18' and t is not None:
+            # the whale enters the moon like a drop entering the lake (rhymes with R01/R19):
+            # one soft breath of light where it melts, then two faint rings of light leave the
+            # rim of the moon and spread into the night sky (not over the face: no marks on it)
+            tm = T['R18'][0] + R18_MERGE
+            pm = PATH.pos(tau_of(tm))
+            ex, ey, ez = cam.proj(pm[None], W, H)
+            if ez[0] > 0:
+                de = np.sqrt((xx - ex[0]) ** 2 + (yy - ey[0]) ** 2)
+                _, _, flash = r18_merge(t)
+                A += (np.exp(-(de / (0.16 * rr)) ** 2) * 0.30 * flash * disk)[..., None] * np.array([255, 250, 236], np.float32)
+            dm = dd * rr
+            for k0 in (0.05, 0.47):
+                a = t - tm - k0
+                if 0 < a < 1.6:
+                    R = rr * (1.0 + 1.15 * (a / 1.6) ** 0.8)
+                    wd = 0.03 * rr + 1.5
+                    I = 0.20 * (1 - a / 1.6) ** 1.3
+                    prof = np.exp(-((dm - R) / wd) ** 2) * (1 - disk)
+                    A += (prof * I)[..., None] * np.array([235, 238, 245], np.float32) * np.maximum(hole, 0.6 * hsoft)[..., None]
 
     # ------------------------------------------------------------------ details
     def canopy_light(self, cam, tau, wl_p, wl_I):

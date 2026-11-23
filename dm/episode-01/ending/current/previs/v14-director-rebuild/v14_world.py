@@ -180,13 +180,17 @@ WAYPOINTS = (
        (-74, 62, 49.0, 5.0), (-82, 76, 58.0, 5.1)]
     # and the climb through the wide part of the fissure (R17-R18)
     + [(-82, 92, 68.0, 5.2), (-77, 108, 79.0, 5.4), (-63, 126, 94.0, 5.5), (-45, 142, 113.0, 5.6),
-       (-30, 154, 134.0, 5.6), (-22, 162, 156.0, 5.5), (-17, 169, 178.0, 5.4),
-       (-15, 181, 200.0, 5.3), (-13, 193, 222.0, 5.3)]
-    # out of the narrow top slot, then levels off to the west over the rock: from the cave
-    # floor the head disappears behind the thick rim first and the flukes last (R18)
-    + [(-18, 202, 238.0, 6.0), (-34, 209, 246.0, 6.6), (-56, 214, 252.0, 6.8), (-80, 218, 257.0, 6.8),
-       (-108, 222, 261.0, 6.8), (-140, 226, 265.0, 6.8)]
+       (-30, 154, 134.0, 5.6), (-22, 162, 156.0, 5.5), (-17, 169, 178.0, 6.0),
+       (-15, 181, 200.0, 11.0), (-13, 193, 222.0, 20.0)]
+    # v14.5: out of the narrow top slot it does not level off; it keeps the same straight line
+    # (elevation ~61 deg, the line it has climbed since z=178) and flies on towards the moon,
+    # speeding up with its last strokes, so that it recedes into the moon composed on that
+    # line (R18). EXIT_DIR is that line.
+    + [(-11.4, 202.8, 240.0, 27.0), (-9.4, 214.8, 262.0, 32.0), (-6.8, 230.1, 290.0, 36.0),
+       (-3.2, 251.9, 330.0, 39.0), (3.2, 290.0, 400.0, 40.0), (12.3, 344.6, 500.0, 40.0),
+       (25.9, 426.3, 650.0, 40.0)]
 )
+EXIT_DIR = np.array([2.0, 12.0, 22.0]) / np.linalg.norm([2.0, 12.0, 22.0])
 
 def _catmull(pts, n=40):
     """Centripetal Catmull-Rom through pts (M,3); returns dense samples (K,3)."""
