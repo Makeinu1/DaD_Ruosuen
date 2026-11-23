@@ -1,0 +1,161 @@
+{
+  "events_world_tau": {
+    "emerge": 22.2,
+    "over": 79.0,
+    "contact": 88.2,
+    "base": 111.4,
+    "bank": 115.45,
+    "shoulder": 120.3,
+    "inner": 121.2,
+    "tip": 125.05,
+    "side": 124.7,
+    "cross0": 156.3,
+    "lip": 206.7,
+    "top": 217.5
+  },
+  "tau0_per_cut": {
+    "R05": 21.3,
+    "R06": 25.8,
+    "R04": 9.2,
+    "R03": 6.7,
+    "R02": 4.7,
+    "R01": 2.7,
+    "R07": 76.2,
+    "R08": 80.7,
+    "R09": 87.1,
+    "R10": 109.7,
+    "R11": 120.45,
+    "R12": 128.05,
+    "R13": 130.05,
+    "R14": 153.7,
+    "R15": 157.7,
+    "R16": 164.7,
+    "R17": 193.7,
+    "R18": 216.2,
+    "R19": 517.5
+  },
+  "tau_lift": 130.65,
+  "path_length_m": 1212.4,
+  "flowers": 4820,
+  "petals": 15304,
+  "frames": 1680,
+  "per_cut": {
+    "R01": {},
+    "R02": {},
+    "R03": {},
+    "R04": {
+      "min_dist_m": 17.99,
+      "whale_width_px_start_mid_end": [
+        311,
+        364,
+        472
+      ]
+    },
+    "R05": {
+      "min_dist_m": 18.79,
+      "whale_width_px_start_mid_end": [
+        433,
+        431,
+        475
+      ]
+    },
+    "R06": {
+      "min_dist_m": 27.35,
+      "whale_width_px_start_mid_end": [
+        661,
+        574,
+        504
+      ]
+    },
+    "R07": {
+      "min_dist_m": 4.57,
+      "whale_width_px_start_mid_end": [
+        413,
+        7852,
+        6323
+      ]
+    },
+    "R08": {
+      "min_dist_m": 3.56,
+      "whale_width_px_start_mid_end": [
+        11639,
+        791,
+        463
+      ]
+    },
+    "R09": {
+      "min_dist_m": 40.7,
+      "whale_width_px_start_mid_end": [
+        303,
+        472,
+        533
+      ]
+    },
+    "R10": {
+      "min_dist_m": 13.84,
+      "whale_width_px_start_mid_end": [
+        33787,
+        22908,
+        1041
+      ]
+    },
+    "R11": {
+      "min_dist_m": 41.86,
+      "whale_width_px_start_mid_end": [
+        409,
+        335,
+        266
+      ]
+    },
+    "R12": {},
+    "R13": {
+      "min_dist_m": 49.37,
+      "whale_width_px_start_mid_end": [
+        197,
+        196,
+        190
+      ]
+    },
+    "R14": {
+      "min_dist_m": 132.55,
+      "whale_width_px_start_mid_end": [
+        196,
+        225,
+        250
+      ]
+    },
+    "R15": {
+      "min_dist_m": 33.2,
+      "whale_width_px_start_mid_end": [
+        857,
+        805,
+        747
+      ]
+    },
+    "R16": {
+      "min_dist_m": 133.46,
+      "whale_width_px_start_mid_end": [
+        116,
+        109,
+        96
+      ]
+    },
+    "R17": {
+      "min_dist_m": 154.44,
+      "whale_width_px_start_mid_end": [
+        82,
+        77,
+        74
+      ]
+    },
+    "R18": {
+      "min_dist_m": 328.46,
+      "whale_width_px_start_mid_end": [
+        75,
+        113,
+        111
+      ]
+    },
+    "R19": {}
+  }
+}
