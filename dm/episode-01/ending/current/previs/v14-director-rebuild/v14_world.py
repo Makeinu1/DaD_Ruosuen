@@ -155,10 +155,12 @@ WAYPOINTS = (
     + [(-62, -28, -2.4, 3.3), (-62, -36, 0.8, 3.3), (-62, -44, 4.6, 3.5), (-62.5, -51, 7.4, 3.8)]
     # one rising clockwise turn over the west shore ('spiral into the air'), out of the
     # moonlight, passing over its own emergence point ~10 m higher (off screen)
-    + [(-70, -59, 9.4, 4.0), (-88, -60, 11.0, 4.3), (-102, -51, 12.0, 4.5), (-105, -33, 12.6, 4.6),
-       (-95, -17, 13.0, 4.7), (-79, -11, 13.3, 4.8), (-66, -18, 13.5, 4.9), (-60.5, -33, 13.6, 4.9)]
-    # it lines up with the adventurers and glides straight at them, right over their heads
-    + [(-59, -50, 13.8, 5.0), (-58.5, -62, 13.8, 5.0), (-58.2, -72, 13.7, 5.0), (-58.05, -79, 13.65, 5.1)]
+    + [(-70, -59, 9.4, 4.0), (-88, -60, 11.0, 4.3), (-102, -51, 12.0, 4.5), (-105, -33, 12.0, 4.6),
+       (-95, -17, 10.6, 4.7), (-79, -11, 9.0, 4.8), (-66, -18, 7.6, 4.9), (-60.5, -33, 6.6, 4.9)]
+    # v14.2: it skims in low over the water, face-on at the adventurers' eye level (R06), and
+    # lifts its head just before the shore to clear them (R07): heavy, and not an attack
+    + [(-59, -46, 6.0, 5.0), (-58.6, -57, 6.2, 5.0), (-58.3, -66, 7.8, 5.0), (-58.1, -74, 10.6, 5.0),
+       (-58.03, -80, 12.8, 5.1)]
     # the one strong stroke and a wide semicircle (R = 47.5 m) to the south: it crosses the
     # narrow moon strip head-first near its south end (contact), then north into the cape
     + _arc(-10.5, -84.5, 47.5, 180, 360, 13.6, 21.0, 5.4, 5.0)
@@ -169,9 +171,9 @@ WAYPOINTS = (
     + _arc(48.0, 68.5, 48.0, -24, 125, 25.5, 40.0, 6.0, 5.0)
     # climax crossing to the west through the petal swarm (R14-R15), sinking in one
     # straight descending line (the arc's tangent) to the mirror lake
-    + [(0.0, 93.5, 37.0, 4.9), (-20.5, 79.1, 30.0, 4.8), (-38.5, 66.5, 22.0, 4.8)]
-    # the climax (R16): low over the mirror lake, ~15 m up, then a right turn to the north
-    + [(-57.3, 53.3, 15.0, 4.8), (-72, 52, 18.0, 5.0), (-84, 64, 24.0, 5.0)]
+    + [(0.0, 93.5, 36.0, 4.9), (-20.5, 79.1, 27.0, 4.8), (-38.5, 66.5, 18.0, 4.8)]
+    # the climax (R16): low over the mirror lake, ~12 m up, then a right turn to the north
+    + [(-57.3, 53.3, 12.0, 4.8), (-72, 52, 16.0, 5.0), (-84, 64, 23.0, 5.0)]
     # and the climb through the wide part of the fissure (R17-R18)
     + [(-82, 88, 36.0, 5.2), (-77, 108, 57.0, 5.4), (-63, 126, 80.0, 5.5), (-45, 142, 106.0, 5.6),
        (-30, 154, 134.0, 5.6), (-22, 162, 156.0, 5.5), (-17, 169, 178.0, 5.4),

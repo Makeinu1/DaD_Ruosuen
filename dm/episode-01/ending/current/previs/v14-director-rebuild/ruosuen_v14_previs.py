@@ -127,7 +127,7 @@ def build_tau0(E):
     t0['R14'] = E['cross0'] - (42.6 - T['R14'][0])         # crossing x=0 at 42.6 s
     t0['R15'] = t0['R14'] + (T['R15'][0] - T['R14'][0])   # continuous
     t0['R16'] = t0['R15'] + (T['R16'][0] - T['R15'][0])   # continuous
-    t0['R17'] = E['lip'] - 13.0                          # its light starts to reach the canopy
+    t0['R17'] = E['lip'] - 8.0                           # just below the ceiling: its light reaches the rock
     t0['R18'] = E['top'] - 1.3                             # crosses the moon ~60.6 s, flukes vanish ~64.6 s
     t0['R19'] = E['top'] + 300.0                           # long ellipsis: the cave is quiet again
     return t0
@@ -171,10 +171,15 @@ def pulse(tau, x_local=None):
     u = np.mod(base - lag, 1.0)
     return np.exp(-(u / 0.07) ** 2) + np.exp(-((u - 1) / 0.07) ** 2)
 
+def climax(tau):
+    """0..1: the whale's light swells at the climax (R16) and settles again after it."""
+    a = TAU0['R16']; b = a + (T['R16'][1] - T['R16'][0])
+    return float(smooth((tau - a + 0.6) / 1.4) * (1 - smooth((tau - b - 0.5) / 2.0)))
+
 def whale_light(tau):
     """(position, intensity) of the whale as a moving light source."""
     p = PATH.pos(tau)
-    I = float(smooth((tau - EV['contact'] - 1.0) / 4.0)) * (1 + 0.25 * float(pulse(tau)))
+    I = float(smooth((tau - EV['contact'] - 1.0) / 4.0)) * (1 + 0.25 * float(pulse(tau))) * (1 + 0.30 * climax(tau))
     return p, I
 
 def glance_roll(tau):
@@ -661,9 +666,9 @@ def make_cameras():
     a6 = PATH.pos(TAU0['R06']); b6 = PATH.pos(TAU0['R06'] + (T['R06'][1] - T['R06'][0]))
     c6 = np.array([-52.0, -90.0, GZ(-52, -90) + 1.7])
     m6 = (a6 + b6) / 2
-    C['R06'] = C_static(tuple(c6), (m6[0], m6[1], c6[2] + np.linalg.norm(m6[:2] - c6[:2]) * math.tan(math.radians(11))), 35)
+    C['R06'] = C_static(tuple(c6), (m6[0], m6[1], c6[2] + np.linalg.norm(m6[:2] - c6[:2]) * math.tan(math.radians(5))), 35)
     # R07: the adventurers' eyes, looking up towards the lake it comes from
-    C['R07'] = C_static(tuple(w.PC_EYE), (w.PC_EYE[0] - 2.0, w.PC_EYE[1] + 22.0, w.PC_EYE[2] + 28.0), 16)
+    C['R07'] = C_static(tuple(w.PC_EYE), (w.PC_EYE[0] - 2.0, w.PC_EYE[1] + 22.0, w.PC_EYE[2] + 18.0), 16)
     # R08: turning round: the tail leaves, one strong stroke, and the moonlight it heads for
     C['R08'] = C_static(tuple(w.PC_EYE), (w.PC_EYE[0] + 10.0, w.PC_EYE[1] - 17.0, w.PC_EYE[2] + 6.0), 18)
     c9 = (-14.0, -172.0, 4.0)
@@ -675,15 +680,16 @@ def make_cameras():
     C['R11'] = C_static((100.0, -36.0, 14.0), (70.0, 6.0, 6.0), 24)
     tip = np.array([85.0, 30.0]); gt = GZ(78.0, 20.0)
     C['R12'] = C_static((78.0 - 0.09, 20.0 - 0.12, gt + 0.245), (78.0, 20.0, gt + 0.065), 80)
-    C['R13'] = C_static((74.0, 6.0, GZ(74.0, 6.0) + 0.9), (78.0, 40.0, 26.0), 22)
-    C['R14'] = C_static((-30.0, -58.0, GZ(-30, -58) + 1.7), wp(TAU0['R14'] + 2.0) + np.array([0, 0, -2]), 45)
+    m13 = wp(TAU0['R13'] + 1.5)
+    C['R13'] = C_static((84.0, 34.0, GZ(84.0, 34.0) + 0.9), (m13[0], m13[1], m13[2] - 4.0), 24)
+    C['R14'] = C_static((-30.0, -58.0, GZ(-30, -58) + 1.7), wp(TAU0['R14'] + 2.0) + np.array([0, 0, -1]), 90)
     C['R15'] = C_follow()
     # R16: lake edge, 18 mm, a few metres forward; whale + mirror image + moonlit water
     # low over the water, ~55 m south of the whale, a few metres forward: whale + mirror image
-    c16a = np.array([-31.0, 6.0, 1.2]); c16b = np.array([-31.0, 9.5, 1.1])
-    t16 = wp(TAU0['R16'] + 2.2) * np.array([1, 1, 0]) + np.array([0, 0, 1.6])
+    c16a = np.array([-42.0, 30.0, 1.1]); c16b = np.array([-42.0, 33.5, 1.0])
+    t16 = wp(TAU0['R16'] + 2.2) * np.array([1, 1, 0]) + np.array([0, 0, 2.5])
     C['R16'] = C_dolly(c16a, c16b, T['R16'][0], T['R16'][1], t16, 18)
-    C['R17'] = C_static((-34.0, 40.0, 1.4), wp(TAU0['R17'] + 2.3) + np.array([0, 0, 18]), 28)
+    C['R17'] = C_static((-32.0, 90.0, 1.2), wp(TAU0['R17'] + 2.3) + np.array([0, 0, 8.0]), 85)
     # R18: placed so that the whale crosses the small moon as it passes the top rim
     ex = PATH.pos(EV['top'] + 0.8)
     c18 = ex - w.MOON_DIR * ((ex[2] - 1.8) / w.MOON_DIR[2])
@@ -766,14 +772,15 @@ class Renderer:
         sky = 0.40 * upn                                   # faint light from the night sky above
         lit = skin0 * (ambient + sky + 0.9 * ml * lam)[:, None] + np.array([120, 138, 160])[None, :] * (rim * (0.24 + 0.4 * upn + 0.6 * ml))[:, None]
         form = 0.40 + 0.60 * facing                        # keep the 3D form inside the glow
-        col = lit * (1 - g[:, None]) + emis * (g * 0.70 * form * (1 + 0.18 * pul))[:, None]
+        col = lit * (1 - g[:, None]) + emis * (g * 0.70 * form * (1 + 0.18 * pul) * (1 + 0.22 * climax(tau)))[:, None]
         col = tone(col)
         under = cen[:, 2] < -0.05 if not mirror else np.zeros(len(cen), bool)
         if under.any():
             dep = clamp(-cen[under, 2] / 6.0)
             col[under] = col[under] * (0.35 - 0.25 * dep)[:, None] + np.array([10, 16, 24]) * 0.5
         if mirror:
-            col *= 0.32
+            # the lake is a dark mirror (it never glows itself); at grazing angles it reflects more
+            col *= 0.52 if cam.pos[2] < 2.0 else 0.32
         order = np.argsort(-c[:, 2])
         x, y, z = cam.proj(tri.reshape(-1, 3), W, H)
         X = x.reshape(-1, 3); Y = y.reshape(-1, 3)
@@ -885,23 +892,6 @@ class Renderer:
                 m = np.asarray(lay).astype(np.float32) / 255 * np.asarray(water_mask).astype(np.float32) / 255
                 A = np.asarray(img).astype(np.float32) + m[..., None] * np.array([46, 58, 74], np.float32)
                 img = Image.fromarray(np.clip(A, 0, 255).astype(np.uint8)); dr = ImageDraw.Draw(img)
-        # the glowing whale lights the lake surface beneath it (per pixel: view ray -> water plane)
-        if wl_I > 0.05 and wpts and cam.pos[2] > 0.05 and wl_p[2] < 120:
-            q = 2; hh, ww = H // q + 1, W // q + 1
-            yy, xx = np.mgrid[0:hh, 0:ww].astype(np.float32)
-            cx_ = (xx * q + q / 2 - W / 2) / (cam.lens / 36 * W)
-            cy_ = -(yy * q + q / 2 - H / 2) / (cam.lens / 20.25 * H)
-            dv = cam.r[None, None, :] * cx_[..., None] + cam.u[None, None, :] * cy_[..., None] + cam.f[None, None, :]
-            dz = np.where(dv[..., 2] < -1e-6, dv[..., 2], -1e-6)
-            sw = -cam.pos[2] / dz
-            Pw = cam.pos[None, None, :2] + dv[..., :2] * sw[..., None]
-            dist = np.sqrt(((Pw - wl_p[None, None, :2]) ** 2).sum(-1) + wl_p[2] ** 2)
-            Lw = wl_I / (1 + (dist / 30.0) ** 2) * (dv[..., 2] < -1e-6)
-            Lw = np.repeat(np.repeat(Lw, q, 0), q, 1)[:H, :W]
-            tint = np.array([150, 175, 205], np.float32) * (1 - opal_mix(tau)) + np.array([205, 210, 222], np.float32) * opal_mix(tau)
-            A = np.asarray(img).astype(np.float32)
-            A += (Lw * np.asarray(water_mask).astype(np.float32) / 255)[..., None] * tint * 0.32
-            img = Image.fromarray(np.clip(A, 0, 255).astype(np.uint8)); dr = ImageDraw.Draw(img)
         G = self.gnd(cid, cam)
         G.draw(dr, cam, W, H, wl_p, wl_I if wl_p[2] < 90 else wl_I * 0.3)
         # --- ripples (R01 drop, R03 from below) and the last petal ripple (R19)
@@ -961,7 +951,7 @@ class Renderer:
         if cid in ('R14', 'R16') and pe is not None:           # inverted snow on the lake
             A2 = np.zeros_like(A)
             self.draw_petals(A2, cam, pe, tau, far_of=1e9, part='near', mirror=True)
-            A += A2 * (np.asarray(water_mask).astype(np.float32)[..., None] / 255) * 0.42
+            A += A2 * (np.asarray(water_mask).astype(np.float32)[..., None] / 255) * (0.62 if cam.pos[2] < 2.0 else 0.42)
         # --- the air full of lit petals glows around the whale (R13-R16; the climax R16 most)
         kg = {'R13': 0.10, 'R14': 0.12, 'R15': 0.12, 'R16': 0.26}.get(cid, 0.0)
         if kg > 0 and wl_I > 0.05:
@@ -1280,6 +1270,8 @@ class Renderer:
         the camera's own volume at the same density so that the snow passes in front of us.
         Stateless: positions are a function of film time, wrapped inside a box around the camera."""
         N = {'R13': 320, 'R14': 360, 'R15': 650, 'R16': 900, 'R17': 260}.get(cid, 0)
+        # same air density whatever the lens: a long lens sees a much narrower cone of near air
+        N = int(N * min(1.0, (24.0 / cam.lens) ** 2))
         if N == 0:
             return
         W, H = self.W, self.H

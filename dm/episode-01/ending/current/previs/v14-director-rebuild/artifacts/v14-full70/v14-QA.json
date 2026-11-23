@@ -1,41 +1,41 @@
 {
   "events_world_tau": {
     "emerge": 31.75,
-    "over": 79.9,
-    "contact": 91.05,
-    "base": 113.8,
-    "bank": 117.95,
-    "shoulder": 122.85,
-    "inner": 123.7,
-    "tip": 127.55,
-    "side": 127.1,
-    "cross0": 159.1,
-    "lip": 222.6,
-    "top": 233.35
+    "over": 80.2,
+    "contact": 91.3,
+    "base": 114.05,
+    "bank": 118.2,
+    "shoulder": 123.1,
+    "inner": 123.95,
+    "tip": 127.8,
+    "side": 127.35,
+    "cross0": 159.35,
+    "lip": 223.3,
+    "top": 234.05
   },
   "tau0_per_cut": {
     "R05": 31.15,
-    "R06": 73.6,
+    "R06": 73.9,
     "R04": 7.7,
     "R03": 5.7,
     "R02": 3.7,
     "R01": 1.7,
-    "R07": 77.1,
-    "R08": 81.6,
-    "R09": 89.95,
-    "R10": 112.1,
-    "R11": 118.95,
-    "R12": 130.55,
-    "R13": 132.55,
-    "R14": 156.5,
-    "R15": 160.5,
-    "R16": 167.5,
-    "R17": 209.6,
-    "R18": 232.05,
-    "R19": 533.35
+    "R07": 77.4,
+    "R08": 81.9,
+    "R09": 90.2,
+    "R10": 112.35,
+    "R11": 119.2,
+    "R12": 130.8,
+    "R13": 132.8,
+    "R14": 156.75,
+    "R15": 160.75,
+    "R16": 167.75,
+    "R17": 215.3,
+    "R18": 232.75,
+    "R19": 534.05
   },
-  "tau_lift": 133.15,
-  "path_length_m": 1285.7,
+  "tau_lift": 133.4,
+  "path_length_m": 1288.9,
   "flowers": 38708,
   "petals": 124164,
   "frames": 1680,
@@ -44,115 +44,115 @@
     "R02": {},
     "R03": {},
     "R04": {
-      "min_dist_m": 25.82,
+      "min_dist_m": 26.25,
       "whale_width_px_start_mid_end": [
         711,
-        653,
-        636
+        658,
+        635
       ]
     },
     "R05": {
-      "min_dist_m": 18.98,
+      "min_dist_m": 18.99,
       "whale_width_px_start_mid_end": [
-        493,
+        495,
         563,
         652
       ]
     },
     "R06": {
-      "min_dist_m": 14.19,
+      "min_dist_m": 13.26,
       "whale_width_px_start_mid_end": [
-        421,
-        534,
-        838
+        444,
+        588,
+        919
       ]
     },
     "R07": {
-      "min_dist_m": 6.31,
+      "min_dist_m": 6.49,
       "whale_width_px_start_mid_end": [
-        507,
-        1211,
-        20730
+        656,
+        3641,
+        5597
       ]
     },
     "R08": {
-      "min_dist_m": 8.17,
+      "min_dist_m": 8.12,
       "whale_width_px_start_mid_end": [
-        9690,
-        789,
-        501
+        10823,
+        766,
+        494
       ]
     },
     "R09": {
-      "min_dist_m": 34.17,
+      "min_dist_m": 34.16,
       "whale_width_px_start_mid_end": [
-        500,
+        501,
         627,
-        543
+        544
       ]
     },
     "R10": {
       "min_dist_m": 15.27,
       "whale_width_px_start_mid_end": [
-        32154,
-        19269,
-        1031
+        33099,
+        18915,
+        1030
       ]
     },
     "R11": {
       "min_dist_m": 37.72,
       "whale_width_px_start_mid_end": [
-        824,
-        477,
+        825,
+        478,
         373
       ]
     },
     "R12": {},
     "R13": {
-      "min_dist_m": 50.0,
+      "min_dist_m": 27.93,
       "whale_width_px_start_mid_end": [
-        199,
-        175,
-        168
+        366,
+        317,
+        272
       ]
     },
     "R14": {
-      "min_dist_m": 144.65,
+      "min_dist_m": 144.52,
       "whale_width_px_start_mid_end": [
-        188,
-        201,
-        213
+        376,
+        399,
+        419
       ]
     },
     "R15": {
-      "min_dist_m": 33.65,
+      "min_dist_m": 33.68,
       "whale_width_px_start_mid_end": [
-        814,
-        762,
-        710
+        796,
+        744,
+        700
       ]
     },
     "R16": {
-      "min_dist_m": 49.5,
+      "min_dist_m": 23.91,
       "whale_width_px_start_mid_end": [
-        224,
-        254,
-        292
+        284,
+        394,
+        613
       ]
     },
     "R17": {
-      "min_dist_m": 155.19,
+      "min_dist_m": 153.32,
       "whale_width_px_start_mid_end": [
-        84,
-        79,
-        72
+        259,
+        249,
+        210
       ]
     },
     "R18": {
-      "min_dist_m": 330.06,
+      "min_dist_m": 330.35,
       "whale_width_px_start_mid_end": [
         76,
-        111,
+        109,
         115
       ]
     },
