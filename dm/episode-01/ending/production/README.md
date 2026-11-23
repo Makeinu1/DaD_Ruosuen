@@ -32,7 +32,7 @@
 | 07 | [production/camera-motion/](camera-motion/README.md) | CAM02_v01、MOT01_v01、H撮影設計原文、motion_frames/H_route_v03復元CSV、投影・動作資料 | 原文・表データ2点・履歴登録、原本未転送（部分完了） |
 | 08 | [production/previs/](previs/README.md) | HIA v0.2、CAM-02 v0.3統合試写・60秒動画、QG3承認・検証記録、33フレーム索引 | 履歴・検証・目録登録、原本未転送（部分完了） |
 | 09 | [production/keyframes/](keyframes/README.md) | A差分設計v1.0原文、QG4比較・承認・数値QA履歴、O/A01/A04/A05/B/C原画目録、旧マスク | 原文・監査履歴・目録登録、原本未転送（部分完了・QG4 REWORK） |
-| 10 | [images/](../images/transfer-status.md) | 旧29枚、CSV・README・一覧JPEG、元転送ハッシュ台帳 | PNG 1/29原本照合・登録済み、残り未転送（部分完了） |
+| 10 | [images/](../images/transfer-status.md) | 旧29枚、CSV・README・一覧JPEG、元転送ハッシュ台帳 | 原本の照合・登録を継続中。枚数は転送進捗台帳を参照（部分完了） |
 | 11 | production/（照合・引き継ぎ） | 最新版相互リンク、全移植の照合結果、QG4再開条件 | 未実施 |
 
 ## 原画の旧アーカイブと注意
