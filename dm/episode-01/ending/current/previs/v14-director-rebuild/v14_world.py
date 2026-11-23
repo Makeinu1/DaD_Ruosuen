@@ -157,10 +157,11 @@ WAYPOINTS = (
     # moonlight, passing over its own emergence point ~10 m higher (off screen)
     + [(-70, -59, 9.4, 4.0), (-88, -60, 11.0, 4.3), (-102, -51, 12.0, 4.5), (-105, -33, 12.0, 4.6),
        (-95, -17, 10.6, 4.7), (-79, -11, 9.0, 4.8), (-66, -18, 7.6, 4.9), (-60.5, -33, 6.6, 4.9)]
-    # v14.2: it skims in low over the water, face-on at the adventurers' eye level (R06), and
-    # lifts its head just before the shore to clear them (R07): heavy, and not an attack
-    + [(-59, -46, 6.0, 5.0), (-58.6, -57, 6.2, 5.0), (-58.3, -66, 7.8, 5.0), (-58.1, -74, 10.6, 5.0),
-       (-58.03, -80, 12.8, 5.1)]
+    # v14.3: it skims in low over the water, face-on at the adventurers' eye level, and holds
+    # that line - aimed at them - until ~14 m away (R06); only then does it pull its head up
+    # and clear them (R07): heavy, unsettling, and not an attack
+    + [(-59, -46, 5.6, 5.0), (-58.6, -55, 5.4, 4.9), (-58.4, -61, 5.4, 4.8), (-58.25, -66, 6.0, 4.8),
+       (-58.12, -71, 7.8, 4.9), (-58.06, -75.5, 10.0, 5.0), (-58.03, -79.5, 12.2, 5.1)]
     # the one strong stroke and a wide semicircle (R = 47.5 m) to the south: it crosses the
     # narrow moon strip head-first near its south end (contact), then north into the cape
     + _arc(-10.5, -84.5, 47.5, 180, 360, 13.6, 21.0, 5.4, 5.0)
@@ -171,11 +172,14 @@ WAYPOINTS = (
     + _arc(48.0, 68.5, 48.0, -24, 125, 25.5, 40.0, 6.0, 5.0)
     # climax crossing to the west through the petal swarm (R14-R15), sinking in one
     # straight descending line (the arc's tangent) to the mirror lake
-    + [(0.0, 93.5, 36.0, 4.9), (-20.5, 79.1, 27.0, 4.8), (-38.5, 66.5, 18.0, 4.8)]
-    # the climax (R16): low over the mirror lake, ~12 m up, then a right turn to the north
-    + [(-57.3, 53.3, 12.0, 4.8), (-72, 52, 16.0, 5.0), (-84, 64, 23.0, 5.0)]
+    + [(0.0, 93.5, 34.5, 4.9), (-20.5, 79.1, 24.0, 4.8)]
+    # the climax (R16): its lowest point (~20 m) over the mirror lake, then - still inside the
+    # swarm - it lifts its head and starts to climb (v14.3: the ascent begins in the climax,
+    # so the exit is not sudden), turning right towards the fissure off screen
+    + [(-30, 72.5, 20.5, 4.8), (-41, 64.5, 25.0, 4.8), (-52, 59, 32.0, 4.9), (-63, 57, 40.0, 5.0),
+       (-74, 62, 49.0, 5.0), (-82, 76, 58.0, 5.1)]
     # and the climb through the wide part of the fissure (R17-R18)
-    + [(-82, 88, 36.0, 5.2), (-77, 108, 57.0, 5.4), (-63, 126, 80.0, 5.5), (-45, 142, 106.0, 5.6),
+    + [(-82, 92, 68.0, 5.2), (-77, 108, 79.0, 5.4), (-63, 126, 94.0, 5.5), (-45, 142, 113.0, 5.6),
        (-30, 154, 134.0, 5.6), (-22, 162, 156.0, 5.5), (-17, 169, 178.0, 5.4),
        (-15, 181, 200.0, 5.3), (-13, 193, 222.0, 5.3)]
     # out of the narrow top slot, then levels off to the west over the rock: from the cave

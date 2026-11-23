@@ -1,158 +1,158 @@
 {
   "events_world_tau": {
     "emerge": 31.75,
-    "over": 80.2,
-    "contact": 91.3,
-    "base": 114.05,
-    "bank": 118.2,
-    "shoulder": 123.1,
-    "inner": 123.95,
-    "tip": 127.8,
-    "side": 127.35,
-    "cross0": 159.35,
-    "lip": 223.3,
-    "top": 234.05
+    "over": 80.5,
+    "contact": 91.7,
+    "base": 114.4,
+    "bank": 118.55,
+    "shoulder": 123.4,
+    "inner": 124.35,
+    "tip": 128.05,
+    "side": 127.6,
+    "cross0": 159.75,
+    "lip": 218.5,
+    "top": 229.25
   },
   "tau0_per_cut": {
     "R05": 31.15,
-    "R06": 73.9,
-    "R04": 7.7,
-    "R03": 5.7,
-    "R02": 3.7,
-    "R01": 1.7,
-    "R07": 77.4,
-    "R08": 81.9,
-    "R09": 90.2,
-    "R10": 112.35,
-    "R11": 119.2,
-    "R12": 130.8,
-    "R13": 132.8,
-    "R14": 156.75,
-    "R15": 160.75,
-    "R16": 167.75,
-    "R17": 215.3,
-    "R18": 232.75,
-    "R19": 534.05
+    "R06": 72.9,
+    "R04": 7.75,
+    "R03": 5.75,
+    "R02": 3.75,
+    "R01": 1.75,
+    "R07": 76.4,
+    "R08": 80.9,
+    "R09": 90.6,
+    "R10": 112.7,
+    "R11": 119.45,
+    "R12": 131.05,
+    "R13": 134.55,
+    "R14": 158.05,
+    "R15": 161.55,
+    "R16": 166.55,
+    "R17": 210.5,
+    "R18": 227.95,
+    "R19": 529.25
   },
-  "tau_lift": 133.4,
-  "path_length_m": 1288.9,
+  "tau_lift": 135.05,
+  "path_length_m": 1263.3,
   "flowers": 38708,
-  "petals": 124164,
+  "petals": 124168,
   "frames": 1680,
   "per_cut": {
     "R01": {},
     "R02": {},
     "R03": {},
     "R04": {
-      "min_dist_m": 26.25,
+      "min_dist_m": 26.5,
       "whale_width_px_start_mid_end": [
-        711,
-        658,
-        635
+        704,
+        660,
+        629
       ]
     },
     "R05": {
-      "min_dist_m": 18.99,
+      "min_dist_m": 19.13,
       "whale_width_px_start_mid_end": [
-        495,
-        563,
-        652
+        492,
+        566,
+        647
       ]
     },
     "R06": {
-      "min_dist_m": 13.26,
+      "min_dist_m": 14.9,
       "whale_width_px_start_mid_end": [
-        444,
-        588,
-        919
+        389,
+        479,
+        707
       ]
     },
     "R07": {
-      "min_dist_m": 6.49,
+      "min_dist_m": 5.98,
       "whale_width_px_start_mid_end": [
-        656,
-        3641,
-        5597
+        443,
+        832,
+        14661
       ]
     },
     "R08": {
-      "min_dist_m": 8.12,
+      "min_dist_m": 7.32,
       "whale_width_px_start_mid_end": [
-        10823,
-        766,
-        494
+        15193,
+        10364,
+        912
       ]
     },
     "R09": {
-      "min_dist_m": 34.16,
+      "min_dist_m": 34.44,
       "whale_width_px_start_mid_end": [
-        501,
-        627,
-        544
+        389,
+        595,
+        573
       ]
     },
     "R10": {
-      "min_dist_m": 15.27,
+      "min_dist_m": 15.08,
       "whale_width_px_start_mid_end": [
-        33099,
-        18915,
-        1030
+        32744,
+        16276,
+        1012
       ]
     },
     "R11": {
-      "min_dist_m": 37.72,
+      "min_dist_m": 37.73,
       "whale_width_px_start_mid_end": [
-        825,
-        478,
-        373
+        832,
+        494,
+        390
       ]
     },
     "R12": {},
     "R13": {
-      "min_dist_m": 27.93,
+      "min_dist_m": 51.25,
       "whale_width_px_start_mid_end": [
-        366,
-        317,
-        272
+        200,
+        193,
+        195
       ]
     },
     "R14": {
-      "min_dist_m": 144.52,
+      "min_dist_m": 142.74,
       "whale_width_px_start_mid_end": [
-        376,
-        399,
-        419
+        385,
+        404,
+        421
       ]
     },
     "R15": {
-      "min_dist_m": 33.68,
+      "min_dist_m": 33.9,
       "whale_width_px_start_mid_end": [
-        796,
-        744,
-        700
+        784,
+        769,
+        724
       ]
     },
     "R16": {
-      "min_dist_m": 23.91,
+      "min_dist_m": 32.71,
       "whale_width_px_start_mid_end": [
-        284,
-        394,
-        613
+        228,
+        294,
+        370
       ]
     },
     "R17": {
-      "min_dist_m": 153.32,
+      "min_dist_m": 152.99,
       "whale_width_px_start_mid_end": [
         259,
-        249,
-        210
+        231,
+        205
       ]
     },
     "R18": {
-      "min_dist_m": 330.35,
+      "min_dist_m": 330.03,
       "whale_width_px_start_mid_end": [
-        76,
-        109,
+        77,
+        115,
         115
       ]
     },
