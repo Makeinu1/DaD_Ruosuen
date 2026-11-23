@@ -186,13 +186,13 @@ def climax(tau):
 R18_MERGE = 3.7      # s into R18: the whale, small at the centre of the moon, melts into it
 
 def r18_merge(t):
-    """(lift, fade, flash) for the end of R18: the whale's colour rises to the moon's, then
-    its outline goes, with one soft breath of light; its light is absorbed, never switched off."""
+    """(lift, fade) for the end of R18: the whale's colour rises to the moon's, then its outline
+    goes; its light is absorbed, never switched off. The moon itself does nothing (v14.6b: the
+    breath of light and the rings were one explanation too many)."""
     tm = T['R18'][0] + R18_MERGE
     lift = float(smooth((t - (tm - 0.8)) / 0.8))
     fade = float(smooth((t - (tm - 0.25)) / 0.55))
-    flash = float(math.exp(-((t - tm - 0.05) / 0.4) ** 2))
-    return lift, fade, flash
+    return lift, fade
 
 # v14.6: the bloom comes in beats. On each of these strokes the whale's light flares, and every
 # closed bud the flare reaches opens at once (light is the cause, FL-01): in R10 the first
@@ -736,22 +736,31 @@ def make_cameras():
     b13, p13 = math.radians(-42.0), math.radians(20.0)
     C['R13'] = C_static(tuple(c13), tuple(c13 + 100 * np.array([math.cos(b13) * math.cos(p13), math.sin(b13) * math.cos(p13), math.sin(p13)])), 24)
     C['R14'] = C_static((-30.0, -58.0, GZ(-30, -58) + 1.7), wp(TAU0['R14'] + 2.0) + np.array([0, 0, -1]), 90)
-    # R15 (v14.6): 'like filming a train' - a fixed camera just off its line, a little below
-    # it: the head comes in at the right edge, the whole body slides past ~10 m away, climbing
-    # up and to the left, and the flukes go out at the left
-    a15 = TAU0['R15'] + 3.3
-    P15 = PATH.pos(a15); h15 = unit(PATH.vel(a15) * np.array([1, 1, 0])); n15 = np.array([-h15[1], h15[0], 0])
+    # R15 (v14.6b): 'like filming a train' - someone standing ~16 m off its line, a little
+    # below it: the head comes in from the right, and as it passes the camera turns its head
+    # to follow (a little late, like a person), keeps the whole 24 m body in frame at the
+    # closest point, and keeps watching it climb away up to the left: the shot ends on its
+    # back, leaving - 'where is it going?'
+    a15 = TAU0['R15']
+    P15 = PATH.pos(a15 + 3.0); h15 = unit(PATH.vel(a15 + 3.0) * np.array([1, 1, 0])); n15 = np.array([-h15[1], h15[0], 0])
     n15 = n15 if n15[1] < 0 else -n15
-    c15 = P15 + 10.0 * n15 + np.array([0, 0, -2.0])
-    a_ = math.radians(75.0); look15 = -h15 * math.cos(a_) - n15 * math.sin(a_)
-    C['R15'] = C_static(tuple(c15), tuple(c15 + look15 * 50 + np.array([0, 0, 4.0])), 20)
-    # R16 (v14.6, the climax): fixed, ~12 m under the line it is climbing, looking back and up
-    # at it: it comes up out of the bottom of the frame, its lit belly passes right over us
-    # (the brightest frame of the film) and the flukes go out at the top - into the sky
+    c15 = P15 + 16.0 * n15 + np.array([0, 0, -3.0])
+    g15 = PATH.pos(a15 + 2.4) + np.array([0, 0, -1.0])
+    def r15(t, tau, c=c15, g0=g15):
+        pm = PATH.pos(np.linspace(tau - 0.5, tau, 7)).mean(0)          # the eye lags a little
+        g1 = pm + unit(PATH.vel(tau)) * 2.0
+        k = smooth((t - 47.0) / 1.4)                                   # starts turning as it comes close
+        return Cam(tuple(c), target=tuple(g0 * (1 - k) + g1 * k), lens=18)
+    C['R15'] = r15
+    # R16 (v14.6, the climax): ahead of it, waiting ~11 m under the line it climbs, looking back
+    # and up. Its light arrives first and the petals brighten from below; then the head comes
+    # up out of the bottom of the frame, its face and lit belly pass right over us (the
+    # brightest frame of the film, the last time we see its face) and the flukes go out at the
+    # top - seen from below, already the view R17 follows it with
     a16 = TAU0['R16']
-    P16 = PATH.pos(a16 + 3.6); h16 = unit(PATH.vel(a16 + 3.6) * np.array([1, 1, 0]))
-    c16 = P16 + np.array([0, 0, -12.0]) + 3.0 * np.array([-h16[1], h16[0], 0])
-    C['R16'] = C_static(tuple(c16), tuple(PATH.pos(a16 + 0.4) + np.array([0, 0, 14.0])), 18)
+    P16 = PATH.pos(a16 + 3.55); h16 = unit(PATH.vel(a16 + 3.55) * np.array([1, 1, 0]))
+    c16 = P16 + np.array([0, 0, -11.0]) + 3.0 * np.array([-h16[1], h16[0], 0])
+    C['R16'] = C_static(tuple(c16), tuple(PATH.pos(a16 + 0.85) + np.array([0, 0, 18.0])), 18)
     # R17 (v14.4): 'as if it were heading for the moon' - the camera rises behind and below the
     # climbing whale, slower than it, looking up its line of travel: the whale pulls away up the
     # fissure towards the moon composed in the opening ahead, the lit rock walls around it
@@ -1074,7 +1083,7 @@ class Renderer:
                 img = Image.fromarray(np.clip(A, 0, 255).astype(np.uint8))
             else:
                 if cid == 'R18':
-                    lift, fade, _ = r18_merge(t)
+                    lift, fade = r18_merge(t)
                     if lift > 0 or fade > 0:
                         wa = np.asarray(wimg).astype(np.float32)
                         wa[..., :3] = wa[..., :3] * (1 - lift) + np.array([236, 232, 212], np.float32) * 0.98 * lift
@@ -1086,7 +1095,9 @@ class Renderer:
                 if info.get('bbox'):
                     bw = info['bbox'][2] - info['bbox'][0]
                     e = np.asarray(wem).astype(np.float32) / 255
-                    if e.max() > 0:
+                    if e.max() > 0 or (cid == 'R18' and t > T['R18'][0] + 1.0):
+                        # (R18: keep the same tone curve after the whale has melted away, so
+                        # the frame does not jump in brightness when its glow reaches zero)
                         A = np.asarray(img).astype(np.float32)
                         g1 = np.asarray(wem.filter(ImageFilter.GaussianBlur(max(2, bw * 0.03)))).astype(np.float32) / 255
                         g2 = np.asarray(wem.filter(ImageFilter.GaussianBlur(max(4, bw * 0.14)))).astype(np.float32) / 255
@@ -1190,35 +1201,9 @@ class Renderer:
         ring = np.exp(-((dd - 1.0).clip(0) / 0.08) ** 2) * (1 - disk) * 0.55
         glow = np.exp(-((dd - 1.0).clip(0) / 0.7) ** 2) * 0.26 + np.exp(-(dd / 3.0) ** 2) * 0.10
         hsoft = np.asarray(Image.fromarray((hole * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(max(2.0, rr * 0.4)))).astype(np.float32) / 255
-        swell = 0.0
-        if cid == 'R18' and t is not None:
-            tm = T['R18'][0] + R18_MERGE
-            swell = float(math.exp(-((t - tm - 0.15) / 0.7) ** 2))
-            face = face * (1 + 0.05 * swell)
-            glow = glow * (1 + 0.7 * swell)
         A += face[..., None] * np.array([236, 232, 212], np.float32) * hole[..., None]
         A += ring[..., None] * np.array([220, 225, 235], np.float32) * hole[..., None]
         A += (glow * (1 - disk))[..., None] * np.array([120, 134, 160], np.float32) * np.maximum(hole, 0.6 * hsoft)[..., None]
-        if cid == 'R18' and t is not None:
-            # the whale enters the moon like a drop entering the lake (rhymes with R01/R19):
-            # one soft breath of light where it melts, then two faint rings of light leave the
-            # rim of the moon and spread into the night sky (not over the face: no marks on it)
-            tm = T['R18'][0] + R18_MERGE
-            pm = PATH.pos(tau_of(tm))
-            ex, ey, ez = cam.proj(pm[None], W, H)
-            if ez[0] > 0:
-                de = np.sqrt((xx - ex[0]) ** 2 + (yy - ey[0]) ** 2)
-                _, _, flash = r18_merge(t)
-                A += (np.exp(-(de / (0.16 * rr)) ** 2) * 0.30 * flash * disk)[..., None] * np.array([255, 250, 236], np.float32)
-            dm = dd * rr
-            for k0 in (0.05, 0.47):
-                a = t - tm - k0
-                if 0 < a < 1.6:
-                    R = rr * (1.0 + 1.15 * (a / 1.6) ** 0.8)
-                    wd = 0.03 * rr + 1.5
-                    I = 0.20 * (1 - a / 1.6) ** 1.3
-                    prof = np.exp(-((dm - R) / wd) ** 2) * (1 - disk)
-                    A += (prof * I)[..., None] * np.array([235, 238, 245], np.float32) * np.maximum(hole, 0.6 * hsoft)[..., None]
 
     # ------------------------------------------------------------------ details
     def canopy_light(self, cam, tau, wl_p, wl_I):

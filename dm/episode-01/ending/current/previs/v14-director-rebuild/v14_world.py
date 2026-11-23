@@ -191,7 +191,7 @@ WAYPOINTS = (
     + [(2.8, 94.6, 54.0, 7.2), (-15.8, 87.1, 58.5, 8.6), (-34.3, 79.6, 63.0, 8.8)]
     # ... and a rising right-hand spiral (R = 48 m) towards the fissure, steeper from the
     # climax on (R16 passes over the camera into the sky), joining the climb to the opening
-    + _spiral(-52.3, 124.1, 48.0, -68, -250, 63.0, 128.0, 0.225, 8.4, 6.2)[1:]
+    + _spiral(-52.3, 124.1, 48.0, -68, -250, 63.0, 128.0, 0.225, 10.5, 6.2)[1:]
     + [(-48.0, 166.0, 138.0, 6.0), (-31.0, 163.0, 149.0, 5.8), (-22.0, 163.0, 160.0, 5.6), (-17, 169, 178.0, 6.0),
        (-15, 181, 200.0, 11.0), (-13, 193, 222.0, 20.0)]
     # v14.5: out of the narrow top slot it does not level off; it keeps the same straight line
