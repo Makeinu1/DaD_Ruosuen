@@ -19,8 +19,10 @@ renders/<cut>_<tag>/beauty/####.png  →  <cut>_guide.mp4（ガイド映像）
    ├─ 方式① post/paint.py      → paint/ + <cut>_paint.mp4   （AIなし・絵画調の後処理）
    ├─ 方式② Google Flow（Gemini Omni / Veo, video-to-video） → handoff/flow_R14.md の手順で人が操作
    ├─ 方式③ wan/vid2vid.py     → wan/*.mp4                  （ローカル Wan 2.2 TI2V-5B で描き直し）
-   └─ 方式③制御 render_cut.py --control depth → <cut>_control_depth.mp4
-                 → wan/vid2vid_control.py → wanctl/*.mp4  （Wan 2.2 Fun-Control 5B、奥行きで動きを固定）
+   └─ 方式③制御【本命 2026-11-24】 render_cut.py --control depth → <cut>_control_depth.mp4
+                 → wan/vid2vid_control.py --clear-air（5秒ずつ）→ post/join_segments.py（重なりをクロスフェード）
+                 → post/overlay_petals.py ← render_cut.py --control petals（プリヴィズの花弁だけの層）
+                 → <cut>_functl_petals_<版>.mp4   （鯨・カメラ・花弁はプリヴィズどおり、絵は Fun-Control）
 ```
 
 ## 2. 状態（更新したらここを書き換える）
@@ -32,12 +34,12 @@ renders/<cut>_<tag>/beauty/####.png  →  <cut>_guide.mp4（ガイド映像）
 | Blenderシーン（洞窟・裂け目・地形・水・鯨・月光柱・花弁） | 済（大枠） | 月光柱はプリヴィズ `moonlit` と一致を確認 |
 | R14 本描画 1280×720 | 済 v15b 2026-11-24 | `renders/R14_b/`（鯨の頂点色の誤りを直した版）。v15a は `R14_a/` に残す |
 | 鯨の色（尾の桃色・胸びれの黄緑） | 済 v15b | glbの `COLOR_0` はリグ用データ。`Whale._drop_vertex_tint` で Base Color から外した |
-| 方式① 絵画調 | 済（試作） | 追従度0.958。目で見ると鯨が雪の粒でざらつく（次に直す候補） |
+| 方式① 絵画調（控え） | 済 v15b | 鯨をマスクして筆面・雪の点を乗せないよう修正（ざらつき解消）。`renders/R14_b/paint` |
 | 方式② Flow | 未（作者の操作待ち） | `handoff/flow_R14.md` |
 | 方式③ Wan | 済（d45/d62/d78） | 目で見ると d62 で鯨の形が崩れ、d78 は鯨が逆向き・別の生き物。岩と月を描き足す |
-| 方式③制御 Fun-Control 5B | 試験済 v15b（本命候補） | モデル `wan2.2_fun_control_5B_bf16.safetensors`（作者許可 2026-11-24）。鯨とカメラはガイドどおり、初めの絵なしで絵画調になる。花弁の流れ・月光はモデルの創作（次は花弁を制御に入れる）。`renders/R14_b/wanctl/` |
-| 3方式の比較 | 済（目視） | `review/R14_visual_review_v15a.md`（推薦：Blenderで動きを決め、Fun-Controlで絵にする組み合わせ。①は控え）。数値は `R14_compare_v15a.md` |
-| 他カット（R01〜R19） | 未 | R14で方式を決めてから |
+| 方式③制御 Fun-Control 5B | **本命（作者承認 2026-11-24）**、R14 8秒 済 v15b | 花弁なしで描かせ（`--clear-air`）、プリヴィズの花弁を重ねる案Bを採用。0〜120と71〜191の2本をつないだ192フレーム：`renders/R14_b/R14_functl_petals_v15b.mp4`（960×544）。残り：月光の向きはモデルの創作、鯨に陰影なし、解像度 |
+| 3方式の比較 | 済（目視） | `review/R14_visual_review_v15a.md`（本命：Blenderで動き＋Fun-Controlで絵。①は控え）。数値は `R14_compare_v15a.md` |
+| 他カット（R01〜R19） | 未 | 方式は決定。R13→R15→R17b→R18 の「雪の山場」から |
 
 ## 3. PCでの実行（VideoStudio PC：RTX 3060 12GB、Blender 5.3、Windows）
 
@@ -63,8 +65,18 @@ git fetch origin production/v15-blender-base-20261124 && git checkout production
 "C:\Program Files\Blender Foundation\Blender 5.3\5.3\python\bin\python.exe" dm\episode-01\ending\current\production-v15\wan\vid2vid.py --video C:\VideoStudio\projects\ruosuen\renders\R14_a\R14_guide.mp4 --out C:\VideoStudio\projects\ruosuen\renders\R14_a\wan --denoise 0.55
 rem 方式③制御：奥行きの制御映像 → Fun-Control（models/diffusion_models/wan2.2_fun_control_5B_bf16.safetensors が要る）
 "C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P dm\episode-01\ending\current\production-v15\blender\render_cut.py -- --cache C:\VideoStudio\projects\ruosuen\cache\R14 --out C:\VideoStudio\projects\ruosuen\renders\R14_b --res 960 --control depth
+"C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P dm\episode-01\ending\current\production-v15\blender\render_cut.py -- --cache C:\VideoStudio\projects\ruosuen\cache\R14 --out C:\VideoStudio\projects\ruosuen\renders\R14_b --res 1280 --control petals
 "C:\ffmpeg\bin\ffmpeg.exe" -framerate 24 -i C:\VideoStudio\projects\ruosuen\renders\R14_b\control_depth\%04d.png -c:v libx264 -crf 14 -pix_fmt yuv420p C:\VideoStudio\projects\ruosuen\renders\R14_b\R14_control_depth.mp4
-"C:\Program Files\Blender Foundation\Blender 5.3\5.3\python\bin\python.exe" dm\episode-01\ending\current\production-v15\wan\vid2vid_control.py --control C:\VideoStudio\projects\ruosuen\renders\R14_b\R14_control_depth.mp4 --no-ref --out C:\VideoStudio\projects\ruosuen\renders\R14_b\wanctl
+set PY="C:\Program Files\Blender Foundation\Blender 5.3\5.3\python\bin\python.exe"
+set W=C:\VideoStudio\projects\ruosuen\renders\R14_b\wanctl
+rem 1本目 0〜120（約8分半）
+%PY% dm\episode-01\ending\current\production-v15\wan\vid2vid_control.py --control C:\VideoStudio\projects\ruosuen\renders\R14_b\R14_control_depth.mp4 --no-ref --clear-air --out %W%
+rem 2本目 71〜191：初めの絵＝1本目の71フレーム目
+"C:\ffmpeg\bin\ffmpeg.exe" -i %W%\R14_control_depth_functl_none_clear_s7_f0.mp4 -vf "select=eq(n\,71)" -frames:v 1 %W%\seg1_clear_f71.png
+%PY% dm\episode-01\ending\current\production-v15\wan\vid2vid_control.py --control C:\VideoStudio\projects\ruosuen\renders\R14_b\R14_control_depth.mp4 --start 71 --ref %W%\seg1_clear_f71.png --clear-air --out %W%
+rem つなぐ → プリヴィズの花弁を重ねる（PYTHONPATH=pylib が要る）
+%PY% dm\episode-01\ending\current\production-v15\post\join_segments.py --a %W%\R14_control_depth_functl_none_clear_s7_f0.mp4 --b %W%\R14_control_depth_functl_img_clear_s7_f71.mp4 --start2 71 --out %W%\R14_clear_join.mp4
+%PY% dm\episode-01\ending\current\production-v15\post\overlay_petals.py --paint %W%\R14_clear_join.mp4 --petals C:\VideoStudio\projects\ruosuen\renders\R14_b\control_petals --start 0 --out C:\VideoStudio\projects\ruosuen\renders\R14_b\R14_functl_petals_v15b.mp4
 ```
 `pc_run.py` の手順：`export`（プリヴィズ書き出し）→ `render`（EEVEE）→ `encode`（ガイドmp4）→ `paint`（方式①）→ `wan`（方式③、ComfyUIが起動していること）。
 
