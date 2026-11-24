@@ -18,7 +18,9 @@ cache/<cut>/cut.json + petals/f_####.npz      ← カメラ・鯨の骨格フレ
 renders/<cut>_<tag>/beauty/####.png  →  <cut>_guide.mp4（ガイド映像）
    ├─ 方式① post/paint.py      → paint/ + <cut>_paint.mp4   （AIなし・絵画調の後処理）
    ├─ 方式② Google Flow（Gemini Omni / Veo, video-to-video） → handoff/flow_R14.md の手順で人が操作
-   └─ 方式③ wan/vid2vid.py     → wan/*.mp4                  （ローカル Wan 2.2 TI2V-5B で描き直し）
+   ├─ 方式③ wan/vid2vid.py     → wan/*.mp4                  （ローカル Wan 2.2 TI2V-5B で描き直し）
+   └─ 方式③制御 render_cut.py --control depth → <cut>_control_depth.mp4
+                 → wan/vid2vid_control.py → wanctl/*.mp4  （Wan 2.2 Fun-Control 5B、奥行きで動きを固定）
 ```
 
 ## 2. 状態（更新したらここを書き換える）
@@ -28,11 +30,13 @@ renders/<cut>_<tag>/beauty/####.png  →  <cut>_guide.mp4（ガイド映像）
 | PC環境（リポジトリ取得・Pillow/scipy） | 済 2026-11-24 | `C:\VideoStudio\projects\ruosuen\{repo,pylib}` |
 | 書き出し R14 | 済 | 192フレーム、花弁 2万→8.5万（視野内） |
 | Blenderシーン（洞窟・裂け目・地形・水・鯨・月光柱・花弁） | 済（大枠） | 月光柱はプリヴィズ `moonlit` と一致を確認 |
-| R14 本描画 1280×720 | 済 | `renders/R14_a/`（EEVEE 1フレーム約0.5秒） |
-| 方式① 絵画調 | 済（試作） | 追従度0.958。夜の暗さを保つ版に修正済み |
+| R14 本描画 1280×720 | 済 v15b 2026-11-24 | `renders/R14_b/`（鯨の頂点色の誤りを直した版）。v15a は `R14_a/` に残す |
+| 鯨の色（尾の桃色・胸びれの黄緑） | 済 v15b | glbの `COLOR_0` はリグ用データ。`Whale._drop_vertex_tint` で Base Color から外した |
+| 方式① 絵画調 | 済（試作） | 追従度0.958。目で見ると鯨が雪の粒でざらつく（次に直す候補） |
 | 方式② Flow | 未（作者の操作待ち） | `handoff/flow_R14.md` |
-| 方式③ Wan | 済（d45/d62/d78） | 制御モデルなしでは d62 が上限。d78 は鯨が位置から外れる |
-| 3方式の比較 | 済（暫定） | `review/R14_compare_v15a.md`、シートはPC `renders/R14_a/compare_R14.png` |
+| 方式③ Wan | 済（d45/d62/d78） | 目で見ると d62 で鯨の形が崩れ、d78 は鯨が逆向き・別の生き物。岩と月を描き足す |
+| 方式③制御 Fun-Control 5B | 試験済 v15b（本命候補） | モデル `wan2.2_fun_control_5B_bf16.safetensors`（作者許可 2026-11-24）。鯨とカメラはガイドどおり、初めの絵なしで絵画調になる。花弁の流れ・月光はモデルの創作（次は花弁を制御に入れる）。`renders/R14_b/wanctl/` |
+| 3方式の比較 | 済（目視） | `review/R14_visual_review_v15a.md`（推薦：Blenderで動きを決め、Fun-Controlで絵にする組み合わせ。①は控え）。数値は `R14_compare_v15a.md` |
 | 他カット（R01〜R19） | 未 | R14で方式を決めてから |
 
 ## 3. PCでの実行（VideoStudio PC：RTX 3060 12GB、Blender 5.3、Windows）
@@ -57,6 +61,10 @@ cd C:\VideoStudio\projects\ruosuen\repo
 git fetch origin production/v15-blender-base-20261124 && git checkout production/v15-blender-base-20261124
 "C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P dm\episode-01\ending\current\production-v15\pc_run.py -- --cut R14 --steps export,render,encode,paint --tag a
 "C:\Program Files\Blender Foundation\Blender 5.3\5.3\python\bin\python.exe" dm\episode-01\ending\current\production-v15\wan\vid2vid.py --video C:\VideoStudio\projects\ruosuen\renders\R14_a\R14_guide.mp4 --out C:\VideoStudio\projects\ruosuen\renders\R14_a\wan --denoise 0.55
+rem 方式③制御：奥行きの制御映像 → Fun-Control（models/diffusion_models/wan2.2_fun_control_5B_bf16.safetensors が要る）
+"C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P dm\episode-01\ending\current\production-v15\blender\render_cut.py -- --cache C:\VideoStudio\projects\ruosuen\cache\R14 --out C:\VideoStudio\projects\ruosuen\renders\R14_b --res 960 --control depth
+"C:\ffmpeg\bin\ffmpeg.exe" -framerate 24 -i C:\VideoStudio\projects\ruosuen\renders\R14_b\control_depth\%04d.png -c:v libx264 -crf 14 -pix_fmt yuv420p C:\VideoStudio\projects\ruosuen\renders\R14_b\R14_control_depth.mp4
+"C:\Program Files\Blender Foundation\Blender 5.3\5.3\python\bin\python.exe" dm\episode-01\ending\current\production-v15\wan\vid2vid_control.py --control C:\VideoStudio\projects\ruosuen\renders\R14_b\R14_control_depth.mp4 --no-ref --out C:\VideoStudio\projects\ruosuen\renders\R14_b\wanctl
 ```
 `pc_run.py` の手順：`export`（プリヴィズ書き出し）→ `render`（EEVEE）→ `encode`（ガイドmp4）→ `paint`（方式①）→ `wan`（方式③、ComfyUIが起動していること）。
 
