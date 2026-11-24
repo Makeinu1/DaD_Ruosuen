@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """v15d finishing pass: Blender layers -> the painted frame (no AI, deterministic).
 
-Inputs are three Blender layers of the same cut (render_cut.py --control base / petals / whale_matte):
+Inputs are Blender layers of the same cut (render_cut.py --control base / petals / whale_matte / near):
   base    the beauty without petals (air, moonlight haze, whale)
   petals  the previs petals alone, already hidden behind the whale
   matte   the whale white, the rest black
+  near    (optional, RGBA) the near blizzard of real petals, laid over everything with a soft glow
 Nothing here moves anything: composition, whale and petals stay exactly where Blender (= the previs) put
 them. What it adds is the painting, after the key paintings (images/adopted CUT05 / CUT09) and the
 style reference (v8/keyframe-test/refs/style_ref_painterly.png):
@@ -76,11 +77,11 @@ DAB = np.array([1.00, 0.97, 0.92], np.float32)
 GOLD = np.array([1.00, 0.82, 0.50], np.float32)
 
 
-def load(p):
-    return np.asarray(Image.open(p).convert('RGB'), np.float32) / 255.0
+def load(p, mode='RGB'):
+    return np.asarray(Image.open(p).convert(mode), np.float32) / 255.0
 
 
-def frame(base, pet, matte, cv, a):
+def frame(base, pet, matte, cv, a, near=None):
     H, W, _ = base.shape
     M = ndi.gaussian_filter(matte[..., 0], 1.0 * cv.s)[..., None]
     L = (base @ LUM)[..., None]
@@ -93,7 +94,12 @@ def frame(base, pet, matte, cv, a):
     # 2. whale: its own gouache texture comes from Blender and moves with it; no screen-locked strokes on
     #    it (they would slide over the moving body), only a cool shadow side
     wl = base + (1 - np.clip(L * 1.4, 0, 1)) * np.array([-0.02, 0.0, 0.03], np.float32)
+    wl = wl + a.whale_detail * (wl - ndi.gaussian_filter(wl, (2.5 * cv.s, 2.5 * cv.s, 0)))   # grooves and strokes read
     x = air * (1 - M) + wl * M
+    # keep the whale the brightest thing: a soft dark ring just outside its body separates it from the
+    # bright stream behind (a painter's halo of shadow), the body itself is untouched
+    ring = np.clip(ndi.gaussian_filter(matte[..., 0], 5 * cv.s) - matte[..., 0], 0, 1)[..., None]
+    x = x * (1 - a.ring * ring)
     Lx = (x @ LUM)[..., None]
     x = Lx + (x - Lx) * a.sat                                 # the paintings are bluer than the previs grey
     # 3. petals: mist along the stream + short strokes for the brighter ones, fruit light kept gold
@@ -106,7 +112,14 @@ def frame(base, pet, matte, cv, a):
     fine = ndi.gaussian_filter(PL, 0.6 * cv.s)[..., None] * a.fine * MIST * (1 - 0.5 * M)   # keep the previs sparkle
     p = np.clip(mist + dabs + fine, 0, 1)
     x = 1 - (1 - np.clip(x, 0, 1)) * (1 - p)
-    # 4. bloom, grade, paper, vignette
+    # near blizzard: real petal shapes over everything (they are within 30 m), with a little glow
+    if near is not None:
+        al = near[..., 3:4] * a.near_alpha; rgb = near[..., :3]
+        x = x * (1 - al) + rgb * al
+        g = ndi.gaussian_filter(rgb * al, (3 * cv.s, 3 * cv.s, 0))
+        x = x + a.near_glow * g
+    # 4. exposure, bloom, grade, paper, vignette
+    x = x * a.gain
     hi = np.clip(x - 0.45, 0, None)
     x = x + a.bloom * (0.6 * ndi.gaussian_filter(hi, (6 * cv.s, 6 * cv.s, 0)) + 0.4 * ndi.gaussian_filter(hi, (26 * cv.s, 26 * cv.s, 0)))
     L2 = (x @ LUM)[..., None]
@@ -127,13 +140,18 @@ def main():
     ap.add_argument('--angle', type=float, default=-22.0, help='stroke direction in degrees (screen, y down)')
     ap.add_argument('--stroke', type=float, default=0.18)
     ap.add_argument('--hue', type=float, default=0.25)
-    ap.add_argument('--mist', type=float, default=0.30)
-    ap.add_argument('--dab', type=float, default=0.8)
+    ap.add_argument('--mist', type=float, default=0.12)
+    ap.add_argument('--dab', type=float, default=0.7)
     ap.add_argument('--dab-lo', type=float, default=0.55)
     ap.add_argument('--dab-hi', type=float, default=0.75)
-    ap.add_argument('--fine', type=float, default=0.45)
+    ap.add_argument('--fine', type=float, default=0.22)
     ap.add_argument('--bloom', type=float, default=0.45)
     ap.add_argument('--sat', type=float, default=1.35)
+    ap.add_argument('--near-glow', type=float, default=0.25)
+    ap.add_argument('--near-alpha', type=float, default=0.9)
+    ap.add_argument('--whale-detail', type=float, default=0.6)
+    ap.add_argument('--ring', type=float, default=0.5)
+    ap.add_argument('--gain', type=float, default=1.12)
     a = ap.parse_args()
     files = sorted((a.layers / 'control_base').glob('*.png'))
     if a.frames:
@@ -147,7 +165,9 @@ def main():
             cv = Canvas(base.shape[0], base.shape[1], a)
         pet = load(a.layers / 'control_petals' / f.name)
         matte = load(a.layers / 'control_whale_matte' / f.name)
-        x = frame(base, pet, matte, cv, a)
+        nf = a.layers / 'control_near' / f.name
+        near = load(nf, 'RGBA') if nf.exists() else None
+        x = frame(base, pet, matte, cv, a, near)
         Image.fromarray((x * 255 + 0.5).astype(np.uint8)).save(a.dst / f.name)
     print('finished', len(files), 'frames ->', a.dst)
     if a.mp4:
