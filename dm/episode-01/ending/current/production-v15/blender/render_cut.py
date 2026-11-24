@@ -51,6 +51,10 @@ def args_from_argv(argv):
     ap.add_argument('--exposure', type=float, default=None)
     ap.add_argument('--set', action='append', default=[], help='look override key=value (floats)')
     ap.add_argument('--engine', default='EEVEE', choices=['EEVEE', 'CYCLES'])
+    ap.add_argument('--control', default='', choices=['', 'depth'],
+                    help='depth: write a control video for Wan Fun-Control instead of the beauty (out/control_depth)')
+    ap.add_argument('--depth-near', type=float, default=120.0, help='metres; nearer is white')
+    ap.add_argument('--depth-far', type=float, default=700.0, help='metres; farther is black')
     return ap.parse_args(argv)
 
 
@@ -191,7 +195,31 @@ class Whale:
         self.glow = me.attributes.get('pv_glow') or me.attributes.new('pv_glow', 'FLOAT', 'POINT')
         self.look = look
         for m in me.materials:
+            self._drop_vertex_tint(m)
             self._add_emission(m)
+
+    @staticmethod
+    def _drop_vertex_tint(m):
+        """The hero glb's COLOR_0 is rig data (R: head->tail, G: fin mask), not paint. The glTF importer
+        multiplies it into Base Color, which turned the tail pink and the pectoral fins yellow-green
+        (the identity sheet WH01 says: no markings). Feed Base Color from the other Mix input instead."""
+        nt = m.node_tree
+        b = next((n for n in nt.nodes if n.type == 'BSDF_PRINCIPLED'), None)
+        if b is None:
+            return
+        for l in list(b.inputs['Base Color'].links):
+            mix = l.from_node
+            if mix.type != 'MIX':
+                continue
+            cols = [s for s in mix.inputs if s.type == 'RGBA' and s.enabled]
+            keep = [s for s in cols if not (s.is_linked and s.links[0].from_node.type == 'ATTRIBUTE')]
+            if len(keep) != 1 or len(keep) == len(cols):
+                continue
+            k = keep[0]
+            if k.is_linked:
+                nt.links.new(k.links[0].from_socket, b.inputs['Base Color'])
+            else:
+                nt.links.remove(l); b.inputs['Base Color'].default_value = k.default_value
 
     def _add_emission(self, m):
         nt = m.node_tree
@@ -308,6 +336,40 @@ class WhaleLight:
         self.ob.data.energy = self.k * fr['whale_light']['I'] * (1 - fr['whale'].get('melt', 0.0))
 
 
+def to_depth_control(a):
+    """Swap every surface for a camera-distance ramp (near white -> far black, log scale), drop the air
+    volume, the petals and the lights. The geometry, camera and whale deformation are untouched, so the
+    control video carries exactly the previs composition and whale motion."""
+    sc = bpy.context.scene
+    m = bpy.data.materials.new('DepthControl'); try_set(m, use_nodes=True)
+    nt = m.node_tree; N = nt.nodes
+    for n in list(N):
+        if n.type != 'OUTPUT_MATERIAL':
+            N.remove(n)
+    out = next(n for n in N if n.type == 'OUTPUT_MATERIAL')
+    cam = N.new('ShaderNodeCameraData')
+    q = N.new('ShaderNodeMath'); q.operation = 'DIVIDE'; q.inputs[1].default_value = a.depth_near
+    nt.links.new(cam.outputs['View Z Depth'], q.inputs[0])
+    lg = N.new('ShaderNodeMath'); lg.operation = 'LOGARITHM'; lg.inputs[1].default_value = a.depth_far / a.depth_near
+    nt.links.new(q.outputs[0], lg.inputs[0])
+    inv = N.new('ShaderNodeMath'); inv.operation = 'SUBTRACT'; inv.use_clamp = True; inv.inputs[0].default_value = 1.0
+    nt.links.new(lg.outputs[0], inv.inputs[1])
+    em = N.new('ShaderNodeEmission'); nt.links.new(inv.outputs[0], em.inputs['Strength'])
+    em.inputs['Color'].default_value = (1, 1, 1, 1)
+    nt.links.new(em.outputs[0], out.inputs['Surface'])
+    for ob in list(sc.objects):
+        if ob.type == 'LIGHT' or ob.name in ('CaveAir', 'Petals'):
+            ob.hide_render = True
+        elif ob.type == 'MESH':
+            ob.data.materials.clear(); ob.data.materials.append(m)
+            for poly_mat in ob.material_slots:
+                poly_mat.link = 'DATA'
+    bgn = sc.world.node_tree.nodes.get('Background')
+    bgn.inputs['Color'].default_value = (0, 0, 0, 1)
+    try_set(sc.view_settings, view_transform='Standard', look='None', exposure=0.0)
+    try_set(sc.eevee, taa_render_samples=8)
+
+
 def setup_render(a, meta, look):
     sc = bpy.context.scene
     if a.engine == 'CYCLES':
@@ -350,7 +412,9 @@ def main(argv):
     build_camera(meta)
     setup_render(a, meta, look)
     whale = Whale(look, meta); wl = WhaleLight(look); pet = Petals(look, a.res)
-    out = a.out / 'beauty'; out.mkdir(parents=True, exist_ok=True)
+    if a.control == 'depth':
+        to_depth_control(a)
+    out = a.out / (f'control_{a.control}' if a.control else 'beauty'); out.mkdir(parents=True, exist_ok=True)
     ks = sorted(frames)
     if a.frames:
         f0, f1 = (int(x) for x in a.frames.split(':'))
