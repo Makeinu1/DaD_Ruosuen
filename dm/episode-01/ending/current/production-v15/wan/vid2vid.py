@@ -92,6 +92,8 @@ def main():
     for node in outs.values():
         for key in ('images', 'videos', 'gifs'):
             for f in node.get(key, []):
+                if f.get('type') != 'output':      # LoadVideo also reports its input file here
+                    continue
                 src = COMFY_ROOT / 'output' / f.get('subfolder', '') / f['filename']
                 dst = a.out / f'{a.tag}{src.suffix}'
                 shutil.copy2(src, dst)
