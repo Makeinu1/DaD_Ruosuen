@@ -28,11 +28,17 @@ import v14_world as w           # noqa: E402  numpy only
 # ------------------------------------------------------------------ look parameters (tune here)
 LOOK = {
     # neutral base for restyling (Flow / Wan) and for the painterly pass; tuned on R14 (v15a)
-    'guide': dict(exposure=-0.3, vol_density=0.00035, vol_aniso=0.55, moon_strength=4.0,
+    # v15c (2026-11-25): matched to the previs v14.9b R14 frames by eye and by region means -
+    # navy air, crisp white petals (previs draws far flakes as hard dots), whale as in the previs
+    'guide': dict(exposure=0.0, vol_density=0.00035, vol_aniso=0.55, moon_strength=4.0,
                   moon_color=(0.70, 0.80, 1.0), whale_light_w=1.5e5, whale_light_vol=0.5, whale_emit=0.8,
-                  petal_emit=1.3, fruit_emit=1.0, petal_min_px=0.8, rock=0.018, bg=(0.004, 0.006, 0.010)),
+                  petal_emit=2.2, fruit_emit=0.4, petal_min_px=0.8, rock=0.018, bg=(0.003, 0.005, 0.012),
+                  whale_form=0.6, whale_opal=1.0, whale_self_light=0.0, eye_out=1.08,
+                  air_color=(0.6, 0.74, 1.0), filter_px=0.8),
 }
 PEARL = (0.86, 0.93, 1.0)
+# previs whale_layer (v14.9b): pearl-opal colours along the body, by hue = 0 at the tail .. 1 at the head
+OPAL = ((0.08, (228, 226, 212)), (0.30, (214, 208, 238)), (0.55, (234, 238, 242)), (0.85, (184, 216, 240)))
 FRUIT = (1.0, 0.80, 0.45)
 PETAL = (0.93, 0.94, 0.96)
 
@@ -151,7 +157,7 @@ def build_world(look):
     vol = nt.nodes.new('ShaderNodeVolumePrincipled')
     vol.inputs['Density'].default_value = look['vol_density']
     vol.inputs['Anisotropy'].default_value = look['vol_aniso']
-    vol.inputs['Color'].default_value = (0.8, 0.86, 1.0, 1)
+    vol.inputs['Color'].default_value = (*look['air_color'], 1)
     nt.links.new(vol.outputs['Volume'], next(nd for nd in nt.nodes if nd.type == 'OUTPUT_MATERIAL').inputs['Volume'])
     e = 335.0; z0, z1 = -1.0, w.TOP_Z - 1.0
     V = [(-e, -e, z0), (e, -e, z0), (e, e, z0), (-e, e, z0), (-e, -e, z1), (e, -e, z1), (e, e, z1), (-e, e, z1)]
@@ -189,10 +195,21 @@ class Whale:
         me = self.ob.data
         self.V0 = np.empty(len(me.vertices) * 3); me.vertices.foreach_get('co', self.V0)
         self.V0 = self.V0.reshape(-1, 3)
+        # the hero eyes sit ~0.1 m inside their sockets, so at R14's distance the body hides them; the
+        # previs always shows a dark eye on the side facing the camera -> bring the eyes out to the skin
+        eye_mi = [i for i, m in enumerate(me.materials) if 'Eye' in m.name]
+        if eye_mi:
+            mi = np.empty(len(me.polygons), np.int32); me.polygons.foreach_get('material_index', mi)
+            ev = sorted({v for p_, k in zip(me.polygons, mi) if k in eye_mi for v in p_.vertices})
+            self.V0[ev, 1] *= look.get('eye_out', 1.08)
         # hero glb -> previs local frame: x forward (head +x), z up, y side (the body is mirror
         # symmetric, so the side sign does not change the shape; checked against BODY_V bounds)
         print('hero bounds', self.V0.min(0).round(2), self.V0.max(0).round(2), 'previs', w.BODY_V.min(0).round(2), w.BODY_V.max(0).round(2))
         self.path = w.WhalePath()
+        if 'stroke_phase0' in meta:          # same retime as the previs (else the tail stroke is out of phase)
+            self.path.retime(phase0=meta['stroke_phase0'], fast_tau=meta.get('fast_stroke_tau'))
+        else:
+            print('  [warn] cut.json has no stroke_phase0: re-export the cut (tail stroke will not match the previs)')
         self.contact = meta['ev_contact']
         self.glow = me.attributes.get('pv_glow') or me.attributes.new('pv_glow', 'FLOAT', 'POINT')
         self.look = look
@@ -224,16 +241,44 @@ class Whale:
                 nt.links.remove(l); b.inputs['Base Color'].default_value = k.default_value
 
     def _add_emission(self, m):
-        nt = m.node_tree
-        b = next((n for n in nt.nodes if n.type == 'BSDF_PRINCIPLED'), None)
+        """Self-light as the previs draws it (ruosuen_v14_previs.py whale_layer):
+        emission = glow x opal colour along the body x form, form = 1 - whale_form * (grazing),
+        i.e. 0.4 + 0.6 * facing for whale_form 0.6 -> the edges stay darker and the body reads as 3D
+        inside its own glow. The eye does not glow (previs: a dark eye)."""
+        nt = m.node_tree; N = nt.nodes; L = nt.links
+        b = next((n for n in N if n.type == 'BSDF_PRINCIPLED'), None)
         if b is None:
             return
-        at = nt.nodes.new('ShaderNodeAttribute'); at.attribute_name = 'pv_glow'
-        mul = nt.nodes.new('ShaderNodeMath'); mul.operation = 'MULTIPLY'
-        mul.inputs[1].default_value = self.look['whale_emit'] * (0.25 if 'Eye' in m.name else 1.0)
-        nt.links.new(at.outputs['Fac'], mul.inputs[0])
-        b.inputs['Emission Color'].default_value = (*PEARL, 1)
-        nt.links.new(mul.outputs[0], b.inputs['Emission Strength'])
+        if 'Eye' in m.name:
+            b.inputs['Emission Strength'].default_value = 0.0
+            b.inputs['Base Color'].default_value = (0.006, 0.008, 0.012, 1)
+            try_set(b.inputs['Roughness'], default_value=0.15)
+            return
+        at = N.new('ShaderNodeAttribute'); at.attribute_name = 'pv_glow'
+        lw = N.new('ShaderNodeLayerWeight'); lw.inputs['Blend'].default_value = 0.5
+        form = N.new('ShaderNodeMath'); form.operation = 'MULTIPLY_ADD'
+        L.new(lw.outputs['Facing'], form.inputs[0])
+        form.inputs[1].default_value = -self.look['whale_form']; form.inputs[2].default_value = 1.0
+        mul = N.new('ShaderNodeMath'); mul.operation = 'MULTIPLY'
+        L.new(at.outputs['Fac'], mul.inputs[0]); L.new(form.outputs[0], mul.inputs[1])
+        k = N.new('ShaderNodeMath'); k.operation = 'MULTIPLY'; k.inputs[1].default_value = self.look['whale_emit']
+        L.new(mul.outputs[0], k.inputs[0])
+        L.new(k.outputs[0], b.inputs['Emission Strength'])
+        # opal colour: the glb's COLOR_0.R runs 1 at the tail -> 0 at the head (rig data), so hue = 1 - R
+        vc = N.new('ShaderNodeVertexColor'); vc.layer_name = 'Color'
+        sep = N.new('ShaderNodeSeparateColor'); L.new(vc.outputs['Color'], sep.inputs['Color'])
+        inv = N.new('ShaderNodeMath'); inv.operation = 'SUBTRACT'; inv.inputs[0].default_value = 1.0
+        L.new(sep.outputs[0], inv.inputs[1])
+        ramp = N.new('ShaderNodeValToRGB'); cr = ramp.color_ramp
+        for i, (pos, rgb) in enumerate(OPAL):
+            e = cr.elements[i] if i < len(cr.elements) else cr.elements.new(pos)
+            e.position = pos; e.color = (*[(c / 255.0) ** 2.2 for c in rgb], 1)
+        L.new(inv.outputs[0], ramp.inputs['Fac'])
+        mix = N.new('ShaderNodeMix'); mix.data_type = 'RGBA'
+        mix.inputs['Factor'].default_value = self.look['whale_opal']
+        mix.inputs[6].default_value = (*PEARL, 1)
+        L.new(ramp.outputs['Color'], mix.inputs[7])
+        L.new(mix.outputs[2], b.inputs['Emission Color'])
 
     def update(self, fr):
         wh = fr['whale']; tau = fr['tau']
@@ -333,6 +378,19 @@ class WhaleLight:
         self.ob = bpy.data.objects.new('WhaleLight', ld); bpy.context.scene.collection.objects.link(self.ob)
         self.k = look['whale_light_w']
 
+    def exclude(self, ob):
+        """The whale's own light lights the air, the petals and the rocks, not the whale's skin (previs:
+        the body shows only its emission x form). Without this the point light inside the body burns the
+        thin flukes and fins to flat white."""
+        try:
+            coll = bpy.data.collections.new('WhaleLightReceivers')
+            coll.objects.link(ob)
+            self.ob.light_linking.receiver_collection = coll
+            coll.collection_objects[0].light_linking.link_state = 'EXCLUDE'    # the whale is its only member
+            print('  whale light: excludes', ob.name)
+        except Exception as e:
+            print('  [skip] light linking:', e)
+
     def update(self, fr):
         self.ob.location = fr['whale_light']['p']
         self.ob.data.energy = self.k * fr['whale_light']['I'] * (1 - fr['whale'].get('melt', 0.0))
@@ -418,13 +476,15 @@ def setup_render(a, meta, look):
             volumetric_shadow_samples=32, use_volumetric_shadows=True)
     try_set(sc.view_settings, view_transform='AgX', look='None', exposure=look['exposure'])
     sc.render.image_settings.file_format = 'PNG'
+    try_set(sc.render, filter_size=look['filter_px'])      # smaller = crisper sub-pixel petals (previs draws them as hard dots)
 
 
 def main(argv):
     a = args_from_argv(argv)
     look = dict(LOOK[a.look])
     for kv in a.set:
-        k, v = kv.split('='); look[k] = float(v)
+        k, v = kv.split('=')
+        look[k] = tuple(float(x) for x in v.split(',')) if ',' in v else float(v)
     if a.exposure is not None:
         look['exposure'] = a.exposure
     meta = json.loads((a.cache / 'cut.json').read_text(encoding='utf-8'))
@@ -435,6 +495,8 @@ def main(argv):
     build_camera(meta)
     setup_render(a, meta, look)
     whale = Whale(look, meta); wl = WhaleLight(look); pet = Petals(look, a.res)
+    if look.get('whale_self_light', 0.0) < 0.5:
+        wl.exclude(whale.ob)
     if a.control in ('depth', 'depth_petals'):
         to_depth_control(a, keep_petals=a.control == 'depth_petals')
     elif a.control == 'petals':
