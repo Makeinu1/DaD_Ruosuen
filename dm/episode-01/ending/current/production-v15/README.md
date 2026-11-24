@@ -19,7 +19,7 @@ renders/<cut>_<tag>/beauty/####.png  →  <cut>_guide.mp4（ガイド映像）
    ├─ 方式① post/paint.py      → paint/ + <cut>_paint.mp4   （AIなし・絵画調の後処理）
    ├─ 方式② Google Flow（Gemini Omni / Veo, video-to-video） → handoff/flow_R14.md の手順で人が操作
    ├─ 方式③ wan/vid2vid.py     → wan/*.mp4                  （ローカル Wan 2.2 TI2V-5B で描き直し）
-   └─ 方式③制御【本命 2026-11-24】 render_cut.py --control depth → <cut>_control_depth.mp4
+   └─ 方式③制御【保留 2026-11-25：岩壁・月光を創作する】 render_cut.py --control depth → <cut>_control_depth.mp4
                  → wan/vid2vid_control.py --clear-air（5秒ずつ）→ post/join_segments.py（重なりをクロスフェード）
                  → post/overlay_petals.py ← render_cut.py --control petals（プリヴィズの花弁だけの層）
                  → <cut>_functl_petals_<版>.mp4   （鯨・カメラ・花弁はプリヴィズどおり、絵は Fun-Control）
@@ -32,13 +32,14 @@ renders/<cut>_<tag>/beauty/####.png  →  <cut>_guide.mp4（ガイド映像）
 | PC環境（リポジトリ取得・Pillow/scipy） | 済 2026-11-24 | `C:\VideoStudio\projects\ruosuen\{repo,pylib}` |
 | 書き出し R14 | 済 | 192フレーム、花弁 2万→8.5万（視野内） |
 | Blenderシーン（洞窟・裂け目・地形・水・鯨・月光柱・花弁） | 済（大枠） | 月光柱はプリヴィズ `moonlit` と一致を確認 |
-| R14 本描画 1280×720 | 済 v15b 2026-11-24 | `renders/R14_b/`（鯨の頂点色の誤りを直した版）。v15a は `R14_a/` に残す |
+| R14 本描画 1280×720 | 済 v15c 2026-11-25 | `renders/R14_c/`：プリヴィズと照合して合わせた版（尾の位相・鯨の描き方・目・空気と花弁）。並べた動画 `R14_previs_vs_v15c.mp4`。v15b は `R14_b/`、v15a は `R14_a/` |
+| 尾の打ち方の位相 | 済 v15c | プリヴィズの `PATH.retime` を Blender 側にも。**他のカットは export し直すこと**（`cut.json` に `stroke_phase0` が要る） |
 | 鯨の色（尾の桃色・胸びれの黄緑） | 済 v15b | glbの `COLOR_0` はリグ用データ。`Whale._drop_vertex_tint` で Base Color から外した |
 | 方式① 絵画調（控え） | 済 v15b | 鯨をマスクして筆面・雪の点を乗せないよう修正（ざらつき解消）。`renders/R14_b/paint` |
 | 方式② Flow | 未（作者の操作待ち） | `handoff/flow_R14.md` |
 | 方式③ Wan | 済（d45/d62/d78） | 目で見ると d62 で鯨の形が崩れ、d78 は鯨が逆向き・別の生き物。岩と月を描き足す |
-| 方式③制御 Fun-Control 5B | **本命（作者承認 2026-11-24）**、R14 8秒 済 v15b | 花弁なしで描かせ（`--clear-air`）、プリヴィズの花弁を重ねる案Bを採用。0〜120と71〜191の2本をつないだ192フレーム：`renders/R14_b/R14_functl_petals_v15b.mp4`（960×544）。残り：月光の向きはモデルの創作、鯨に陰影なし、解像度 |
-| 3方式の比較 | 済（目視） | `review/R14_visual_review_v15a.md`（本命：Blenderで動き＋Fun-Controlで絵。①は控え）。数値は `R14_compare_v15a.md` |
+| 方式③制御 Fun-Control 5B | **保留**（2026-11-25 作者の指摘で、洞窟の岩壁・月光・鯨の形がプリヴィズと違うと確認）。R14 8秒 v15b | 花弁なしで描かせ（`--clear-air`）、プリヴィズの花弁を重ねる案Bを採用。0〜120と71〜191の2本をつないだ192フレーム：`renders/R14_b/R14_functl_petals_v15b.mp4`（960×544）。残り：月光の向きはモデルの創作、鯨に陰影なし、解像度 |
+| 3方式の比較 | 済（目視） | `review/R14_visual_review_v15a.md`。**本命は Blender の作り込み（v15c）**。次は絵の質（鯨の質感・花弁の筆の点・画面の筆致）を Blender 側で上げる |
 | 他カット（R01〜R19） | 未 | 方式は決定。R13→R15→R17b→R18 の「雪の山場」から |
 
 ## 3. PCでの実行（VideoStudio PC：RTX 3060 12GB、Blender 5.3、Windows）
