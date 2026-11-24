@@ -27,9 +27,10 @@ import v14_world as w           # noqa: E402  numpy only
 
 # ------------------------------------------------------------------ look parameters (tune here)
 LOOK = {
-    'guide': dict(exposure=0.0, vol_density=0.0012, vol_aniso=0.55, moon_strength=4.0,
-                  moon_color=(0.70, 0.80, 1.0), whale_light_w=4.0e6, whale_emit=2.2,
-                  petal_emit=3.0, fruit_emit=2.4, petal_min_px=1.1, rock=0.018, bg=(0.004, 0.006, 0.010)),
+    # neutral base for restyling (Flow / Wan) and for the painterly pass; tuned on R14 (v15a)
+    'guide': dict(exposure=-0.3, vol_density=0.00035, vol_aniso=0.55, moon_strength=4.0,
+                  moon_color=(0.70, 0.80, 1.0), whale_light_w=1.5e5, whale_light_vol=0.5, whale_emit=0.8,
+                  petal_emit=1.3, fruit_emit=1.0, petal_min_px=0.8, rock=0.018, bg=(0.004, 0.006, 0.010)),
 }
 PEARL = (0.86, 0.93, 1.0)
 FRUIT = (1.0, 0.80, 0.45)
@@ -47,6 +48,9 @@ def args_from_argv(argv):
     ap.add_argument('--save-blend', action='store_true')
     ap.add_argument('--no-render', action='store_true')
     ap.add_argument('--look', default='guide')
+    ap.add_argument('--exposure', type=float, default=None)
+    ap.add_argument('--set', action='append', default=[], help='look override key=value (floats)')
+    ap.add_argument('--engine', default='EEVEE', choices=['EEVEE', 'CYCLES'])
     return ap.parse_args(argv)
 
 
@@ -127,17 +131,26 @@ def build_world(look):
     V = [(r * math.cos(t), r * math.sin(t), z) for z in (-2.0, w.TOP_Z) for t in ang]
     F = [(i, (i + 1) % n, n + (i + 1) % n, n + i) for i in range(n)]
     mesh_obj('CaveWall', V, F, rock_soft)
-    # world: night + thin volume so that the moonlight through the fissure becomes a beam
-    wo = bpy.data.worlds.new('CaveAir'); sc.world = wo
+    # world: night. The air is a closed volume OBJECT (not a world volume: a world volume is
+    # infinite and absorbs the sun completely, so no moon beam would ever reach the cave)
+    wo = bpy.data.worlds.new('CaveNight'); sc.world = wo
     try_set(wo, use_nodes=True)
-    nt = wo.node_tree; nodes = nt.nodes
-    bgn = nodes.get('Background'); bgn.inputs['Color'].default_value = (*look['bg'], 1); bgn.inputs['Strength'].default_value = 1.0
-    vol = nodes.new('ShaderNodeVolumePrincipled')
+    bgn = wo.node_tree.nodes.get('Background')
+    bgn.inputs['Color'].default_value = (*look['bg'], 1); bgn.inputs['Strength'].default_value = 1.0
+    air = bpy.data.materials.new('CaveAir'); try_set(air, use_nodes=True)
+    nt = air.node_tree
+    for nd in list(nt.nodes):
+        if nd.type != 'OUTPUT_MATERIAL':
+            nt.nodes.remove(nd)
+    vol = nt.nodes.new('ShaderNodeVolumePrincipled')
     vol.inputs['Density'].default_value = look['vol_density']
     vol.inputs['Anisotropy'].default_value = look['vol_aniso']
     vol.inputs['Color'].default_value = (0.8, 0.86, 1.0, 1)
-    out = nodes.get('World Output')
-    nt.links.new(vol.outputs['Volume'], out.inputs['Volume'])
+    nt.links.new(vol.outputs['Volume'], next(nd for nd in nt.nodes if nd.type == 'OUTPUT_MATERIAL').inputs['Volume'])
+    e = 335.0; z0, z1 = -1.0, w.TOP_Z - 1.0
+    V = [(-e, -e, z0), (e, -e, z0), (e, e, z0), (-e, e, z0), (-e, -e, z1), (e, -e, z1), (e, e, z1), (-e, e, z1)]
+    F = [(0, 3, 2, 1), (4, 5, 6, 7), (0, 1, 5, 4), (1, 2, 6, 5), (2, 3, 7, 6), (3, 0, 4, 7)]
+    mesh_obj('CaveAir', V, F, air)
     # moonlight
     ld = bpy.data.lights.new('Moon', 'SUN'); ld.energy = look['moon_strength']; ld.color = look['moon_color']
     try_set(ld, angle=math.radians(0.6))
@@ -286,7 +299,7 @@ class Petals:
 class WhaleLight:
     def __init__(self, look):
         ld = bpy.data.lights.new('WhaleLight', 'POINT'); ld.color = PEARL
-        try_set(ld, shadow_soft_size=6.0)
+        try_set(ld, shadow_soft_size=6.0, use_shadow=False, volume_factor=look['whale_light_vol'])   # it sits inside the body
         self.ob = bpy.data.objects.new('WhaleLight', ld); bpy.context.scene.collection.objects.link(self.ob)
         self.k = look['whale_light_w']
 
@@ -297,7 +310,20 @@ class WhaleLight:
 
 def setup_render(a, meta, look):
     sc = bpy.context.scene
-    sc.render.engine = 'BLENDER_EEVEE'
+    if a.engine == 'CYCLES':
+        sc.render.engine = 'CYCLES'
+        try:
+            prefs = bpy.context.preferences.addons['cycles'].preferences
+            prefs.compute_device_type = 'OPTIX'; prefs.get_devices()
+            for d in prefs.devices:
+                d.use = True
+            sc.cycles.device = 'GPU' if any(d.type != 'CPU' for d in prefs.devices) else 'CPU'
+        except Exception as e:
+            print('  [cycles] CPU only:', e); sc.cycles.device = 'CPU'
+        try_set(sc.cycles, samples=a.samples, use_denoising=True, volume_step_rate=4.0, volume_max_steps=256,
+                max_bounces=4, transparent_max_bounces=64)
+    else:
+        sc.render.engine = 'BLENDER_EEVEE'
     sc.render.fps = meta['fps']; sc.render.resolution_x = a.res; sc.render.resolution_y = a.res * 9 // 16
     sc.render.resolution_percentage = 100
     sc.frame_start = 0; sc.frame_end = meta['n_frames'] - 1
@@ -311,7 +337,11 @@ def setup_render(a, meta, look):
 
 def main(argv):
     a = args_from_argv(argv)
-    look = LOOK[a.look]
+    look = dict(LOOK[a.look])
+    for kv in a.set:
+        k, v = kv.split('='); look[k] = float(v)
+    if a.exposure is not None:
+        look['exposure'] = a.exposure
     meta = json.loads((a.cache / 'cut.json').read_text(encoding='utf-8'))
     frames = {f['k']: f for f in meta['frames']}
     bpy.ops.wm.read_factory_settings(use_empty=True)
