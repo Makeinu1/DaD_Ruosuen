@@ -7,7 +7,9 @@ whale path/acting and the petal simulation. This script imports it unchanged and
   <out>/cut.json            meta + per-frame camera / whale body frame / whale light
   <out>/petals/f_####.npz   petals in (or near) the camera view:
                             p (N,3) float32 world metres, fruit (N) 0..1, spin (N) rad,
-                            bright (N) previs-style light level, kind (N) 0=simulated 1=near-camera snow
+                            bright (N) previs-style light level, kind (N) 0=simulated 1=near-camera snow,
+                            idx (N) int32 petal id (simulated: index in the previs petal arrays; near-camera
+                            snow: -1) - stable across frames, so anything derived per petal does not jump
 
 Coordinates are the previs world: X east, Y north (into the lake), Z up, metres, lake surface Z=0.
 
@@ -101,17 +103,17 @@ def main():
                     pp = P.p[keep]
                     d = np.linalg.norm(pp - wl_p, axis=1)
                     bright = 0.05 + wl_I * 1.6 / (1 + (d / 55.0) ** 2) + 0.32 * w.moonlit(pp, soft=7.0)
-                    parts.append((pp, P.fruit[keep], P.spin[keep], bright, np.zeros(len(keep), np.uint8)))
+                    parts.append((pp, P.fruit[keep], P.spin[keep], bright, np.zeros(len(keep), np.uint8), keep.astype(np.int32)))
                 ls = capture_local_snow(R, cam, t, tau, cid)
                 if ls is not None:
                     pw, br, frt, sp = ls
-                    parts.append((pw, frt, sp, br, np.ones(len(pw), np.uint8)))
+                    parts.append((pw, frt, sp, br, np.ones(len(pw), np.uint8), np.full(len(pw), -1, np.int32)))
             if parts:
-                p, fruit, spin, bright, kind = (np.concatenate(x) for x in zip(*parts))
+                p, fruit, spin, bright, kind, idx = (np.concatenate(x) for x in zip(*parts))
             else:
-                p = np.zeros((0, 3)); fruit = spin = bright = np.zeros(0); kind = np.zeros(0, np.uint8)
+                p = np.zeros((0, 3)); fruit = spin = bright = np.zeros(0); kind = np.zeros(0, np.uint8); idx = np.zeros(0, np.int32)
             np.savez(a.out / 'petals' / f'f_{k:04d}.npz', p=p.astype(np.float32), fruit=fruit.astype(np.float16),
-                     spin=np.mod(spin, 2 * np.pi).astype(np.float16), bright=bright.astype(np.float16), kind=kind)
+                     spin=np.mod(spin, 2 * np.pi).astype(np.float16), bright=bright.astype(np.float16), kind=kind, idx=idx)
             rec['n_petals'] = int(len(p))
         frames.append(rec)
         if k % (a.fps * 2) == 0:
