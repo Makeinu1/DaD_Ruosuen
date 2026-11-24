@@ -30,12 +30,17 @@ LOOK = {
     # neutral base for restyling (Flow / Wan) and for the painterly pass; tuned on R14 (v15a)
     # v15c (2026-11-25): matched to the previs v14.9b R14 frames by eye and by region means -
     # navy air, crisp white petals (previs draws far flakes as hard dots), whale as in the previs
-    'guide': dict(exposure=0.0, vol_density=0.00035, vol_aniso=0.55, moon_strength=4.0,
-                  moon_color=(0.70, 0.80, 1.0), whale_light_w=1.5e5, whale_light_vol=0.5, whale_emit=0.95,
+    # v15e (2026-11-25, author): brighter (exposure, air, moon), petals x3 along the same flow, and a near
+    # blizzard of real petals (NearSnow) - the previs keeps R14's foreground clear; this is the author's change
+    'guide': dict(exposure=0.35, vol_density=0.0005, vol_aniso=0.55, moon_strength=6.0,
+                  moon_color=(0.70, 0.80, 1.0), whale_light_w=1.5e5, whale_light_vol=0.35, whale_emit=0.95,
                   petal_emit=2.2, fruit_emit=0.4, petal_min_px=0.8, rock=0.018, bg=(0.003, 0.005, 0.012),
                   whale_form=0.6, whale_opal=1.0, whale_self_light=0.0, eye_out=1.08,
                   air_color=(0.6, 0.74, 1.0), filter_px=0.8,
-                  whale_tex=0.7, whale_belly=0.35, whale_top=(0.8, 1.1)),
+                  whale_tex=0.7, whale_belly=0.35, whale_top=(0.8, 1.1),
+                  petal_dense=3.0, dense_r=2.5,
+                  near_n=1200.0, near_size=0.045, near_zmin=3.0, near_zmax=30.0, near_emit=0.10,
+                  near_light=3.0e6, fstop=8.0, near_band=0.65, near_band_c=0.14),
 }
 PEARL = (0.86, 0.93, 1.0)
 BELLY = (0.55, 0.68, 0.95)          # the shaded underside goes blue (originals CUT05 / CUT09)
@@ -59,7 +64,7 @@ def args_from_argv(argv):
     ap.add_argument('--exposure', type=float, default=None)
     ap.add_argument('--set', action='append', default=[], help='look override key=value (floats)')
     ap.add_argument('--engine', default='EEVEE', choices=['EEVEE', 'CYCLES'])
-    ap.add_argument('--control', default='', choices=['', 'depth', 'depth_petals', 'petals', 'base', 'whale_matte'],
+    ap.add_argument('--control', default='', choices=['', 'depth', 'depth_petals', 'petals', 'base', 'whale_matte', 'near'],
                     help='depth: control video for Wan Fun-Control (out/control_depth); depth_petals: the same with '
                          'the previs petals added as light dots; petals: the petal layer alone, the rest black '
                          '(to lay the previs petals over a painted pass); base: the beauty without petals; '
@@ -359,8 +364,33 @@ class Petals:
         nt.links.new(add.outputs[0], out.inputs['Surface'])
         me.materials.append(m)
 
+    @staticmethod
+    def _h(i, j, c):
+        """Stable pseudo-random 0..1 from (petal id, clone, channel): the same every frame."""
+        return np.mod(np.sin(i * 12.9898 + j * 78.233 + c * 37.719) * 43758.5453, 1.0)
+
+    def _densify(self, d):
+        """v15e: more petals along the same flow. Each previs petal gets K-1 companions at a fixed offset
+        (keyed by its id, so they move with it and never jump), like the previs' own statistical layers."""
+        K = int(round(self.look['petal_dense']))
+        arr = {k: np.asarray(d[k]) for k in ('p', 'fruit', 'spin', 'bright', 'kind')}
+        if K <= 1 or 'idx' not in d.files or len(arr['p']) == 0:
+            return arr
+        ids = np.asarray(d['idx']).astype(np.float64)
+        out = {k: [v] for k, v in arr.items()}
+        for j in range(1, K):
+            v = np.stack([self._h(ids, j, c) - 0.5 for c in range(3)], 1)
+            v /= np.linalg.norm(v, axis=1, keepdims=True) + 1e-9
+            rad = self.look['dense_r'] * (0.15 + 0.85 * self._h(ids, j, 3)) ** (1 / 3)
+            out['p'].append(arr['p'] + v * rad[:, None])
+            out['fruit'].append(arr['fruit'] * (self._h(ids, j, 4) < 0.5))
+            out['spin'].append(np.mod(arr['spin'].astype(np.float64) + 2 * np.pi * self._h(ids, j, 5), 2 * np.pi))
+            out['bright'].append(arr['bright'] * (0.7 + 0.3 * self._h(ids, j, 6)))
+            out['kind'].append(arr['kind'])
+        return {k: np.concatenate(v) for k, v in out.items()}
+
     def update(self, fr, npz):
-        d = np.load(npz)
+        d = self._densify(np.load(npz))
         p = d['p'].astype(np.float64); n = len(p)
         me = self.ob.data
         me.clear_geometry()
@@ -398,6 +428,114 @@ class Petals:
         C = np.ones((n, 4, 4), np.float32); C[:, :, :3] = colv[:, None, :]
         at.data.foreach_set('color', C.ravel())
         me.update()
+
+
+class NearSnow:
+    """v15e (author's request 2026-11-25): a natural petal blizzard near the camera - real petal shapes
+    (petal_rgba: white with a golden base), tumbling on three axes, rising while drifting toward the whale
+    (the 'snow falling into the sky' of v14.9b), backlit by the whale (translucent) and catching its light
+    as they turn. Deterministic: positions are a closed-form function of time, so any frame renders alone.
+    NOTE: the previs keeps R14's foreground clear; this layer is an author-requested change.
+    Built in the camera frame of the cut's first frame (R14's camera is fixed; a moving camera needs a
+    world-space volume instead)."""
+    def __init__(self, look, meta):
+        self.look = look
+        c = meta['frames'][0]['cam']
+        self.cp, self.r, self.u, self.f = (np.array(c[k], float) for k in ('pos', 'r', 'u', 'f'))
+        self.lens = c['lens_mm']
+        n = int(look['near_n'])
+        g = np.random.default_rng(20261125)
+        z0, z1 = look['near_zmin'], look['near_zmax']
+        self.z = np.sqrt(z0 ** 2 + g.random(n) * (z1 ** 2 - z0 ** 2))          # more of the far ones (volume)
+        self.hw = self.z * (18.0 / self.lens); self.hh = self.z * (10.125 / self.lens)
+        # they travel along the stream (normalised screen: from lower right up toward the whale's wake) and
+        # gather around it, leaving the dark side calm; s wraps far off screen, the lateral offset is fixed
+        D = np.array(look.get('near_dir', (-0.66, 0.75))); D = D / np.linalg.norm(D); Nn = np.array([D[1], -D[0]])
+        self.D, self.N = D, Nn
+        band = g.random(n) < look.get('near_band', 0.65)
+        self.l = np.where(band, g.normal(look.get('near_band_c', 0.07), 0.28, n), g.uniform(-1.4, 1.4, n))
+        self.s0 = g.uniform(-1.6, 1.6, n); self.sv = g.uniform(0.20, 0.42, n)       # normalised units / s
+        self.vz = g.uniform(-0.15, 0.15, n)
+        self.fa = g.uniform(0.010, 0.030, (n, 3)) * self.z[:, None]; self.fw = g.uniform(0.5, 1.6, (n, 3)); self.fp = g.uniform(0, 2 * np.pi, (n, 3))
+        ax = g.standard_normal((n, 3)); self.ax = ax / np.linalg.norm(ax, axis=1, keepdims=True)
+        self.om = g.uniform(1.2, 4.0, n) * np.where(g.random(n) < 0.5, -1, 1); self.ph = g.uniform(0, 2 * np.pi, n)
+        q = g.standard_normal((n, 3)); self.a0 = q / np.linalg.norm(q, axis=1, keepdims=True)
+        b = np.cross(self.a0, g.standard_normal((n, 3))); self.b0 = b / np.linalg.norm(b, axis=1, keepdims=True)
+        self.s = look['near_size'] * g.uniform(0.8, 1.3, n)
+        me = bpy.data.meshes.new('NearSnow'); self.ob = bpy.data.objects.new('NearSnow', me)
+        bpy.context.scene.collection.objects.link(self.ob)
+        me.materials.append(self._material())
+        # the whale's light, for the near petals only (light linking): backlight + glints
+        ld = bpy.data.lights.new('NearGlint', 'POINT'); ld.color = PEARL; ld.energy = look['near_light']
+        try_set(ld, shadow_soft_size=8.0, use_shadow=False, volume_factor=0.0)
+        self.light = bpy.data.objects.new('NearGlint', ld); bpy.context.scene.collection.objects.link(self.light)
+        try:
+            coll = bpy.data.collections.new('NearReceivers'); coll.objects.link(self.ob)
+            self.light.light_linking.receiver_collection = coll
+        except Exception as e:
+            print('  [skip] near light linking:', e)
+
+    def _material(self):
+        m = bpy.data.materials.new('NearPetal'); try_set(m, use_nodes=True)
+        try_set(m, surface_render_method='DITHERED', use_backface_culling=False)
+        nt = m.node_tree; N = nt.nodes; L = nt.links
+        for n in list(N):
+            if n.type != 'OUTPUT_MATERIAL':
+                N.remove(n)
+        out = next(n for n in N if n.type == 'OUTPUT_MATERIAL')
+        tex = N.new('ShaderNodeTexImage')
+        tex.image = bpy.data.images.load(str(ASSETS.parent / 'textures' / 'petal_rgba.png'))
+        dif = N.new('ShaderNodeBsdfDiffuse'); L.new(tex.outputs['Color'], dif.inputs['Color'])
+        # whiter than the photo (its golden base stays at the root), a cool translucent glow when backlit,
+        # and a glossy sheen that flashes as a petal turns toward the whale's light
+        wht = N.new('ShaderNodeMix'); wht.data_type = 'RGBA'; wht.inputs['Factor'].default_value = 0.35
+        L.new(tex.outputs['Color'], wht.inputs[6]); wht.inputs[7].default_value = (0.95, 0.97, 1.0, 1)
+        L.new(wht.outputs[2], dif.inputs['Color'])
+        trl = N.new('ShaderNodeBsdfTranslucent'); trl.inputs['Color'].default_value = (0.88, 0.93, 1.0, 1)
+        mx = N.new('ShaderNodeMixShader'); mx.inputs['Fac'].default_value = 0.35
+        L.new(dif.outputs[0], mx.inputs[1]); L.new(trl.outputs[0], mx.inputs[2])
+        gl = N.new('ShaderNodeBsdfGlossy'); gl.inputs['Roughness'].default_value = 0.32
+        gl.inputs['Color'].default_value = (0.95, 0.96, 1.0, 1)
+        mg = N.new('ShaderNodeAddShader'); L.new(mx.outputs[0], mg.inputs[0]); L.new(gl.outputs[0], mg.inputs[1])
+        em = N.new('ShaderNodeEmission'); L.new(wht.outputs[2], em.inputs['Color']); em.inputs['Strength'].default_value = self.look['near_emit']
+        add = N.new('ShaderNodeAddShader'); L.new(mg.outputs[0], add.inputs[0]); L.new(em.outputs[0], add.inputs[1])
+        tr = N.new('ShaderNodeBsdfTransparent')
+        fin = N.new('ShaderNodeMixShader'); L.new(tex.outputs['Alpha'], fin.inputs['Fac'])
+        L.new(tr.outputs[0], fin.inputs[1]); L.new(add.outputs[0], fin.inputs[2])
+        L.new(fin.outputs[0], out.inputs['Surface'])
+        return m
+
+    @staticmethod
+    def _rot(v, k, th):
+        c, s_ = np.cos(th)[:, None], np.sin(th)[:, None]
+        return v * c + np.cross(k, v) * s_ + k * np.sum(k * v, 1, keepdims=True) * (1 - c)
+
+    def update(self, fr, t):
+        sN = np.mod(self.s0 + self.sv * t + 1.6, 3.2) - 1.6
+        q = sN[:, None] * self.D + self.l[:, None] * self.N
+        x = q[:, 0] * self.hw; y = q[:, 1] * self.hh
+        fl = self.fa * np.sin(self.fw * t + self.fp)
+        x = x + fl[:, 0]; y = y + fl[:, 1]; z = self.z + self.vz * np.sin(0.3 * t + self.fp[:, 2]) + fl[:, 2]
+        C = self.cp + x[:, None] * self.r + y[:, None] * self.u + z[:, None] * self.f
+        th = self.om * t + self.ph
+        A = self._rot(self.a0, self.ax, th); B = self._rot(self.b0, self.ax, th)
+        w = (0.5 * 0.78 * self.s)[:, None]; h = (0.5 * self.s)[:, None]
+        V = np.stack([C - w * A - h * B, C + w * A - h * B, C + w * A + h * B, C - w * A + h * B], 1)
+        n = len(C); me = self.ob.data
+        me.clear_geometry()
+        me.vertices.add(n * 4); me.vertices.foreach_set('co', V.ravel())
+        me.loops.add(n * 4); me.loops.foreach_set('vertex_index', np.arange(n * 4, dtype=np.int32))
+        me.polygons.add(n); me.polygons.foreach_set('loop_start', np.arange(0, n * 4, 4, dtype=np.int32))
+        try:
+            me.polygons.foreach_set('loop_total', np.full(n, 4, np.int32))
+        except Exception:
+            pass
+        me.update(calc_edges=True)
+        uvl = me.uv_layers.new(name='UVMap') if not me.uv_layers else me.uv_layers[0]
+        uvl.data.foreach_set('uv', np.tile(np.array([0, 0, 1, 0, 1, 1, 0, 1], np.float32), n))
+        me.update()
+        self.light.location = fr['whale_light']['p']
+        self.light.data.energy = self.look['near_light'] * fr['whale_light']['I']
 
 
 class WhaleLight:
@@ -444,9 +582,26 @@ def to_petal_layer():
     sc.world.node_tree.nodes.get('Background').inputs['Color'].default_value = (0, 0, 0, 1)
 
 
+def hide_near():
+    ob = bpy.context.scene.objects.get('NearSnow')
+    if ob is not None:
+        ob.hide_render = True
+
+
 def to_base():
     """The beauty without the petals (post/finish.py paints the petals from the petal layer)."""
     bpy.context.scene.objects['Petals'].hide_render = True
+    hide_near()
+
+
+def to_near_layer():
+    """The near blizzard alone on a transparent film (RGBA; laid over the finished frame)."""
+    sc = bpy.context.scene
+    for ob in list(sc.objects):
+        if ob.type == 'MESH' and ob.name != 'NearSnow':
+            ob.hide_render = True
+    try_set(sc.render, film_transparent=True)
+    sc.render.image_settings.color_mode = 'RGBA'
 
 
 def to_whale_matte():
@@ -548,15 +703,22 @@ def main(argv):
     bpy.ops.wm.read_factory_settings(use_empty=True)
     t0 = time.time()
     build_world(look)
-    build_camera(meta)
+    cam = build_camera(meta)
     setup_render(a, meta, look)
     whale = Whale(look, meta); wl = WhaleLight(look); pet = Petals(look, a.res)
+    near = NearSnow(look, meta) if look['near_n'] > 0 else None
+    if look['fstop'] > 0:                          # focus on the whale: the near petals go soft
+        try_set(cam.data.dof, use_dof=True, aperture_fstop=look['fstop'])
     if look.get('whale_self_light', 0.0) < 0.5:
         wl.exclude(whale.ob)
+    if a.control in ('depth', 'depth_petals', 'petals', 'whale_matte'):
+        hide_near()
     if a.control in ('depth', 'depth_petals'):
         to_depth_control(a, keep_petals=a.control == 'depth_petals')
     elif a.control == 'petals':
         to_petal_layer()
+    elif a.control == 'near':
+        to_near_layer()
     elif a.control == 'base':
         to_base()
     elif a.control == 'whale_matte':
@@ -573,6 +735,10 @@ def main(argv):
         fr = frames[k]
         sc.frame_set(k)
         whale.update(fr); wl.update(fr)
+        if near is not None:
+            near.update(fr, k / meta['fps'])
+        if look['fstop'] > 0:
+            cam.data.dof.focus_distance = float(np.linalg.norm(np.array(fr['whale']['p']) - np.array(fr['cam']['pos'])))
         npz = a.cache / 'petals' / f'f_{k:04d}.npz'
         if npz.exists():
             pet.update(fr, npz)
