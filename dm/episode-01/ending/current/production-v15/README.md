@@ -16,7 +16,9 @@ cache/<cut>/cut.json + petals/f_####.npz      ← カメラ・鯨の骨格フレ
    │ blender/render_cut.py (Blender 5.3, EEVEE)
    ▼
 renders/<cut>_<tag>/beauty/####.png  →  <cut>_guide.mp4（ガイド映像）
-   ├─ 方式① post/paint.py      → paint/ + <cut>_paint.mp4   （AIなし・絵画調の後処理）
+   ├─【本命 v15d】render_cut.py --control base / petals / whale_matte → post/finish.py
+   │              → final/ + <cut>_final_<版>.mp4             （AIなし。層に分けて筆致・花弁の光・色を仕上げる）
+   ├─ 方式① post/paint.py      → paint/ + <cut>_paint.mp4   （AIなし・絵画調の後処理。v15d で finish.py に置き換え）
    ├─ 方式② Google Flow（Gemini Omni / Veo, video-to-video） → handoff/flow_R14.md の手順で人が操作
    ├─ 方式③ wan/vid2vid.py     → wan/*.mp4                  （ローカル Wan 2.2 TI2V-5B で描き直し）
    └─ 方式③制御【保留 2026-11-25：岩壁・月光を創作する】 render_cut.py --control depth → <cut>_control_depth.mp4
@@ -32,6 +34,7 @@ renders/<cut>_<tag>/beauty/####.png  →  <cut>_guide.mp4（ガイド映像）
 | PC環境（リポジトリ取得・Pillow/scipy） | 済 2026-11-24 | `C:\VideoStudio\projects\ruosuen\{repo,pylib}` |
 | 書き出し R14 | 済 | 192フレーム、花弁 2万→8.5万（視野内） |
 | Blenderシーン（洞窟・裂け目・地形・水・鯨・月光柱・花弁） | 済（大枠） | 月光柱はプリヴィズ `moonlit` と一致を確認 |
+| **R14 完成版候補** | **済 v15d 2026-11-25** | `renders/R14_d/R14_final_v15d.mp4`（AIなし）。並べた動画 `R14_previs_vs_final_v15d.mp4`。作り方は `review/R14_visual_review_v15a.md` の v15d 節。作者の確認待ち |
 | R14 本描画 1280×720 | 済 v15c 2026-11-25 | `renders/R14_c/`：プリヴィズと照合して合わせた版（尾の位相・鯨の描き方・目・空気と花弁）。並べた動画 `R14_previs_vs_v15c.mp4`。v15b は `R14_b/`、v15a は `R14_a/` |
 | 尾の打ち方の位相 | 済 v15c | プリヴィズの `PATH.retime` を Blender 側にも。**他のカットは export し直すこと**（`cut.json` に `stroke_phase0` が要る） |
 | 鯨の色（尾の桃色・胸びれの黄緑） | 済 v15b | glbの `COLOR_0` はリグ用データ。`Whale._drop_vertex_tint` で Base Color から外した |
@@ -39,7 +42,7 @@ renders/<cut>_<tag>/beauty/####.png  →  <cut>_guide.mp4（ガイド映像）
 | 方式② Flow | 未（作者の操作待ち） | `handoff/flow_R14.md` |
 | 方式③ Wan | 済（d45/d62/d78） | 目で見ると d62 で鯨の形が崩れ、d78 は鯨が逆向き・別の生き物。岩と月を描き足す |
 | 方式③制御 Fun-Control 5B | **保留**（2026-11-25 作者の指摘で、洞窟の岩壁・月光・鯨の形がプリヴィズと違うと確認）。R14 8秒 v15b | 花弁なしで描かせ（`--clear-air`）、プリヴィズの花弁を重ねる案Bを採用。0〜120と71〜191の2本をつないだ192フレーム：`renders/R14_b/R14_functl_petals_v15b.mp4`（960×544）。残り：月光の向きはモデルの創作、鯨に陰影なし、解像度 |
-| 3方式の比較 | 済（目視） | `review/R14_visual_review_v15a.md`。**本命は Blender の作り込み（v15c）**。次は絵の質（鯨の質感・花弁の筆の点・画面の筆致）を Blender 側で上げる |
+| 3方式の比較 | 済（目視） | `review/R14_visual_review_v15a.md`。**本命は Blender の作り込み＋`finish.py`（v15d）** |
 | 他カット（R01〜R19） | 未 | 方式は決定。R13→R15→R17b→R18 の「雪の山場」から |
 
 ## 3. PCでの実行（VideoStudio PC：RTX 3060 12GB、Blender 5.3、Windows）
@@ -64,6 +67,11 @@ cd C:\VideoStudio\projects\ruosuen\repo
 git fetch origin production/v15-blender-base-20261124 && git checkout production/v15-blender-base-20261124
 "C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P dm\episode-01\ending\current\production-v15\pc_run.py -- --cut R14 --steps export,render,encode,paint --tag a
 "C:\Program Files\Blender Foundation\Blender 5.3\5.3\python\bin\python.exe" dm\episode-01\ending\current\production-v15\wan\vid2vid.py --video C:\VideoStudio\projects\ruosuen\renders\R14_a\R14_guide.mp4 --out C:\VideoStudio\projects\ruosuen\renders\R14_a\wan --denoise 0.55
+rem 本命 v15d：層を描く → 仕上げ（PYTHONPATH=pylib）
+"C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P dm\episode-01\ending\current\production-v15\blender\render_cut.py -- --cache C:\VideoStudio\projects\ruosuen\cache\R14 --out C:\VideoStudio\projects\ruosuen\renders\R14_d --res 1280 --control base
+"C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P dm\episode-01\ending\current\production-v15\blender\render_cut.py -- --cache C:\VideoStudio\projects\ruosuen\cache\R14 --out C:\VideoStudio\projects\ruosuen\renders\R14_d --res 1280 --control petals
+"C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P dm\episode-01\ending\current\production-v15\blender\render_cut.py -- --cache C:\VideoStudio\projects\ruosuen\cache\R14 --out C:\VideoStudio\projects\ruosuen\renders\R14_d --res 1280 --control whale_matte
+"C:\Program Files\Blender Foundation\Blender 5.3\5.3\python\bin\python.exe" dm\episode-01\ending\current\production-v15\post\finish.py --layers C:\VideoStudio\projects\ruosuen\renders\R14_d --dst C:\VideoStudio\projects\ruosuen\renders\R14_d\final --mp4 C:\VideoStudio\projects\ruosuen\renders\R14_d\R14_final_v15d.mp4
 rem 方式③制御：奥行きの制御映像 → Fun-Control（models/diffusion_models/wan2.2_fun_control_5B_bf16.safetensors が要る）
 "C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P dm\episode-01\ending\current\production-v15\blender\render_cut.py -- --cache C:\VideoStudio\projects\ruosuen\cache\R14 --out C:\VideoStudio\projects\ruosuen\renders\R14_b --res 960 --control depth
 "C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P dm\episode-01\ending\current\production-v15\blender\render_cut.py -- --cache C:\VideoStudio\projects\ruosuen\cache\R14 --out C:\VideoStudio\projects\ruosuen\renders\R14_b --res 1280 --control petals
