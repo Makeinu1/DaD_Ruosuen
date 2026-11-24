@@ -189,20 +189,19 @@ WAYPOINTS = (
     + _arc(40.0, 55.7, 50.0, -15, 112, 25.5, 50.0, 6.2, 6.4)
     # ... the climbing crossing to the west (R14 telephoto, R15 passing the camera) ...
     + [(2.8, 94.6, 54.0, 7.2), (-15.8, 87.1, 58.5, 8.6), (-34.3, 79.6, 63.0, 8.8)]
-    # ... and a rising right-hand spiral (R = 48 m) towards the fissure, steeper from the
-    # climax on (R16 passes over the camera into the sky), joining the climb to the opening
-    + _spiral(-52.3, 124.1, 48.0, -68, -250, 63.0, 128.0, 0.225, 10.5, 6.2)[1:]
-    + [(-48.0, 166.0, 138.0, 6.0), (-31.0, 163.0, 149.0, 5.8), (-22.0, 163.0, 160.0, 5.6), (-17, 169, 178.0, 6.0),
-       (-15, 181, 200.0, 11.0), (-13, 193, 222.0, 20.0)]
-    # v14.5: out of the narrow top slot it does not level off; it keeps the same straight line
-    # (elevation ~61 deg, the line it has climbed since z=178) and flies on towards the moon,
-    # speeding up with its last strokes, so that it recedes into the moon composed on that
-    # line (R18). EXIT_DIR is that line.
-    + [(-11.4, 202.8, 240.0, 27.0), (-9.4, 214.8, 262.0, 32.0), (-6.8, 230.1, 290.0, 36.0),
-       (-3.2, 251.9, 330.0, 39.0), (3.2, 290.0, 400.0, 40.0), (12.3, 344.6, 500.0, 40.0),
-       (25.9, 426.3, 650.0, 40.0)]
+    # ... and a rising right-hand spiral (R = 48 m) towards the fissure, steeper as it turns
+    # (R15 follows it as it turns up), then - v14.7 - it lifts its head and from z ~ 130 flies
+    # ONE straight line (pitch ~56 deg, towards the east-north-east) through the slot and on into
+    # the sky: R17 follows it along that line, R18 watches it go into the moon composed at the
+    # end of it. EXIT_DIR / EXIT_P0 describe that line.
+    + _spiral(-52.3, 124.1, 48.0, -68, -235, 63.0, 120.0, 0.225, 10.5, 7.5, ease=0.25)[1:]
+    + [(-67.2, 170.0, 136.0, 8.0), (-58.5, 174.0, 150.0, 9.5), (-49.2, 178.2, 165.0, 10.5),
+       (-39.9, 182.4, 180.0, 11.5), (-33.7, 185.2, 190.0, 13.0), (-24.4, 189.4, 205.0, 17.0),
+       (-12.0, 195.0, 225.0, 22.0), (9.7, 204.8, 260.0, 28.0), (34.5, 216.0, 300.0, 33.0),
+       (96.6, 244.1, 400.0, 38.0), (189.7, 286.1, 550.0, 40.0)]
 )
-EXIT_DIR = np.array([2.0, 12.0, 22.0]) / np.linalg.norm([2.0, 12.0, 22.0])
+EXIT_DIR = np.array([0.5130, 0.2318, 0.8265]); EXIT_DIR = EXIT_DIR / np.linalg.norm(EXIT_DIR)
+EXIT_P0 = np.array([-27.52, 187.99, 200.0])     # the line at z = 200
 
 def _catmull(pts, n=40):
     """Centripetal Catmull-Rom through pts (M,3); returns dense samples (K,3)."""
