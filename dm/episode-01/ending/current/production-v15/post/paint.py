@@ -50,7 +50,7 @@ def paper(h, w, seed=11):
 
 def grade(x):
     L = (x @ np.array([0.299, 0.587, 0.114], np.float32))[..., None]
-    shadow = np.array([0.020, 0.034, 0.070], np.float32)          # night blue in the darks
+    shadow = np.array([0.006, 0.011, 0.026], np.float32)          # night blue in the darks (keep them dark)
     high = np.array([1.0, 0.985, 0.95], np.float32)               # warm white in the lights
     x = x + shadow * (1 - np.clip(L * 3, 0, 1))
     x = x * (0.92 + 0.08 * high)
@@ -66,7 +66,7 @@ def process(im, r, grain, vign):
     snow = np.clip(x - med, 0, None)
     base = kuwahara(med, r)
     base = np.stack([ndi.gaussian_filter(base[..., c], 0.8) for c in range(3)], -1)
-    veil = np.stack([ndi.gaussian_filter(snow[..., c], 2.2) for c in range(3)], -1) * 3.2
+    veil = np.stack([ndi.gaussian_filter(snow[..., c], 2.2) for c in range(3)], -1) * 2.4
     sl = snow.max(-1)
     thr = np.quantile(sl, 0.985)
     dab = ndi.grey_dilation(np.where(sl > thr, sl, 0), footprint=np.array([[0, 1, 0], [1, 1, 1], [0, 1, 0]]))
@@ -75,11 +75,12 @@ def process(im, r, grain, vign):
     hi = np.clip(x - 0.42, 0, None)
     bloom = 0.55 * np.stack([ndi.gaussian_filter(hi[..., c], 5) for c in range(3)], -1) \
         + 0.45 * np.stack([ndi.gaussian_filter(hi[..., c], 22) for c in range(3)], -1)
-    x = x + 0.9 * bloom
+    x = x + 0.6 * bloom
     x = grade(x)
     x = x * grain[..., None] * vign[..., None]
-    x = 1 - np.exp(-1.25 * np.clip(x, 0, None))                   # soft shoulder instead of clipping
-    return Image.fromarray(np.clip(x / (1 - np.exp(-1.25)) * 255, 0, 255).astype(np.uint8))
+    x = np.clip(x, 0, None)
+    x = np.where(x < 0.6, x, 0.6 + (1 - np.exp(-(x - 0.6) * 2.5)) * 0.4)   # shoulder above 0.6, mids untouched
+    return Image.fromarray(np.clip(x * 255, 0, 255).astype(np.uint8))
 
 
 def main():
