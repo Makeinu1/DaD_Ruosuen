@@ -122,6 +122,10 @@ def main():
             'moon_dir': w.MOON_DIR.tolist(), 'ev_contact': float(pv.EV['contact']), 'rim_z': w.RIM_Z, 'top_z': w.TOP_Z, 'top_narrow': w.TOP_NARROW,
             'fissure': w.FISSURE, 'party': [list(map(float, p)) for p in pv.PARTY], 'pc': w.PC.tolist(),
             'whale_local_axes': 'x forward (head +x), y left, z up; same scale as wh01_v20_hero.glb',
+            # the previs retimes its whale path (stroke phase, fast stroke); the tail stroke and the light
+            # pulse are wrong in Blender unless WhalePath gets the same retime
+            'stroke_phase0': float(pv.PATH.stroke_phase0),
+            'fast_stroke_tau': None if pv.PATH.fast_stroke_tau is None else float(pv.PATH.fast_stroke_tau),
             'frames': frames}
     (a.out / 'cut.json').write_text(json.dumps(meta, indent=1), encoding='utf-8')
     print('done', a.out, f'{time.time() - t0:.0f}s')
