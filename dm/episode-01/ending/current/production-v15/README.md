@@ -28,11 +28,11 @@ renders/<cut>_<tag>/beauty/####.png  →  <cut>_guide.mp4（ガイド映像）
 | PC環境（リポジトリ取得・Pillow/scipy） | 済 2026-11-24 | `C:\VideoStudio\projects\ruosuen\{repo,pylib}` |
 | 書き出し R14 | 済 | 192フレーム、花弁 2万→8.5万（視野内） |
 | Blenderシーン（洞窟・裂け目・地形・水・鯨・月光柱・花弁） | 済（大枠） | 月光柱はプリヴィズ `moonlit` と一致を確認 |
-| R14 本描画 1280×720 | 実行中/済を確認 | `renders/R14_a/` |
-| 方式① 絵画調 | 試作 | 雪を「もや＋少数の粒」に分け、形はKuwaharaで筆面に |
-| 方式② Flow | 素材準備 | `handoff/flow_R14.md` |
-| 方式③ Wan | 準備済 | ノイズ戻し量 `--denoise` 0.45/0.6 で比較予定 |
-| 3方式の比較シート | 未 | `review/` に小さなjpgで置く |
+| R14 本描画 1280×720 | 済 | `renders/R14_a/`（EEVEE 1フレーム約0.5秒） |
+| 方式① 絵画調 | 済（試作） | 追従度0.958。夜の暗さを保つ版に修正済み |
+| 方式② Flow | 未（作者の操作待ち） | `handoff/flow_R14.md` |
+| 方式③ Wan | 済（d45/d62/d78） | 制御モデルなしでは d62 が上限。d78 は鯨が位置から外れる |
+| 3方式の比較 | 済（暫定） | `review/R14_compare_v15a.md`、シートはPC `renders/R14_a/compare_R14.png` |
 | 他カット（R01〜R19） | 未 | R14で方式を決めてから |
 
 ## 3. PCでの実行（VideoStudio PC：RTX 3060 12GB、Blender 5.3、Windows）
