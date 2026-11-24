@@ -72,6 +72,12 @@ def process(im, r, grain, vign):
     dab = ndi.grey_dilation(np.where(sl > thr, sl, 0), footprint=np.array([[0, 1, 0], [1, 1, 1], [0, 1, 0]]))
     dab = ndi.gaussian_filter(dab, 0.7)[..., None] * np.array([1.0, 0.97, 0.90], np.float32)
     x = base + veil + 0.8 * dab
+    # keep the whale smooth: no Kuwahara mosaic and no snow dabs on the large bright body (v15b; before,
+    # the whale looked like sand). The mask is the big bright blob of the median image, feathered.
+    Lm = ndi.gaussian_filter(med @ np.array([0.299, 0.587, 0.114], np.float32), 2.0)
+    wm = ndi.gaussian_filter(ndi.binary_dilation(Lm > 0.5, iterations=2).astype(np.float32), 1.5)[..., None]
+    whale = np.stack([ndi.gaussian_filter(med[..., c], 0.6) for c in range(3)], -1)
+    x = x * (1 - wm) + whale * wm
     hi = np.clip(x - 0.42, 0, None)
     bloom = 0.55 * np.stack([ndi.gaussian_filter(hi[..., c], 5) for c in range(3)], -1) \
         + 0.45 * np.stack([ndi.gaussian_filter(hi[..., c], 22) for c in range(3)], -1)
