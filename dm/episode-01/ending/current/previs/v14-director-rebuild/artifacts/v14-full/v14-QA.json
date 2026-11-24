@@ -11,41 +11,42 @@
     "side": 127.65,
     "cross0": 151.9,
     "climb": 173.1,
-    "lip": 182.95,
-    "top": 186.45
+    "lip": 183.0,
+    "top": 188.3
   },
   "tau0_per_cut": {
     "R05": 31.15,
     "R06": 72.9,
     "R04": 7.75,
-    "R02": 5.75,
-    "R01": 3.75,
+    "R02": 6.25,
+    "R01": 4.25,
     "R07": 76.4,
     "R08": 80.9,
     "R09": 90.6,
     "R10": 112.7,
     "R11": 119.45,
     "R12": 131.05,
-    "R13": 134.55,
-    "R14": 148.7,
+    "R13": 134.05,
+    "R14": 145.7,
     "R15": 153.7,
     "R17": 174.7,
-    "R18": 183.95,
-    "R19": 486.45
+    "R17b": 178.2,
+    "R18": 184.8,
+    "R19": 488.3
   },
   "tau_lift": 135.05,
   "path_length_m": 1465.5,
   "flowers": 68574,
-  "petals": 193536,
-  "duration_s": 66.5,
+  "petals": 194000,
+  "duration_s": 70.5,
   "r15_slow_motion": {
-    "centre_film_s": 49.23,
+    "centre_film_s": 50.23,
     "rate": 0.6,
     "plateau_s": 1.1,
     "world_s_in_cut": 5.4
   },
-  "tau_magic_end": 186.4,
-  "frames": 1596,
+  "tau_magic_end": 186.9,
+  "frames": 1692,
   "per_cut": {
     "R01": {
       "mean_luma": 26.1
@@ -94,8 +95,8 @@
       "mean_luma": 19.4,
       "whale_width_px_start_mid_end": [
         15193,
-        10364,
-        912
+        12812,
+        2102
       ]
     },
     "R09": {
@@ -118,37 +119,37 @@
     },
     "R11": {
       "min_dist_m": 37.73,
-      "mean_luma": 26.7,
+      "mean_luma": 27.6,
       "whale_width_px_start_mid_end": [
         832,
-        494,
-        390
+        567,
+        437
       ]
     },
     "R12": {
-      "mean_luma": 41.2
+      "mean_luma": 41.5
     },
     "R13": {
-      "min_dist_m": 55.23,
-      "mean_luma": 29.3,
+      "min_dist_m": 46.28,
+      "mean_luma": 27.6,
       "whale_width_px_start_mid_end": [
-        192,
-        149,
-        198
+        282,
+        244,
+        208
       ]
     },
     "R14": {
       "min_dist_m": 151.31,
-      "mean_luma": 43.2,
+      "mean_luma": 37.6,
       "whale_width_px_start_mid_end": [
-        404,
-        412,
-        467
+        259,
+        242,
+        286
       ]
     },
     "R15": {
       "min_dist_m": 8.87,
-      "mean_luma": 61.5,
+      "mean_luma": 60.7,
       "whale_width_px_start_mid_end": [
         633,
         1079,
@@ -157,20 +158,29 @@
     },
     "R17": {
       "min_dist_m": 17.39,
-      "mean_luma": 29.3,
+      "mean_luma": 27.5,
       "whale_width_px_start_mid_end": [
         506,
-        331,
-        246
+        361,
+        284
+      ]
+    },
+    "R17b": {
+      "min_dist_m": 288.87,
+      "mean_luma": 21.0,
+      "whale_width_px_start_mid_end": [
+        35,
+        38,
+        33
       ]
     },
     "R18": {
-      "min_dist_m": 38.09,
-      "mean_luma": 53.7,
+      "min_dist_m": 331.88,
+      "mean_luma": 49.3,
       "whale_width_px_start_mid_end": [
-        438,
-        226,
-        132
+        156,
+        137,
+        118
       ]
     },
     "R19": {
