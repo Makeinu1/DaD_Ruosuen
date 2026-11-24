@@ -31,12 +31,14 @@ LOOK = {
     # v15c (2026-11-25): matched to the previs v14.9b R14 frames by eye and by region means -
     # navy air, crisp white petals (previs draws far flakes as hard dots), whale as in the previs
     'guide': dict(exposure=0.0, vol_density=0.00035, vol_aniso=0.55, moon_strength=4.0,
-                  moon_color=(0.70, 0.80, 1.0), whale_light_w=1.5e5, whale_light_vol=0.5, whale_emit=0.8,
+                  moon_color=(0.70, 0.80, 1.0), whale_light_w=1.5e5, whale_light_vol=0.5, whale_emit=0.95,
                   petal_emit=2.2, fruit_emit=0.4, petal_min_px=0.8, rock=0.018, bg=(0.003, 0.005, 0.012),
                   whale_form=0.6, whale_opal=1.0, whale_self_light=0.0, eye_out=1.08,
-                  air_color=(0.6, 0.74, 1.0), filter_px=0.8),
+                  air_color=(0.6, 0.74, 1.0), filter_px=0.8,
+                  whale_tex=0.7, whale_belly=0.35, whale_top=(0.8, 1.1)),
 }
 PEARL = (0.86, 0.93, 1.0)
+BELLY = (0.55, 0.68, 0.95)          # the shaded underside goes blue (originals CUT05 / CUT09)
 # previs whale_layer (v14.9b): pearl-opal colours along the body, by hue = 0 at the tail .. 1 at the head
 OPAL = ((0.08, (228, 226, 212)), (0.30, (214, 208, 238)), (0.55, (234, 238, 242)), (0.85, (184, 216, 240)))
 FRUIT = (1.0, 0.80, 0.45)
@@ -57,10 +59,11 @@ def args_from_argv(argv):
     ap.add_argument('--exposure', type=float, default=None)
     ap.add_argument('--set', action='append', default=[], help='look override key=value (floats)')
     ap.add_argument('--engine', default='EEVEE', choices=['EEVEE', 'CYCLES'])
-    ap.add_argument('--control', default='', choices=['', 'depth', 'depth_petals', 'petals'],
+    ap.add_argument('--control', default='', choices=['', 'depth', 'depth_petals', 'petals', 'base', 'whale_matte'],
                     help='depth: control video for Wan Fun-Control (out/control_depth); depth_petals: the same with '
                          'the previs petals added as light dots; petals: the petal layer alone, the rest black '
-                         '(to lay the previs petals over a painted pass)')
+                         '(to lay the previs petals over a painted pass); base: the beauty without petals; '
+                         'whale_matte: the whale white, the rest black (masks for post/finish.py)')
     ap.add_argument('--depth-near', type=float, default=120.0, help='metres; nearer is white')
     ap.add_argument('--depth-far', type=float, default=700.0, help='metres; farther is black')
     return ap.parse_args(argv)
@@ -278,7 +281,33 @@ class Whale:
         mix.inputs['Factor'].default_value = self.look['whale_opal']
         mix.inputs[6].default_value = (*PEARL, 1)
         L.new(ramp.outputs['Color'], mix.inputs[7])
-        L.new(mix.outputs[2], b.inputs['Emission Color'])
+        col = mix.outputs[2]
+        # v15d: paint inside the glow - the gouache albedo (strokes, ventral grooves) modulates the light,
+        # the back facing the sky is brighter, the underside cooler and darker (as in the key paintings)
+        tex = next((n for n in N if n.type == 'TEX_IMAGE'), None)
+        if tex is not None and self.look['whale_tex'] > 0:
+            bw = N.new('ShaderNodeRGBToBW'); L.new(tex.outputs['Color'], bw.inputs[0])
+            mr = N.new('ShaderNodeMapRange'); mr.clamp = True
+            mr.inputs['From Min'].default_value = 0.4; mr.inputs['From Max'].default_value = 1.0
+            mr.inputs['To Min'].default_value = 1.0 - self.look['whale_tex']; mr.inputs['To Max'].default_value = 1.0
+            L.new(bw.outputs[0], mr.inputs['Value'])
+            mt = N.new('ShaderNodeMix'); mt.data_type = 'RGBA'; mt.blend_type = 'MULTIPLY'
+            mt.inputs['Factor'].default_value = 1.0
+            L.new(col, mt.inputs[6]); L.new(mr.outputs['Result'], mt.inputs[7]); col = mt.outputs[2]
+        geo = N.new('ShaderNodeNewGeometry'); sz = N.new('ShaderNodeSeparateXYZ')
+        L.new(geo.outputs['Normal'], sz.inputs[0])
+        neg = N.new('ShaderNodeMath'); neg.operation = 'MULTIPLY'; neg.use_clamp = True
+        neg.inputs[1].default_value = -self.look['whale_belly']; L.new(sz.outputs['Z'], neg.inputs[0])
+        mb = N.new('ShaderNodeMix'); mb.data_type = 'RGBA'
+        L.new(neg.outputs[0], mb.inputs['Factor']); L.new(col, mb.inputs[6]); mb.inputs[7].default_value = (*BELLY, 1)
+        L.new(mb.outputs[2], b.inputs['Emission Color'])
+        lo, hi = self.look['whale_top']
+        top = N.new('ShaderNodeMapRange'); top.inputs['From Min'].default_value = -1.0; top.inputs['From Max'].default_value = 1.0
+        top.inputs['To Min'].default_value = lo; top.inputs['To Max'].default_value = hi
+        L.new(sz.outputs['Z'], top.inputs['Value'])
+        k2 = N.new('ShaderNodeMath'); k2.operation = 'MULTIPLY'
+        L.new(k.outputs[0], k2.inputs[0]); L.new(top.outputs['Result'], k2.inputs[1])
+        L.new(k2.outputs[0], b.inputs['Emission Strength'])
 
     def update(self, fr):
         wh = fr['whale']; tau = fr['tau']
@@ -415,6 +444,33 @@ def to_petal_layer():
     sc.world.node_tree.nodes.get('Background').inputs['Color'].default_value = (0, 0, 0, 1)
 
 
+def to_base():
+    """The beauty without the petals (post/finish.py paints the petals from the petal layer)."""
+    bpy.context.scene.objects['Petals'].hide_render = True
+
+
+def to_whale_matte():
+    sc = bpy.context.scene
+    def flat(name, v):
+        m = bpy.data.materials.new(name); try_set(m, use_nodes=True); nt = m.node_tree
+        for n in list(nt.nodes):
+            if n.type != 'OUTPUT_MATERIAL':
+                nt.nodes.remove(n)
+        em = nt.nodes.new('ShaderNodeEmission'); em.inputs['Strength'].default_value = v
+        em.inputs['Color'].default_value = (1, 1, 1, 1)
+        nt.links.new(em.outputs[0], next(n for n in nt.nodes if n.type == 'OUTPUT_MATERIAL').inputs['Surface'])
+        return m
+    white, black = flat('MatteWhite', 1.0), flat('MatteBlack', 0.0)
+    for ob in list(sc.objects):
+        if ob.type == 'LIGHT' or ob.name in ('CaveAir', 'Petals'):
+            ob.hide_render = True
+        elif ob.type == 'MESH':
+            ob.data.materials.clear(); ob.data.materials.append(white if ob.name.startswith('WH01') else black)
+    sc.world.node_tree.nodes.get('Background').inputs['Color'].default_value = (0, 0, 0, 1)
+    try_set(sc.view_settings, view_transform='Standard', look='None', exposure=0.0)
+    try_set(sc.eevee, taa_render_samples=8)
+
+
 def to_depth_control(a, keep_petals=False):
     """Swap every surface for a camera-distance ramp (near white -> far black, log scale), drop the air
     volume, the petals and the lights. The geometry, camera and whale deformation are untouched, so the
@@ -501,6 +557,10 @@ def main(argv):
         to_depth_control(a, keep_petals=a.control == 'depth_petals')
     elif a.control == 'petals':
         to_petal_layer()
+    elif a.control == 'base':
+        to_base()
+    elif a.control == 'whale_matte':
+        to_whale_matte()
     out = a.out / (f'control_{a.control}' if a.control else 'beauty'); out.mkdir(parents=True, exist_ok=True)
     ks = sorted(frames)
     if a.frames:
