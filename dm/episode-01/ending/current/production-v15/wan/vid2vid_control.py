@@ -26,6 +26,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from vid2vid import COMFY_ROOT, PROMPT, NEGATIVE, call      # noqa: E402  same prompt as the uncontrolled pass
 
 UNET = 'wan2.2_fun_control_5B_bf16.safetensors'
+# --clear-air: the model paints no snow, so that post/overlay_petals.py can lay the previs petals on top
+PROMPT_CLEAR = ('hand-painted animated film background art, gouache and watercolour on paper, visible soft brush '
+                'strokes; a vast dark underground cavern at night with dim rock walls; a giant pale pearl-white whale '
+                'with a soft inner glow swims slowly through the clear dark air of the cavern; a faint cold moonbeam '
+                'slants down from above; deep blue-violet night palette, quiet, solemn, beautiful, cinematic, steady camera')
+NEGATIVE_CLEAR = NEGATIVE + ', petals, snow, particles, sparkles, dust, confetti, stars'
 
 
 def graph(ctl_name, ref, a):
@@ -82,11 +88,15 @@ def main():
     ap.add_argument('--prompt', default=PROMPT)
     ap.add_argument('--negative', default=NEGATIVE)
     ap.add_argument('--tag', default='')
+    ap.add_argument('--clear-air', action='store_true', help='no painted snow (lay the previs petals over it afterwards)')
     a = ap.parse_args()
+    if a.clear_air:
+        a.prompt = PROMPT_CLEAR if a.prompt == PROMPT else a.prompt
+        a.negative = NEGATIVE_CLEAR if a.negative == NEGATIVE else a.negative
     if not (COMFY_ROOT / 'models' / 'diffusion_models' / UNET).exists():
         raise SystemExit(f'missing model: models/diffusion_models/{UNET}')
     ref_kind = 'none' if a.no_ref else ('img' if a.ref else ('guide' if a.guide else 'none'))
-    a.tag = a.tag or f'{a.control.stem}_functl_{ref_kind}_s{a.seed}'
+    a.tag = a.tag or f'{a.control.stem}_functl_{ref_kind}{"_clear" if a.clear_air else ""}_s{a.seed}_f{a.start}'
     inp = COMFY_ROOT / 'input'
     ctl_name = f'ruosuen_{a.control.name}'; shutil.copy2(a.control, inp / ctl_name)
     ref = ''

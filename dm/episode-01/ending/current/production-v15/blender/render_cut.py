@@ -51,8 +51,10 @@ def args_from_argv(argv):
     ap.add_argument('--exposure', type=float, default=None)
     ap.add_argument('--set', action='append', default=[], help='look override key=value (floats)')
     ap.add_argument('--engine', default='EEVEE', choices=['EEVEE', 'CYCLES'])
-    ap.add_argument('--control', default='', choices=['', 'depth'],
-                    help='depth: write a control video for Wan Fun-Control instead of the beauty (out/control_depth)')
+    ap.add_argument('--control', default='', choices=['', 'depth', 'depth_petals', 'petals'],
+                    help='depth: control video for Wan Fun-Control (out/control_depth); depth_petals: the same with '
+                         'the previs petals added as light dots; petals: the petal layer alone, the rest black '
+                         '(to lay the previs petals over a painted pass)')
     ap.add_argument('--depth-near', type=float, default=120.0, help='metres; nearer is white')
     ap.add_argument('--depth-far', type=float, default=700.0, help='metres; farther is black')
     return ap.parse_args(argv)
@@ -336,7 +338,26 @@ class WhaleLight:
         self.ob.data.energy = self.k * fr['whale_light']['I'] * (1 - fr['whale'].get('melt', 0.0))
 
 
-def to_depth_control(a):
+def to_petal_layer():
+    """Petals exactly as in the beauty; every other surface is matte black (it still hides the petals
+    behind it); no air, no lights. Add it over a painted pass to keep the previs petal flow."""
+    sc = bpy.context.scene
+    m = bpy.data.materials.new('BlackMatte'); try_set(m, use_nodes=True)
+    nt = m.node_tree
+    for n in list(nt.nodes):
+        if n.type != 'OUTPUT_MATERIAL':
+            nt.nodes.remove(n)
+    em = nt.nodes.new('ShaderNodeEmission'); em.inputs['Strength'].default_value = 0.0
+    nt.links.new(em.outputs[0], next(n for n in nt.nodes if n.type == 'OUTPUT_MATERIAL').inputs['Surface'])
+    for ob in list(sc.objects):
+        if ob.type == 'LIGHT' or ob.name == 'CaveAir':
+            ob.hide_render = True
+        elif ob.type == 'MESH' and ob.name != 'Petals':
+            ob.data.materials.clear(); ob.data.materials.append(m)
+    sc.world.node_tree.nodes.get('Background').inputs['Color'].default_value = (0, 0, 0, 1)
+
+
+def to_depth_control(a, keep_petals=False):
     """Swap every surface for a camera-distance ramp (near white -> far black, log scale), drop the air
     volume, the petals and the lights. The geometry, camera and whale deformation are untouched, so the
     control video carries exactly the previs composition and whale motion."""
@@ -358,8 +379,10 @@ def to_depth_control(a):
     em.inputs['Color'].default_value = (1, 1, 1, 1)
     nt.links.new(em.outputs[0], out.inputs['Surface'])
     for ob in list(sc.objects):
-        if ob.type == 'LIGHT' or ob.name in ('CaveAir', 'Petals'):
+        if ob.type == 'LIGHT' or ob.name == 'CaveAir' or (ob.name == 'Petals' and not keep_petals):
             ob.hide_render = True
+        elif ob.name == 'Petals':
+            continue                     # keeps its additive light-dot material on top of the depth
         elif ob.type == 'MESH':
             ob.data.materials.clear(); ob.data.materials.append(m)
             for poly_mat in ob.material_slots:
@@ -412,8 +435,10 @@ def main(argv):
     build_camera(meta)
     setup_render(a, meta, look)
     whale = Whale(look, meta); wl = WhaleLight(look); pet = Petals(look, a.res)
-    if a.control == 'depth':
-        to_depth_control(a)
+    if a.control in ('depth', 'depth_petals'):
+        to_depth_control(a, keep_petals=a.control == 'depth_petals')
+    elif a.control == 'petals':
+        to_petal_layer()
     out = a.out / (f'control_{a.control}' if a.control else 'beauty'); out.mkdir(parents=True, exist_ok=True)
     ks = sorted(frames)
     if a.frames:
