@@ -111,22 +111,22 @@ def build_tau0(E):
     t0 = {}
     t0['R05'] = E['emerge'] - 0.6                        # head breaks the surface at ~8.6 s, facing the shore
     # R06: the frontal approach, continuous into the overhead pass (R07) - the rising turn is elided
-    t0['R06'] = E['over'] - (18.6 - T['R06'][0])
+    t0['R06'] = E['over'] - (16.6 - T['R06'][0])
     # R04: whale crossing under the diagonal band of moonlit water (before the emergence)
     ts_ = np.arange(0.0, E['emerge'], 0.05)
     d_ = [np.linalg.norm(PATH.pos(u)[:2] - np.array([-4.0, -40.0])) for u in ts_]
     t0['R04'] = float(ts_[int(np.argmin(d_))]) - 1.0
-    t0['R03'] = t0['R04'] - (T['R04'][0] - T['R03'][0])
-    t0['R02'] = t0['R03'] - (T['R03'][0] - T['R02'][0])
+    # (R03 cut in v14.9: R04's shadow under the water carries the 'something is there')
+    t0['R02'] = t0['R04'] - (T['R04'][0] - T['R02'][0])
     t0['R01'] = t0['R02'] - (T['R02'][0] - T['R01'][0])
-    t0['R07'] = E['over'] - (18.6 - T['R07'][0])          # overhead at 18.6 s: it holds its aim, then pulls up late
+    t0['R07'] = E['over'] - (16.6 - T['R07'][0])          # overhead at 16.6 s (v14.9; 18.6 s before R03 was cut): it holds its aim, then pulls up late
     t0['R08'] = t0['R07'] + (T['R08'][0] - T['R07'][0])   # continuous (match on action)
-    t0['R09'] = E['contact'] - (22.6 - T['R09'][0])        # head touches moonlight at 22.6 s
-    t0['R10'] = E['base'] - (28.2 - T['R10'][0])           # whale over S1 base at 28.2 s
+    t0['R09'] = E['contact'] - (20.6 - T['R09'][0])        # head touches moonlight at 20.6 s
+    t0['R10'] = E['base'] - (26.2 - T['R10'][0])           # whale over S1 base at 26.2 s
     t0['R11'] = E['tip'] - 8.6                           # bloom front crosses the cape and reaches the tip in shot
     t0['R12'] = E['tip'] + 3.0
     t0['R13'] = t0['R12'] + (T['R13'][0] - T['R12'][0])   # continuous with the macro
-    t0['R14'] = E['cross0'] - (44.2 - T['R14'][0])         # crossing x=0 at 44.2 s
+    t0['R14'] = E['cross0'] - (44.2 - T['R14'][0])         # crossing x=0 at 44.2 s (v14.9: R14 starts at 41.0, R15's world start unchanged)
     t0['R15'] = t0['R14'] + (T['R15'][0] - T['R14'][0])   # continuous
     t0['R17'] = E['climb'] + 1.6                         # v14.7: already on its one straight line to the moon
     t0['R18'] = E['lip'] + 1.0                             # v14.8: a little further on, so that it is small in the moon when it melts
@@ -134,11 +134,12 @@ def build_tau0(E):
     return t0
 
 TAU0 = build_tau0(EV)
-LIFT_FILM = 38.5       # the light pulse that starts the lift-off, 0.5 s into R13
+LIFT_FILM = 36.5       # the light pulse that starts the lift-off, 0.5 s into R13
 PATH.retime(phase0=(TAU0['R13'] + (LIFT_FILM - T['R13'][0])) - 0.44 * w.STROKE_T,
             fast_tau=EV['over'] + 2.3)
 EV = _events(); TAU0 = build_tau0(EV)
 TAU_LIFT = TAU0['R13'] + (LIFT_FILM - T['R13'][0])
+BLOW_TAU = EV['contact'] + 1.3          # v14.9: it breathes out once its blowhole is in the moonbeam
 
 def cut_at(t):
     for cid, s, e in CUTS_T:
@@ -235,7 +236,7 @@ def r18_merge(t):
 # v14.6: the bloom comes in beats. On each of these strokes the whale's light flares, and every
 # closed bud the flare reaches opens at once (light is the cause, FL-01): in R10 the first
 # beat over the cape base; in R11 three more, which between them open all the land in view.
-BLOOM_BEATS = [(27.6, 40.0), (30.2, 38.0), (31.6, 46.0), (33.0, 58.0)]   # (film s, reach m)
+BLOOM_BEATS = [(25.6, 40.0), (28.2, 38.0), (29.6, 46.0), (31.0, 58.0)]   # (film s, reach m; v14.9: -2 s)
 BEAT_TAU = [(tau_of(ft), R) for ft, R in BLOOM_BEATS]
 
 def flare(tau):
@@ -258,7 +259,7 @@ def glance_roll(tau):
     fall = 1 - smooth((tau - (EV['over'] + 0.2)) / 1.5)
     return math.radians(16.0) * float(rise * fall)
 
-ROLL_FILM = (39.0, 3.2)  # v14.6: one slow full roll in R13 (start in film s, duration s)
+ROLL_FILM = (37.2, 3.4)  # v14.6: one slow full roll in R13 (start in film s, duration s)
 
 def joy_roll(tau):
     """v14.6: the petals let go and the whale, climbing through them, turns over once -
@@ -267,7 +268,7 @@ def joy_roll(tau):
     r0 = TAU0['R13'] + (ROLL_FILM[0] - T['R13'][0])
     return -2 * math.pi * float(smooth((tau - r0) / ROLL_FILM[1]))
 
-PLAY_FILM = (42.8, 2.8)   # v14.7: R14, it plays in the petals
+PLAY_FILM = (42.2, 3.2)   # v14.7: R14, it plays in the petals (v14.9: R14 is 5 s, inside the snow)
 LOOK_FILM = (47.9, 2.2)   # v14.7: R15, it looks at us as it passes (v14.8: 2.2 s of world time around TAU_CLOSE)
 
 def play_roll(tau):
@@ -289,9 +290,17 @@ def glide(tau):
     a = EV['over'] - 8.0; b = EV['over'] + 0.8
     return float(smooth((tau - a) / 1.2) * (1 - smooth((tau - b) / 1.0)))
 
+EYE_LEFT = w.EYE_V[w.EYE_F].mean(1)[:, 1] > 0        # which eye each eye triangle belongs to
+
+def ignite_glide(tau):
+    """v14.9: R09 - it stops stroking and glides into the moonbeam, so that the moment it is lit
+    is an event (a held breath), then takes up its stroke again."""
+    a = EV['contact'] - 1.6; b = EV['contact'] + 2.4
+    return float(smooth((tau - a) / 0.9) * (1 - smooth((tau - b) / 1.2)))
+
 def whale_world(tau):
     fr = PATH.frame(tau, extra_roll=glance_roll(tau) + joy_roll(tau) + play_roll(tau) + look_roll(tau))
-    amp = 1.9 * (1 - 0.8 * glide(tau))
+    amp = 1.9 * (1 - 0.8 * max(glide(tau), ignite_glide(tau)))
     Vb = w.deform(w.BODY_V, tau, PATH, amp=amp)
     Ve = w.deform(w.EYE_V, tau, PATH, amp=amp)
     return fr, w.world_vertices(Vb, fr), w.world_vertices(Ve, fr), Vb
@@ -382,8 +391,8 @@ class Petals:
     free fall once the whale is gone. Simulated in WORLD time."""
     def __init__(self):
         src = np.where(MATURE & np.isfinite(TAU_OPEN))[0]
-        if len(src) > 31000:            # v14.6: more colony, same simulated budget (~124k flakes)
-            src = np.sort(np.random.default_rng(7).choice(src, 31000, replace=False))
+        if len(src) > PETAL_SRC_MAX:    # v14.6: more colony, capped simulated budget (v14.9: ~194k flakes)
+            src = np.sort(np.random.default_rng(7).choice(src, PETAL_SRC_MAX, replace=False))
         per = 4
         self.src = np.repeat(src, per)
         n = len(self.src)
@@ -405,6 +414,14 @@ class Petals:
         self.sus = RNG.random(n) < 0.42                    # only some petals answer the whale
         loyal = RNG.random(n) < 0.15                       # a few follow it all the way out
         self.hold = np.where(loyal, RNG.uniform(60.0, 140.0, n), RNG.uniform(6.0, 45.0, n))
+        # v14.9: the release pulse CALLS the snow: about half of the petals, once they have lifted,
+        # rise and stream after the whale (along its recent path, as a widening river) whatever
+        # the distance, so that by R14-R15 the whale swims inside the snow instead of 40 m above it
+        # ...and lets go of it as it leaves the snow to climb towards the moon (after R15): the
+        # farewell (R17-R18) is the whale alone, with only a thin trail of loyal petals
+        self.call = RNG.random(n) < CALL_FRAC
+        self.call_end = TAU0['R15'] + float(WARP_C[-1]) + RNG.uniform(0.0, 3.0, n)
+        self.call_end = np.where(RNG.random(n) < 0.04, TAU_MAGIC_END, self.call_end)
         self.gone = np.zeros(n, bool)                      # left through the fissure
         self.spin = RNG.uniform(0, 2 * np.pi, n)
         self.spin_rate = RNG.uniform(3.0, 11.0, n)
@@ -474,10 +491,14 @@ class Petals:
         light = I / (1 + (d / 42.0) ** 2) * (0.0 if gone else 1.0)
         age = tau - self.tau_lift[idx]
         g = smooth((light - 0.22) / 0.33) * (self.sus[idx] & (age < self.hold[idx]))
+        cw = smooth((age - 0.5) / 2.5) * (self.call[idx] & (tau < self.call_end[idx])) * (0.0 if gone else 1.0)
+        g = np.maximum(g, cw)
         # guided flow: drift along the whale's recent path with a lag, ordered, not converging
         tgt = PATH.pos(np.clip(tau - self.lag[idx], 0, None)) + self.off[idx]
         vg = 0.45 * PATH.vel(tau)[None, :] + 0.32 * (tgt - p)
-        sp = np.linalg.norm(vg, axis=1, keepdims=True); vg *= np.minimum(1, 9.0 / np.maximum(sp, 1e-6))
+        sp = np.linalg.norm(vg, axis=1, keepdims=True)
+        vmax = np.where(self.call[idx], CALL_VMAX, 9.0)[:, None]
+        vg *= np.minimum(1, vmax / np.maximum(sp, 1e-6))
         vp = self.wind(p, tau)
         if gone:
             vp = vp * 0.35 + np.array([0, 0, -0.9])
@@ -507,6 +528,10 @@ class Petals:
 R19_EMPTY, R19_FALL = 1.7, 2.8
 R19_FROM = np.array([11.0, -3.0, 25.0])   # start offset from the landing point: inside the visible moonbeam
 KNEE = 140.0      # v14.8: soft ceiling for accumulated far flakes (paint_flakes)
+# v14.9: the four adventurers (dx, dy from PC in m, height m, shoulder width m) - builds only
+PARTY = [(-2.3, 0.35, 1.62, 0.46), (-0.75, -0.25, 1.84, 0.56), (0.8, 0.4, 1.70, 0.48), (2.35, -0.05, 1.76, 0.62)]
+PETAL_SRC_MAX = 48500   # v14.9: every mature flower of the colony (4 flakes each)
+CALL_FRAC, CALL_VMAX = 0.5, 12.0   # v14.9: share of petals called after the whale, their top speed (m/s)
 
 def last_petal(t):
     s, e = T['R19']
@@ -633,7 +658,7 @@ class Ground:
         order = cand[np.argsort(-c[cand])]
         d = np.linalg.norm(self.cen - wl_p, axis=1)
         wl = wl_I * 1.3 / (1 + (d / 24.0) ** 2)
-        base = np.array([17, 18, 18], float)
+        base = np.array([14, 16, 15], float)          # v14.9: darker rock and moss, so that only the flowers shine
         fade = 0.45 + 0.55 * np.exp(-np.linalg.norm(self.cen - cam.pos, axis=1) / 90.0)
         for i in order:
             if allfront[i]:
@@ -643,7 +668,7 @@ class Ground:
             if pts is None:
                 continue
             L = (0.55 + 0.9 * self.moon[i] + wl[i] + extra) * self.tex[i] * fade[i]
-            col = base * L + np.array([14, 18, 26]) * self.moon[i] * fade[i] + np.array([34, 36, 40]) * wl[i]
+            col = base * L + np.array([14, 18, 26]) * self.moon[i] * fade[i] + np.array([15, 19, 16]) * wl[i]
             dr.polygon(pts, fill=tuple(int(v) for v in np.clip(col, 0, 255)))
 
 def draw_flower(dr, cam, W, H, p, openness, light, seed, released=0.0, sway=None):
@@ -766,18 +791,20 @@ def make_cameras():
     p0 = w.P0
     # R02: low, across the edge of the moonlight: P0 open in front, buds behind in shadow
     C['R02'] = C_static((p0[0] + 0.26, p0[1] + 0.08, p0[2] + 0.10), (p0[0] - 1.4, p0[1] - 0.62, p0[2] + 0.03), 35)
-    # R03: just above the water; the swell from below arrives through the moonlit water
-    C['R03'] = C_static((-4.0, -57.5, 0.9), (8.0, -45.0, 0.0), 24)
+    # (R03 was cut in v14.9)
     # R04: frontal from the shore; the dark mass passes under the moonlit water
     C['R04'] = C_static((-6.0, -67.5, GZ(-6, -67.5) + 3.4), (-3.0, -50.0, -2.0), 24)
     # R05: from the adventurers' shore, low; the whale surfaces facing us
     em = PATH.pos(EV['emerge'] + 1.0)
     C['R05'] = C_static((-56.5, -62.0, GZ(-56.5, -62.0) + 0.9), (em[0], em[1], 1.8), 40)
     # R06: beside the adventurers; it glides straight at us and its head leaves the top of frame
+    # v14.9: from just behind the four adventurers (dark silhouettes from the back, their looks
+    # undecided): the only shot that shows them. Against them, the whale gliding straight at
+    # them reads at its true size - and the four are who the players are.
     a6 = PATH.pos(TAU0['R06']); b6 = PATH.pos(TAU0['R06'] + (T['R06'][1] - T['R06'][0]))
-    c6 = np.array([-52.0, -90.0, GZ(-52, -90) + 1.7])
+    c6 = np.array([w.PC[0] + 1.2, w.PC[1] - 7.0, GZ(w.PC[0] + 1.2, w.PC[1] - 7.0) + 1.25])
     m6 = (a6 + b6) / 2
-    C['R06'] = C_static(tuple(c6), (m6[0], m6[1], c6[2] + np.linalg.norm(m6[:2] - c6[:2]) * math.tan(math.radians(5))), 35)
+    C['R06'] = C_static(tuple(c6), (m6[0], m6[1], c6[2] + np.linalg.norm(m6[:2] - c6[:2]) * math.tan(math.radians(6))), 32)
     # R07: the adventurers' eyes, looking up towards the lake it comes from
     C['R07'] = C_static(tuple(w.PC_EYE), (w.PC_EYE[0] - 2.0, w.PC_EYE[1] + 22.0, w.PC_EYE[2] + 10.5), 16)
     # R08: turning round: the tail leaves, one strong stroke, and the moonlight it heads for
@@ -804,7 +831,7 @@ def make_cameras():
     # over in them - the eye is carried from the ground to the sky.
     c13 = np.array([28.7, 119.7, 1.0])
     def r13(t, tau, c=c13):
-        u = smooth((t - 38.9) / 1.7)
+        u = smooth((t - 36.9) / 2.0)
         b = math.radians(-55.0 + 8.0 * u); pt = math.radians(9.0 + 12.5 * u)
         return Cam(tuple(c), target=tuple(c + 100 * np.array([math.cos(b) * math.cos(pt), math.sin(b) * math.cos(pt), math.sin(pt)])), lens=24)
     C['R13'] = r13
@@ -977,8 +1004,16 @@ class Renderer:
             etri = Ve[w.EYE_F]; ec = cam.cam_xyz(etri.mean(1))
             ex, ey, ez = cam.proj(etri.reshape(-1, 3), W, H)
             EX = ex.reshape(-1, 3); EY = ey.reshape(-1, 3)
+            # v14.9: an eye is drawn only when its own side of the head faces the camera (before,
+            # the far eye showed through the head: two eyes on one side, a cartoon face)
+            ecen = etri.mean(1)
+            left = EYE_LEFT
+            cl, cr = ecen[left].mean(0), ecen[~left].mean(0); mid = 0.5 * (cl + cr)
+            see_l = float(np.dot(cam.pos - cl, unit(cl - mid))) > 0.0
+            see_r = float(np.dot(cam.pos - cr, unit(cr - mid))) > 0.0
+            seen = np.where(left, see_l, see_r)
             for i in np.argsort(-ec[:, 2]):
-                if ec[i, 2] > 0.3:
+                if ec[i, 2] > 0.3 and seen[i]:
                     dr.polygon(list(zip(EX[i], EY[i])), fill=(6, 8, 12, 255))
         info = dict(drawn=drawn, depth=float(cam.cam_xyz(fr[0][None])[0, 2]))
         sx, sy, sz = cam.proj(Vb, W, H)
@@ -1056,13 +1091,13 @@ class Renderer:
                 age = t - ts
                 if age > 0:
                     rings += [(c0, 0.35 + 0.9 * age + j * 0.45, max(0, 1 - age / 2.4)) for j in range(3)]
-        if cid in ('R03', 'R04'):
-            wpos = PATH.pos(tau)
+        if cid == 'R04':
+            # the swell rings that began under the cut R03 (2 s before R04)
             for k in range(6):
-                ts = T['R03'][0] + 0.15 + 0.55 * k
+                ts = T['R04'][0] - 2.0 + 0.15 + 0.55 * k
                 age = t - ts
                 if age > 0:
-                    cpos = PATH.pos(TAU0['R03'] + (ts - T['R03'][0])) * np.array([1, 1, 0])
+                    cpos = PATH.pos(TAU0['R04'] + (ts - T['R04'][0])) * np.array([1, 1, 0])
                     rings.append((cpos, 2.0 + 3.2 * age, max(0, 1 - age / 4.0)))
         if cid == 'R05':
             for k in range(7):
@@ -1180,7 +1215,11 @@ class Renderer:
                         A += (g1[..., None] * tint * 0.16 + g2[..., None] * tint * 0.26) * kb
                         img = Image.fromarray(np.clip(tone(A), 0, 255).astype(np.uint8))
             self.drops(img, cam, tau, cid, t)
+        if cid == 'R06':
+            self.draw_party(img, cam, t)
         A = np.asarray(img).astype(np.float32)
+        if cid == 'R09':
+            self.draw_blow(A, cam, tau)
         if pe is not None:
             self.draw_petals(A, cam, pe, tau, far_of=wl_depth, part='near')
         self.local_snow(A, cam, t, tau, cid)
@@ -1467,9 +1506,11 @@ class Renderer:
         near_opal = clamp(1 - d / 30.0)
         pcol = (np.array([238, 234, 222])[None, :] * (1 - near_opal[:, None]) +
                 np.array([224, 214, 236])[None, :] * near_opal[:, None])
-        petal_rgb = pcol * (bright * flick)[:, None] * (1 + 0.45 * g * pul)[:, None]
-        fruit = P.fruit[idx] * (0.55 + 0.45 * g * (1 + pul)) * (bright > 0.01)
-        fruit_rgb = np.array([255, 226, 150])[None, :] * fruit[:, None]
+        petal_rgb = pcol * (bright * flick)[:, None] * (1 + 0.45 * g * pul)[:, None] * (1 - 0.22 * g)[:, None]
+        fruit = P.fruit[idx] * (0.55 + 0.45 * g * (1 + pul)) * (bright > 0.01) * (1 + 0.55 * g)
+        # v14.9: the snow that follows the whale carries warm gold (its fruit lit): the first and
+        # only warm colour of the climax, which the last petal's light (R19) remembers
+        fruit_rgb = (np.array([255, 226, 150])[None, :] * (1 - g[:, None]) + np.array([255, 208, 118])[None, :] * g[:, None]) * fruit[:, None]
         self.paint_flakes(A, cam, x, y, z, petal_rgb, fruit_rgb, P.spin[idx], g)
 
     def paint_flakes(self, A, cam, x, y, z, petal_rgb, fruit_rgb, spin, g):
@@ -1705,6 +1746,89 @@ class Renderer:
               np.exp(-(dd / (r * 3.2)) ** 2)[..., None] * np.array([255, 222, 150], np.float32) * 0.85 * k +
               np.exp(-(dd / (r * 9.0)) ** 2)[..., None] * np.array([255, 214, 140], np.float32) * 0.16 * k)
 
+    def draw_party(self, img, cam, t):
+        """v14.9: the four adventurers, seen from behind as dark silhouettes (only R06). Their looks
+        are undecided, so they are anonymous cloaked figures of different builds; nothing that
+        fixes a race, class or weapon. As the whale comes on, they brace and one steps back."""
+        W, H = self.W, self.H
+        s0, s1 = T['R06']
+        brace = float(smooth((t - (s1 - 1.6)) / 1.0))
+        lay = Image.new('RGBA', (W, H), (0, 0, 0, 0)); dl = ImageDraw.Draw(lay, 'RGBA')
+        figs = []
+        for k, (dx, dy, h, sw) in enumerate(PARTY):
+            if k == 1:
+                dy -= 0.45 * brace                          # one steps back
+            base = np.array([w.PC[0] + dx, w.PC[1] + dy, 0.0])
+            base[2] = float(w.ground_z(base[0], base[1]))
+            hh = h * (1 - 0.025 * brace)                    # the others brace, a little lower
+            figs.append((float(cam.cam_xyz(base[None])[0, 2]), base, hh, sw, k))
+        for depth, base, hh, sw, k in sorted(figs, key=lambda f: -f[0]):
+            up = np.array([0, 0, 1.0]); rr = cam.r
+            sway = 0.015 * math.sin(1.3 * t + k * 1.7)
+            def P(side, z, lean=0.0):
+                return base + rr * (side + sway * z / hh) + up * z - cam.f * lean
+            lean_h = 0.04 * brace                            # heads go back to look up
+            ring = [P(-0.30 * sw, 0.0), P(-0.44 * sw, 0.55 * hh), P(-0.50 * sw, 0.80 * hh), P(-0.40 * sw, 0.84 * hh),
+                    P(-0.12 * sw, 0.86 * hh), P(0.12 * sw, 0.86 * hh), P(0.40 * sw, 0.84 * hh), P(0.50 * sw, 0.80 * hh),
+                    P(0.44 * sw, 0.55 * hh), P(0.30 * sw, 0.0)]
+            x, y, z = cam.proj(np.array(ring), W, H)
+            if (z < 0.3).any():
+                continue
+            hc = P(0.0, 0.935 * hh, lean_h)
+            hx, hy, hz = cam.proj(hc[None], W, H)
+            hr = cam.lens / 36 * W * 0.105 * hh / 1.75 / hz[0]
+            rim = (62, 76, 96, 255); body = (7, 9, 13, 255)
+            pts = list(zip(x.tolist(), y.tolist()))
+            dl.polygon([(px, py - 1.2) for px, py in pts], fill=rim)
+            dl.ellipse((hx[0] - hr, hy[0] - hr * 1.12 - 1.2, hx[0] + hr, hy[0] + hr * 1.12 - 1.2), fill=rim)
+            dl.polygon(pts, fill=body)
+            dl.ellipse((hx[0] - hr, hy[0] - hr * 1.12, hx[0] + hr, hy[0] + hr * 1.12), fill=body)
+        img.paste(lay, (0, 0), lay)
+
+    def draw_blow(self, A, cam, tau):
+        """v14.9: the breath. Just after its head enters the moonbeam the whale exhales: a V of
+        mist from the blowhole that catches the moonlight and hangs, glittering, while the
+        whale glides on out of it - the first thing in the film that is beautiful."""
+        age0 = tau - BLOW_TAU
+        if age0 < 0 or age0 > 4.5:
+            return
+        W, H = self.W, self.H
+        r = np.random.default_rng(77)
+        n = 1400
+        te = BLOW_TAU + r.uniform(0.0, 0.45, n)
+        age = tau - te
+        ok = age > 0
+        if not ok.any():
+            return
+        te, age = te[ok], age[ok]
+        side = np.where(r.random(n)[ok] < 0.5, -1.0, 1.0)
+        # blowhole and body axes at each emission time (vectorised over a few distinct times)
+        tq = np.round(te, 2)
+        P0 = np.zeros((len(te), 3)); UP = np.zeros((len(te), 3)); LF = np.zeros((len(te), 3)); FW = np.zeros((len(te), 3))
+        for u in np.unique(tq):
+            m = tq == u
+            p, fwd, left, upv = PATH.frame(u)
+            P0[m] = p + fwd * 4.3 + upv * 2.6
+            UP[m] = upv; LF[m] = left; FW[m] = fwd
+        sp = r.uniform(7.0, 11.5, n)[ok]
+        lat = r.uniform(0.25, 0.45, n)[ok] * side
+        v0 = (UP + LF * lat[:, None]) * sp[:, None] + r.normal(0, 0.6, (n, 3))[ok]
+        k_ = 1.6
+        pos = P0 + v0 * ((1 - np.exp(-k_ * age)) / k_)[:, None] + np.array([0, 0, -0.25])[None, :] * (age ** 2)[:, None]
+        spread = (0.25 + 0.9 * age)[:, None] * r.normal(0, 1, (n, 3))[ok] * 0.6
+        pos = pos + spread
+        moon = w.moonlit(pos, soft=4.0)
+        wl_p, wl_I = whale_light(tau)
+        d = np.linalg.norm(pos - wl_p, axis=1)
+        bright = (0.30 + 1.3 * moon + 0.6 * wl_I / (1 + (d / 20.0) ** 2)) * np.exp(-age / 1.8) * np.clip(age / 0.15, 0, 1)
+        x, y, z = cam.proj(pos, W, H)
+        sel = z > 0.5
+        buf = np.zeros((H, W, 3), np.float32)
+        col = np.array([200, 214, 236], np.float32)[None, :] * (bright[sel] * 0.55)[:, None]
+        splat(buf, x[sel], y[sel], col, W, H)
+        im = Image.fromarray(np.clip(buf * 3, 0, 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(max(1.2, W / 600)))
+        A += np.asarray(im).astype(np.float32) / 3 * 2.2 + buf * 0.35
+
     def label(self, img, cid, t):
         d = ImageDraw.Draw(img, 'RGBA')
         c = CUT_LABEL[cid]
@@ -1737,8 +1861,8 @@ def write_movie(R, path, fps):
         raise RuntimeError('ffmpeg failed')
     return stats
 
-KEY_TIMES = [1.2, 3.0, 5.5, 7.5, 9.6, 13.0, 16.2, 17.3, 18.4, 20.6, 22.8, 25.5, 28.0, 31.0, 34.5,
-             36.3, 38.2, 40.0, 41.8, 46.8, 49.2, 51.6, 53.5, 56.8, 58.4, 59.8, 61.5, 63.5, 65.2]
+KEY_TIMES = [1.2, 3.0, 5.5, 7.6, 11.0, 14.2, 15.3, 16.4, 18.6, 20.8, 23.5, 26.0, 29.0, 32.5,
+             34.3, 36.2, 38.0, 40.3, 42.0, 44.5, 46.8, 49.2, 51.6, 53.5, 56.8, 58.4, 59.8, 61.5, 63.5, 65.2]
 
 def contact_sheet(R, out):
     tw, th = 400, 225
