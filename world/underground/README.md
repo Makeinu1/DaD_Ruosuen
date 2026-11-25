@@ -1,4 +1,4 @@
-# 王立地図院 — 地下地理台帳 v0.2
+# 王立地図院 — 地下地理台帳 v0.3
 
 > 2026-11-25 作者依頼による初期実装。PR承認後に運用開始する。既存の [世界設定・公開運用規約](../../WORLD_POLICY.md) を優先。プレイヤーはリポジトリを閲覧せず公式Pagesのみ利用すること（Publicリポジトリでありアクセス制御ではない）。
 
@@ -13,23 +13,13 @@
 
 ## 台帳の初期値
 
-採用済みの地上側→HOME→TERMINAL→PORT/GATEの機能的接続のみ登録。HOMEは大昇降機の固有名。TREEは人工的な足場・通路の構造。これらの詳細配置・距離・高低差・運行状況は未設定。3本の初期SEGMENTは模式的な接続であり、直接の物理通路、所要時間、通行可否を保証しない。公式の数字による採番はゼロ件。ルート3/65/752は検討例であり、第一話の湖の経路は未承認なので登録しない。
+地上・HOME・TERMINAL・PORTの模式接続を維持し、AREA 1の初回正式採番を追加した。設計・採番・作図の正本は[AREA設計ガイド](area-design-guide.md)。登録版はPR承認後に運用開始。地理の細部は概算・未決を維持。
 
-### ターミナルと国際航路の扱い（2026-11-25 作者明確化）
+AREAは発見・確認順、番号と隣接関係は独立。地下地図は方位を表示しない。GATEはAREA 1のR3/R7共通端点。PORTもAREA 1内の別高度（詳細未決）。TERMINALは活動圏であり既存代表NODEは模式接続にのみ使用。地下と地上の方向・距離は対応しない。局所座標とAREA間接続を分離する。
 
-TERMINALはHOME・PORT・GATEを含む人々の活動圏全体であり、単一の物理地点ではない。GATEとPORTは同一大空洞内の異なる高さにある。PORTは他の大国につながる他のPORTと地下魔導船航路で結ばれる。既存のNODE:TERMINALはv0.2の模式図における活動圏の代表点にすぎず、地理的な一点・全交通の必須通過点・活動圏の境界を意味しない。将来、具体的な乗降場、分岐、接続通路と領域を区別して表現する。各国の港を登録するときは同名PORTの識別子衝突を防ぐ規則が必要だが、採番・領域モデルは未決。港名、港数、実際の航路・位置は未登録。本節は意味の明確化であり、台帳スキーマ・初期JSONは変更しない。
+## データ仕様（JSON v0.3）
 
-### 地下空間と地図の方角（2026-11-25 作者決定）
-
-地下地図に方角を記載しない。大空洞間の接続は地上の距離・方向から推定できない。広域図は接続関係を記述する。局所図の座標はその空間内の測量用座標として扱う方向を検討し、空洞を跨ぐ共通座標や標高差の成立を前提としない。通路の実測経路長・所要時間と地上の直線距離を区別する。既存の模式接続・JSON v0.2は変更しない。空洞単位の登録形式と座標基準の実装は別途承認・検証する。
-
-### AREAの正式採用（2026-11-25 作者決定）
-
-大空洞をAREAと呼び、発見・確認順に番号を付ける。既知のAREAへの新しい接続の発見は新規AREAの発見と区別し、番号を変更・再利用しない。番号順と隣接関係は独立。接続口のみ既知で接続先空洞が未確認ならAREA番号を付与しない。現在設計中の地下開拓の起点はAREA 1（2026-11-25作者訂正、旧AREA 2案を置換）。内部中央付近のROUTE 3上にGATEを置き、冒険者向け地図では円形の地点記号とする。AREA 1とAREA 11の直接接続は許容される例であり実地理の登録ではない。AREAレコード・局所座標系・重複発見や統合の扱いは次期スキーマで検討。v0.2のJSONは未変更、具体的な番号レコードの登録は別途検証する。
-
-## データ仕様（JSON v0.2）
-
-ルートオブジェクトには version（"0.2"）と nodes / segments / routes / facilities / reports の配列が必要。IDは配列内の id。地図院とGitHubで同じ登録識別子を使う。種別付きキー（NODE:TERMINAL、FACILITY:HOME、例 NODE:34）は記法の実装案で、作中の番号割当規則や道標の表記を確定しない。
+ルートオブジェクトには version（"0.3"）と areas / nodes / segments / routes / facilities / reports の配列が必要。IDは配列内の id。地図院とGitHubで同じ登録識別子を使う。種別付きキー（NODE:TERMINAL、FACILITY:HOME、例 NODE:34）は記法の実装案で、作中の番号割当規則や道標の表記を確定しない。
 
 共通フィールド：
 - id：種別付きの正式名または番号（registration=named/numbered）。未採番のみ tmp:スコープ:対象（registration=pending）。例 tmp:session-01:opening-a。正式登録時は暫定レコードを失効させ後継へ対応付ける。
@@ -40,11 +30,14 @@ TERMINALはHOME・PORT・GATEを含む人々の活動圏全体であり、単一
 
 | 種別 | 固有フィールド |
 |---|---|
+| AREA | datum、geometry、outline_xy_m、terrain、ceiling_height_m（未設定null）。局所座標・地形レイヤー。 |
 | NODE | kind、position（null または datum / x / y / z、単位m）。分岐・乗降場・入口等、測量や案内に有用な地点のみ。巨大空洞は必要に応じ入口・湖岸などを追加 |
 | SEGMENT | from / to（未知終端のみnull）、geometry（schematic/surveyed/approximate/unknown）、length_m、elevation_change_m（符号付き・from→to、未知はnull）、methods配列 |
 | ROUTE | steps=[{segment,direction}]（forward/reverse）。現行路線は現行区間の連続列。閉鎖しても指定自体は消さない |
 | FACILITY | kind、nodes / segmentsの参照配列、state（operational/failed/closed/unknown/building）。昇降機や橋等。設備参照と区間の相互対応を確認 |
 | REPORT | subjects（対象ID配列）、observer、observed_at、reported_at（未報告null）、knowledge_holders、certainty（observed/surveyed/reported/inferred）、claim、source。原報告は不変。追加報告・訂正報告で更新する |
+
+v0.3追加：area は AREA 参照。NODE.position は同一AREAのdatum。SEGMENT.plan_xy_m は局所平面形状、horizontal_length_m は投影長（length_mとは別）。maintenance は maintained / unmaintained / local / unknown、通行可否はmethods.state。terminal_kind は observed_opening または known_area_connection、後者は destination_area を指定し相手NODE未設定ならto:null。AREA間に絶対高低差を仮定しない。publication=regional_map は地域図への出力候補であり、発行時点・地図院の知識の確認は別。terrain の key はAREA内の地形レイヤーキーで正式識別番号ではない。v0.2履歴との互換検査を残す。
 
 SEGMENT.methodsの項目：mode（walk/rope/lift/ship 等、必要なものだけ）、direction（forward/reverse/both）、state（passable/restricted/blocked/unknown）、facility（必要ならID）、condition（任意）。設備故障は該当移動手段だけに影響し得る。飛行や魔法は条件別に扱い、一律の不可能を設定しない。模式区間は経路計算の対象外。昇降機はFACILITYでありNODEやSEGMENTとは別。
 
