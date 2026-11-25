@@ -21,3 +21,8 @@
 
 ## 正本
 [atlas.json](atlas.json) が地理の正本。v6の視覚設計・検討履歴はPR #51の地理監査 §17–19。個別PNG/SVGとPythonの保存状況はPRで確認。正式発行前に作図・測量詳細を検証する。
+
+## 原図と検証
+- [地形検討図SVG](../../dm/underground/archive/area-1/ruosuen_area1_terrain_study.svg)、[Python原図ソース](../../dm/underground/archive/area-1/ruosuen_area1_terrain_study.py)、[原図地理JSON](../../dm/underground/archive/area-1/ruosuen_area1_terrain_study.json) を制作アーカイブに保存（旧草案の制作情報・DM用変数を含むため、一般配布しない）。原図のDRAFT表記は登録以前の制作履歴。採番後の地理の正本はatlas.jsonのみ。Python原図ソースを次AREAの記号・レイヤー設計の参照に使えるが、AREA 1固有座標やラベルを含むため汎用レンダラではない。次AREA作図時は台帳から必要レコードを抽出して描画する。PNG原本は未登録（SVGとPythonから生成可能）。
+- v0.3移行時の検証：現行台帳と移行前の履歴を照合しエラー0・警告0。既存合成回帰25件とAREA重複・局所datum不一致・存在しないAREA参照の3件を検査し通過。原図JSONの28地点（GATE含む）、12路線、7地形、8無名路、3接続先を登録台帳と直接比較し差異0。CI本体の完走・立体通行性・発行用ラベル調整は別途確認。
+- 次AREA設計の起点：S41 N112/R12→AREA 2、S42 N111/R7→AREA 11、S43 N110/R65→AREA 6。いずれも相手側入口と距離は未決。R3はAREA内で終わるが、GATE起点の歴史的主要街道として1–99を許容する。
