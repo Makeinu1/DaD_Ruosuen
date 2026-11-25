@@ -456,9 +456,14 @@ class Petals:
         (keyed by its id, so they move with it and never jump), like the previs' own statistical layers."""
         K = int(round(self.look['petal_dense']))
         arr = {k: np.asarray(d[k]) for k in ('p', 'fruit', 'spin', 'bright', 'kind')}
-        if K <= 1 or 'idx' not in d.files or len(arr['p']) == 0:
+        ids = np.asarray(d['idx']).astype(np.float64) if 'idx' in d.files else None
+        if self.look.get('near_n', 0) > 0:
+            # v14.10: the previs near-camera snow (kind 1) is drawn by NearSnow as real petals instead
+            keep = arr['kind'] == 0
+            arr = {k: v[keep] for k, v in arr.items()}
+            ids = None if ids is None else ids[keep]
+        if K <= 1 or ids is None or len(arr['p']) == 0:
             return arr
-        ids = np.asarray(d['idx']).astype(np.float64)
         out = {k: [v] for k, v in arr.items()}
         for j in range(1, K):
             v = np.stack([self._h(ids, j, c) - 0.5 for c in range(3)], 1)

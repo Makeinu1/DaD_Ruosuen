@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""v15 bridge: export one cut of the v14.9b previs as data that Blender (or anything else) can load.
+"""v15 bridge: export one cut of the v14.10 previs as data that Blender (or anything else) can load.
 
 The previs (../../previs/v14-director-rebuild/) is the single source of truth for timing, camera,
 whale path/acting and the petal simulation. This script imports it unchanged and writes, per frame:
@@ -119,7 +119,7 @@ def main():
         if k % (a.fps * 2) == 0:
             print(f'{cid} frame {k}/{n} t={t:.2f} tau={tau:.2f} petals={rec.get("n_petals")} {time.time() - t0:.0f}s', flush=True)
     meta = {'cut': cid, 'film_start_s': s0, 'film_end_s': s1, 'fps': a.fps, 'n_frames': n, 'every': a.every,
-            'previs_version': 'v14.9b', 'coords': 'previs world: X east, Y north, Z up, metres; lake Z=0',
+            'previs_version': 'v14.10', 'coords': 'previs world: X east, Y north, Z up, metres; lake Z=0',
             'camera_note': 'Blender: sensor_fit HORIZONTAL, sensor_width 36 mm; rotation columns X=r, Y=u, Z=-f',
             'moon_dir': w.MOON_DIR.tolist(), 'ev_contact': float(pv.EV['contact']), 'rim_z': w.RIM_Z, 'top_z': w.TOP_Z, 'top_narrow': w.TOP_NARROW,
             'fissure': w.FISSURE, 'party': [list(map(float, p)) for p in pv.PARTY], 'pc': w.PC.tolist(),
