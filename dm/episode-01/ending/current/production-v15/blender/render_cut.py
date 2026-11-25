@@ -48,10 +48,30 @@ LOOK = {
 }
 LOOK['blizzard'] = dict(LOOK['guide'], petal_dense=1.0, near_n=3500.0, near_zmax=60.0, near_zpow=1.6, near_size_max=1.5,
                         near_gust=0.35, fstop=5.6, near_light=4.5e6, near_emit=0.06, near_band_c=-0.12)
+# v15g (author 2026-11-25): the whale glows sakura pink; fewer, real-size (3 cm), slow petals ("5 cm per
+# second": petals you can follow one by one), a few big soft out-of-focus ones in front (shallow focus)
+# (tested with --set lens_mul=1.636 = 90 mm from the previs position: the whale ~40% of the width; 110 mm cuts
+# the whale off at the start. The lens is a previs change for the author to decide.)
+LOOK['sakura'] = dict(LOOK['blizzard'], palette='sakura', near_n=1300.0, near_size=0.030, near_size_max=1.4,
+                      near_zmin=3.0, near_zmax=90.0, near_zpow=1.3, near_speed=0.4, near_gust=0.3, fstop=5.6,
+                      whale_emit=1.15, whale_light_vol=0.5)
 PEARL = (0.86, 0.93, 1.0)
 BELLY = (0.55, 0.68, 0.95)          # the shaded underside goes blue (originals CUT05 / CUT09)
 # previs whale_layer (v14.9b): pearl-opal colours along the body, by hue = 0 at the tail .. 1 at the head
 OPAL = ((0.08, (228, 226, 212)), (0.30, (214, 208, 238)), (0.55, (234, 238, 242)), (0.85, (184, 216, 240)))
+# v15g (author 2026-11-25: "a different whale colour, e.g. a pink glow - more emotional"): palettes.
+# light = the whale's light (air, petals), belly = shaded underside, glow = emission ramp tail..head,
+# petal_lit = colour the petals take in the whale's light, trl = near-petal translucency when backlit
+PALETTES = {
+    'pearl': dict(light=PEARL, belly=BELLY, glow=OPAL, petal_lit=(0.93, 0.94, 0.96), trl=(0.88, 0.93, 1.0)),
+    'sakura': dict(light=(1.0, 0.62, 0.80), belly=(0.62, 0.46, 0.90),
+                   glow=((0.08, (255, 118, 168)), (0.30, (255, 148, 192)), (0.55, (255, 186, 214)), (0.85, (255, 212, 228))),
+                   petal_lit=(1.0, 0.80, 0.90), trl=(1.0, 0.70, 0.84)),
+}
+
+
+def pal(look):
+    return PALETTES[look.get('palette', 'pearl')]
 FRUIT = (1.0, 0.80, 0.45)
 PETAL = (0.93, 0.94, 0.96)
 
@@ -284,13 +304,13 @@ class Whale:
         inv = N.new('ShaderNodeMath'); inv.operation = 'SUBTRACT'; inv.inputs[0].default_value = 1.0
         L.new(sep.outputs[0], inv.inputs[1])
         ramp = N.new('ShaderNodeValToRGB'); cr = ramp.color_ramp
-        for i, (pos, rgb) in enumerate(OPAL):
+        for i, (pos, rgb) in enumerate(pal(self.look)['glow']):
             e = cr.elements[i] if i < len(cr.elements) else cr.elements.new(pos)
             e.position = pos; e.color = (*[(c / 255.0) ** 2.2 for c in rgb], 1)
         L.new(inv.outputs[0], ramp.inputs['Fac'])
         mix = N.new('ShaderNodeMix'); mix.data_type = 'RGBA'
         mix.inputs['Factor'].default_value = self.look['whale_opal']
-        mix.inputs[6].default_value = (*PEARL, 1)
+        mix.inputs[6].default_value = (*pal(self.look)['light'], 1)
         L.new(ramp.outputs['Color'], mix.inputs[7])
         col = mix.outputs[2]
         # v15d: paint inside the glow - the gouache albedo (strokes, ventral grooves) modulates the light,
@@ -310,7 +330,7 @@ class Whale:
         neg = N.new('ShaderNodeMath'); neg.operation = 'MULTIPLY'; neg.use_clamp = True
         neg.inputs[1].default_value = -self.look['whale_belly']; L.new(sz.outputs['Z'], neg.inputs[0])
         mb = N.new('ShaderNodeMix'); mb.data_type = 'RGBA'
-        L.new(neg.outputs[0], mb.inputs['Factor']); L.new(col, mb.inputs[6]); mb.inputs[7].default_value = (*BELLY, 1)
+        L.new(neg.outputs[0], mb.inputs['Factor']); L.new(col, mb.inputs[6]); mb.inputs[7].default_value = (*pal(self.look)['belly'], 1)
         L.new(mb.outputs[2], b.inputs['Emission Color'])
         lo, hi = self.look['whale_top']
         top = N.new('ShaderNodeMapRange'); top.inputs['From Min'].default_value = -1.0; top.inputs['From Max'].default_value = 1.0
@@ -425,7 +445,9 @@ class Petals:
             pass
         bright = np.clip(d['bright'].astype(np.float64), 0, 3)
         fruit = d['fruit'].astype(np.float64)
-        colv = (np.array(PETAL)[None] * (self.look['petal_emit'] * bright * flick * vis)[:, None]
+        lit = np.clip((bright - 0.35) / 1.0, 0, 0.85)[:, None]
+        pc = np.array(PETAL)[None] * (1 - lit) + np.array(pal(self.look)['petal_lit'])[None] * lit
+        colv = (pc * (self.look['petal_emit'] * bright * flick * vis)[:, None]
                 + np.array(FRUIT)[None] * (self.look['fruit_emit'] * 0.45 * fruit * np.clip(bright, 0, 1) * vis)[:, None])
         me.update(calc_edges=True)
         uvl = me.uv_layers.new(name='UVMap') if not me.uv_layers else me.uv_layers[0]
@@ -464,13 +486,14 @@ class NearSnow:
         self.D, self.N = D, Nn
         band = g.random(n) < look.get('near_band', 0.65)
         self.l = np.where(band, g.normal(look.get('near_band_c', 0.07), 0.28, n), g.uniform(-1.4, 1.4, n))
-        self.s0 = g.uniform(-1.6, 1.6, n); self.sv = g.uniform(0.20, 0.42, n)       # normalised units / s
+        sp = look.get('near_speed', 1.0)
+        self.s0 = g.uniform(-1.6, 1.6, n); self.sv = g.uniform(0.20, 0.42, n) * sp  # normalised units / s
         # gusts: the speed swells and eases in slow waves that travel across the stream and in depth
         self.gp = 2.0 * self.l + 0.08 * self.z + g.normal(0, 0.3, n)
         self.vz = g.uniform(-0.15, 0.15, n)
         self.fa = g.uniform(0.010, 0.030, (n, 3)) * self.z[:, None]; self.fw = g.uniform(0.5, 1.6, (n, 3)); self.fp = g.uniform(0, 2 * np.pi, (n, 3))
         ax = g.standard_normal((n, 3)); self.ax = ax / np.linalg.norm(ax, axis=1, keepdims=True)
-        self.om = g.uniform(1.2, 4.0, n) * np.where(g.random(n) < 0.5, -1, 1); self.ph = g.uniform(0, 2 * np.pi, n)
+        self.om = g.uniform(1.2, 4.0, n) * np.sqrt(sp) * np.where(g.random(n) < 0.5, -1, 1); self.ph = g.uniform(0, 2 * np.pi, n)
         q = g.standard_normal((n, 3)); self.a0 = q / np.linalg.norm(q, axis=1, keepdims=True)
         b = np.cross(self.a0, g.standard_normal((n, 3))); self.b0 = b / np.linalg.norm(b, axis=1, keepdims=True)
         self.s = look['near_size'] * g.uniform(0.8, look.get('near_size_max', 1.3), n)
@@ -478,7 +501,7 @@ class NearSnow:
         bpy.context.scene.collection.objects.link(self.ob)
         me.materials.append(self._material())
         # the whale's light, for the near petals only (light linking): backlight + glints
-        ld = bpy.data.lights.new('NearGlint', 'POINT'); ld.color = PEARL; ld.energy = look['near_light']
+        ld = bpy.data.lights.new('NearGlint', 'POINT'); ld.color = pal(look)['light']; ld.energy = look['near_light']
         try_set(ld, shadow_soft_size=8.0, use_shadow=False, volume_factor=0.0)
         self.light = bpy.data.objects.new('NearGlint', ld); bpy.context.scene.collection.objects.link(self.light)
         try:
@@ -503,7 +526,7 @@ class NearSnow:
         wht = N.new('ShaderNodeMix'); wht.data_type = 'RGBA'; wht.inputs['Factor'].default_value = 0.35
         L.new(tex.outputs['Color'], wht.inputs[6]); wht.inputs[7].default_value = (0.95, 0.97, 1.0, 1)
         L.new(wht.outputs[2], dif.inputs['Color'])
-        trl = N.new('ShaderNodeBsdfTranslucent'); trl.inputs['Color'].default_value = (0.88, 0.93, 1.0, 1)
+        trl = N.new('ShaderNodeBsdfTranslucent'); trl.inputs['Color'].default_value = (*pal(self.look)['trl'], 1)
         mx = N.new('ShaderNodeMixShader'); mx.inputs['Fac'].default_value = 0.35
         L.new(dif.outputs[0], mx.inputs[1]); L.new(trl.outputs[0], mx.inputs[2])
         gl = N.new('ShaderNodeBsdfGlossy'); gl.inputs['Roughness'].default_value = 0.32
@@ -563,7 +586,7 @@ class NearSnow:
 
 class WhaleLight:
     def __init__(self, look):
-        ld = bpy.data.lights.new('WhaleLight', 'POINT'); ld.color = PEARL
+        ld = bpy.data.lights.new('WhaleLight', 'POINT'); ld.color = pal(look)['light']
         try_set(ld, shadow_soft_size=6.0, use_shadow=False, volume_factor=look['whale_light_vol'])   # it sits inside the body
         self.ob = bpy.data.objects.new('WhaleLight', ld); bpy.context.scene.collection.objects.link(self.ob)
         self.k = look['whale_light_w']
@@ -718,10 +741,17 @@ def main(argv):
     look = dict(LOOK[a.look])
     for kv in a.set:
         k, v = kv.split('=')
-        look[k] = tuple(float(x) for x in v.split(',')) if ',' in v else float(v)
+        try:
+            look[k] = tuple(float(x) for x in v.split(',')) if ',' in v else float(v)
+        except ValueError:
+            look[k] = v                                     # e.g. palette=sakura
     if a.exposure is not None:
         look['exposure'] = a.exposure
     meta = json.loads((a.cache / 'cut.json').read_text(encoding='utf-8'))
+    if look.get('lens_mul', 1.0) != 1.0:      # test only: a longer lens from the same previs position/aim
+        for f in meta['frames']:
+            f['cam']['lens_mm'] *= look['lens_mul']
+        print('  [test] lens x', look['lens_mul'], '->', meta['frames'][0]['cam']['lens_mm'], 'mm (NOT the previs)')
     frames = {f['k']: f for f in meta['frames']}
     bpy.ops.wm.read_factory_settings(use_empty=True)
     t0 = time.time()
