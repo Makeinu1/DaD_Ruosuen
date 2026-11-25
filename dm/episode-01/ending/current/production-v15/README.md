@@ -16,7 +16,7 @@ cache/<cut>/cut.json + petals/f_####.npz      ← カメラ・鯨の骨格フレ
    │ blender/render_cut.py (Blender 5.3, EEVEE)
    ▼
 renders/<cut>_<tag>/beauty/####.png  →  <cut>_guide.mp4（ガイド映像）
-   ├─【本命 v15f】render_cut.py --look blizzard --control near / base / petals / whale_matte → post/finish.py
+   ├─【本命 v15g】render_cut.py --look sakura [--set lens_mul=1.636] --control near / base / petals / whale_matte → post/finish.py
    │              → final/ + <cut>_final_<版>.mp4             （AIなし。層に分けて筆致・花弁の光・色を仕上げる）
    ├─ 方式① post/paint.py      → paint/ + <cut>_paint.mp4   （AIなし・絵画調の後処理。v15d で finish.py に置き換え）
    ├─ 方式② Google Flow（Gemini Omni / Veo, video-to-video） → handoff/flow_R14.md の手順で人が操作
@@ -34,8 +34,8 @@ renders/<cut>_<tag>/beauty/####.png  →  <cut>_guide.mp4（ガイド映像）
 | PC環境（リポジトリ取得・Pillow/scipy） | 済 2026-11-24 | `C:\VideoStudio\projects\ruosuen\{repo,pylib}` |
 | 書き出し R14 | 済 | 192フレーム、花弁 2万→8.5万（視野内） |
 | Blenderシーン（洞窟・裂け目・地形・水・鯨・月光柱・花弁） | 済（大枠） | 月光柱はプリヴィズ `moonlit` と一致を確認 |
-| **R14 完成版候補** | **済 v15f 2026-11-25** | `renders/R14_f/R14_final_v15f.mp4`（AIなし。**近景の花吹雪が主役**、`--look blizzard`）。並べた動画 `R14_previs_vs_v15f.mp4`。作り方は `review/R14_visual_review_v15a.md` の v15d〜v15f 節。作者の確認待ち。v15e は `R14_e/`、v15d は `R14_d/` |
-| プリヴィズ変更の提案 | 作者の判断待ち | `review/previs_proposal_near_blizzard.md`：R13〜R15 で手前の花吹雪を主役に（花弁の出どころ、`local_snow` の量の決め方） |
+| **R14 完成版候補** | **済 v15g 2026-11-25** | `renders/R14_g/R14_final_v15g.mp4`（AIなし。**桜色の鯨、少なくゆっくりした本来の大きさの花弁、90 mm 試験**、`--look sakura --set lens_mul=1.636`）。並べた動画 `R14_previs_vs_v15g.mp4`。作り方は `review/R14_visual_review_v15a.md` の v15d〜v15g 節。作者の確認待ち。v15f は `R14_f/`、v15e は `R14_e/` |
+| プリヴィズ変更の提案 | 作者の判断待ち | `review/previs_proposal_near_blizzard.md`：R13〜R15 で手前の花吹雪を主役に、R14 のレンズを 90 mm に、鯨の発光を桜色に（R09 以降すべて） |
 | 花弁の番号（idx） | 済 v15e | `export_cut.py` が花弁ごとの番号を書き出す（遠景の花弁を増やしても飛ばない）。**他のカットは export し直すこと**。R14 の旧キャッシュは `cache/R14_v1_noid` |
 | 近景の花吹雪 | 済 v15e（作者の指示） | プリヴィズの「R14 の手前は澄んだまま」を変更。`NearSnow` はカメラ固定のカット向け（動くカメラは空間に置く形に要改造） |
 | R14 本描画 1280×720 | 済 v15c 2026-11-25 | `renders/R14_c/`：プリヴィズと照合して合わせた版（尾の位相・鯨の描き方・目・空気と花弁）。並べた動画 `R14_previs_vs_v15c.mp4`。v15b は `R14_b/`、v15a は `R14_a/` |
@@ -70,12 +70,12 @@ cd C:\VideoStudio\projects\ruosuen\repo
 git fetch origin production/v15-blender-base-20261124 && git checkout production/v15-blender-base-20261124
 "C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P dm\episode-01\ending\current\production-v15\pc_run.py -- --cut R14 --steps export,render,encode,paint --tag a
 "C:\Program Files\Blender Foundation\Blender 5.3\5.3\python\bin\python.exe" dm\episode-01\ending\current\production-v15\wan\vid2vid.py --video C:\VideoStudio\projects\ruosuen\renders\R14_a\R14_guide.mp4 --out C:\VideoStudio\projects\ruosuen\renders\R14_a\wan --denoise 0.55
-rem 本命 v15f：層を描く → 仕上げ（PYTHONPATH=pylib）
-"C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P dm\episode-01\ending\current\production-v15\blender\render_cut.py -- --cache C:\VideoStudio\projects\ruosuen\cache\R14 --out C:\VideoStudio\projects\ruosuen\renders\R14_f --res 1280 --look blizzard --control near
-"C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P dm\episode-01\ending\current\production-v15\blender\render_cut.py -- --cache C:\VideoStudio\projects\ruosuen\cache\R14 --out C:\VideoStudio\projects\ruosuen\renders\R14_f --res 1280 --look blizzard --control base
-"C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P dm\episode-01\ending\current\production-v15\blender\render_cut.py -- --cache C:\VideoStudio\projects\ruosuen\cache\R14 --out C:\VideoStudio\projects\ruosuen\renders\R14_f --res 1280 --look blizzard --control petals
-"C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P dm\episode-01\ending\current\production-v15\blender\render_cut.py -- --cache C:\VideoStudio\projects\ruosuen\cache\R14 --out C:\VideoStudio\projects\ruosuen\renders\R14_f --res 1280 --look blizzard --control whale_matte
-"C:\Program Files\Blender Foundation\Blender 5.3\5.3\python\bin\python.exe" dm\episode-01\ending\current\production-v15\post\finish.py --layers C:\VideoStudio\projects\ruosuen\renders\R14_f --dst C:\VideoStudio\projects\ruosuen\renders\R14_f\final --dab 0.3 --fine 0.12 --mist 0.25 --gain 1.2 --mp4 C:\VideoStudio\projects\ruosuen\renders\R14_f\R14_final_v15f.mp4
+rem 本命 v15g：層を描く → 仕上げ（PYTHONPATH=pylib）
+"C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P dm\episode-01\ending\current\production-v15\blender\render_cut.py -- --cache C:\VideoStudio\projects\ruosuen\cache\R14 --out C:\VideoStudio\projects\ruosuen\renders\R14_g --res 1280 --look sakura --set lens_mul=1.636 --control near
+"C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P dm\episode-01\ending\current\production-v15\blender\render_cut.py -- --cache C:\VideoStudio\projects\ruosuen\cache\R14 --out C:\VideoStudio\projects\ruosuen\renders\R14_g --res 1280 --look sakura --set lens_mul=1.636 --control base
+"C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P dm\episode-01\ending\current\production-v15\blender\render_cut.py -- --cache C:\VideoStudio\projects\ruosuen\cache\R14 --out C:\VideoStudio\projects\ruosuen\renders\R14_g --res 1280 --look sakura --set lens_mul=1.636 --control petals
+"C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P dm\episode-01\ending\current\production-v15\blender\render_cut.py -- --cache C:\VideoStudio\projects\ruosuen\cache\R14 --out C:\VideoStudio\projects\ruosuen\renders\R14_g --res 1280 --look sakura --set lens_mul=1.636 --control whale_matte
+"C:\Program Files\Blender Foundation\Blender 5.3\5.3\python\bin\python.exe" dm\episode-01\ending\current\production-v15\post\finish.py --layers C:\VideoStudio\projects\ruosuen\renders\R14_g --dst C:\VideoStudio\projects\ruosuen\renders\R14_g\final --dab 0.3 --fine 0.12 --mist 0.25 --gain 1.1 --ring 0.15 --bloom 0.7 --mp4 C:\VideoStudio\projects\ruosuen\renders\R14_g\R14_final_v15g.mp4
 rem 方式③制御：奥行きの制御映像 → Fun-Control（models/diffusion_models/wan2.2_fun_control_5B_bf16.safetensors が要る）
 "C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P dm\episode-01\ending\current\production-v15\blender\render_cut.py -- --cache C:\VideoStudio\projects\ruosuen\cache\R14 --out C:\VideoStudio\projects\ruosuen\renders\R14_b --res 960 --control depth
 "C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P dm\episode-01\ending\current\production-v15\blender\render_cut.py -- --cache C:\VideoStudio\projects\ruosuen\cache\R14 --out C:\VideoStudio\projects\ruosuen\renders\R14_b --res 1280 --control petals
