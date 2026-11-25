@@ -189,6 +189,9 @@ def frame(base, pet, matte, cv, a, near=None, gold=0.0, k=0):
     L2 = (x @ LUM)[..., None]
     x = x + np.array([-0.004, 0.002, 0.016], np.float32) * (1 - np.clip(L2 * 5, 0, 1))      # navy shadows
     x = x * (1 + np.array([0.02, 0.0, -0.03], np.float32) * np.clip((L2 - 0.5) * 2, 0, 1))  # warm-white lights
+    if a.floor:                          # v16: a dim cave behind dark shapes (R17b: the four must read as silhouettes)
+        fl = np.array([float(v) for v in a.floor.split(',')], np.float32)
+        x = x + fl * (1 - np.clip((x @ LUM)[..., None] * 6.0, 0, 1))
     x = x * grain[..., None] * cv.vign[..., None]
     x = np.where(x < 0.75, x, 0.75 + (1 - np.exp(-(x - 0.75) * 3.0)) * 0.25)              # soft shoulder
     return np.clip(x, 0, 1)
@@ -221,6 +224,7 @@ def main():
     ap.add_argument('--whale-detail', type=float, default=0.6)
     ap.add_argument('--ring', type=float, default=0.5)
     ap.add_argument('--gain', type=float, default=1.12)
+    ap.add_argument('--floor', default='', help='r,g,b (0..1): lift the darkest areas toward this (a dim cave)')
     ap.add_argument('--cam-json', type=Path, help="the cut's cut.json: if its camera turns, the canvas stays on the scene")
     a = ap.parse_args()
     cams = None

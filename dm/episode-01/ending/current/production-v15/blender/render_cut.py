@@ -65,8 +65,21 @@ LOOK['r15'] = dict(LOOK['sakura'], palette='source', near_world=1.0, near_n=2400
 # v16 R18 (previs v14.10: from the four's shore, 100 mm on the opening; the whale swims up into the moon and
 # gives its light back): the opening cut exactly (no stair-steps), the night sky, stars and the composed moon;
 # the rock lit by the whale kept darker than the moon (previs kc 0.4); no near blizzard (previs: none in R18)
-LOOK['r18'] = dict(LOOK['sakura'], palette='source', near_n=0.0, fstop=0.0, slab_poly=1.0, sky=1.0,
-                   sky_emit=1.0, star_emit=3.0, moon_disc=6.0, melt_emit=6.0, whale_light_w=0.6e5)
+# Sky, moon and rock calibrated region by region against the previs R18 frames (renders/R18_c6: moon 210/201,
+# halo (65,88,137)/(65,85,127), sky (39,62,100)/(38,53,88), slot walls (29,39,54)/(32,38,48), canopy (5,11,21)/(7,11,18))
+SKY_MOON = dict(slab_poly=1.0, sky=1.0, sky_emit=1.0, sky_high=(46.0, 58.0, 92.0), sky_low=(58.0, 72.0, 112.0),
+                star_emit=3.0, moon_disc=0.6, moon_halo=3.0, rock_emit=0.14, rock_facet_lo=0.45)
+# melt_emit = moon_disc: the parts that have taken on the moon's colour glow exactly like it and merge into it
+LOOK['r18'] = dict(LOOK['sakura'], palette='source', near_n=0.0, fstop=0.0, melt_emit=0.6, whale_light_w=25000.0, **SKY_MOON)
+# v16 R17b (previs v14.10: the four from just behind and below, looking up, 20 mm; the whale, small and glowing,
+# rises to the moon; real snow at last - the released petals, their magic gone, come down slowly, white):
+# the four built in Blender (Party), the white snow in world mode riding the falling snow of the simulation
+LOOK['r17b'] = dict(LOOK['sakura'], palette='source', fstop=0.0, party=1.0, near_world=1.0, near_n=900.0,
+                    near_zmin=1.3, near_zmax=20.0, near_couple=(0.8, 1.1), near_drift=(0.0, 0.0, 0.0),
+                    near_drift_sd=(0.12, 0.12, 0.08), near_size=0.030, near_size_max=1.3, near_emit=0.3, **SKY_MOON)
+# measured against the previs (renders/R17b_t1): the released snow cloud ~x2 brighter, the roof darker (previs: near
+# black around the opening), the whale's light on the roof weaker, the four only lit on top (no halo round the heads)
+LOOK['r17b'].update(petal_emit=4.5, rock_emit_canopy=0.04, whale_light_w=0.8e5, party_rim=0.35)
 PEARL = (0.86, 0.93, 1.0)
 BELLY = (0.55, 0.68, 0.95)          # the shaded underside goes blue (originals CUT05 / CUT09)
 # previs whale_layer (v14.9b): pearl-opal colours along the body, by hue = 0 at the tail .. 1 at the head
@@ -196,39 +209,85 @@ def slab_poly(name, z, mat, ext=340.0, sub=8):
     Q = np.array([P[i] + (P[(i + 1) % len(P)] - P[i]) * j / sub for i in range(len(P)) for j in range(sub)])
     c = P.mean(0); ang = np.arctan2(Q[:, 1] - c[1], Q[:, 0] - c[0])
     O = c + np.column_stack([np.cos(ang), np.sin(ang)]) * ext * 1.45
-    n = len(Q)
-    V = np.vstack([np.column_stack([Q, np.full(n, z)]), np.column_stack([O, np.full(n, z)])])
-    F = [(i, (i + 1) % n, n + (i + 1) % n, n + i) for i in range(n)]
-    return mesh_obj(name, V, F, mat)
+    # v16: rings from the rim outward, small near the opening, then triangles with a random tone each
+    # (the previs draws the rock around the opening as flat facets); the rim ring itself stays exact
+    ts = (0.0, 0.012, 0.03, 0.06, 0.11, 0.19, 0.32, 0.52, 0.76, 1.0)
+    g = np.random.default_rng(int(z))
+    rings = []
+    for j, t in enumerate(ts):
+        R_ = Q + (O - Q) * t
+        zz = np.full(len(Q), float(z)) + (g.uniform(-0.7, 0.7, len(Q)) * min(1.0, 40 * t) if j else 0.0)
+        rings.append(np.column_stack([R_, zz]))
+    return _tri_rings(name, rings, mat, g)
+
+
+def _tri_rings(name, rings, mat, g):
+    """quads between consecutive closed rings, split into triangles (alternating diagonals), each with a
+    random tone (face attribute pv_facet, used by _rock_glow)"""
+    n = len(rings[0]); V = np.vstack(rings); F = []
+    for j in range(len(rings) - 1):
+        for i in range(n):
+            a, b, c_, d = j * n + i, j * n + (i + 1) % n, (j + 1) * n + (i + 1) % n, (j + 1) * n + i
+            F += [(a, b, c_), (a, c_, d)] if (i + j) % 2 else [(a, b, d), (b, c_, d)]
+    ob = mesh_obj(name, V, F, mat)
+    at = ob.data.attributes.new('pv_facet', 'FLOAT', 'FACE')
+    at.data.foreach_set('value', g.random(len(F)).astype(np.float32))
+    return ob
+
+
+def slot_wall(name, mat, sub=8, levels=6):
+    """v16: the slot between the bottom rim (190 m) and the narrower top rim (230 m), in facets"""
+    def subd(P):
+        return np.array([P[i] + (P[(i + 1) % len(P)] - P[i]) * j / sub for i in range(len(P)) for j in range(sub)])
+    pb = subd(np.array(w.rim_polygon(w.RIM_Z))); pt = subd(np.array(w.rim_polygon(w.TOP_Z)))
+    g = np.random.default_rng(1902)
+    c = pb[:, :2].mean(0)
+    rings = []
+    for j in range(levels + 1):
+        t = j / levels; R_ = pb + (pt - pb) * t
+        if 0 < j < levels:                                  # a little relief, the rims stay exact
+            d = R_[:, :2] - c; d /= np.linalg.norm(d, axis=1, keepdims=True)
+            R_ = R_.copy(); R_[:, :2] += d * g.uniform(-1.2, 1.2, len(R_))[:, None]
+        rings.append(R_)
+    return _tri_rings(name, rings, mat, g)
 
 
 def build_world(look):
     sc = bpy.context.scene
     rock = simple_mat('Rock', (look['rock'],) * 3, 0.95)
     rock_soft = simple_mat('RockFar', (look['rock'] * 0.8, look['rock'] * 0.85, look['rock'] * 0.9), 0.95)
+    rock_slot = rock
     if look.get('rock_emit', 0.0) > 0:
-        # v16 (R18): the night sky through the opening lights the canopy rock a dim grey-blue, in flat facets
-        # (previs: faceted rock around the opening, ~(37,45,56) on the lit side)
-        nt = rock.node_tree; N = nt.nodes; L = nt.links; b = N.get('Principled BSDF')
-        vo = N.new('ShaderNodeTexVoronoi'); vo.inputs['Scale'].default_value = look.get('rock_facet', 0.08)   # per metre
-        gp = N.new('ShaderNodeNewGeometry'); L.new(gp.outputs['Position'], vo.inputs['Vector'])
-        bw = N.new('ShaderNodeRGBToBW'); L.new(vo.outputs['Color'], bw.inputs[0])
-        mr = N.new('ShaderNodeMapRange'); mr.inputs['To Min'].default_value = 0.35; mr.inputs['To Max'].default_value = 1.0
-        L.new(bw.outputs[0], mr.inputs['Value'])
-        k = N.new('ShaderNodeMath'); k.operation = 'MULTIPLY'; k.inputs[1].default_value = look['rock_emit']
-        L.new(mr.outputs['Result'], k.inputs[0])
-        b.inputs['Emission Color'].default_value = (*_lin(look.get('rock_emit_col', (120, 140, 175))), 1)
-        L.new(k.outputs[0], b.inputs['Emission Strength'])
+        # v16 (R18): the night sky through the opening lights the rock a dim grey-blue, in flat facets (previs:
+        # faceted rock around the opening, ~(37,45,56) on the slot walls that see the sky, the canopy underside
+        # much darker)
+        rock_slot = simple_mat('RockSlot', (look['rock'],) * 3, 0.95)
+        _rock_glow(rock_slot, look, look['rock_emit'])
+        _rock_glow(rock, look, look['rock_emit'] * look.get('rock_emit_canopy', 0.2))
     # canopy: bottom rim (190 m) and the narrower top rim (230 m) -> the moon beam is their intersection
     if look.get('slab_poly', 0.0) > 0.5:
         slab_poly('Canopy_Rim190', w.RIM_Z, rock)
         slab_poly('Canopy_Top230', w.TOP_Z, rock)
-        # the slot between the rims (previs: dark rock between the bottom and the top outline)
-        pb = np.array(w.rim_polygon(w.RIM_Z)); pt = np.array(w.rim_polygon(w.TOP_Z)); m_ = len(pb)
-        mesh_obj('SlotWall', np.vstack([pb, pt]), [(i, (i + 1) % m_, m_ + (i + 1) % m_, m_ + i) for i in range(m_)], rock)
+        slot_wall('SlotWall', rock_slot)      # the slot between the rims (previs: dark faceted rock)
     else:
         slab_with_hole('Canopy_Rim190', w.RIM_Z, 1.0, rock)
         slab_with_hole('Canopy_Top230', w.TOP_Z, w.TOP_NARROW, rock)
+    _build_ground_water_air(sc, look, rock_soft)
+
+
+def _rock_glow(rock, look, strength):
+    """dim emission for rock that sees the night sky, one tone per facet (face attribute pv_facet)"""
+    nt = rock.node_tree; N = nt.nodes; L = nt.links; b = N.get('Principled BSDF')
+    fa = N.new('ShaderNodeAttribute'); fa.attribute_name = 'pv_facet'
+    mr = N.new('ShaderNodeMapRange'); mr.inputs['To Min'].default_value = look.get('rock_facet_lo', 0.3); mr.inputs['To Max'].default_value = 1.0
+    L.new(fa.outputs['Fac'], mr.inputs['Value'])
+    k = N.new('ShaderNodeMath'); k.operation = 'MULTIPLY'; k.inputs[1].default_value = strength
+    L.new(mr.outputs['Result'], k.inputs[0])
+    b.inputs['Emission Color'].default_value = (*_lin(look.get('rock_emit_col', (120, 140, 175))), 1)
+    L.new(k.outputs[0], b.inputs['Emission Strength'])
+
+
+def _build_ground_water_air(sc, look, rock_soft):
     # ground height field (land) and water
     xs = np.arange(-300, 301, 4.0); ys = np.arange(-300, 241, 4.0)
     X, Y = np.meshgrid(xs, ys, indexing='ij')
@@ -1000,6 +1059,67 @@ class NearSnow:
         self.light.data.color = col
 
 
+class Party:
+    """v16 (R17b; also R06): the four adventurers, built in Blender (never drawn by an AI), seen from behind
+    as dark silhouettes. Their looks are undecided, so - as in the previs draw_party - they are anonymous
+    cloaked figures of different builds (cut.json party: dx, dy from the PCs' spot, height, shoulder width),
+    nothing that fixes a race, class or weapon. Cloak = a lathe of ellipses on the previs outline; the head
+    tips back to look up; a cool rim where the light of the opening grazes the shoulders and head."""
+    PROF = ((0.00, 0.30), (0.30, 0.37), (0.55, 0.44), (0.72, 0.48), (0.80, 0.50), (0.84, 0.40), (0.86, 0.12))
+
+    def __init__(self, look, meta):
+        self.look = look
+        cam0 = meta['frames'][0]['cam']; f0 = np.array(cam0['f']); r0 = np.array(cam0['r'])
+        fh = f0 * np.array([1, 1, 0.0]); fh /= np.linalg.norm(fh)          # they face away from the camera
+        rh = np.cross(fh, (0.0, 0.0, 1.0)); rh /= np.linalg.norm(rh)
+        if rh @ r0 < 0:
+            rh = -rh
+        pc = np.array(meta['pc']); mat = self._material()
+        self.obs = []
+        lean = look.get('party_lean', 0.07)
+        for k, (dx, dy, h, sw) in enumerate(meta['party']):
+            base = np.array([pc[0] + dx, pc[1] + dy, 0.0]); base[2] = float(w.ground_z(base[0], base[1]))
+            n = 20; ang = np.linspace(0, 2 * np.pi, n, endpoint=False)
+            V = []
+            for zf, wf in self.PROF:
+                a_ = wf * sw; b_ = 0.62 * a_
+                for t in ang:
+                    V.append(base + rh * (a_ * np.cos(t)) + fh * (b_ * np.sin(t)) + np.array([0, 0, zf * h]))
+            F = [(j * n + i, j * n + (i + 1) % n, (j + 1) * n + (i + 1) % n, (j + 1) * n + i)
+                 for j in range(len(self.PROF) - 1) for i in range(n)]
+            top = len(V); V.append(base + np.array([0, 0, 0.86 * h])); F += [((len(self.PROF) - 1) * n + i, (len(self.PROF) - 1) * n + (i + 1) % n, top) for i in range(n)]
+            # head: an ellipsoid (r 0.105 h, a little taller), tipped back toward the camera to look up
+            hc = base + np.array([0, 0, 0.935 * h]) - fh * lean; hr = 0.105 * h
+            nu_, nv_ = 16, 10; h0 = len(V)
+            for j in range(nv_ + 1):
+                ph = math.pi * j / nv_
+                for i in range(nu_):
+                    t = 2 * math.pi * i / nu_
+                    V.append(hc + rh * (hr * math.sin(ph) * math.cos(t)) + fh * (hr * math.sin(ph) * math.sin(t)) + np.array([0, 0, 1.12 * hr * math.cos(ph)]))
+            F += [(h0 + j * nu_ + i, h0 + j * nu_ + (i + 1) % nu_, h0 + (j + 1) * nu_ + (i + 1) % nu_, h0 + (j + 1) * nu_ + i)
+                  for j in range(nv_) for i in range(nu_)]
+            ob = mesh_obj(f'Party{k}', V, F, mat)
+            for p_ in ob.data.polygons:
+                p_.use_smooth = True
+            self.obs.append(ob)
+        print(f'  party: {len(self.obs)} figures')
+
+    def _material(self):
+        m = bpy.data.materials.new('PartyCloak'); try_set(m, use_nodes=True)
+        nt = m.node_tree; N = nt.nodes; L = nt.links; b = N.get('Principled BSDF')
+        b.inputs['Base Color'].default_value = (*_lin((7, 9, 13)), 1); b.inputs['Roughness'].default_value = 0.9
+        lw = N.new('ShaderNodeLayerWeight'); lw.inputs['Blend'].default_value = 0.35
+        geo = N.new('ShaderNodeNewGeometry'); sz = N.new('ShaderNodeSeparateXYZ'); L.new(geo.outputs['Normal'], sz.inputs[0])
+        upk = N.new('ShaderNodeMapRange'); upk.inputs['From Min'].default_value = 0.25; upk.inputs['From Max'].default_value = 1.0
+        L.new(sz.outputs['Z'], upk.inputs['Value'])
+        rim = N.new('ShaderNodeMath'); rim.operation = 'MULTIPLY'; L.new(lw.outputs['Fresnel'], rim.inputs[0]); L.new(upk.outputs['Result'], rim.inputs[1])
+        k = N.new('ShaderNodeMath'); k.operation = 'MULTIPLY'; k.inputs[1].default_value = self.look.get('party_rim', 0.6)
+        L.new(rim.outputs[0], k.inputs[0])
+        b.inputs['Emission Color'].default_value = (*_lin((62, 76, 96)), 1)
+        L.new(k.outputs[0], b.inputs['Emission Strength'])
+        return m
+
+
 class WhaleLight:
     def __init__(self, look):
         self.look = look
@@ -1062,11 +1182,23 @@ def to_base():
 
 
 def to_near_layer():
-    """The near blizzard alone on a transparent film (RGBA; laid over the finished frame)."""
+    """The near blizzard alone on a transparent film (RGBA; laid over the finished frame).
+    v16: the other surfaces are holdouts, not hidden, so a petal behind the whale, the four or the ground
+    does not show through them (R17b: the four stand inside the snow)."""
     sc = bpy.context.scene
+    hold = bpy.data.materials.new('NearHoldout'); try_set(hold, use_nodes=True); nt = hold.node_tree
+    for n in list(nt.nodes):
+        if n.type != 'OUTPUT_MATERIAL':
+            nt.nodes.remove(n)
+    ho = nt.nodes.new('ShaderNodeHoldout')
+    nt.links.new(ho.outputs[0], next(n for n in nt.nodes if n.type == 'OUTPUT_MATERIAL').inputs['Surface'])
     for ob in list(sc.objects):
-        if ob.type == 'MESH' and ob.name != 'NearSnow':
+        if ob.type != 'MESH' or ob.name == 'NearSnow':
+            continue
+        if ob.name in ('CaveAir', 'Petals', 'NightSky', 'Stars', 'MoonDisc', 'MoonHalo'):
             ob.hide_render = True
+        else:
+            ob.data.materials.clear(); ob.data.materials.append(hold)
     try_set(sc.render, film_transparent=True)
     sc.render.image_settings.color_mode = 'RGBA'
 
@@ -1087,7 +1219,13 @@ def to_whale_matte():
         if ob.type == 'LIGHT' or ob.name in ('CaveAir', 'Petals'):
             ob.hide_render = True
         elif ob.type == 'MESH':
-            ob.data.materials.clear(); ob.data.materials.append(white if ob.name.startswith('WH01') else black)
+            mat = white if ob.name.startswith('WH01') else black
+            if mat is white and ob.data.attributes.get('pv_malpha') is not None:
+                # v16 (R18): the matte melts with the whale (its strength follows pv_malpha)
+                mat = flat('MatteWhiteMelt', 1.0); nt = mat.node_tree
+                at = nt.nodes.new('ShaderNodeAttribute'); at.attribute_name = 'pv_malpha'
+                em = next(n for n in nt.nodes if n.type == 'EMISSION'); nt.links.new(at.outputs['Fac'], em.inputs['Strength'])
+            ob.data.materials.clear(); ob.data.materials.append(mat)
     sc.world.node_tree.nodes.get('Background').inputs['Color'].default_value = (0, 0, 0, 1)
     try_set(sc.view_settings, view_transform='Standard', look='None', exposure=0.0)
     try_set(sc.eevee, taa_render_samples=8)
@@ -1183,6 +1321,8 @@ def main(argv):
     setup_render(a, meta, look)
     whale = Whale(look, meta); wl = WhaleLight(look); pet = Petals(look, a.res)
     near = NearSnow(look, meta) if look['near_n'] > 0 else None
+    if look.get('party', 0.0) > 0.5 and meta.get('party'):
+        Party(look, meta)
     if look['fstop'] > 0:                          # focus on the whale: the near petals go soft
         try_set(cam.data.dof, use_dof=True, aperture_fstop=look['fstop'])
     if look.get('whale_self_light', 0.0) < 0.5:
