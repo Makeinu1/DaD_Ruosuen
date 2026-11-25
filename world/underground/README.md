@@ -25,7 +25,7 @@ AREAは発見・確認順、番号と隣接関係は独立。地下地図は方�
 - id：種別付きの正式名または番号（registration=named/numbered）。未採番のみ tmp:スコープ:対象（registration=pending）。例 tmp:session-01:opening-a。正式登録時は暫定レコードを失効させ後継へ対応付ける。
 - name：道名・正式名・顕彰名。無名はnull。番号と道路名は共存できる。実在する異称だけを任意追加する。道名は複数区間にまたがり得る。
 - approval：accepted / provisional。未採用案はnotesまたはDM草案。source：承認・観測の出典（ファイルと見出し等）。lifecycle：active / retired。history：変更履歴配列。
-- historyの各項目：kind（world_change / correction / registration / survey / reorganization / knowledge）、at（作中時点、未定ならセッション・場面）、reason、source。既存レコードを変更する場合は追記必須。Gitの時刻とは別。
+- historyの各項目：kind（world_change / correction / registration / survey / reorganization / knowledge / approval：作者承認による確定）、at（作中時点、未定ならセッション・場面）、reason、source。既存レコードを変更する場合は追記必須。Gitの時刻とは別。
 - retiredの場合 retirement={at,reason,successors}。旧番号を削除・再利用しない。SEGMENTの後継は方向付きの順序配列、その他はID配列。旧報告・旧地図は原文を残す。
 
 | 種別 | 固有フィールド |

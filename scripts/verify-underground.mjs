@@ -60,7 +60,7 @@ export function validate(world,dm,previous=null,mergeBase=null,head=null){
     if(!["active","retired"].includes(r.lifecycle))err(`${r.id}: invalid lifecycle`);
     if(!str(r.source))err(`${r.id}: missing source`);
     if(!Array.isArray(r.history))err(`${r.id}: missing history`);
-    for(const h of arr(r.history))if(!obj(h)||!str(h.at)||!str(h.reason)||!str(h.source)||!["world_change","correction","registration","survey","reorganization","knowledge"].includes(h.kind))err(`${r.id}: invalid history entry`);
+    for(const h of arr(r.history))if(!obj(h)||!str(h.at)||!str(h.reason)||!str(h.source)||!["world_change","correction","registration","survey","reorganization","knowledge","approval"].includes(h.kind))err(`${r.id}: invalid history entry`);
     if(r.lifecycle==="retired"){
       if(!obj(r.retirement)||!str(r.retirement.at)||!str(r.retirement.reason)||!Array.isArray(r.retirement.successors))err(`${r.id}: missing retirement history`);
       else {
