@@ -1,9 +1,9 @@
-// Underground atlas v0.2: dependency-free, Node.js 20+.
+// Underground atlas v0.3: dependency-free, Node.js 20+.
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 export function validate(world,dm,previous=null,mergeBase=null,head=null){
-  const kinds={nodes:"NODE",segments:"SEGMENT",routes:"ROUTE",facilities:"FACILITY",reports:"REPORT"};
+  const kinds={areas:"AREA",nodes:"NODE",segments:"SEGMENT",routes:"ROUTE",facilities:"FACILITY",reports:"REPORT"};
   const errors=[],warnings=[],err=(m)=>errors.push(m),warn=(m)=>warnings.push(m);
   const obj=x=>x!==null&&typeof x==="object"&&!Array.isArray(x);
   const str=x=>typeof x==="string"&&x.trim().length>0;
@@ -14,8 +14,9 @@ export function validate(world,dm,previous=null,mergeBase=null,head=null){
   function collect(w,d,check=false){
     const map=new Map();
     for(const [atlas,scope] of [[w,"world"],[d,"dm"]]){
-      if(!obj(atlas)||atlas.version!=="0.2"){if(check)err(`${scope}: invalid atlas version`);continue}
+      if(!obj(atlas)||!["0.2","0.3"].includes(atlas.version)){if(check)err(`${scope}: invalid atlas version`);continue}
       for(const [group,kind] of Object.entries(kinds)){
+        if(group==="areas"&&atlas.version==="0.2"&&atlas[group]===undefined)continue;
         if(!Array.isArray(atlas[group])){if(check)err(`${scope}.${group}: expected array`);continue}
         for(const r of atlas[group]){
           if(!obj(r)||!str(r.id)){if(check)err(`${scope}.${group}: missing id`);continue}
@@ -71,12 +72,27 @@ export function validate(world,dm,previous=null,mergeBase=null,head=null){
       }
     }else if(r.retirement)err(`${r.id}: active record has retirement`);
     const active=r.lifecycle==="active";
+    if(group==="areas"){
+      if(!["approximate","surveyed","unknown"].includes(r.geometry))err(`${r.id}: invalid area geometry`);
+      if(r.datum!==null&&!str(r.datum))err(`${r.id}: invalid area datum`);
+      if(r.outline_xy_m!==null&&(!Array.isArray(r.outline_xy_m)||r.outline_xy_m.length<3||!r.outline_xy_m.every(p=>Array.isArray(p)&&p.length===2&&p.every(num))))err(`${r.id}: invalid area outline`);
+      if(!Array.isArray(r.terrain))err(`${r.id}: invalid terrain collection`);
+      const keys=new Set();for(const t of arr(r.terrain)){if(!str(t.key)||keys.has(t.key)||!["line","polygon"].includes(t.geometry)||!Array.isArray(t.xy_m)||t.xy_m.length<(t.geometry==="polygon"?3:2)||!t.xy_m.every(p=>Array.isArray(p)&&p.length===2&&p.every(num)))err(`${r.id}: invalid terrain feature`);keys.add(t.key)}
+    }
+    if(r.area!=null){const a=ref(x,r.area,"areas",active);if(group==="nodes"&&r.position&&a&&r.position.datum!==a.r.datum)err(`${r.id}: area datum mismatch`)}
     if(group==="nodes"){
       if(!str(r.kind))err(`${r.id}: missing node kind`);
       if(r.position!==null&&r.position!==undefined&&(!obj(r.position)||!str(r.position.datum)||!["x","y","z"].every(k=>num(r.position[k]))))err(`${r.id}: invalid position`);
     }
     if(group==="segments"){
-      ref(x,r.from,"nodes",active);
+      const origin=ref(x,r.from,"nodes",active);
+      if(r.destination_area!=null)ref(x,r.destination_area,"areas",active);
+      if(r.origin_area!=null)ref(x,r.origin_area,"areas",active);
+      if(r.origin_area&&origin?.r.area!==r.origin_area)err(`${r.id}: origin area mismatch`);
+      if(r.terminal_kind==="known_area_connection"&&r.destination_area==null)err(`${r.id}: missing destination area`);
+      if(r.terminal_kind==="observed_opening"&&r.destination_area!=null)err(`${r.id}: opening claims known destination`);
+      if(r.area&&origin?.r.area!==r.area)err(`${r.id}: local segment origin area mismatch`);
+      if(r.area&&r.to!==null&&map.get(r.to)?.r.area!==r.area)err(`${r.id}: local segment endpoint area mismatch`);
       if(r.to!==null)ref(x,r.to,"nodes",active);
       if(!["schematic","surveyed","approximate","unknown"].includes(r.geometry))err(`${r.id}: invalid geometry`);
       if(r.length_m!==null&&(!num(r.length_m)||r.length_m<0))err(`${r.id}: invalid length`);
