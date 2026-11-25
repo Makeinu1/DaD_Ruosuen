@@ -63,6 +63,20 @@ def capture_local_snow(R, cam, t, tau, cid):
     return pw, br, fr, sp
 
 
+def near_density(R, cam, tau, cid):
+    """0..1: how much of the previs near-camera snow is out at this moment (local_snow's N_eff / N).
+    Mirrors Renderer.local_snow so that Blender's NearSnow can grow and surge the same way
+    (R15: with the snow the whale brings to the camera)."""
+    if cid in ('R13', 'R14'):
+        return float(pv.smooth((tau - pv.TAU_LIFT) / 1.5))
+    if cid == 'R17b':
+        return 1.0
+    P = R.petals
+    act = (tau >= P.tau_lift) & ~P.landed & ~P.gone
+    n_near = int((np.sum((P.p[act] - cam.pos) ** 2, 1) < 20.0 ** 2).sum()) if act.any() else 0
+    return float(pv.smooth(n_near / 150.0))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--cut', required=True)
@@ -91,7 +105,9 @@ def main():
                          'amp': amp, 'extra_roll': float(extra_roll),
                          'glow': float(pv.glow_level(tau, w.XMIN)), 'opal': float(pv.opal_mix(tau)),
                          'melt': float(pv.melt_progress(t)) if cid == 'R18' else 0.0},
-               'whale_light': {'p': np.asarray(wl_p).tolist(), 'I': float(wl_I)}}
+               'whale_light': {'p': np.asarray(wl_p).tolist(), 'I': float(wl_I)},
+               # R15's closest pass: the air full of lit petals glows up around the whale (previs kg)
+               'climax': float(pv.climax(tau))}
         if not a.no_petals:
             P = R.petal_state(tau, cid)
             parts = []
@@ -104,6 +120,16 @@ def main():
                     d = np.linalg.norm(pp - wl_p, axis=1)
                     bright = 0.05 + wl_I * 1.6 / (1 + (d / 55.0) ** 2) + 0.32 * w.moonlit(pp, soft=7.0)
                     parts.append((pp, P.fruit[keep], P.spin[keep], bright, np.zeros(len(keep), np.uint8), keep.astype(np.int32)))
+                rec['near_k'] = near_density(R, cam, tau, cid)
+                # the flow of the simulated snow around the camera (median velocity within 30 m, world m/s):
+                # NearSnow's world mode lets its petals ride it (R15: the river the whale brings, then lets go)
+                act_f = (tau >= P.tau_detach) & ~P.gone & ~P.landed
+                near_f = np.where(act_f)[0]
+                near_f = near_f[np.sum((P.p[near_f] - cam.pos) ** 2, 1) < 30.0 ** 2] if len(near_f) else near_f
+                rec['near_flow'] = np.median(P.v[near_f], 0).tolist() if len(near_f) >= 20 else [0.0, 0.0, 0.0]
+                rec['near_flow_n'] = int(len(near_f))
+                # R15's slow moment: the near petals hang and glint gold (previs local_snow fk)
+                rec['slow'] = float(pv._slow_window(t - pv.T_SLOW)) if cid == 'R15' else 0.0
                 ls = capture_local_snow(R, cam, t, tau, cid)
                 if ls is not None:
                     pw, br, frt, sp = ls
@@ -118,7 +144,36 @@ def main():
         frames.append(rec)
         if k % (a.fps * 2) == 0:
             print(f'{cid} frame {k}/{n} t={t:.2f} tau={tau:.2f} petals={rec.get("n_petals")} {time.time() - t0:.0f}s', flush=True)
+    # v16: the flower colony this cut sees (R10-R13): every flower in any frame's view (out to 260 m), with
+    # its bloom time, maturity, moonlight, and the times its petals let go (previs Petals: 4 per mature flower)
+    if cid in ('R10', 'R11', 'R12', 'R13') and not a.every > 24:
+        F = pv.FLOWERS
+        seen = np.zeros(len(F), bool)
+        for rec in frames[::6]:
+            c = rec['cam']; cp_ = np.array(c['pos'])
+            q = (F - cp_) @ np.array([c['r'], c['u'], c['f']]).T
+            z = q[:, 2]; zz = np.maximum(z, 1e-3)
+            ax = 18.0 / c['lens_mm'] * 1.2; ay = 10.125 / c['lens_mm'] * 1.2
+            seen |= (z > 0.05) & (z < 260) & (np.abs(q[:, 0] / zz) < ax) & (np.abs(q[:, 1] / zz) < ay)
+        fi = np.where(seen)[0]
+        Pp = R.petals
+        det = np.full((len(F), 4), np.inf, np.float32)
+        order = np.argsort(Pp.src, kind='stable')
+        s_sorted = Pp.src[order]; starts = np.searchsorted(s_sorted, np.arange(len(F))); ends = np.searchsorted(s_sorted, np.arange(len(F)), 'right')
+        for i in fi:
+            dd = np.sort(Pp.tau_detach[order[starts[i]:ends[i]]])[:4]
+            det[i, :len(dd)] = dd
+        np.savez(a.out / 'flowers.npz', p=F[fi].astype(np.float32), idx=fi.astype(np.int32),
+                 tau_open=pv.TAU_OPEN[fi].astype(np.float32), mature=pv.MATURE[fi],
+                 moon=w.moonlit(F[fi] + np.array([0, 0, 0.2])).astype(np.float32), det=det[fi])
+        print('flowers', len(fi))
+    # the moon as the previs composes it in the opening (an anchor just beyond the top rim + its angular
+    # radius), laid out at the previs' own 1280x720 so that it lands on the same pixels
+    R.W, R.H = 1280, 720
+    lay = R.moon_layout(cid)
+    moon = None if lay is None else {'p': np.asarray(lay[0]).tolist(), 'ang_r': float(lay[1])}
     meta = {'cut': cid, 'film_start_s': s0, 'film_end_s': s1, 'fps': a.fps, 'n_frames': n, 'every': a.every,
+            'moon': moon,
             'previs_version': 'v14.10', 'coords': 'previs world: X east, Y north, Z up, metres; lake Z=0',
             'camera_note': 'Blender: sensor_fit HORIZONTAL, sensor_width 36 mm; rotation columns X=r, Y=u, Z=-f',
             'moon_dir': w.MOON_DIR.tolist(), 'ev_contact': float(pv.EV['contact']), 'rim_z': w.RIM_Z, 'top_z': w.TOP_Z, 'top_narrow': w.TOP_NARROW,
