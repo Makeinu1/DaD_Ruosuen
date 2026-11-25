@@ -2,7 +2,7 @@
 
 > DM資料（ネタバレ）。Pages・SECTIONS・llms.txt に載せない。
 > 対象：ep.1 エンディング『空に降る雪』。判断基準（作者 2026-11-24）：**プレイヤーの感情の動きを制御して感動させること。**
-> プリヴィズ v14.9b（`../previs/v14-director-rebuild/`）が **唯一の正**。尺・カメラ・鯨の動き・花弁の動きはここで作り直さない。
+> プリヴィズ **v14.10**（`../previs/v14-director-rebuild/`）が **唯一の正**。尺・カメラ・鯨の動き・花弁の動きはここで作り直さない。
 
 このフォルダは「誰が続きをやっても同じ結果になる」ための作業台。Claude・Gemini・Codex・人のどれが引き継いでもよい。
 
@@ -16,7 +16,7 @@ cache/<cut>/cut.json + petals/f_####.npz      ← カメラ・鯨の骨格フレ
    │ blender/render_cut.py (Blender 5.3, EEVEE)
    ▼
 renders/<cut>_<tag>/beauty/####.png  →  <cut>_guide.mp4（ガイド映像）
-   ├─【本命 v15i】render_cut.py --look sakura --set palette=source [--set lens_mul=1.636] --control near / base / petals / whale_matte → post/finish.py
+   ├─【本命 v15i】render_cut.py --look sakura --set palette=source --control near / base / petals / whale_matte → post/finish.py
    │              → final/ + <cut>_final_<版>.mp4             （AIなし。層に分けて筆致・花弁の光・色を仕上げる）
    ├─ 方式① post/paint.py      → paint/ + <cut>_paint.mp4   （AIなし・絵画調の後処理。v15d で finish.py に置き換え）
    ├─ 方式② Google Flow（Gemini Omni / Veo, video-to-video） → handoff/flow_R14.md の手順で人が操作
@@ -35,7 +35,7 @@ renders/<cut>_<tag>/beauty/####.png  →  <cut>_guide.mp4（ガイド映像）
 | 書き出し R14 | 済 | 192フレーム、花弁 2万→8.5万（視野内） |
 | Blenderシーン（洞窟・裂け目・地形・水・鯨・月光柱・花弁） | 済（大枠） | 月光柱はプリヴィズ `moonlit` と一致を確認 |
 | **R14 完成版候補** | **済 v15i 2026-11-25** | `renders/R14_i/R14_final_v15i.mp4`（AIなし。**鯨が光源（芯は白、光は桜色、花弁は白い雪で近くだけ染まる）＋ひと漕ぎごとに淡い金**、少なくゆっくりした花弁、90 mm 試験）。作り方は `review/R14_visual_review_v15a.md` の v15d〜v15i 節。色の方針 B は作者承認。v15h（金なし）は `R14_h/`、v15g は `R14_g/` |
-| プリヴィズ変更の提案 | 作者の判断待ち | `review/previs_proposal_near_blizzard.md`：R13〜R15 で手前の花吹雪を主役に、R14 のレンズを 90 mm に、鯨の色の流れ（金＝目覚め・桜色＝つながり・白＝別れ、R09〜R18） |
+| プリヴィズ v14.10 | **済 2026-11-25（作者承認）** | 鯨は光源＋金＝目覚め・桜色＝つながり・白＝別れ、花弁は近さで色を借りる、R13〜R15 は手前の花吹雪が主役（突風が運ぶ）、R14 は 90 mm。経緯は `review/previs_proposal_near_blizzard.md`。R14 のキャッシュは v14.10 から書き出し直し済み（旧 55 mm は `cache/R14_v2_55mm`） |
 | 花弁の番号（idx） | 済 v15e | `export_cut.py` が花弁ごとの番号を書き出す（遠景の花弁を増やしても飛ばない）。**他のカットは export し直すこと**。R14 の旧キャッシュは `cache/R14_v1_noid` |
 | 近景の花吹雪 | 済 v15e（作者の指示） | プリヴィズの「R14 の手前は澄んだまま」を変更。`NearSnow` はカメラ固定のカット向け（動くカメラは空間に置く形に要改造） |
 | R14 本描画 1280×720 | 済 v15c 2026-11-25 | `renders/R14_c/`：プリヴィズと照合して合わせた版（尾の位相・鯨の描き方・目・空気と花弁）。並べた動画 `R14_previs_vs_v15c.mp4`。v15b は `R14_b/`、v15a は `R14_a/` |
@@ -71,10 +71,10 @@ git fetch origin production/v15-blender-base-20261124 && git checkout production
 "C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P dm\episode-01\ending\current\production-v15\pc_run.py -- --cut R14 --steps export,render,encode,paint --tag a
 "C:\Program Files\Blender Foundation\Blender 5.3\5.3\python\bin\python.exe" dm\episode-01\ending\current\production-v15\wan\vid2vid.py --video C:\VideoStudio\projects\ruosuen\renders\R14_a\R14_guide.mp4 --out C:\VideoStudio\projects\ruosuen\renders\R14_a\wan --denoise 0.55
 rem 本命 v15i：層を描く → 仕上げ（PYTHONPATH=pylib）
-"C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P dm\episode-01\ending\current\production-v15\blender\render_cut.py -- --cache C:\VideoStudio\projects\ruosuen\cache\R14 --out C:\VideoStudio\projects\ruosuen\renders\R14_i --res 1280 --look sakura --set lens_mul=1.636 --set palette=source --control near
-"C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P dm\episode-01\ending\current\production-v15\blender\render_cut.py -- --cache C:\VideoStudio\projects\ruosuen\cache\R14 --out C:\VideoStudio\projects\ruosuen\renders\R14_i --res 1280 --look sakura --set lens_mul=1.636 --set palette=source --control base
-"C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P dm\episode-01\ending\current\production-v15\blender\render_cut.py -- --cache C:\VideoStudio\projects\ruosuen\cache\R14 --out C:\VideoStudio\projects\ruosuen\renders\R14_i --res 1280 --look sakura --set lens_mul=1.636 --set palette=source --control petals
-"C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P dm\episode-01\ending\current\production-v15\blender\render_cut.py -- --cache C:\VideoStudio\projects\ruosuen\cache\R14 --out C:\VideoStudio\projects\ruosuen\renders\R14_i --res 1280 --look sakura --set lens_mul=1.636 --set palette=source --control whale_matte
+"C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P dm\episode-01\ending\current\production-v15\blender\render_cut.py -- --cache C:\VideoStudio\projects\ruosuen\cache\R14 --out C:\VideoStudio\projects\ruosuen\renders\R14_i --res 1280 --look sakura --set palette=source --control near
+"C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P dm\episode-01\ending\current\production-v15\blender\render_cut.py -- --cache C:\VideoStudio\projects\ruosuen\cache\R14 --out C:\VideoStudio\projects\ruosuen\renders\R14_i --res 1280 --look sakura --set palette=source --control base
+"C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P dm\episode-01\ending\current\production-v15\blender\render_cut.py -- --cache C:\VideoStudio\projects\ruosuen\cache\R14 --out C:\VideoStudio\projects\ruosuen\renders\R14_i --res 1280 --look sakura --set palette=source --control petals
+"C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P dm\episode-01\ending\current\production-v15\blender\render_cut.py -- --cache C:\VideoStudio\projects\ruosuen\cache\R14 --out C:\VideoStudio\projects\ruosuen\renders\R14_i --res 1280 --look sakura --set palette=source --control whale_matte
 "C:\Program Files\Blender Foundation\Blender 5.3\5.3\python\bin\python.exe" dm\episode-01\ending\current\production-v15\post\finish.py --layers C:\VideoStudio\projects\ruosuen\renders\R14_i --dst C:\VideoStudio\projects\ruosuen\renders\R14_i\final --dab 0.3 --fine 0.12 --mist 0.25 --gain 1.1 --ring 0.15 --bloom 0.7 --near-tint 1.0,0.55,0.75 --near-tint-gold 1.0,0.82,0.48 --mp4 C:\VideoStudio\projects\ruosuen\renders\R14_i\R14_final_v15i.mp4
 rem 方式③制御：奥行きの制御映像 → Fun-Control（models/diffusion_models/wan2.2_fun_control_5B_bf16.safetensors が要る）
 "C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b -P dm\episode-01\ending\current\production-v15\blender\render_cut.py -- --cache C:\VideoStudio\projects\ruosuen\cache\R14 --out C:\VideoStudio\projects\ruosuen\renders\R14_b --res 960 --control depth
