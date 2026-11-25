@@ -1,5 +1,5 @@
 {
-  "version": "0.2",
+  "version": "0.3",
   "nodes": [
     {
       "id": "tmp:seed:surface",
@@ -30,9 +30,17 @@
       "approval": "accepted",
       "lifecycle": "active",
       "source": "world/02_マナ・魔石・迷宮と社会.md#採用地下交通拠点ターミナルの構造名称開拓用語2026-11-24作者決定改訂",
-      "history": [],
+      "history": [
+        {
+          "kind": "registration",
+          "at": "作者承認 2026-11-25（作中日時未設定）",
+          "reason": "AREA 1初回登録",
+          "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25"
+        }
+      ],
       "kind": "port",
-      "position": null
+      "position": null,
+      "area": "AREA:1"
     },
     {
       "id": "NODE:GATE",
@@ -41,9 +49,537 @@
       "approval": "accepted",
       "lifecycle": "active",
       "source": "world/02_マナ・魔石・迷宮と社会.md#採用地下交通拠点ターミナルの構造名称開拓用語2026-11-24作者決定改訂",
-      "history": [],
+      "history": [
+        {
+          "kind": "registration",
+          "at": "作者承認 2026-11-25（作中日時未設定）",
+          "reason": "AREA 1初回登録",
+          "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25"
+        }
+      ],
       "kind": "gate",
-      "position": null
+      "position": {
+        "datum": "AREA:1/GATE",
+        "x": 2210,
+        "y": 2000,
+        "z": 0
+      },
+      "area": "AREA:1",
+      "position_precision": "approximate",
+      "publication": "regional_map"
+    },
+    {
+      "id": "NODE:101",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "junction",
+      "area": "AREA:1",
+      "position": {
+        "datum": "AREA:1/GATE",
+        "x": 550,
+        "y": 2000,
+        "z": 5
+      },
+      "position_precision": "approximate",
+      "publication": "regional_map"
+    },
+    {
+      "id": "NODE:102",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "junction",
+      "area": "AREA:1",
+      "position": {
+        "datum": "AREA:1/GATE",
+        "x": 1250,
+        "y": 2650,
+        "z": 30
+      },
+      "position_precision": "approximate",
+      "publication": "regional_map"
+    },
+    {
+      "id": "NODE:103",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "junction",
+      "area": "AREA:1",
+      "position": {
+        "datum": "AREA:1/GATE",
+        "x": 1500,
+        "y": 2000,
+        "z": -5
+      },
+      "position_precision": "approximate",
+      "publication": "regional_map"
+    },
+    {
+      "id": "NODE:104",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "junction",
+      "area": "AREA:1",
+      "position": {
+        "datum": "AREA:1/GATE",
+        "x": 2050,
+        "y": 1500,
+        "z": -20
+      },
+      "position_precision": "approximate",
+      "publication": "regional_map"
+    },
+    {
+      "id": "NODE:105",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "mine_access",
+      "area": "AREA:1",
+      "position": {
+        "datum": "AREA:1/GATE",
+        "x": 3000,
+        "y": 2650,
+        "z": 50
+      },
+      "position_precision": "approximate",
+      "publication": "regional_map"
+    },
+    {
+      "id": "NODE:106",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "mine_access",
+      "area": "AREA:1",
+      "position": {
+        "datum": "AREA:1/GATE",
+        "x": 3720,
+        "y": 2000,
+        "z": 10
+      },
+      "position_precision": "approximate",
+      "publication": "regional_map"
+    },
+    {
+      "id": "NODE:107",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "junction",
+      "area": "AREA:1",
+      "position": {
+        "datum": "AREA:1/GATE",
+        "x": 3950,
+        "y": 1500,
+        "z": -5
+      },
+      "position_precision": "approximate",
+      "publication": "regional_map"
+    },
+    {
+      "id": "NODE:108",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "junction",
+      "area": "AREA:1",
+      "position": {
+        "datum": "AREA:1/GATE",
+        "x": 2765,
+        "y": 850,
+        "z": -50
+      },
+      "position_precision": "approximate",
+      "publication": "regional_map"
+    },
+    {
+      "id": "NODE:109",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "junction",
+      "area": "AREA:1",
+      "position": {
+        "datum": "AREA:1/GATE",
+        "x": 3150,
+        "y": 500,
+        "z": -65
+      },
+      "position_precision": "approximate",
+      "publication": "regional_map"
+    },
+    {
+      "id": "NODE:110",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "area_exit",
+      "area": "AREA:1",
+      "position": {
+        "datum": "AREA:1/GATE",
+        "x": 4450,
+        "y": 550,
+        "z": -65
+      },
+      "position_precision": "approximate",
+      "publication": "regional_map"
+    },
+    {
+      "id": "NODE:111",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "area_exit",
+      "area": "AREA:1",
+      "position": {
+        "datum": "AREA:1/GATE",
+        "x": 4800,
+        "y": 2200,
+        "z": 20
+      },
+      "position_precision": "approximate",
+      "publication": "regional_map"
+    },
+    {
+      "id": "NODE:112",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "area_exit",
+      "area": "AREA:1",
+      "position": {
+        "datum": "AREA:1/GATE",
+        "x": 3600,
+        "y": 3050,
+        "z": 60
+      },
+      "position_precision": "approximate",
+      "publication": "regional_map"
+    },
+    {
+      "id": "NODE:113",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "shelter_access",
+      "area": "AREA:1",
+      "position": {
+        "datum": "AREA:1/GATE",
+        "x": 480,
+        "y": 1450,
+        "z": 0
+      },
+      "position_precision": "approximate",
+      "publication": "regional_map"
+    },
+    {
+      "id": "NODE:114",
+      "name": "Spring",
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "spring",
+      "area": "AREA:1",
+      "position": {
+        "datum": "AREA:1/GATE",
+        "x": 1050,
+        "y": 1050,
+        "z": -10
+      },
+      "position_precision": "approximate",
+      "publication": "regional_map"
+    },
+    {
+      "id": "NODE:115",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "junction",
+      "area": "AREA:1",
+      "position": {
+        "datum": "AREA:1/GATE",
+        "x": 1580,
+        "y": 1220,
+        "z": -13
+      },
+      "position_precision": "approximate",
+      "publication": "regional_map"
+    },
+    {
+      "id": "NODE:116",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "junction",
+      "area": "AREA:1",
+      "position": {
+        "datum": "AREA:1/GATE",
+        "x": 1750,
+        "y": 2650,
+        "z": 36
+      },
+      "position_precision": "approximate",
+      "publication": "regional_map"
+    },
+    {
+      "id": "NODE:117",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "survey_station_access",
+      "area": "AREA:1",
+      "position": {
+        "datum": "AREA:1/GATE",
+        "x": 1750,
+        "y": 2950,
+        "z": 55
+      },
+      "position_precision": "approximate",
+      "publication": "regional_map"
+    },
+    {
+      "id": "NODE:118",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "junction",
+      "area": "AREA:1",
+      "position": {
+        "datum": "AREA:1/GATE",
+        "x": 2350,
+        "y": 2650,
+        "z": 43
+      },
+      "position_precision": "approximate",
+      "publication": "regional_map"
+    },
+    {
+      "id": "NODE:119",
+      "name": "Shaft Lookout",
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "shaft_lookout",
+      "area": "AREA:1",
+      "position": {
+        "datum": "AREA:1/GATE",
+        "x": 2950,
+        "y": 2240,
+        "z": 27
+      },
+      "position_precision": "approximate",
+      "publication": "regional_map"
+    },
+    {
+      "id": "NODE:120",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "junction",
+      "area": "AREA:1",
+      "position": {
+        "datum": "AREA:1/GATE",
+        "x": 2920,
+        "y": 2000,
+        "z": 5
+      },
+      "position_precision": "approximate",
+      "publication": "regional_map"
+    },
+    {
+      "id": "NODE:121",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "junction",
+      "area": "AREA:1",
+      "position": {
+        "datum": "AREA:1/GATE",
+        "x": 3450,
+        "y": 1500,
+        "z": -11
+      },
+      "position_precision": "approximate",
+      "publication": "regional_map"
+    },
+    {
+      "id": "NODE:122",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "loading_yard_access",
+      "area": "AREA:1",
+      "position": {
+        "datum": "AREA:1/GATE",
+        "x": 3450,
+        "y": 1020,
+        "z": -33
+      },
+      "position_precision": "approximate",
+      "publication": "regional_map"
+    },
+    {
+      "id": "NODE:123",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "junction",
+      "area": "AREA:1",
+      "position": {
+        "datum": "AREA:1/GATE",
+        "x": 4350,
+        "y": 1550,
+        "z": -3
+      },
+      "position_precision": "approximate",
+      "publication": "regional_map"
+    },
+    {
+      "id": "NODE:124",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "quarry_access",
+      "area": "AREA:1",
+      "position": {
+        "datum": "AREA:1/GATE",
+        "x": 4520,
+        "y": 1850,
+        "z": 3
+      },
+      "position_precision": "approximate",
+      "publication": "regional_map"
+    },
+    {
+      "id": "NODE:125",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "junction",
+      "area": "AREA:1",
+      "position": {
+        "datum": "AREA:1/GATE",
+        "x": 1620,
+        "y": 700,
+        "z": -33
+      },
+      "position_precision": "approximate",
+      "publication": "regional_map"
+    },
+    {
+      "id": "NODE:126",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "abandoned_workings_access",
+      "area": "AREA:1",
+      "position": {
+        "datum": "AREA:1/GATE",
+        "x": 2100,
+        "y": 520,
+        "z": -37
+      },
+      "position_precision": "approximate",
+      "publication": "regional_map"
+    },
+    {
+      "id": "NODE:127",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "shelter_access",
+      "area": "AREA:1",
+      "position": {
+        "datum": "AREA:1/GATE",
+        "x": 3850,
+        "y": 422,
+        "z": -65
+      },
+      "position_precision": "approximate",
+      "publication": "regional_map"
     }
   ],
   "segments": [
@@ -102,9 +638,2002 @@
       "elevation_change_m": null,
       "methods": [],
       "note": "徒歩探索への機能的接続。具体的な動線は未決。"
+    },
+    {
+      "id": "SEGMENT:1",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:101",
+      "to": "NODE:103",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": -10,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "maintained",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          550,
+          2000
+        ],
+        [
+          1500,
+          2000
+        ]
+      ],
+      "horizontal_length_m": 950,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:2",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:103",
+      "to": "NODE:GATE",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": 5,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "maintained",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          1500,
+          2000
+        ],
+        [
+          2210,
+          2000
+        ]
+      ],
+      "horizontal_length_m": 710,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:3",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:GATE",
+      "to": "NODE:120",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": 5,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "maintained",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          2210,
+          2000
+        ],
+        [
+          2920,
+          2000
+        ]
+      ],
+      "horizontal_length_m": 710,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:4",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:120",
+      "to": "NODE:106",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": 5,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "maintained",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          2920,
+          2000
+        ],
+        [
+          3720,
+          2000
+        ]
+      ],
+      "horizontal_length_m": 800,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:5",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:106",
+      "to": "NODE:111",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": 10,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "maintained",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          3720,
+          2000
+        ],
+        [
+          4800,
+          2200
+        ]
+      ],
+      "horizontal_length_m": 1098,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:6",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:101",
+      "to": "NODE:102",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": 25,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "maintained",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          550,
+          2000
+        ],
+        [
+          1250,
+          2650
+        ]
+      ],
+      "horizontal_length_m": 955,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:7",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:102",
+      "to": "NODE:116",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": 6,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "maintained",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          1250,
+          2650
+        ],
+        [
+          1750,
+          2650
+        ]
+      ],
+      "horizontal_length_m": 500,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:8",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:116",
+      "to": "NODE:118",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": 7,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "maintained",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          1750,
+          2650
+        ],
+        [
+          2350,
+          2650
+        ]
+      ],
+      "horizontal_length_m": 600,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:9",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:118",
+      "to": "NODE:105",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": 7,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "maintained",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          2350,
+          2650
+        ],
+        [
+          3000,
+          2650
+        ]
+      ],
+      "horizontal_length_m": 650,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:10",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:105",
+      "to": "NODE:112",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": 10,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "maintained",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          3000,
+          2650
+        ],
+        [
+          3600,
+          3050
+        ]
+      ],
+      "horizontal_length_m": 721,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:11",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:103",
+      "to": "NODE:104",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": -15,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "maintained",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          1500,
+          2000
+        ],
+        [
+          2050,
+          1500
+        ]
+      ],
+      "horizontal_length_m": 743,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:12",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:104",
+      "to": "NODE:108",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": -30,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "maintained",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          2050,
+          1500
+        ],
+        [
+          2765,
+          850
+        ]
+      ],
+      "horizontal_length_m": 966,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE",
+      "crossings": [
+        {
+          "kind": "graded_passage",
+          "xy_m": [
+            2485.129151,
+            1104.428044
+          ],
+          "status": "provisional"
+        }
+      ]
+    },
+    {
+      "id": "SEGMENT:13",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:108",
+      "to": "NODE:109",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": -15,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "maintained",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          2765,
+          850
+        ],
+        [
+          3150,
+          500
+        ]
+      ],
+      "horizontal_length_m": 520,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:14",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:109",
+      "to": "NODE:127",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": 0,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "maintained",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          3150,
+          500
+        ],
+        [
+          3700,
+          390
+        ],
+        [
+          3850,
+          422
+        ]
+      ],
+      "horizontal_length_m": 714,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:15",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:127",
+      "to": "NODE:110",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": 0,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "maintained",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          3850,
+          422
+        ],
+        [
+          4450,
+          550
+        ]
+      ],
+      "horizontal_length_m": 614,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:16",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:105",
+      "to": "NODE:106",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": -40,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "maintained",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          3000,
+          2650
+        ],
+        [
+          3720,
+          2000
+        ]
+      ],
+      "horizontal_length_m": 970,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:17",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:104",
+      "to": "NODE:121",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": 9,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "maintained",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          2050,
+          1500
+        ],
+        [
+          3450,
+          1500
+        ]
+      ],
+      "horizontal_length_m": 1400,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:18",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:121",
+      "to": "NODE:107",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": 6,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "maintained",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          3450,
+          1500
+        ],
+        [
+          3950,
+          1500
+        ]
+      ],
+      "horizontal_length_m": 500,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:19",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:107",
+      "to": "NODE:106",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": 15,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "maintained",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          3950,
+          1500
+        ],
+        [
+          3720,
+          2000
+        ]
+      ],
+      "horizontal_length_m": 550,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:20",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:101",
+      "to": "NODE:113",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": -5,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "maintained",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          550,
+          2000
+        ],
+        [
+          480,
+          1450
+        ]
+      ],
+      "horizontal_length_m": 554,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:21",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:113",
+      "to": "NODE:114",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": -10,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "maintained",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          480,
+          1450
+        ],
+        [
+          1050,
+          1050
+        ]
+      ],
+      "horizontal_length_m": 696,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:22",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:114",
+      "to": "NODE:115",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": -3,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "maintained",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          1050,
+          1050
+        ],
+        [
+          1580,
+          1220
+        ]
+      ],
+      "horizontal_length_m": 557,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:23",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:115",
+      "to": "NODE:104",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": -7,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "maintained",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          1580,
+          1220
+        ],
+        [
+          2050,
+          1500
+        ]
+      ],
+      "horizontal_length_m": 547,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:24",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:116",
+      "to": "NODE:117",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": 19,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "maintained",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          1750,
+          2650
+        ],
+        [
+          1750,
+          2950
+        ]
+      ],
+      "horizontal_length_m": 300,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:25",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:118",
+      "to": "NODE:119",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": -16,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "maintained",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          2350,
+          2650
+        ],
+        [
+          2950,
+          2240
+        ]
+      ],
+      "horizontal_length_m": 727,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:26",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:119",
+      "to": "NODE:120",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": -22,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "maintained",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          2950,
+          2240
+        ],
+        [
+          2920,
+          2000
+        ]
+      ],
+      "horizontal_length_m": 242,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:27",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:121",
+      "to": "NODE:122",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": -22,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "maintained",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          3450,
+          1500
+        ],
+        [
+          3450,
+          1020
+        ]
+      ],
+      "horizontal_length_m": 480,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:28",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:122",
+      "to": "NODE:109",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": -32,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "maintained",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          3450,
+          1020
+        ],
+        [
+          3150,
+          500
+        ]
+      ],
+      "horizontal_length_m": 600,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:29",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:107",
+      "to": "NODE:123",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": 2,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "maintained",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          3950,
+          1500
+        ],
+        [
+          4350,
+          1550
+        ]
+      ],
+      "horizontal_length_m": 403,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:30",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:123",
+      "to": "NODE:124",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": 6,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "maintained",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          4350,
+          1550
+        ],
+        [
+          4520,
+          1850
+        ]
+      ],
+      "horizontal_length_m": 345,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:31",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:115",
+      "to": "NODE:125",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": -20,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "maintained",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          1580,
+          1220
+        ],
+        [
+          1620,
+          700
+        ]
+      ],
+      "horizontal_length_m": 522,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:32",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:125",
+      "to": "NODE:126",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": -4,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": "FACILITY:9",
+          "condition": null
+        }
+      ],
+      "maintenance": "maintained",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          1620,
+          700
+        ],
+        [
+          2100,
+          520
+        ]
+      ],
+      "horizontal_length_m": 513,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:33",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:108",
+      "to": null,
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": null,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "unmaintained",
+      "publication": "regional_map",
+      "terminal_kind": "observed_opening",
+      "destination_area": null,
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          2765,
+          850
+        ],
+        [
+          2440,
+          810
+        ],
+        [
+          2300,
+          660
+        ]
+      ],
+      "horizontal_length_m": 533,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:34",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:108",
+      "to": null,
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": null,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "unmaintained",
+      "publication": "regional_map",
+      "terminal_kind": "observed_opening",
+      "destination_area": null,
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          2765,
+          850
+        ],
+        [
+          2730,
+          1000
+        ],
+        [
+          2650,
+          1200
+        ]
+      ],
+      "horizontal_length_m": 369,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:35",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:107",
+      "to": null,
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": null,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "unmaintained",
+      "publication": "regional_map",
+      "terminal_kind": "observed_opening",
+      "destination_area": null,
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          3950,
+          1500
+        ],
+        [
+          4220,
+          1260
+        ]
+      ],
+      "horizontal_length_m": 361,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:36",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:126",
+      "to": null,
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": null,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "unmaintained",
+      "publication": "regional_map",
+      "terminal_kind": "observed_opening",
+      "destination_area": null,
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          2100,
+          520
+        ],
+        [
+          2050,
+          360
+        ],
+        [
+          2000,
+          220
+        ]
+      ],
+      "horizontal_length_m": 316,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:37",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:123",
+      "to": null,
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": null,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "unmaintained",
+      "publication": "regional_map",
+      "terminal_kind": "observed_opening",
+      "destination_area": null,
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          4350,
+          1550
+        ],
+        [
+          4550,
+          1430
+        ],
+        [
+          4720,
+          1300
+        ]
+      ],
+      "horizontal_length_m": 447,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:38",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:102",
+      "to": null,
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": null,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "unmaintained",
+      "publication": "regional_map",
+      "terminal_kind": "observed_opening",
+      "destination_area": null,
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          1250,
+          2650
+        ],
+        [
+          980,
+          2770
+        ],
+        [
+          650,
+          3000
+        ]
+      ],
+      "horizontal_length_m": 698,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:39",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:114",
+      "to": null,
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": null,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "unmaintained",
+      "publication": "regional_map",
+      "terminal_kind": "observed_opening",
+      "destination_area": null,
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          1050,
+          1050
+        ],
+        [
+          920,
+          860
+        ],
+        [
+          800,
+          700
+        ]
+      ],
+      "horizontal_length_m": 430,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:40",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:102",
+      "to": "NODE:103",
+      "geometry": "approximate",
+      "length_m": null,
+      "elevation_change_m": -35,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "local",
+      "publication": "regional_map",
+      "area": "AREA:1",
+      "plan_xy_m": [
+        [
+          1250,
+          2650
+        ],
+        [
+          1500,
+          2000
+        ]
+      ],
+      "horizontal_length_m": 696,
+      "elevation_precision": "approximate",
+      "elevation_datum": "AREA:1/GATE"
+    },
+    {
+      "id": "SEGMENT:41",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:112",
+      "to": null,
+      "geometry": "unknown",
+      "length_m": null,
+      "elevation_change_m": null,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "unknown",
+      "publication": "regional_map",
+      "terminal_kind": "known_area_connection",
+      "destination_area": "AREA:2",
+      "origin_area": "AREA:1"
+    },
+    {
+      "id": "SEGMENT:42",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:111",
+      "to": null,
+      "geometry": "unknown",
+      "length_m": null,
+      "elevation_change_m": null,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "unknown",
+      "publication": "regional_map",
+      "terminal_kind": "known_area_connection",
+      "destination_area": "AREA:11",
+      "origin_area": "AREA:1"
+    },
+    {
+      "id": "SEGMENT:43",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "from": "NODE:110",
+      "to": null,
+      "geometry": "unknown",
+      "length_m": null,
+      "elevation_change_m": null,
+      "methods": [
+        {
+          "mode": "walk",
+          "direction": "both",
+          "state": "unknown",
+          "facility": null,
+          "condition": null
+        }
+      ],
+      "maintenance": "unknown",
+      "publication": "regional_map",
+      "terminal_kind": "known_area_connection",
+      "destination_area": "AREA:6",
+      "origin_area": "AREA:1"
     }
   ],
-  "routes": [],
+  "routes": [
+    {
+      "id": "ROUTE:3",
+      "name": "Alden Highroad",
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "classification": "main",
+      "steps": [
+        {
+          "segment": "SEGMENT:1",
+          "direction": "forward"
+        },
+        {
+          "segment": "SEGMENT:2",
+          "direction": "forward"
+        }
+      ],
+      "publication": "regional_map"
+    },
+    {
+      "id": "ROUTE:7",
+      "name": "Veyran Highroad",
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "classification": "main",
+      "steps": [
+        {
+          "segment": "SEGMENT:3",
+          "direction": "forward"
+        },
+        {
+          "segment": "SEGMENT:4",
+          "direction": "forward"
+        },
+        {
+          "segment": "SEGMENT:5",
+          "direction": "forward"
+        },
+        {
+          "segment": "SEGMENT:42",
+          "direction": "forward"
+        }
+      ],
+      "publication": "regional_map"
+    },
+    {
+      "id": "ROUTE:12",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "classification": "main",
+      "steps": [
+        {
+          "segment": "SEGMENT:6",
+          "direction": "forward"
+        },
+        {
+          "segment": "SEGMENT:7",
+          "direction": "forward"
+        },
+        {
+          "segment": "SEGMENT:8",
+          "direction": "forward"
+        },
+        {
+          "segment": "SEGMENT:9",
+          "direction": "forward"
+        },
+        {
+          "segment": "SEGMENT:10",
+          "direction": "forward"
+        },
+        {
+          "segment": "SEGMENT:41",
+          "direction": "forward"
+        }
+      ],
+      "publication": "regional_map"
+    },
+    {
+      "id": "ROUTE:65",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "classification": "main",
+      "steps": [
+        {
+          "segment": "SEGMENT:11",
+          "direction": "forward"
+        },
+        {
+          "segment": "SEGMENT:12",
+          "direction": "forward"
+        },
+        {
+          "segment": "SEGMENT:13",
+          "direction": "forward"
+        },
+        {
+          "segment": "SEGMENT:14",
+          "direction": "forward"
+        },
+        {
+          "segment": "SEGMENT:15",
+          "direction": "forward"
+        },
+        {
+          "segment": "SEGMENT:43",
+          "direction": "forward"
+        }
+      ],
+      "publication": "regional_map"
+    },
+    {
+      "id": "ROUTE:112",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "classification": "regional",
+      "steps": [
+        {
+          "segment": "SEGMENT:16",
+          "direction": "forward"
+        }
+      ],
+      "publication": "regional_map"
+    },
+    {
+      "id": "ROUTE:165",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "classification": "regional",
+      "steps": [
+        {
+          "segment": "SEGMENT:17",
+          "direction": "forward"
+        },
+        {
+          "segment": "SEGMENT:18",
+          "direction": "forward"
+        },
+        {
+          "segment": "SEGMENT:19",
+          "direction": "forward"
+        }
+      ],
+      "publication": "regional_map"
+    },
+    {
+      "id": "ROUTE:201",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "classification": "regional",
+      "steps": [
+        {
+          "segment": "SEGMENT:20",
+          "direction": "forward"
+        },
+        {
+          "segment": "SEGMENT:21",
+          "direction": "forward"
+        },
+        {
+          "segment": "SEGMENT:22",
+          "direction": "forward"
+        },
+        {
+          "segment": "SEGMENT:23",
+          "direction": "forward"
+        }
+      ],
+      "publication": "regional_map"
+    },
+    {
+      "id": "ROUTE:214",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "classification": "regional",
+      "steps": [
+        {
+          "segment": "SEGMENT:24",
+          "direction": "forward"
+        }
+      ],
+      "publication": "regional_map"
+    },
+    {
+      "id": "ROUTE:215",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "classification": "regional",
+      "steps": [
+        {
+          "segment": "SEGMENT:25",
+          "direction": "forward"
+        },
+        {
+          "segment": "SEGMENT:26",
+          "direction": "forward"
+        }
+      ],
+      "publication": "regional_map"
+    },
+    {
+      "id": "ROUTE:231",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "classification": "regional",
+      "steps": [
+        {
+          "segment": "SEGMENT:27",
+          "direction": "forward"
+        },
+        {
+          "segment": "SEGMENT:28",
+          "direction": "forward"
+        }
+      ],
+      "publication": "regional_map"
+    },
+    {
+      "id": "ROUTE:240",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "classification": "regional",
+      "steps": [
+        {
+          "segment": "SEGMENT:29",
+          "direction": "forward"
+        },
+        {
+          "segment": "SEGMENT:30",
+          "direction": "forward"
+        }
+      ],
+      "publication": "regional_map"
+    },
+    {
+      "id": "ROUTE:245",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "classification": "regional",
+      "steps": [
+        {
+          "segment": "SEGMENT:31",
+          "direction": "forward"
+        },
+        {
+          "segment": "SEGMENT:32",
+          "direction": "forward"
+        }
+      ],
+      "publication": "regional_map"
+    }
+  ],
   "facilities": [
     {
       "id": "FACILITY:HOME",
@@ -121,7 +2650,545 @@
       ],
       "state": "unknown",
       "note": "既存設定上の大昇降機そのもの。運行状況・乗降場詳細は未決。"
+    },
+    {
+      "id": "FACILITY:1",
+      "name": "Upper Mine",
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "mine",
+      "state": "operational",
+      "nodes": [
+        "NODE:105"
+      ],
+      "segments": [],
+      "publication": "regional_map"
+    },
+    {
+      "id": "FACILITY:2",
+      "name": "First Mine",
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "mine",
+      "state": "operational",
+      "nodes": [
+        "NODE:106"
+      ],
+      "segments": [],
+      "publication": "regional_map"
+    },
+    {
+      "id": "FACILITY:3",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "shelter",
+      "state": "unknown",
+      "nodes": [
+        "NODE:113"
+      ],
+      "segments": [],
+      "publication": "regional_map"
+    },
+    {
+      "id": "FACILITY:4",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "survey_station",
+      "state": "unknown",
+      "nodes": [
+        "NODE:117"
+      ],
+      "segments": [],
+      "publication": "regional_map"
+    },
+    {
+      "id": "FACILITY:5",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "loading_yard",
+      "state": "unknown",
+      "nodes": [
+        "NODE:122"
+      ],
+      "segments": [],
+      "publication": "regional_map"
+    },
+    {
+      "id": "FACILITY:6",
+      "name": "Old Quarry",
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "quarry",
+      "state": "unknown",
+      "nodes": [
+        "NODE:124"
+      ],
+      "segments": [],
+      "publication": "regional_map"
+    },
+    {
+      "id": "FACILITY:7",
+      "name": "Abandoned Workings",
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "abandoned_workings",
+      "state": "closed",
+      "nodes": [
+        "NODE:126"
+      ],
+      "segments": [],
+      "publication": "regional_map"
+    },
+    {
+      "id": "FACILITY:8",
+      "name": null,
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "shelter",
+      "state": "unknown",
+      "nodes": [
+        "NODE:127"
+      ],
+      "segments": [],
+      "publication": "regional_map"
+    },
+    {
+      "id": "FACILITY:9",
+      "name": null,
+      "registration": "numbered",
+      "approval": "provisional",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "kind": "bridge",
+      "state": "unknown",
+      "nodes": [],
+      "segments": [
+        "SEGMENT:32"
+      ],
+      "area": "AREA:1",
+      "plan_xy_m": [
+        1744.347826,
+        653.369565
+      ],
+      "position_precision": "approximate",
+      "publication": "regional_map"
     }
   ],
-  "reports": []
+  "reports": [],
+  "areas": [
+    {
+      "id": "AREA:1",
+      "name": "Firstlight Cavern",
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "datum": "AREA:1/GATE",
+      "geometry": "approximate",
+      "outline_xy_m": [
+        [
+          0,
+          2000
+        ],
+        [
+          250,
+          2650
+        ],
+        [
+          650,
+          3000
+        ],
+        [
+          1350,
+          3180
+        ],
+        [
+          2550,
+          3200
+        ],
+        [
+          3600,
+          3050
+        ],
+        [
+          4300,
+          2830
+        ],
+        [
+          4800,
+          2200
+        ],
+        [
+          4720,
+          1300
+        ],
+        [
+          4450,
+          550
+        ],
+        [
+          3650,
+          130
+        ],
+        [
+          3150,
+          150
+        ],
+        [
+          2000,
+          220
+        ],
+        [
+          1350,
+          380
+        ],
+        [
+          800,
+          700
+        ],
+        [
+          270,
+          1200
+        ]
+      ],
+      "terrain": [
+        {
+          "key": "massif",
+          "kind": "massif",
+          "geometry": "polygon",
+          "xy_m": [
+            [
+              1370,
+              2340
+            ],
+            [
+              1550,
+              2510
+            ],
+            [
+              1950,
+              2540
+            ],
+            [
+              2170,
+              2360
+            ],
+            [
+              2060,
+              2150
+            ],
+            [
+              1720,
+              2180
+            ]
+          ],
+          "precision": "approximate",
+          "vertical_extent_m": null,
+          "publication": "regional_map"
+        },
+        {
+          "key": "pillar",
+          "kind": "pillar",
+          "geometry": "polygon",
+          "xy_m": [
+            [
+              3660,
+              2340
+            ],
+            [
+              3910,
+              2540
+            ],
+            [
+              4130,
+              2480
+            ],
+            [
+              4180,
+              2300
+            ],
+            [
+              3930,
+              2200
+            ]
+          ],
+          "precision": "approximate",
+          "vertical_extent_m": null,
+          "publication": "regional_map"
+        },
+        {
+          "key": "cliff_upper",
+          "kind": "cliff",
+          "geometry": "line",
+          "xy_m": [
+            [
+              2380,
+              1670
+            ],
+            [
+              2500,
+              1650
+            ],
+            [
+              2610,
+              1650
+            ],
+            [
+              3150,
+              1660
+            ],
+            [
+              3480,
+              1720
+            ]
+          ],
+          "precision": "approximate",
+          "vertical_extent_m": null,
+          "publication": "regional_map"
+        },
+        {
+          "key": "cliff_lower",
+          "kind": "cliff",
+          "geometry": "line",
+          "xy_m": [
+            [
+              2370,
+              1020
+            ],
+            [
+              2520,
+              1130
+            ],
+            [
+              2660,
+              1320
+            ],
+            [
+              2870,
+              1390
+            ],
+            [
+              3110,
+              1330
+            ]
+          ],
+          "precision": "approximate",
+          "vertical_extent_m": null,
+          "publication": "regional_map"
+        },
+        {
+          "key": "river",
+          "kind": "river",
+          "geometry": "line",
+          "xy_m": [
+            [
+              1050,
+              1050
+            ],
+            [
+              1200,
+              900
+            ],
+            [
+              1440,
+              620
+            ],
+            [
+              1550,
+              540
+            ],
+            [
+              1790,
+              680
+            ],
+            [
+              2150,
+              650
+            ],
+            [
+              2320,
+              320
+            ],
+            [
+              2380,
+              290
+            ]
+          ],
+          "precision": "approximate",
+          "vertical_extent_m": null,
+          "publication": "regional_map"
+        },
+        {
+          "key": "pool",
+          "kind": "pool",
+          "geometry": "polygon",
+          "xy_m": [
+            [
+              2220,
+              300
+            ],
+            [
+              2390,
+              370
+            ],
+            [
+              2580,
+              300
+            ],
+            [
+              2550,
+              230
+            ],
+            [
+              2320,
+              230
+            ]
+          ],
+          "precision": "approximate",
+          "vertical_extent_m": null,
+          "publication": "regional_map"
+        },
+        {
+          "key": "growth",
+          "kind": "growth",
+          "geometry": "polygon",
+          "xy_m": [
+            [
+              3550,
+              880
+            ],
+            [
+              3720,
+              1040
+            ],
+            [
+              3970,
+              960
+            ],
+            [
+              4040,
+              770
+            ],
+            [
+              3770,
+              700
+            ]
+          ],
+          "precision": "approximate",
+          "vertical_extent_m": null,
+          "publication": "regional_map"
+        },
+        {
+          "key": "shaft",
+          "kind": "shaft",
+          "geometry": "polygon",
+          "xy_m": [
+            [
+              2350,
+              2340
+            ],
+            [
+              2550,
+              2420
+            ],
+            [
+              2760,
+              2290
+            ],
+            [
+              2660,
+              2150
+            ],
+            [
+              2430,
+              2160
+            ]
+          ],
+          "precision": "approximate",
+          "vertical_extent_m": null,
+          "publication": "regional_map"
+        }
+      ],
+      "ceiling_height_m": null,
+      "design_note": "250–600mは設計目安。水位・岩山高・崖高・植生種・歩行面未設計。",
+      "publication": "regional_map"
+    },
+    {
+      "id": "AREA:2",
+      "name": "Pillarvault",
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "datum": null,
+      "geometry": "unknown",
+      "outline_xy_m": null,
+      "terrain": [],
+      "ceiling_height_m": null,
+      "publication": "regional_map",
+      "design_note": "接続先番号と名称のみ。内部地理・入口・発見史未設定。"
+    },
+    {
+      "id": "AREA:6",
+      "name": "Silverwell",
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "datum": null,
+      "geometry": "unknown",
+      "outline_xy_m": null,
+      "terrain": [],
+      "ceiling_height_m": null,
+      "publication": "regional_map",
+      "design_note": "接続先番号と名称のみ。内部地理・入口・発見史未設定。"
+    },
+    {
+      "id": "AREA:11",
+      "name": "Ashvault",
+      "registration": "numbered",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
+      "history": [],
+      "datum": null,
+      "geometry": "unknown",
+      "outline_xy_m": null,
+      "terrain": [],
+      "ceiling_height_m": null,
+      "publication": "regional_map",
+      "design_note": "接続先番号と名称のみ。内部地理・入口・発見史未設定。"
+    }
+  ]
 }
