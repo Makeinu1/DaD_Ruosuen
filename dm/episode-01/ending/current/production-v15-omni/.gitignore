@@ -1,0 +1,11 @@
+# Large generated clips, raw Flow outputs, and temporary frames stay out of git.
+# Keep small comparison sheets and evaluation notes under review/.
+work/
+outputs/
+*.mp4
+*.mov
+*.webm
+*.mkv
+*.zip
+__pycache__/
+*.pyc
