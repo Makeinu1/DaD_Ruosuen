@@ -55,6 +55,18 @@ LOOK['blizzard'] = dict(LOOK['guide'], petal_dense=1.0, near_n=3500.0, near_zmax
 LOOK['sakura'] = dict(LOOK['blizzard'], palette='sakura', near_n=1300.0, near_size=0.030, near_size_max=1.4,
                       near_zmin=3.0, near_zmax=90.0, near_zpow=1.3, near_speed=0.4, near_gust=0.3, fstop=5.6,
                       whale_emit=1.15, whale_light_vol=0.5)
+# v16 R15 (previs v14.10: the closest pass, 18 mm, the camera turns in place to follow): the v15i look, the
+# near blizzard in world mode (the peak of R13-R15: more and nearer than R14, riding the snow the whale
+# brings, hanging in the slow moment), shallow focus so the nearest petals go soft (previs: bokeh discs)
+# The whale fills the frame here: less emission and more of its form (Layer Weight) so the grooves and the eye read.
+LOOK['r15'] = dict(LOOK['sakura'], palette='source', near_world=1.0, near_n=2400.0, near_zmin=1.3, near_zmax=24.0,
+                   near_size=0.032, near_size_max=1.4, near_fade=(15.0, 40.0), fstop=2.0,
+                   near_couple=(0.35, 0.85), whale_emit=0.8, whale_form=0.85, whale_light_vol=0.4, climax_air=1.5)
+# v16 R18 (previs v14.10: from the four's shore, 100 mm on the opening; the whale swims up into the moon and
+# gives its light back): the opening cut exactly (no stair-steps), the night sky, stars and the composed moon;
+# the rock lit by the whale kept darker than the moon (previs kc 0.4); no near blizzard (previs: none in R18)
+LOOK['r18'] = dict(LOOK['sakura'], palette='source', near_n=0.0, fstop=0.0, slab_poly=1.0, sky=1.0,
+                   sky_emit=1.0, star_emit=3.0, moon_disc=6.0, melt_emit=6.0, whale_light_w=0.6e5)
 PEARL = (0.86, 0.93, 1.0)
 BELLY = (0.55, 0.68, 0.95)          # the shaded underside goes blue (originals CUT05 / CUT09)
 # previs whale_layer (v14.9b): pearl-opal colours along the body, by hue = 0 at the tail .. 1 at the head
@@ -175,13 +187,48 @@ def slab_with_hole(name, z, k, mat, step=4.0, ext=340.0):
     return ob
 
 
+def slab_poly(name, z, mat, ext=340.0, sub=8):
+    """v16: the canopy with the opening cut exactly along the previs rim polygon (straight segments, as
+    the previs draws the opening and as its moonlit() test interpolates the fissure), instead of 4 m cells
+    whose stair-steps show through a long lens (R18, 100 mm: ~57 px steps). An annulus of quads between
+    the rim and a far outer ring at the same angles (the fissure is star-shaped from its centroid)."""
+    P = np.array(w.rim_polygon(z))[:, :2]
+    Q = np.array([P[i] + (P[(i + 1) % len(P)] - P[i]) * j / sub for i in range(len(P)) for j in range(sub)])
+    c = P.mean(0); ang = np.arctan2(Q[:, 1] - c[1], Q[:, 0] - c[0])
+    O = c + np.column_stack([np.cos(ang), np.sin(ang)]) * ext * 1.45
+    n = len(Q)
+    V = np.vstack([np.column_stack([Q, np.full(n, z)]), np.column_stack([O, np.full(n, z)])])
+    F = [(i, (i + 1) % n, n + (i + 1) % n, n + i) for i in range(n)]
+    return mesh_obj(name, V, F, mat)
+
+
 def build_world(look):
     sc = bpy.context.scene
     rock = simple_mat('Rock', (look['rock'],) * 3, 0.95)
     rock_soft = simple_mat('RockFar', (look['rock'] * 0.8, look['rock'] * 0.85, look['rock'] * 0.9), 0.95)
+    if look.get('rock_emit', 0.0) > 0:
+        # v16 (R18): the night sky through the opening lights the canopy rock a dim grey-blue, in flat facets
+        # (previs: faceted rock around the opening, ~(37,45,56) on the lit side)
+        nt = rock.node_tree; N = nt.nodes; L = nt.links; b = N.get('Principled BSDF')
+        vo = N.new('ShaderNodeTexVoronoi'); vo.inputs['Scale'].default_value = look.get('rock_facet', 0.08)   # per metre
+        gp = N.new('ShaderNodeNewGeometry'); L.new(gp.outputs['Position'], vo.inputs['Vector'])
+        bw = N.new('ShaderNodeRGBToBW'); L.new(vo.outputs['Color'], bw.inputs[0])
+        mr = N.new('ShaderNodeMapRange'); mr.inputs['To Min'].default_value = 0.35; mr.inputs['To Max'].default_value = 1.0
+        L.new(bw.outputs[0], mr.inputs['Value'])
+        k = N.new('ShaderNodeMath'); k.operation = 'MULTIPLY'; k.inputs[1].default_value = look['rock_emit']
+        L.new(mr.outputs['Result'], k.inputs[0])
+        b.inputs['Emission Color'].default_value = (*_lin(look.get('rock_emit_col', (120, 140, 175))), 1)
+        L.new(k.outputs[0], b.inputs['Emission Strength'])
     # canopy: bottom rim (190 m) and the narrower top rim (230 m) -> the moon beam is their intersection
-    slab_with_hole('Canopy_Rim190', w.RIM_Z, 1.0, rock)
-    slab_with_hole('Canopy_Top230', w.TOP_Z, w.TOP_NARROW, rock)
+    if look.get('slab_poly', 0.0) > 0.5:
+        slab_poly('Canopy_Rim190', w.RIM_Z, rock)
+        slab_poly('Canopy_Top230', w.TOP_Z, rock)
+        # the slot between the rims (previs: dark rock between the bottom and the top outline)
+        pb = np.array(w.rim_polygon(w.RIM_Z)); pt = np.array(w.rim_polygon(w.TOP_Z)); m_ = len(pb)
+        mesh_obj('SlotWall', np.vstack([pb, pt]), [(i, (i + 1) % m_, m_ + (i + 1) % m_, m_ + i) for i in range(m_)], rock)
+    else:
+        slab_with_hole('Canopy_Rim190', w.RIM_Z, 1.0, rock)
+        slab_with_hole('Canopy_Top230', w.TOP_Z, w.TOP_NARROW, rock)
     # ground height field (land) and water
     xs = np.arange(-300, 301, 4.0); ys = np.arange(-300, 241, 4.0)
     X, Y = np.meshgrid(xs, ys, indexing='ij')
@@ -228,6 +275,155 @@ def build_world(look):
     mo.rotation_quaternion = Vector(tuple(-w.MOON_DIR)).to_track_quat('-Z', 'Y')
 
 
+MOON_FACE = (236, 232, 212)     # previs draw_moon / melt colour
+
+
+def _emit_mat(name, color, strength, image=None, blend=False):
+    m = bpy.data.materials.new(name); try_set(m, use_nodes=True)
+    nt = m.node_tree; N = nt.nodes; L = nt.links
+    for nd in list(N):
+        if nd.type != 'OUTPUT_MATERIAL':
+            N.remove(nd)
+    out = next(nd for nd in N if nd.type == 'OUTPUT_MATERIAL')
+    em = N.new('ShaderNodeEmission'); em.inputs['Strength'].default_value = strength
+    em.inputs['Color'].default_value = (*color, 1)
+    if image is not None:
+        tx = N.new('ShaderNodeTexImage'); tx.image = image; tx.interpolation = 'Linear'
+        mul = N.new('ShaderNodeMix'); mul.data_type = 'RGBA'; mul.blend_type = 'MULTIPLY'; mul.inputs['Factor'].default_value = 1.0
+        mul.inputs[6].default_value = (*color, 1); L.new(tx.outputs['Color'], mul.inputs[7]); L.new(mul.outputs[2], em.inputs['Color'])
+        tr = N.new('ShaderNodeBsdfTransparent'); mx = N.new('ShaderNodeMixShader')
+        L.new(tx.outputs['Alpha'], mx.inputs['Fac']); L.new(tr.outputs[0], mx.inputs[1]); L.new(em.outputs[0], mx.inputs[2])
+        L.new(mx.outputs[0], out.inputs['Surface'])
+    else:
+        L.new(em.outputs[0], out.inputs['Surface'])
+    if blend or image is not None:
+        try_set(m, surface_render_method='BLENDED', use_backface_culling=False)
+    return m
+
+
+def _lin(rgb255):
+    return tuple((c / 255.0) ** 2.2 for c in rgb255)
+
+
+def build_sky(look, meta):
+    """v16 (R17-R19, R01): the night sky, stars and moon seen through the opening, as the previs draws them:
+    a navy sky (lighter low, darker high), its 700 stars (same seed), and the moon composed in the opening
+    (cut.json 'moon': the previs anchor just beyond the top rim + angular radius) with its maria and a thin
+    bright ring. All emitters outside the cave: they light nothing inside (the moonbeam is the Sun light)."""
+    sc = bpy.context.scene
+    cam0 = meta['frames'][0]['cam']; cp = np.array(cam0['pos']); W = 1280.0
+    # sky dome above the opening (emission by height: horizon (30,46,80) -> zenith (20,32,62))
+    Rd = 2500.0; cz = w.TOP_Z
+    nu, nv = 48, 12
+    V = [(0.0, 137.0, cz + Rd)]
+    for j in range(1, nv + 1):
+        el = math.pi / 2 * (1 - j / nv)
+        for i in range(nu):
+            az = 2 * math.pi * i / nu
+            V.append((Rd * math.cos(el) * math.cos(az), 137.0 + Rd * math.cos(el) * math.sin(az), cz + Rd * math.sin(el)))
+    F = [(0, 1 + (i + 1) % nu, 1 + i) for i in range(nu)]
+    for j in range(nv - 1):
+        a0 = 1 + j * nu; a1 = a0 + nu
+        F += [(a0 + i, a0 + (i + 1) % nu, a1 + (i + 1) % nu, a1 + i) for i in range(nu)]
+    m = bpy.data.materials.new('NightSky'); try_set(m, use_nodes=True)
+    nt = m.node_tree; N = nt.nodes; L = nt.links
+    for nd in list(N):
+        if nd.type != 'OUTPUT_MATERIAL':
+            N.remove(nd)
+    geo = N.new('ShaderNodeNewGeometry'); sz = N.new('ShaderNodeSeparateXYZ'); L.new(geo.outputs['Position'], sz.inputs[0])
+    mr = N.new('ShaderNodeMapRange'); mr.inputs['From Min'].default_value = cz; mr.inputs['From Max'].default_value = cz + Rd
+    L.new(sz.outputs['Z'], mr.inputs['Value'])
+    mx = N.new('ShaderNodeMix'); mx.data_type = 'RGBA'; L.new(mr.outputs['Result'], mx.inputs['Factor'])
+    mx.inputs[6].default_value = (*_lin(look.get('sky_low', (30, 46, 80))), 1); mx.inputs[7].default_value = (*_lin(look.get('sky_high', (20, 32, 62))), 1)
+    em = N.new('ShaderNodeEmission'); em.inputs['Strength'].default_value = look.get('sky_emit', 1.0)
+    L.new(mx.outputs[2], em.inputs['Color'])
+    L.new(em.outputs[0], next(nd for nd in N if nd.type == 'OUTPUT_MATERIAL').inputs['Surface'])
+    mesh_obj('NightSky', V, F, m)
+    # stars: the previs' 700 (seed 7), ~1.6 px at this cut's lens
+    r = np.random.default_rng(7)
+    el = np.radians(r.uniform(25, 89, 700)); az = r.uniform(-np.pi, np.pi, 700)
+    sd = np.column_stack([np.cos(el) * np.sin(az), np.cos(el) * np.cos(az), np.sin(el)]); sb = r.uniform(0.3, 1.0, 700)
+    Rs = 2300.0; P = cp + sd * Rs
+    s = 1.6 * (36.0 / cam0['lens_mm'] / W) * Rs
+    up = np.array([0, 0, 1.0])
+    ex = np.cross(sd, up); ex /= np.linalg.norm(ex, axis=1, keepdims=True) + 1e-9; ey = np.cross(ex, sd)
+    h = 0.5 * s
+    Vs = np.stack([P - h * ex - h * ey, P + h * ex - h * ey, P + h * ex + h * ey, P - h * ex + h * ey], 1).reshape(-1, 3)
+    Fs = np.arange(len(Vs)).reshape(-1, 4)
+    ob = mesh_obj('Stars', Vs, Fs, None)
+    sm = bpy.data.materials.new('Star'); try_set(sm, use_nodes=True)
+    nt = sm.node_tree; N = nt.nodes; L = nt.links
+    for nd in list(N):
+        if nd.type != 'OUTPUT_MATERIAL':
+            N.remove(nd)
+    at = N.new('ShaderNodeAttribute'); at.attribute_name = 'pv_col'
+    em = N.new('ShaderNodeEmission'); em.inputs['Strength'].default_value = look.get('star_emit', 3.0)
+    L.new(at.outputs['Color'], em.inputs['Color'])
+    L.new(em.outputs[0], next(nd for nd in N if nd.type == 'OUTPUT_MATERIAL').inputs['Surface'])
+    ob.data.materials.append(sm)
+    ac = ob.data.attributes.new('pv_col', 'FLOAT_COLOR', 'POINT')
+    col = np.repeat((np.array(_lin((210, 220, 240)))[None] * (sb * 0.55)[:, None]), 4, 0)
+    C = np.ones((len(col), 4), np.float32); C[:, :3] = col; ac.data.foreach_set('color', C.ravel())
+    # the moon, composed in the opening (previs moon_layout + draw_moon)
+    mo = meta.get('moon')
+    if mo is None:
+        return
+    Q = np.array(mo['p']); d = Q - cp; dist = np.linalg.norm(d); d /= dist
+    rm = dist * math.tan(mo['ang_r'])
+    n_ = 512; ext = 1.5
+    yy, xx = (np.mgrid[0:n_, 0:n_] + 0.5) / n_ * 2 * ext - ext
+    ux, uy = xx, -yy
+    dd = np.sqrt(ux ** 2 + uy ** 2)
+    rpx = 200.0                                           # the previs' edge softness at ~200 px radius
+    disk = np.clip((1.0 + 1.2 / rpx - dd) * rpx / 1.6, 0, 1)
+    limb = 0.80 + 0.20 * np.sqrt(np.clip(1 - dd ** 2, 0, 1))
+    maria = np.ones_like(dd)
+    for (cx_, cy_, r_, k_) in ((-0.40, -0.02, 0.34, 0.17), (-0.20, -0.32, 0.24, 0.19), (-0.48, 0.28, 0.18, 0.10),
+                               (0.16, -0.26, 0.16, 0.17), (0.28, -0.02, 0.18, 0.15), (0.44, 0.20, 0.11, 0.11),
+                               (0.62, -0.24, 0.08, 0.12), (-0.14, 0.34, 0.12, 0.08)):
+        maria = maria - k_ * np.exp(-(((ux - cx_) ** 2 + (-uy - cy_) ** 2) / r_ ** 2) * 2.2)
+    face = disk * limb * maria
+    ring = np.exp(-((dd - 1.0).clip(0) / 0.08) ** 2) * (1 - disk) * 0.55
+    rgb = (face[..., None] * np.array(MOON_FACE) + ring[..., None] * np.array([220, 225, 235])) / 255.0
+    al = np.clip(disk + ring / 0.55, 0, 1)
+    img = bpy.data.images.new('MoonFace', n_, n_, alpha=True)
+    px = np.concatenate([np.clip(rgb, 0, 1), al[..., None]], -1)[::-1].astype(np.float32)   # Blender images start bottom-left
+    img.pixels.foreach_set(px.ravel()); img.pack()
+    # quad facing the cut's camera, sized to the composed angular radius (texture spans +-1.5 radii)
+    up = np.array(cam0['u']); ex = np.cross(d, up); ex /= np.linalg.norm(ex); ey = np.cross(ex, d)
+    hq = rm * ext
+    Vm = [tuple(Q - hq * ex - hq * ey), tuple(Q + hq * ex - hq * ey), tuple(Q + hq * ex + hq * ey), tuple(Q - hq * ex + hq * ey)]
+    ob = mesh_obj('MoonDisc', Vm, [(0, 1, 2, 3)], _emit_mat('MoonDisc', (1, 1, 1), look.get('moon_disc', 6.0), img))
+    uvl = ob.data.uv_layers.new(name='UVMap'); uvl.data.foreach_set('uv', [0, 0, 1, 0, 1, 1, 0, 1])
+    # its halo (previs: a wide soft glow over the opening, (120,134,160)), added behind the disc; the rock hides it
+    n2 = 256; e2 = 4.0
+    yy, xx = (np.mgrid[0:n2, 0:n2] + 0.5) / n2 * 2 * e2 - e2
+    dd = np.sqrt(xx ** 2 + yy ** 2)
+    gl = np.exp(-((dd - 1.0).clip(0) / 0.7) ** 2) * 0.26 + np.exp(-(dd / 3.0) ** 2) * 0.10
+    gl = gl * np.clip((e2 - dd) / 0.8, 0, 1)                # fade out before the quad's edge
+    im2 = bpy.data.images.new('MoonHalo', n2, n2, alpha=True)
+    px = np.zeros((n2, n2, 4), np.float32); px[..., :3] = gl[..., None]; px[..., 3] = 1.0
+    im2.pixels.foreach_set(px.ravel()); im2.pack()
+    hm = bpy.data.materials.new('MoonHalo'); try_set(hm, use_nodes=True)
+    nt = hm.node_tree; N = nt.nodes; L = nt.links
+    for nd in list(N):
+        if nd.type != 'OUTPUT_MATERIAL':
+            N.remove(nd)
+    tx = N.new('ShaderNodeTexImage'); tx.image = im2
+    em = N.new('ShaderNodeEmission'); em.inputs['Strength'].default_value = look.get('moon_halo', 1.0)
+    mul = N.new('ShaderNodeMix'); mul.data_type = 'RGBA'; mul.blend_type = 'MULTIPLY'; mul.inputs['Factor'].default_value = 1.0
+    mul.inputs[6].default_value = (*_lin((120, 134, 160)), 1); L.new(tx.outputs['Color'], mul.inputs[7]); L.new(mul.outputs[2], em.inputs['Color'])
+    tr = N.new('ShaderNodeBsdfTransparent'); ad = N.new('ShaderNodeAddShader')        # additive: light, not paint
+    L.new(tr.outputs[0], ad.inputs[0]); L.new(em.outputs[0], ad.inputs[1])
+    L.new(ad.outputs[0], next(nd for nd in N if nd.type == 'OUTPUT_MATERIAL').inputs['Surface'])
+    try_set(hm, surface_render_method='BLENDED', use_backface_culling=False)
+    Qh = Q + d * 2.0; hq = rm * e2
+    Vh = [tuple(Qh - hq * ex - hq * ey), tuple(Qh + hq * ex - hq * ey), tuple(Qh + hq * ex + hq * ey), tuple(Qh - hq * ex + hq * ey)]
+    ob = mesh_obj('MoonHalo', Vh, [(0, 1, 2, 3)], hm)
+    uvl = ob.data.uv_layers.new(name='UVMap'); uvl.data.foreach_set('uv', [0, 0, 1, 0, 1, 1, 0, 1])
+    print(f'  sky: moon at {dist:.0f} m, radius {rm:.1f} m ({math.degrees(mo["ang_r"]):.2f} deg), stars {len(sd)}')
+
+
 def build_camera(meta):
     sc = bpy.context.scene
     cd = bpy.data.cameras.new('PrevisCam'); cd.sensor_fit = 'HORIZONTAL'; cd.sensor_width = 36.0
@@ -271,9 +467,47 @@ class Whale:
         self.glow = me.attributes.get('pv_glow') or me.attributes.new('pv_glow', 'FLOAT', 'POINT')
         self.hue = me.attributes.get('pv_hue') or me.attributes.new('pv_hue', 'FLOAT', 'POINT')
         self.look = look
+        # v16 (R18): the whale gives its light back to the moon (previs melt_alpha)
+        self.melt_on = any(f['whale'].get('melt', 0.0) > 0 for f in meta['frames'])
+        if self.melt_on:
+            self.mlift = me.attributes.new('pv_mlift', 'FLOAT', 'POINT')
+            self.malpha = me.attributes.new('pv_malpha', 'FLOAT', 'POINT')
         for m in me.materials:
             self._drop_vertex_tint(m)
             self._add_emission(m)
+            if self.melt_on:
+                self._add_melt(m)
+
+    def _add_melt(self, m):
+        """Each part, tail first, takes on the moon's colour (pv_mlift) and then becomes transparent
+        (pv_malpha) - no flash, the moon itself does nothing (previs v14.9b)."""
+        nt = m.node_tree; N = nt.nodes; L = nt.links
+        b = next((n for n in N if n.type == 'BSDF_PRINCIPLED'), None)
+        if b is not None and 'Eye' not in m.name and b.inputs['Emission Strength'].is_linked:
+            ml = N.new('ShaderNodeAttribute'); ml.attribute_name = 'pv_mlift'
+            src_c = b.inputs['Emission Color'].links[0].from_socket if b.inputs['Emission Color'].is_linked else None
+            mc = N.new('ShaderNodeMix'); mc.data_type = 'RGBA'; L.new(ml.outputs['Fac'], mc.inputs['Factor'])
+            if src_c is not None:
+                L.new(src_c, mc.inputs[6])
+            mc.inputs[7].default_value = (*_lin(MOON_FACE), 1)
+            L.new(mc.outputs[2], b.inputs['Emission Color'])
+            src_s = b.inputs['Emission Strength'].links[0].from_socket
+            inv = N.new('ShaderNodeMath'); inv.operation = 'SUBTRACT'; inv.inputs[0].default_value = 1.0
+            L.new(ml.outputs['Fac'], inv.inputs[1])
+            t1 = N.new('ShaderNodeMath'); t1.operation = 'MULTIPLY'; L.new(src_s, t1.inputs[0]); L.new(inv.outputs[0], t1.inputs[1])
+            t2 = N.new('ShaderNodeMath'); t2.operation = 'MULTIPLY'; L.new(ml.outputs['Fac'], t2.inputs[0])
+            t2.inputs[1].default_value = self.look.get('melt_emit', 6.0)
+            sm = N.new('ShaderNodeMath'); sm.operation = 'ADD'; L.new(t1.outputs[0], sm.inputs[0]); L.new(t2.outputs[0], sm.inputs[1])
+            L.new(sm.outputs[0], b.inputs['Emission Strength'])
+        out = next((n for n in N if n.type == 'OUTPUT_MATERIAL'), None)
+        if out is None or not out.inputs['Surface'].is_linked:
+            return
+        src = out.inputs['Surface'].links[0].from_socket
+        al = N.new('ShaderNodeAttribute'); al.attribute_name = 'pv_malpha'
+        tr = N.new('ShaderNodeBsdfTransparent'); mx = N.new('ShaderNodeMixShader')
+        L.new(al.outputs['Fac'], mx.inputs['Fac']); L.new(tr.outputs[0], mx.inputs[1]); L.new(src, mx.inputs[2])
+        L.new(mx.outputs[0], out.inputs['Surface'])
+        try_set(m, surface_render_method='BLENDED', use_backface_culling=True)
 
     @staticmethod
     def _drop_vertex_tint(m):
@@ -400,7 +634,18 @@ class Whale:
         q = self.path.stroke_q(tau)
         u = np.mod(q - 0.42 - (w.XMAX - x) / (w.XMAX - w.XMIN) * 0.30, 1.0)
         pulse = np.exp(-(u / 0.07) ** 2) + np.exp(-((u - 1) / 0.07) ** 2)
-        val = g * (0.75 + 0.25 * fr['whale_light']['I']) * (1 + 0.35 * pulse) * (1 - wh.get('melt', 0.0))
+        val = g * (0.75 + 0.25 * fr['whale_light']['I']) * (1 + 0.35 * pulse)
+        if self.melt_on:                    # per part, tail first (previs melt_alpha), instead of dimming it all
+            mp = wh.get('melt', 0.0)
+            u = (x - w.XMIN) / (w.XMAX - w.XMIN)            # 0 tail .. 1 head
+            if mp > 0:
+                lift = w.smooth((mp * 1.45 + 0.30 - u) / 0.35); alpha = 1 - w.smooth((mp * 1.45 - u) / 0.40)
+            else:
+                lift = np.zeros_like(u); alpha = np.ones_like(u)
+            self.mlift.data.foreach_set('value', np.asarray(lift, np.float32))
+            self.malpha.data.foreach_set('value', np.asarray(alpha, np.float32))
+        else:
+            val = val * (1 - wh.get('melt', 0.0))
         self.glow.data.foreach_set('value', val.astype(np.float32))
         # v15i: hue. The stroke's light pulse carries a pale-gold wave head->tail (same timing as the previs
         # pulse, a wider band and an afterglow), and in the glide a slow opal play drifts along the body
@@ -526,13 +771,91 @@ class NearSnow:
     (the 'snow falling into the sky' of v14.9b), backlit by the whale (translucent) and catching its light
     as they turn. Deterministic: positions are a closed-form function of time, so any frame renders alone.
     NOTE: the previs keeps R14's foreground clear; this layer is an author-requested change.
-    Built in the camera frame of the cut's first frame (R14's camera is fixed; a moving camera needs a
-    world-space volume instead)."""
+    Built in the camera frame of the cut's first frame (R14's camera is fixed).
+    v16 world mode (look near_world=1, for a camera that turns in place, e.g. R15): the petals live in a
+    world-space sector around the camera position that covers every view of the cut (so they stay put while
+    the camera pans), ride the flow of the simulated snow around the camera (cut.json near_flow: the river the
+    whale brings, then lets go), and move in world time (R15's slow moment slows them; the previs local_snow
+    does the same)."""
     def __init__(self, look, meta):
         self.look = look
         c = meta['frames'][0]['cam']
         self.cp, self.r, self.u, self.f = (np.array(c[k], float) for k in ('pos', 'r', 'u', 'f'))
         self.lens = c['lens_mm']
+        self.world = look.get('near_world', 0.0) > 0.5
+        if self.world:
+            self._init_world(look, meta)
+        else:
+            self._init_screen(look)
+        me = bpy.data.meshes.new('NearSnow'); self.ob = bpy.data.objects.new('NearSnow', me)
+        bpy.context.scene.collection.objects.link(self.ob)
+        me.materials.append(self._material())
+        # the whale's light, for the near petals only (light linking): backlight + glints
+        ld = bpy.data.lights.new('NearGlint', 'POINT'); ld.color = pal(look).get('near_light', pal(look)['light']); ld.energy = look['near_light']
+        try_set(ld, shadow_soft_size=8.0, use_shadow=False, volume_factor=0.0)
+        self.light = bpy.data.objects.new('NearGlint', ld); bpy.context.scene.collection.objects.link(self.light)
+        try:
+            coll = bpy.data.collections.new('NearReceivers'); coll.objects.link(self.ob)
+            self.light.light_linking.receiver_collection = coll
+        except Exception as e:
+            print('  [skip] near light linking:', e)
+
+    def _init_world(self, look, meta):
+        g = np.random.default_rng(20261126)
+        cams = [f['cam'] for f in meta['frames']]
+        if np.ptp(np.array([c['pos'] for c in cams]), 0).max() > 0.05:
+            print('  [warn] NearSnow world mode: the camera moves; the sector is centred on its first position')
+        fm = np.array([c['f'] for c in cams]).mean(0); fm /= np.linalg.norm(fm)
+        sr = np.cross(fm, (0.0, 0.0, 1.0)); sr /= np.linalg.norm(sr); su = np.cross(sr, fm)
+        self.B = np.stack([sr, su, fm])
+        # nested periodic boxes around the camera, one per distance band (near / mid / far): a periodic box
+        # keeps its density exactly under any flow (wrapping in spherical shells piled the petals up at the lens),
+        # and each band shows only its own shell, crossfading into the next. near_n = petals in one view, spread
+        # evenly in depth like the previs local_snow (so more of them near the lens than uniform air would give).
+        edges = list(look.get('near_edges', (look['near_zmin'], 4.0, 9.0, look['near_zmax'])))
+        self.z0, self.z1 = edges[0], edges[-1]
+        ax_, ay_ = 18.0 / self.lens, 10.125 / self.lens
+        per_m = look['near_n'] / (self.z1 - self.z0)
+        nb_ = len(edges) - 1
+        cx = [0.3 * min(edges[j] - edges[j - 1], edges[j + 1] - edges[j]) for j in range(1, nb_)]   # crossfade half-widths
+        P0, band, half, fades = [], [], [], []
+        for i in range(nb_):
+            a, b = edges[i], edges[i + 1]
+            lo, lw = (a, 0.3 * (b - a)) if i == 0 else (a - cx[i - 1], 2 * cx[i - 1])          # fade in
+            hi, hw = (b - 0.3 * (b - a), 0.3 * (b - a)) if i == nb_ - 1 else (b - cx[i], 2 * cx[i])   # fade out
+            dens = per_m * (b - a) / ((b ** 3 - a ** 3) / 3 * 4 * ax_ * ay_)
+            hb = hi + hw + 0.5
+            nb = int(dens * (2 * hb) ** 3)
+            P0.append(g.uniform(-hb, hb, (nb, 3))); band.append(np.full(nb, i)); half.append(np.full(nb, hb))
+            fades.append((lo, lw, hi, hw))
+            print(f'  NearSnow band {a}-{b} m: {nb} petals ({dens:.3f} per m3)')
+        self.P0 = self.cp + np.concatenate(P0) @ self.B; self.half = np.concatenate(half)
+        self.band = np.concatenate(band); fd = np.array(fades)[self.band]
+        self.blo, self.blw, self.bhi, self.bhw = fd[:, 0], fd[:, 1], fd[:, 2], fd[:, 3]
+        n = len(self.P0)
+        # each petal rides the snow's flow a little differently, plus its own drift (previs local_snow R15)
+        k0, k1 = look.get('near_couple', (0.35, 0.85))
+        self.cpl = g.uniform(k0, k1, n)
+        dm = np.array(look.get('near_drift', (-0.4, 0.5, -0.55))); ds = np.array(look.get('near_drift_sd', (0.9, 0.9, 0.35)))
+        self.vd = dm[None] + g.standard_normal((n, 3)) * ds[None]
+        fl = np.array([f.get('near_flow', (0.0, 0.0, 0.0)) for f in meta['frames']], float)
+        tau = np.array([f['tau'] for f in meta['frames']], float)
+        D = np.cumsum(fl * np.diff(tau, prepend=tau[0])[:, None], 0)
+        self.flowD = {f['k']: D[i] for i, f in enumerate(meta['frames'])}
+        dtau = np.diff(tau, append=tau[-1] + (tau[-1] - tau[-2] if len(tau) > 1 else 1 / 24))
+        self.dtau = {f['k']: float(dtau[i]) for i, f in enumerate(meta['frames'])}   # world time per frame
+        self.tau0 = tau[0]
+        self.wa = g.uniform(0.15, 0.5, (n, 3)); self.ww = g.uniform(0.5, 1.7, (n, 3)); self.wp = g.uniform(0, 2 * np.pi, (n, 3))
+        ax = g.standard_normal((n, 3)); self.ax = ax / np.linalg.norm(ax, axis=1, keepdims=True)
+        self.om = g.uniform(1.5, 5.0, n) * np.where(g.random(n) < 0.5, -1, 1); self.ph = g.uniform(0, 2 * np.pi, n)
+        q = g.standard_normal((n, 3)); self.a0 = q / np.linalg.norm(q, axis=1, keepdims=True)
+        b = np.cross(self.a0, g.standard_normal((n, 3))); self.b0 = b / np.linalg.norm(b, axis=1, keepdims=True)
+        self.s = look['near_size'] * g.uniform(0.8, look.get('near_size_max', 1.3), n)
+        self.grow = g.random(n)
+        self.wt = np.ones(n)
+        print(f'  NearSnow world: {n} petals in {nb_} bands, r {self.z0}-{self.z1} m')
+
+    def _init_screen(self, look):
         n = int(look['near_n'])
         g = np.random.default_rng(20261125)
         z0, z1 = look['near_zmin'], look['near_zmax']
@@ -559,18 +882,6 @@ class NearSnow:
         q = g.standard_normal((n, 3)); self.a0 = q / np.linalg.norm(q, axis=1, keepdims=True)
         b = np.cross(self.a0, g.standard_normal((n, 3))); self.b0 = b / np.linalg.norm(b, axis=1, keepdims=True)
         self.s = look['near_size'] * g.uniform(0.8, look.get('near_size_max', 1.3), n)
-        me = bpy.data.meshes.new('NearSnow'); self.ob = bpy.data.objects.new('NearSnow', me)
-        bpy.context.scene.collection.objects.link(self.ob)
-        me.materials.append(self._material())
-        # the whale's light, for the near petals only (light linking): backlight + glints
-        ld = bpy.data.lights.new('NearGlint', 'POINT'); ld.color = pal(look).get('near_light', pal(look)['light']); ld.energy = look['near_light']
-        try_set(ld, shadow_soft_size=8.0, use_shadow=False, volume_factor=0.0)
-        self.light = bpy.data.objects.new('NearGlint', ld); bpy.context.scene.collection.objects.link(self.light)
-        try:
-            coll = bpy.data.collections.new('NearReceivers'); coll.objects.link(self.ob)
-            self.light.light_linking.receiver_collection = coll
-        except Exception as e:
-            print('  [skip] near light linking:', e)
 
     def _material(self):
         m = bpy.data.materials.new('NearPetal'); try_set(m, use_nodes=True)
@@ -606,7 +917,10 @@ class NearSnow:
         L.new(cd.outputs['View Distance'], fade.inputs['Value'])
         am = N.new('ShaderNodeMath'); am.operation = 'MULTIPLY'
         L.new(tex.outputs['Alpha'], am.inputs[0]); L.new(fade.outputs['Result'], am.inputs[1])
-        fin = N.new('ShaderNodeMixShader'); L.new(am.outputs[0], fin.inputs['Fac'])
+        pa = N.new('ShaderNodeAttribute'); pa.attribute_name = 'pv_alpha'      # v16: thinned shutter streaks
+        am2 = N.new('ShaderNodeMath'); am2.operation = 'MULTIPLY'
+        L.new(am.outputs[0], am2.inputs[0]); L.new(pa.outputs['Fac'], am2.inputs[1])
+        fin = N.new('ShaderNodeMixShader'); L.new(am2.outputs[0], fin.inputs['Fac'])
         L.new(tr.outputs[0], fin.inputs[1]); L.new(add.outputs[0], fin.inputs[2])
         L.new(fin.outputs[0], out.inputs['Surface'])
         return m
@@ -616,19 +930,51 @@ class NearSnow:
         c, s_ = np.cos(th)[:, None], np.sin(th)[:, None]
         return v * c + np.cross(k, v) * s_ + k * np.sum(k * v, 1, keepdims=True) * (1 - c)
 
+    def _world_pos(self, fr):
+        dt = fr['tau'] - self.tau0
+        P = (self.P0 + self.cpl[:, None] * self.flowD.get(fr['k'], np.zeros(3))[None] + self.vd * dt
+             + self.wa * np.sin(self.ww * dt + self.wp))
+        rel = (P - self.cp) @ self.B.T
+        h = self.half[:, None]
+        rel = np.mod(rel + h, 2 * h) - h                  # periodic box per band: the density never drifts
+        rr = np.linalg.norm(rel, axis=1)
+        sm = lambda x: (lambda y: y * y * (3 - 2 * y))(np.clip(x, 0.0, 1.0))
+        self.wt = sm((rr - self.blo) / self.blw) * (1 - sm((rr - self.bhi) / self.bhw))   # this band's shell only
+        return self.cp + rel @ self.B, dt
+
+    def _vel(self, fr, dt):
+        fl = np.array(fr.get('near_flow', (0.0, 0.0, 0.0)), float)
+        return self.cpl[:, None] * fl[None] + self.vd + self.wa * self.ww * np.cos(self.ww * dt + self.wp)
+
     def update(self, fr, t):
-        ga = self.look.get('near_gust', 0.0)
-        gust = ga * self.sv / 0.55 * (np.sin(0.55 * t + self.gp) - np.sin(self.gp))   # integrated 1 + ga*cos(0.55 t)
-        sN = np.mod(self.s0 + self.sv * t + gust + 1.6, 3.2) - 1.6
-        q = sN[:, None] * self.D + self.l[:, None] * self.N
-        x = q[:, 0] * self.hw; y = q[:, 1] * self.hh
-        fl = self.fa * np.sin(self.fw * t + self.fp)
-        x = x + fl[:, 0]; y = y + fl[:, 1]; z = self.z + self.vz * np.sin(0.3 * t + self.fp[:, 2]) + fl[:, 2]
-        C = self.cp + x[:, None] * self.r + y[:, None] * self.u + z[:, None] * self.f
+        if self.world:
+            C, t = self._world_pos(fr)                    # t: world time (slows in R15's slow moment)
+            grow = self.grow < fr.get('near_k', 1.0)     # a fixed subset grows with the density (no popping)
+            s = self.s * ((self.wt > 0.01) & grow)
+        else:
+            ga = self.look.get('near_gust', 0.0)
+            gust = ga * self.sv / 0.55 * (np.sin(0.55 * t + self.gp) - np.sin(self.gp))   # integrated 1 + ga*cos(0.55 t)
+            sN = np.mod(self.s0 + self.sv * t + gust + 1.6, 3.2) - 1.6
+            q = sN[:, None] * self.D + self.l[:, None] * self.N
+            x = q[:, 0] * self.hw; y = q[:, 1] * self.hh
+            fl = self.fa * np.sin(self.fw * t + self.fp)
+            x = x + fl[:, 0]; y = y + fl[:, 1]; z = self.z + self.vz * np.sin(0.3 * t + self.fp[:, 2]) + fl[:, 2]
+            C = self.cp + x[:, None] * self.r + y[:, None] * self.u + z[:, None] * self.f
+            s = self.s
         th = self.om * t + self.ph
         A = self._rot(self.a0, self.ax, th); B = self._rot(self.b0, self.ax, th)
-        w = (0.5 * 0.78 * self.s)[:, None]; h = (0.5 * self.s)[:, None]
+        w = (0.5 * 0.78 * s)[:, None]; h = (0.5 * s)[:, None]
         V = np.stack([C - w * A - h * B, C + w * A - h * B, C + w * A + h * B, C - w * A + h * B], 1)
+        alpha = self.wt.copy() if self.world else np.ones(len(C))
+        if self.world and self.look.get('near_shutter', 0.5) > 0:
+            # shutter streak (no render-time motion blur for geometry rebuilt in Python): stretch each petal
+            # along its own motion during the open shutter, and thin it so it carries the same light
+            S = self._vel(fr, t) * (self.dtau.get(fr['k'], 1 / 24) * self.look.get('near_shutter', 0.5))
+            for j in range(4):
+                sg = np.sign(np.sum((V[:, j] - C) * S, 1))
+                V[:, j] += 0.5 * sg[:, None] * S
+            alpha = np.clip(s / (s + np.linalg.norm(S, axis=1) + 1e-9), 0.0, 1.0) ** self.look.get('near_thin', 0.6)
+            alpha = np.clip(alpha, 0.3, 1.0) * self.wt
         n = len(C); me = self.ob.data
         me.clear_geometry()
         me.vertices.add(n * 4); me.vertices.foreach_set('co', V.ravel())
@@ -641,10 +987,17 @@ class NearSnow:
         me.update(calc_edges=True)
         uvl = me.uv_layers.new(name='UVMap') if not me.uv_layers else me.uv_layers[0]
         uvl.data.foreach_set('uv', np.tile(np.array([0, 0, 1, 0, 1, 1, 0, 1], np.float32), n))
+        at = me.attributes.get('pv_alpha') or me.attributes.new('pv_alpha', 'FLOAT', 'POINT')
+        at.data.foreach_set('value', np.repeat(alpha, 4).astype(np.float32))
         me.update()
         self.light.location = fr['whale_light']['p']
-        self.light.data.energy = self.look['near_light'] * fr['whale_light']['I']
-        self.light.data.color = gold_mix(self.look, pal(self.look).get('near_light', pal(self.look)['light']), 'gold_light', fr)
+        col = gold_mix(self.look, pal(self.look).get('near_light', pal(self.look)['light']), 'gold_light', fr)
+        sl = fr.get('slow', 0.0)                       # R15's slow moment: the near petals hang and glint gold
+        if sl > 0:
+            gl = pal(self.look).get('gold_light', (1.0, 0.80, 0.62)); k = self.look.get('slow_gold', 0.6) * sl
+            col = tuple(a * (1 - k) + b * k for a, b in zip(col, gl))
+        self.light.data.energy = self.look['near_light'] * fr['whale_light']['I'] * (1 + self.look.get('slow_glint', 0.5) * sl)
+        self.light.data.color = col
 
 
 class WhaleLight:
@@ -671,6 +1024,8 @@ class WhaleLight:
     def update(self, fr):
         self.ob.location = fr['whale_light']['p']
         self.ob.data.energy = self.k * fr['whale_light']['I'] * (1 - fr['whale'].get('melt', 0.0))
+        # v16: at R15's closest pass the lit air swells around the whale (previs: glow 0.12 + 0.30 x climax)
+        try_set(self.ob.data, volume_factor=self.look['whale_light_vol'] * (1 + self.look.get('climax_air', 0.0) * fr.get('climax', 0.0)))
         # the air keeps most of its sakura-violet (gold light in the blue air turns a muddy green-grey)
         self.ob.data.color = gold_mix(self.look, pal(self.look)['light'], 'gold_light', fr, 'gold_air_amt', 0.3)
 
@@ -822,6 +1177,8 @@ def main(argv):
     bpy.ops.wm.read_factory_settings(use_empty=True)
     t0 = time.time()
     build_world(look)
+    if look.get('sky', 0.0) > 0.5:
+        build_sky(look, meta)
     cam = build_camera(meta)
     setup_render(a, meta, look)
     whale = Whale(look, meta); wl = WhaleLight(look); pet = Petals(look, a.res)
@@ -855,7 +1212,8 @@ def main(argv):
         fr = frames[k]
         sc.frame_set(k)
         whale.update(fr); wl.update(fr)
-        gold_log[k] = fr.get('_gold', 0.0)
+        # finish.py tints the near petals by this; R15's slow moment adds its gold glint (previs local_snow fk)
+        gold_log[k] = max(fr.get('_gold', 0.0), fr.get('slow', 0.0) * look.get('slow_gold', 0.6))
         if near is not None:
             near.update(fr, k / meta['fps'])
         if look['fstop'] > 0:
