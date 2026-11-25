@@ -2783,10 +2783,17 @@
       "id": "FACILITY:9",
       "name": null,
       "registration": "numbered",
-      "approval": "provisional",
+      "approval": "accepted",
       "lifecycle": "active",
       "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
-      "history": [],
+      "history": [
+        {
+          "kind": "approval",
+          "at": "作者承認 2026-11-25（作中日時未設定）",
+          "reason": "橋・谷を確定し地図院発行図に掲載する。橋の寸法・通行状態の詳細は未決。",
+          "source": "world/underground/area-design-guide.md"
+        }
+      ],
       "kind": "bridge",
       "state": "unknown",
       "nodes": [],
@@ -2811,7 +2818,14 @@
       "approval": "accepted",
       "lifecycle": "active",
       "source": "world/underground/area-design-guide.md#area-1-初回登録2026-11-25",
-      "history": [],
+      "history": [
+        {
+          "kind": "approval",
+          "at": "作者承認 2026-11-25（作中日時未設定）",
+          "reason": "既存の谷・崖地形を確定。概形・崖高・谷底の詳細は従来どおり概算または未設定。",
+          "source": "world/underground/area-design-guide.md"
+        }
+      ],
       "datum": "AREA:1/GATE",
       "geometry": "approximate",
       "outline_xy_m": [
