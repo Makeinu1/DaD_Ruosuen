@@ -179,6 +179,15 @@ const fixtureDm={
 };
 const cases=runCases(validate,usable,fixtureWorld,fixtureDm);
 const actual=validate(world,dm);
+if(world.version==="0.3"&&world.areas.length){
+ const c=JSON.parse(JSON.stringify(world));c.areas.push({...c.areas[0]});
+ if(!validate(c,dm).errors.some(e=>e.includes("duplicate id")))throw Error("duplicate AREA not rejected");
+ const b=JSON.parse(JSON.stringify(world));b.nodes.find(n=>n.id==="NODE:GATE").position.datum="wrong";
+ if(!validate(b,dm).errors.some(e=>e.includes("area datum mismatch")))throw Error("datum mismatch not rejected");
+ const e=JSON.parse(JSON.stringify(world));e.segments.find(s=>s.terminal_kind==="known_area_connection").destination_area="AREA:999999";
+ if(!validate(e,dm).errors.some(e=>e.includes("unknown reference")))throw Error("unknown AREA not rejected");
+ console.log("PASS AREA duplicate, local datum, unknown destination tests");
+}
 if(actual.errors.length)throw Error(actual.errors.join('\n'));
 for(const name of cases)console.log("PASS",name);
 console.log(cases.length+" synthetic cases passed; current atlas validated");
