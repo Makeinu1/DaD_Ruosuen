@@ -1,0 +1,127 @@
+{
+  "version": "0.2",
+  "nodes": [
+    {
+      "id": "tmp:seed:surface",
+      "name": "ルオスエン（地上側）",
+      "registration": "pending",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/02_マナ・魔石・迷宮と社会.md#採用地下交通拠点ターミナルの構造名称開拓用語2026-11-24作者決定改訂",
+      "history": [],
+      "kind": "surface_access",
+      "position": null
+    },
+    {
+      "id": "NODE:TERMINAL",
+      "name": "TERMINAL",
+      "registration": "named",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/02_マナ・魔石・迷宮と社会.md#採用地下交通拠点ターミナルの構造名称開拓用語2026-11-24作者決定改訂",
+      "history": [],
+      "kind": "transport_hub",
+      "position": null
+    },
+    {
+      "id": "NODE:PORT",
+      "name": "PORT",
+      "registration": "named",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/02_マナ・魔石・迷宮と社会.md#採用地下交通拠点ターミナルの構造名称開拓用語2026-11-24作者決定改訂",
+      "history": [],
+      "kind": "port",
+      "position": null
+    },
+    {
+      "id": "NODE:GATE",
+      "name": "GATE",
+      "registration": "named",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/02_マナ・魔石・迷宮と社会.md#採用地下交通拠点ターミナルの構造名称開拓用語2026-11-24作者決定改訂",
+      "history": [],
+      "kind": "gate",
+      "position": null
+    }
+  ],
+  "segments": [
+    {
+      "id": "tmp:seed:home-link",
+      "name": null,
+      "registration": "pending",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/02_マナ・魔石・迷宮と社会.md#採用地下交通拠点ターミナルの構造名称開拓用語2026-11-24作者決定改訂",
+      "history": [],
+      "from": "tmp:seed:surface",
+      "to": "NODE:TERMINAL",
+      "geometry": "schematic",
+      "length_m": null,
+      "elevation_change_m": null,
+      "methods": [
+        {
+          "mode": "lift",
+          "direction": "both",
+          "state": "unknown",
+          "facility": "FACILITY:HOME",
+          "condition": null
+        }
+      ],
+      "note": "地上とターミナルの接続を表す概念区間。乗降場の正確な位置は未決。"
+    },
+    {
+      "id": "tmp:seed:port-access",
+      "name": null,
+      "registration": "pending",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/02_マナ・魔石・迷宮と社会.md#採用地下交通拠点ターミナルの構造名称開拓用語2026-11-24作者決定改訂",
+      "history": [],
+      "from": "NODE:TERMINAL",
+      "to": "NODE:PORT",
+      "geometry": "schematic",
+      "length_m": null,
+      "elevation_change_m": null,
+      "methods": [],
+      "note": "ターミナルにおける港への機能的接続。具体的な動線は未決。"
+    },
+    {
+      "id": "tmp:seed:gate-access",
+      "name": null,
+      "registration": "pending",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/02_マナ・魔石・迷宮と社会.md#採用地下交通拠点ターミナルの構造名称開拓用語2026-11-24作者決定改訂",
+      "history": [],
+      "from": "NODE:TERMINAL",
+      "to": "NODE:GATE",
+      "geometry": "schematic",
+      "length_m": null,
+      "elevation_change_m": null,
+      "methods": [],
+      "note": "徒歩探索への機能的接続。具体的な動線は未決。"
+    }
+  ],
+  "routes": [],
+  "facilities": [
+    {
+      "id": "FACILITY:HOME",
+      "name": "HOME",
+      "registration": "named",
+      "approval": "accepted",
+      "lifecycle": "active",
+      "source": "world/02_マナ・魔石・迷宮と社会.md#採用地下交通拠点ターミナルの構造名称開拓用語2026-11-24作者決定改訂",
+      "history": [],
+      "kind": "lift",
+      "nodes": [],
+      "segments": [
+        "tmp:seed:home-link"
+      ],
+      "state": "unknown",
+      "note": "既存設定上の大昇降機そのもの。運行状況・乗降場詳細は未決。"
+    }
+  ],
+  "reports": []
+}
