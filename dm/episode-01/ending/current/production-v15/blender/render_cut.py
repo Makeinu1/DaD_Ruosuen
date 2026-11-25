@@ -80,6 +80,14 @@ LOOK['r17b'] = dict(LOOK['sakura'], palette='source', fstop=0.0, party=1.0, near
 # measured against the previs (renders/R17b_t1): the released snow cloud ~x2 brighter, the roof darker (previs: near
 # black around the opening), the whale's light on the roof weaker, the four only lit on top (no halo round the heads)
 LOOK['r17b'].update(petal_emit=4.5, rock_emit_canopy=0.04, whale_light_w=0.8e5, party_rim=0.35)
+# v16 R13 (previs v14.10: among the flowers by R12's flower, 45 cm up, 24 mm; the whole colony lets go in a wave
+# from the cape tip and the camera tilts up after the rising snow): the colony as real flowers (FlowerField), the
+# rising near snow in world mode (it rides the lifted snow of the simulation once it moves), canvas on the scene
+LOOK['r13'] = dict(LOOK['sakura'], palette='source', fstop=0.0, flowers=1.0, near_world=1.0, near_n=550.0,
+                   near_zmin=1.5, near_zmax=20.0, near_couple=(0.5, 1.0), near_drift=(0.0, 0.0, 1.2),
+                   near_drift_sd=(0.3, 0.3, 0.4), near_size=0.030, near_size_max=1.3, near_light=1.5e6,
+                   flower_sxy=0.5, whale_light_ground=0.0, petal_near_r=5.0, flower_emit=0.3,
+                   petal_emit=1.1)        # measured (renders/R13_t3): the lifted snow came out ~1.6x the previs level
 PEARL = (0.86, 0.93, 1.0)
 BELLY = (0.55, 0.68, 0.95)          # the shaded underside goes blue (originals CUT05 / CUT09)
 # previs whale_layer (v14.9b): pearl-opal colours along the body, by hue = 0 at the tail .. 1 at the head
@@ -761,6 +769,7 @@ class Petals:
         K = int(round(self.look['petal_dense']))
         arr = {k: np.asarray(d[k]) for k in ('p', 'fruit', 'spin', 'bright', 'kind')}
         ids = np.asarray(d['idx']).astype(np.float64) if 'idx' in d.files else None
+        arr['idx'] = ids if ids is not None else np.zeros(len(arr['p']))
         if self.look.get('near_n', 0) > 0:
             # v14.10: the previs near-camera snow (kind 1) is drawn by NearSnow as real petals instead
             keep = arr['kind'] == 0
@@ -778,10 +787,57 @@ class Petals:
             out['spin'].append(np.mod(arr['spin'].astype(np.float64) + 2 * np.pi * self._h(ids, j, 5), 2 * np.pi))
             out['bright'].append(arr['bright'] * (0.7 + 0.3 * self._h(ids, j, 6)))
             out['kind'].append(arr['kind'])
+            out['idx'].append(arr['idx'] + 1e7 * j)
         return {k: np.concatenate(v) for k, v in out.items()}
+
+    def add_near(self, look):
+        """v16 (R13): the camera stands inside the colony, so simulated petals pass within a metre or two of the
+        lens; as soft additive discs they read as blobs. Those within petal_near_r are drawn instead as real
+        petals (the near blizzard's texture, light and glints), tumbling by their previs spin."""
+        import types
+        me = bpy.data.meshes.new('PetalsNear'); self.obn = bpy.data.objects.new('PetalsNear', me)
+        bpy.context.scene.collection.objects.link(self.obn)
+        me.materials.append(NearSnow._material(types.SimpleNamespace(look=look)))
+        coll = bpy.data.collections.get('NearReceivers')
+        if coll is not None:
+            coll.objects.link(self.obn)
+
+    def _update_near(self, d):
+        me = self.obn.data; me.clear_geometry()
+        n = len(d['p'])
+        if n == 0:
+            return
+        ids = d['idx']; H = lambda j, c: self._h(ids, j, c) - 0.5
+        def nrm(v):
+            return v / (np.linalg.norm(v, axis=1, keepdims=True) + 1e-9)
+        ax = nrm(np.stack([H(11, c) for c in range(3)], 1)); a0 = nrm(np.stack([H(12, c) for c in range(3)], 1))
+        b0 = nrm(np.cross(a0, np.stack([H(13, c) for c in range(3)], 1)))
+        th = d['spin'].astype(np.float64)
+        A = NearSnow._rot(a0, ax, th); B = NearSnow._rot(b0, ax, th)
+        sz = self.look.get('near_size', 0.03) * (0.85 + 0.4 * self._h(ids, 14, 0))
+        C = d['p'].astype(np.float64); w_ = (0.39 * sz)[:, None]; h_ = (0.5 * sz)[:, None]
+        V = np.stack([C - w_ * A - h_ * B, C + w_ * A - h_ * B, C + w_ * A + h_ * B, C - w_ * A + h_ * B], 1)
+        me.vertices.add(n * 4); me.vertices.foreach_set('co', V.ravel())
+        me.loops.add(n * 4); me.loops.foreach_set('vertex_index', np.arange(n * 4, dtype=np.int32))
+        me.polygons.add(n); me.polygons.foreach_set('loop_start', np.arange(0, n * 4, 4, dtype=np.int32))
+        try:
+            me.polygons.foreach_set('loop_total', np.full(n, 4, np.int32))
+        except Exception:
+            pass
+        me.update(calc_edges=True)
+        uvl = me.uv_layers.new(name='UVMap') if not me.uv_layers else me.uv_layers[0]
+        uvl.data.foreach_set('uv', np.tile(np.array([0, 0, 1, 0, 1, 1, 0, 1], np.float32), n))
+        at = me.attributes.get('pv_alpha') or me.attributes.new('pv_alpha', 'FLOAT', 'POINT')
+        at.data.foreach_set('value', np.ones(n * 4, np.float32))
+        me.update()
 
     def update(self, fr, npz):
         d = self._densify(np.load(npz))
+        if getattr(self, 'obn', None) is not None:
+            cp0 = np.array(fr['cam']['pos'])
+            nr = np.linalg.norm(d['p'].astype(np.float64) - cp0, axis=1) < self.look.get('petal_near_r', 5.0)
+            self._update_near({k: v[nr] for k, v in d.items()})
+            d = {k: v[~nr] for k, v in d.items()}
         p = d['p'].astype(np.float64); n = len(p)
         me = self.ob.data
         me.clear_geometry()
@@ -1059,6 +1115,109 @@ class NearSnow:
         self.light.data.color = col
 
 
+class FlowerField:
+    """v16 (R13; R10-R12 later): the colony as real flowers. The FL-01 model (fl01_open.glb: stem, seed, five
+    petals) instanced (Geometry Nodes) at every flower the cut sees (cache flowers.npz from the previs FLOWERS),
+    in four variants: 0-3 petals gone. Per frame each flower shows round(0.8 x its released petals) gone, as the
+    previs draw_flower does; the released petals themselves are the Petals layer (they sit on the flower until
+    the lift-off wave, then rise). Lit by the moon and the whale like everything else, plus a faint floor
+    (previs light 0.10 + ...)."""
+    def __init__(self, look, cache):
+        d = np.load(cache / 'flowers.npz')
+        self.p = d['p'].astype(np.float64); self.det = d['det'].astype(np.float64)
+        n = len(self.p)
+        g = np.random.default_rng(1313)
+        rot = g.uniform(0, 2 * np.pi, n).astype(np.float32)
+        scl = (look.get('flower_scale', 0.1) * g.uniform(0.85, 1.15, n)).astype(np.float32)
+        coll = self._variants(look)
+        me = bpy.data.meshes.new('FlowerPoints'); me.from_pydata(self.p.tolist(), [], [])
+        me.attributes.new('variant', 'INT', 'POINT')
+        me.attributes.new('rot', 'FLOAT', 'POINT').data.foreach_set('value', rot)
+        me.attributes.new('scl', 'FLOAT', 'POINT').data.foreach_set('value', scl)
+        self.ob = bpy.data.objects.new('FlowerField', me); bpy.context.scene.collection.objects.link(self.ob)
+        md = self.ob.modifiers.new('FlowerInst', 'NODES'); md.node_group = self._tree(coll)
+        print(f'  flowers: {n} instanced')
+
+    def _variants(self, look):
+        bpy.ops.import_scene.gltf(filepath=str(ASSETS / 'fl01_open.glb'))
+        obs = {o.name.split('.')[0]: o for o in bpy.context.selected_objects if o.type == 'MESH'}
+        def arr(o):
+            me = o.data; V = np.empty(len(me.vertices) * 3); me.vertices.foreach_get('co', V); V = V.reshape(-1, 3)
+            M = np.array(o.matrix_world); V = V @ M[:3, :3].T + M[:3, 3]
+            return V, [tuple(p_.vertices) for p_ in me.polygons]
+        Vs, Fs = arr(obs['FL01_Stem']); Vd, Fd = arr(obs['FL01_Seed']); Vp, Fp = arr(obs['FL01_Petals'])
+        # the FL-01 head is much wider than the previs flower (petal 2 cm on a 7.5 cm stem): narrow it
+        k3 = np.array([look.get('flower_sxy', 1.0), look.get('flower_sxy', 1.0), 1.0])
+        Vs, Vd, Vp = Vs * k3, Vd * k3, Vp * k3
+        # the five petals = the connected pieces of the petal mesh, ordered around the flower
+        par = list(range(len(Vp)))
+        def find(i):
+            while par[i] != i:
+                par[i] = par[par[i]]; i = par[i]
+            return i
+        for f in Fp:
+            for v in f[1:]:
+                a_, b_ = find(f[0]), find(v)
+                if a_ != b_:
+                    par[a_] = b_
+        roots = sorted({find(i) for i in range(len(Vp))})
+        isl = [[f for f in Fp if find(f[0]) == r] for r in roots]
+        cen = [Vp[[v for f in fs for v in f]].mean(0) for fs in isl]
+        isl = [fs for _, fs in sorted(zip([math.atan2(c[1], c[0]) for c in cen], isl), key=lambda t: t[0])]
+        mats = [simple_mat('FlowerStem', _lin((40, 60, 52)), 0.8), simple_mat('FlowerSeed', _lin((214, 180, 104)), 0.6),
+                simple_mat('FlowerPetal', _lin((236, 231, 214)), 0.55)]
+        for m_, (col, k) in zip(mats, (((40, 60, 52), 0.02), ((214, 180, 104), 0.15), ((236, 231, 214), look.get('flower_emit', 0.12)))):
+            b = m_.node_tree.nodes.get('Principled BSDF')
+            b.inputs['Emission Color'].default_value = (*_lin(col), 1); b.inputs['Emission Strength'].default_value = k
+        coll = bpy.data.collections.new('FlowerVariants')          # not linked to the scene: instanced only
+        for r in range(4):
+            keep = [f for fs in isl[r:] for f in fs]
+            V = np.vstack([Vs, Vd, Vp]); o1 = len(Vs); o2 = o1 + len(Vd)
+            F = Fs + [tuple(v + o1 for v in f) for f in Fd] + [tuple(v + o2 for v in f) for f in keep]
+            mi = [0] * len(Fs) + [1] * len(Fd) + [2] * len(keep)
+            me = bpy.data.meshes.new(f'FlowerV{r}')
+            me.from_pydata([tuple(map(float, v)) for v in V], [], F); me.update()
+            for m_ in mats:
+                me.materials.append(m_)
+            me.polygons.foreach_set('material_index', np.array(mi, np.int32))
+            for p_ in me.polygons:
+                p_.use_smooth = True
+            coll.objects.link(bpy.data.objects.new(f'FlowerV{r}', me))
+        for o in obs.values():
+            bpy.data.objects.remove(o, do_unlink=True)
+        return coll
+
+    @staticmethod
+    def _tree(coll):
+        ng = bpy.data.node_groups.new('FlowerInst', 'GeometryNodeTree')
+        ng.interface.new_socket('Geometry', in_out='INPUT', socket_type='NodeSocketGeometry')
+        ng.interface.new_socket('Geometry', in_out='OUTPUT', socket_type='NodeSocketGeometry')
+        N = ng.nodes; L = ng.links
+        gi = N.new('NodeGroupInput'); go = N.new('NodeGroupOutput')
+        iop = N.new('GeometryNodeInstanceOnPoints')
+        ci = N.new('GeometryNodeCollectionInfo'); ci.inputs['Collection'].default_value = coll
+        ci.inputs['Separate Children'].default_value = True; ci.inputs['Reset Children'].default_value = True
+        def attr(name, typ):
+            na = N.new('GeometryNodeInputNamedAttribute'); na.data_type = typ; na.inputs['Name'].default_value = name
+            return na.outputs['Attribute']
+        cx = N.new('ShaderNodeCombineXYZ'); L.new(attr('rot', 'FLOAT'), cx.inputs['Z'])
+        try:
+            er = N.new('FunctionNodeEulerToRotation'); L.new(cx.outputs[0], er.inputs[0]); rot_out = er.outputs[0]
+        except Exception:
+            rot_out = cx.outputs[0]
+        L.new(gi.outputs[0], iop.inputs['Points']); L.new(ci.outputs[0], iop.inputs['Instance'])
+        iop.inputs['Pick Instance'].default_value = True
+        L.new(attr('variant', 'INT'), iop.inputs['Instance Index'])
+        L.new(rot_out, iop.inputs['Rotation']); L.new(attr('scl', 'FLOAT'), iop.inputs['Scale'])
+        L.new(iop.outputs[0], go.inputs[0])
+        return ng
+
+    def update(self, fr):
+        gone = np.round((self.det <= fr['tau']).sum(1) * 0.8).astype(np.int32).clip(0, 3)
+        self.ob.data.attributes['variant'].data.foreach_set('value', gone)
+        self.ob.data.update()
+
+
 class Party:
     """v16 (R17b; also R06): the four adventurers, built in Blender (never drawn by an AI), seen from behind
     as dark silhouettes. Their looks are undecided, so - as in the previs draw_party - they are anonymous
@@ -1128,6 +1287,19 @@ class WhaleLight:
         self.ob = bpy.data.objects.new('WhaleLight', ld); bpy.context.scene.collection.objects.link(self.ob)
         self.k = look['whale_light_w']
 
+    def exclude_more(self, names):
+        """v16 (R13): the whale's light reaches the flowers, the petals and the air, not the ground or the lake
+        (previs: only the flowers take the whale's light, the ground stays dark)"""
+        coll = bpy.data.collections.get('WhaleLightReceivers')
+        if coll is None:
+            return
+        for nm in names:
+            ob = bpy.data.objects.get(nm)
+            if ob is not None and ob.name not in coll.objects:
+                coll.objects.link(ob)
+        for i in range(len(coll.objects)):                  # every member is excluded (same order as .objects)
+            coll.collection_objects[i].light_linking.link_state = 'EXCLUDE'
+
     def exclude(self, ob):
         """The whale's own light lights the air, the petals and the rocks, not the whale's skin (previs:
         the body shows only its emission x form). Without this the point light inside the body burns the
@@ -1150,6 +1322,15 @@ class WhaleLight:
         self.ob.data.color = gold_mix(self.look, pal(self.look)['light'], 'gold_light', fr, 'gold_air_amt', 0.3)
 
 
+def _swap_variant_mats(mat):
+    """the instanced flower variants live outside the scene: give them the same layer material (3 slots)"""
+    c = bpy.data.collections.get('FlowerVariants')
+    for ob in (list(c.objects) if c else []):
+        ob.data.materials.clear()
+        for _ in range(3):
+            ob.data.materials.append(mat)
+
+
 def to_petal_layer():
     """Petals exactly as in the beauty; every other surface is matte black (it still hides the petals
     behind it); no air, no lights. Add it over a painted pass to keep the previs petal flow."""
@@ -1166,13 +1347,15 @@ def to_petal_layer():
             ob.hide_render = True
         elif ob.type == 'MESH' and ob.name != 'Petals':
             ob.data.materials.clear(); ob.data.materials.append(m)
+    _swap_variant_mats(m)
     sc.world.node_tree.nodes.get('Background').inputs['Color'].default_value = (0, 0, 0, 1)
 
 
 def hide_near():
-    ob = bpy.context.scene.objects.get('NearSnow')
-    if ob is not None:
-        ob.hide_render = True
+    for nm in ('NearSnow', 'PetalsNear'):
+        ob = bpy.context.scene.objects.get(nm)
+        if ob is not None:
+            ob.hide_render = True
 
 
 def to_base():
@@ -1193,12 +1376,13 @@ def to_near_layer():
     ho = nt.nodes.new('ShaderNodeHoldout')
     nt.links.new(ho.outputs[0], next(n for n in nt.nodes if n.type == 'OUTPUT_MATERIAL').inputs['Surface'])
     for ob in list(sc.objects):
-        if ob.type != 'MESH' or ob.name == 'NearSnow':
+        if ob.type != 'MESH' or ob.name in ('NearSnow', 'PetalsNear'):
             continue
         if ob.name in ('CaveAir', 'Petals', 'NightSky', 'Stars', 'MoonDisc', 'MoonHalo'):
             ob.hide_render = True
         else:
             ob.data.materials.clear(); ob.data.materials.append(hold)
+    _swap_variant_mats(hold)
     try_set(sc.render, film_transparent=True)
     sc.render.image_settings.color_mode = 'RGBA'
 
@@ -1226,6 +1410,7 @@ def to_whale_matte():
                 at = nt.nodes.new('ShaderNodeAttribute'); at.attribute_name = 'pv_malpha'
                 em = next(n for n in nt.nodes if n.type == 'EMISSION'); nt.links.new(at.outputs['Fac'], em.inputs['Strength'])
             ob.data.materials.clear(); ob.data.materials.append(mat)
+    _swap_variant_mats(black)
     sc.world.node_tree.nodes.get('Background').inputs['Color'].default_value = (0, 0, 0, 1)
     try_set(sc.view_settings, view_transform='Standard', look='None', exposure=0.0)
     try_set(sc.eevee, taa_render_samples=8)
@@ -1323,10 +1508,15 @@ def main(argv):
     near = NearSnow(look, meta) if look['near_n'] > 0 else None
     if look.get('party', 0.0) > 0.5 and meta.get('party'):
         Party(look, meta)
+    flowers = FlowerField(look, a.cache) if look.get('flowers', 0.0) > 0.5 and (a.cache / 'flowers.npz').exists() else None
+    if look.get('petal_near_r', 0.0) > 0:
+        pet.add_near(look)
     if look['fstop'] > 0:                          # focus on the whale: the near petals go soft
         try_set(cam.data.dof, use_dof=True, aperture_fstop=look['fstop'])
     if look.get('whale_self_light', 0.0) < 0.5:
         wl.exclude(whale.ob)
+        if look.get('whale_light_ground', 1.0) < 0.5:
+            wl.exclude_more(('Ground', 'Water'))
     if a.control in ('depth', 'depth_petals', 'petals', 'whale_matte'):
         hide_near()
     if a.control in ('depth', 'depth_petals'):
@@ -1352,6 +1542,8 @@ def main(argv):
         fr = frames[k]
         sc.frame_set(k)
         whale.update(fr); wl.update(fr)
+        if flowers is not None:
+            flowers.update(fr)
         # finish.py tints the near petals by this; R15's slow moment adds its gold glint (previs local_snow fk)
         gold_log[k] = max(fr.get('_gold', 0.0), fr.get('slow', 0.0) * look.get('slow_gold', 0.6))
         if near is not None:

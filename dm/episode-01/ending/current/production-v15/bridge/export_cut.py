@@ -144,6 +144,29 @@ def main():
         frames.append(rec)
         if k % (a.fps * 2) == 0:
             print(f'{cid} frame {k}/{n} t={t:.2f} tau={tau:.2f} petals={rec.get("n_petals")} {time.time() - t0:.0f}s', flush=True)
+    # v16: the flower colony this cut sees (R10-R13): every flower in any frame's view (out to 260 m), with
+    # its bloom time, maturity, moonlight, and the times its petals let go (previs Petals: 4 per mature flower)
+    if cid in ('R10', 'R11', 'R12', 'R13') and not a.every > 24:
+        F = pv.FLOWERS
+        seen = np.zeros(len(F), bool)
+        for rec in frames[::6]:
+            c = rec['cam']; cp_ = np.array(c['pos'])
+            q = (F - cp_) @ np.array([c['r'], c['u'], c['f']]).T
+            z = q[:, 2]; zz = np.maximum(z, 1e-3)
+            ax = 18.0 / c['lens_mm'] * 1.2; ay = 10.125 / c['lens_mm'] * 1.2
+            seen |= (z > 0.05) & (z < 260) & (np.abs(q[:, 0] / zz) < ax) & (np.abs(q[:, 1] / zz) < ay)
+        fi = np.where(seen)[0]
+        Pp = R.petals
+        det = np.full((len(F), 4), np.inf, np.float32)
+        order = np.argsort(Pp.src, kind='stable')
+        s_sorted = Pp.src[order]; starts = np.searchsorted(s_sorted, np.arange(len(F))); ends = np.searchsorted(s_sorted, np.arange(len(F)), 'right')
+        for i in fi:
+            dd = np.sort(Pp.tau_detach[order[starts[i]:ends[i]]])[:4]
+            det[i, :len(dd)] = dd
+        np.savez(a.out / 'flowers.npz', p=F[fi].astype(np.float32), idx=fi.astype(np.int32),
+                 tau_open=pv.TAU_OPEN[fi].astype(np.float32), mature=pv.MATURE[fi],
+                 moon=w.moonlit(F[fi] + np.array([0, 0, 0.2])).astype(np.float32), det=det[fi])
+        print('flowers', len(fi))
     # the moon as the previs composes it in the opening (an anchor just beyond the top rim + its angular
     # radius), laid out at the previs' own 1280x720 so that it lands on the same pixels
     R.W, R.H = 1280, 720
