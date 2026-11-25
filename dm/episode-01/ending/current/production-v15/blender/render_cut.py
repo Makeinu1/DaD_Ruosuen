@@ -72,7 +72,11 @@ PALETTES = {
     #   petals stay white snow and blush only where its light reaches them (title: snow falling into the sky)
     'source': dict(light=(1.0, 0.62, 0.80), belly=(0.62, 0.46, 0.90), rim=(1.0, 0.42, 0.68),
                    glow=((0.08, (255, 214, 228)), (0.30, (255, 228, 238)), (0.55, (250, 242, 246)), (0.85, (244, 244, 252))),
-                   petal_lit=(1.0, 0.84, 0.92), trl=(0.98, 0.93, 0.97), near_light=(1.0, 0.93, 0.96)),
+                   petal_lit=(1.0, 0.84, 0.92), trl=(0.98, 0.93, 0.97), near_light=(1.0, 0.93, 0.96),
+                   # v15i (author: show other hues at times, e.g. pale gold): each stroke sends a pale-gold
+                   # wave head->tail through the whale; its light, the near petals and the stream follow
+                   gold=(255, 226, 168), gold_rim=(1.0, 0.72, 0.40), gold_light=(1.0, 0.80, 0.62),
+                   gold_petal=(1.0, 0.90, 0.66)),
     # 'contrast': a sakura whale against cool white-silver petals
     'contrast': dict(light=(1.0, 0.62, 0.80), belly=(0.62, 0.46, 0.90),
                      glow=((0.08, (255, 118, 168)), (0.30, (255, 148, 192)), (0.55, (255, 186, 214)), (0.85, (255, 212, 228))),
@@ -82,6 +86,15 @@ PALETTES = {
 
 def pal(look):
     return PALETTES[look.get('palette', 'pearl')]
+
+
+def gold_mix(look, base, key, fr, amt_key='gold_light_amt', amt=0.85):
+    """base colour moved toward the palette's gold by how gold the whale's light is in this frame."""
+    P_ = pal(look)
+    if key not in P_:
+        return tuple(base)
+    k = fr.get('_gold', 0.0) * look.get(amt_key, amt)
+    return tuple(float(b * (1 - k) + c * k) for b, c in zip(base, P_[key]))
 FRUIT = (1.0, 0.80, 0.45)
 PETAL = (0.93, 0.94, 0.96)
 
@@ -256,6 +269,7 @@ class Whale:
             print('  [warn] cut.json has no stroke_phase0: re-export the cut (tail stroke will not match the previs)')
         self.contact = meta['ev_contact']
         self.glow = me.attributes.get('pv_glow') or me.attributes.new('pv_glow', 'FLOAT', 'POINT')
+        self.hue = me.attributes.get('pv_hue') or me.attributes.new('pv_hue', 'FLOAT', 'POINT')
         self.look = look
         for m in me.materials:
             self._drop_vertex_tint(m)
@@ -323,6 +337,14 @@ class Whale:
         mix.inputs[6].default_value = (*pal(self.look)['light'], 1)
         L.new(ramp.outputs['Color'], mix.inputs[7])
         col = mix.outputs[2]
+        P_ = pal(self.look)
+        hue_at = None
+        if 'gold' in P_:                           # v15i: the pale-gold wave (pv_hue, set per frame)
+            hue_at = N.new('ShaderNodeAttribute'); hue_at.attribute_name = 'pv_hue'
+            mg_ = N.new('ShaderNodeMix'); mg_.data_type = 'RGBA'
+            L.new(hue_at.outputs['Fac'], mg_.inputs['Factor']); L.new(col, mg_.inputs[6])
+            mg_.inputs[7].default_value = (*[(c / 255.0) ** 2.2 for c in P_['gold']], 1)
+            col = mg_.outputs[2]
         # v15d: paint inside the glow - the gouache albedo (strokes, ventral grooves) modulates the light,
         # the back facing the sky is brighter, the underside cooler and darker (as in the key paintings)
         tex = next((n for n in N if n.type == 'TEX_IMAGE'), None)
@@ -342,13 +364,17 @@ class Whale:
         mb = N.new('ShaderNodeMix'); mb.data_type = 'RGBA'
         L.new(neg.outputs[0], mb.inputs['Factor']); L.new(col, mb.inputs[6]); mb.inputs[7].default_value = (*pal(self.look)['belly'], 1)
         out_col = mb.outputs[2]
-        P_ = pal(self.look)
         if 'rim' in P_ and self.look.get('whale_rim', 0.9) > 0:     # the light source: white core, coloured rim
             rf = N.new('ShaderNodeMath'); rf.operation = 'MULTIPLY'; rf.use_clamp = True
             rf.inputs[1].default_value = self.look.get('whale_rim', 0.9) * 1.6
             L.new(lw.outputs['Facing'], rf.inputs[0])
             mr_ = N.new('ShaderNodeMix'); mr_.data_type = 'RGBA'
             L.new(rf.outputs[0], mr_.inputs['Factor']); L.new(out_col, mr_.inputs[6]); mr_.inputs[7].default_value = (*P_['rim'], 1)
+            if hue_at is not None:                 # the rim goes gold with the wave too
+                rg_ = N.new('ShaderNodeMix'); rg_.data_type = 'RGBA'
+                L.new(hue_at.outputs['Fac'], rg_.inputs['Factor'])
+                rg_.inputs[6].default_value = (*P_['rim'], 1); rg_.inputs[7].default_value = (*P_['gold_rim'], 1)
+                L.new(rg_.outputs[2], mr_.inputs[7])
             out_col = mr_.outputs[2]
         L.new(out_col, b.inputs['Emission Color'])
         lo, hi = self.look['whale_top']
@@ -376,6 +402,17 @@ class Whale:
         pulse = np.exp(-(u / 0.07) ** 2) + np.exp(-((u - 1) / 0.07) ** 2)
         val = g * (0.75 + 0.25 * fr['whale_light']['I']) * (1 + 0.35 * pulse) * (1 - wh.get('melt', 0.0))
         self.glow.data.foreach_set('value', val.astype(np.float32))
+        # v15i: hue. The stroke's light pulse carries a pale-gold wave head->tail (same timing as the previs
+        # pulse, a wider band and an afterglow), and in the glide a slow opal play drifts along the body
+        xn = (w.XMAX - x) / (w.XMAX - w.XMIN)                 # 0 head .. 1 tail
+        ug = np.mod(q - 0.40 - xn * 0.30, 1.0)
+        band = np.exp(-(ug / 0.10) ** 2) + np.exp(-((ug - 1) / 0.10) ** 2)
+        after = np.where(ug < 0.45, np.exp(-ug / 0.16), 0.0)
+        hp = np.clip(band + 0.65 * after, 0, 1) * self.look.get('gold_pulse', 1.0)
+        sh = self.look.get('gold_shimmer', 0.25) * (0.5 + 0.5 * np.sin(2 * np.pi * (0.9 * xn - tau / 6.0))) ** 3
+        hue = np.clip(hp + sh, 0, 1) * g * ('gold' in pal(self.look))
+        self.hue.data.foreach_set('value', hue.astype(np.float32))
+        fr['_gold'] = float(np.clip(np.mean(hue) * 1.6, 0, 1))      # how gold the whale's light is now
         me.update()
 
 
@@ -465,7 +502,8 @@ class Petals:
         bright = np.clip(d['bright'].astype(np.float64), 0, 3)
         fruit = d['fruit'].astype(np.float64)
         lit = np.clip((bright - 0.35) / 1.0, 0, 0.85)[:, None]
-        pc = np.array(PETAL)[None] * (1 - lit) + np.array(pal(self.look)['petal_lit'])[None] * lit
+        plit = np.array(gold_mix(self.look, pal(self.look)['petal_lit'], 'gold_petal', fr))
+        pc = np.array(PETAL)[None] * (1 - lit) + plit[None] * lit
         colv = (pc * (self.look['petal_emit'] * bright * flick * vis)[:, None]
                 + np.array(FRUIT)[None] * (self.look['fruit_emit'] * 0.45 * fruit * np.clip(bright, 0, 1) * vis)[:, None])
         me.update(calc_edges=True)
@@ -601,10 +639,12 @@ class NearSnow:
         me.update()
         self.light.location = fr['whale_light']['p']
         self.light.data.energy = self.look['near_light'] * fr['whale_light']['I']
+        self.light.data.color = gold_mix(self.look, pal(self.look).get('near_light', pal(self.look)['light']), 'gold_light', fr)
 
 
 class WhaleLight:
     def __init__(self, look):
+        self.look = look
         ld = bpy.data.lights.new('WhaleLight', 'POINT'); ld.color = pal(look)['light']
         try_set(ld, shadow_soft_size=6.0, use_shadow=False, volume_factor=look['whale_light_vol'])   # it sits inside the body
         self.ob = bpy.data.objects.new('WhaleLight', ld); bpy.context.scene.collection.objects.link(self.ob)
@@ -626,6 +666,8 @@ class WhaleLight:
     def update(self, fr):
         self.ob.location = fr['whale_light']['p']
         self.ob.data.energy = self.k * fr['whale_light']['I'] * (1 - fr['whale'].get('melt', 0.0))
+        # the air keeps most of its sakura-violet (gold light in the blue air turns a muddy green-grey)
+        self.ob.data.color = gold_mix(self.look, pal(self.look)['light'], 'gold_light', fr, 'gold_air_amt', 0.3)
 
 
 def to_petal_layer():
@@ -803,10 +845,12 @@ def main(argv):
     ks = ks[::a.step]
     print(f'built in {time.time() - t0:.1f}s, rendering {len(ks)} frames')
     sc = bpy.context.scene
+    gold_log = {}
     for i, k in enumerate(ks):
         fr = frames[k]
         sc.frame_set(k)
         whale.update(fr); wl.update(fr)
+        gold_log[k] = fr.get('_gold', 0.0)
         if near is not None:
             near.update(fr, k / meta['fps'])
         if look['fstop'] > 0:
@@ -822,6 +866,11 @@ def main(argv):
         t1 = time.time()
         bpy.ops.render.render(write_still=True)
         print(f'frame {k} ({i + 1}/{len(ks)}) {time.time() - t1:.1f}s', flush=True)
+    if gold_log:                                   # per-frame gold of the whale's light, for post/finish.py
+        gp = a.out / 'whale_gold.json'
+        old = json.loads(gp.read_text(encoding='utf-8')) if gp.exists() else {}
+        old.update({f'{k:04d}': round(v, 4) for k, v in gold_log.items()})
+        gp.write_text(json.dumps(old, indent=0), encoding='utf-8')
     print(f'done {time.time() - t0:.0f}s')
 
 

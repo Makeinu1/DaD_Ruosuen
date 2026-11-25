@@ -21,7 +21,7 @@ Usage:
   python finish.py --layers renders/R14_d --dst renders/R14_d/final [--mp4 R14_final.mp4] [--frames 0:192]
 numpy + scipy + Pillow (+ ffmpeg for --mp4).
 """
-import argparse, shutil, subprocess
+import argparse, json, shutil, subprocess
 from pathlib import Path
 import numpy as np
 from PIL import Image
@@ -81,7 +81,7 @@ def load(p, mode='RGB'):
     return np.asarray(Image.open(p).convert(mode), np.float32) / 255.0
 
 
-def frame(base, pet, matte, cv, a, near=None):
+def frame(base, pet, matte, cv, a, near=None, gold=0.0):
     H, W, _ = base.shape
     M = ndi.gaussian_filter(matte[..., 0], 1.0 * cv.s)[..., None]
     L = (base @ LUM)[..., None]
@@ -117,6 +117,9 @@ def frame(base, pet, matte, cv, a, near=None):
         al = near[..., 3:4] * a.near_alpha; rgb = near[..., :3]
         if a.near_tint:                  # the whale's light colours the petals near it on screen (falls off)
             tint = np.array([float(v) for v in a.near_tint.split(',')], np.float32)
+            if a.near_tint_gold:          # the whale's light turns pale gold with each stroke (whale_gold.json)
+                tg = np.array([float(v) for v in a.near_tint_gold.split(',')], np.float32)
+                tint = tint * (1 - gold) + tg * gold
             dist = ndi.distance_transform_edt(matte[..., 0] < 0.5)
             wgt = (a.near_tint_k * np.exp(-(dist / (a.near_tint_r * cv.s)) ** 2))[..., None]
             Ln = (rgb @ LUM)[..., None]
@@ -161,6 +164,7 @@ def main():
     ap.add_argument('--whale-window', type=float, default=0.6)
     ap.add_argument('--near-tint', default='', help='r,g,b: colour of the whale light on the near petals around it')
     ap.add_argument('--near-tint-r', type=float, default=260.0)
+    ap.add_argument('--near-tint-gold', default='', help='r,g,b: the near-petal tint when the whale light is gold')
     ap.add_argument('--near-tint-k', type=float, default=0.85)
     ap.add_argument('--whale-detail', type=float, default=0.6)
     ap.add_argument('--ring', type=float, default=0.5)
@@ -172,6 +176,8 @@ def main():
         files = [f for f in files if f0 <= int(f.stem) < f1]
     a.dst.mkdir(parents=True, exist_ok=True)
     cv = None
+    gj = a.layers / 'whale_gold.json'
+    golds = json.loads(gj.read_text(encoding='utf-8')) if gj.exists() else {}
     for f in files:
         base = load(f)
         if cv is None:
@@ -180,7 +186,7 @@ def main():
         matte = load(a.layers / 'control_whale_matte' / f.name)
         nf = a.layers / 'control_near' / f.name
         near = load(nf, 'RGBA') if nf.exists() else None
-        x = frame(base, pet, matte, cv, a, near)
+        x = frame(base, pet, matte, cv, a, near, golds.get(f.stem, 0.0) * 0.85)
         Image.fromarray((x * 255 + 0.5).astype(np.uint8)).save(a.dst / f.name)
     print('finished', len(files), 'frames ->', a.dst)
     if a.mp4:
