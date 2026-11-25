@@ -40,8 +40,14 @@ LOOK = {
                   whale_tex=0.7, whale_belly=0.35, whale_top=(0.8, 1.1),
                   petal_dense=3.0, dense_r=2.5,
                   near_n=1200.0, near_size=0.045, near_zmin=3.0, near_zmax=30.0, near_emit=0.10,
-                  near_light=3.0e6, fstop=8.0, near_band=0.65, near_band_c=0.14),
+                  near_light=3.0e6, fstop=8.0, near_band=0.65, near_band_c=0.14, near_gust=0.0, near_size_max=1.3),
+    # v15f (2026-11-25, author: the near blizzard reads far better than the stream clinging to the whale;
+    # rebuild around it): the near blizzard fills 3-70 m in front of the whale with real petals (a continuous
+    # depth of sizes), gusts; the far previs stream goes back to the previs density and becomes light
+    'blizzard': None,
 }
+LOOK['blizzard'] = dict(LOOK['guide'], petal_dense=1.0, near_n=3500.0, near_zmax=60.0, near_zpow=1.6, near_size_max=1.5,
+                        near_gust=0.35, fstop=5.6, near_light=4.5e6, near_emit=0.06, near_band_c=-0.12)
 PEARL = (0.86, 0.93, 1.0)
 BELLY = (0.55, 0.68, 0.95)          # the shaded underside goes blue (originals CUT05 / CUT09)
 # previs whale_layer (v14.9b): pearl-opal colours along the body, by hue = 0 at the tail .. 1 at the head
@@ -446,7 +452,11 @@ class NearSnow:
         n = int(look['near_n'])
         g = np.random.default_rng(20261125)
         z0, z1 = look['near_zmin'], look['near_zmax']
-        self.z = np.sqrt(z0 ** 2 + g.random(n) * (z1 ** 2 - z0 ** 2))          # more of the far ones (volume)
+        zp = look.get('near_zpow', 0.0)
+        if zp > 0:                                  # v15f: most where a petal reads as a petal (3-25 m)
+            self.z = z0 + (z1 - z0) * g.random(n) ** zp
+        else:
+            self.z = np.sqrt(z0 ** 2 + g.random(n) * (z1 ** 2 - z0 ** 2))      # more of the far ones (volume)
         self.hw = self.z * (18.0 / self.lens); self.hh = self.z * (10.125 / self.lens)
         # they travel along the stream (normalised screen: from lower right up toward the whale's wake) and
         # gather around it, leaving the dark side calm; s wraps far off screen, the lateral offset is fixed
@@ -455,13 +465,15 @@ class NearSnow:
         band = g.random(n) < look.get('near_band', 0.65)
         self.l = np.where(band, g.normal(look.get('near_band_c', 0.07), 0.28, n), g.uniform(-1.4, 1.4, n))
         self.s0 = g.uniform(-1.6, 1.6, n); self.sv = g.uniform(0.20, 0.42, n)       # normalised units / s
+        # gusts: the speed swells and eases in slow waves that travel across the stream and in depth
+        self.gp = 2.0 * self.l + 0.08 * self.z + g.normal(0, 0.3, n)
         self.vz = g.uniform(-0.15, 0.15, n)
         self.fa = g.uniform(0.010, 0.030, (n, 3)) * self.z[:, None]; self.fw = g.uniform(0.5, 1.6, (n, 3)); self.fp = g.uniform(0, 2 * np.pi, (n, 3))
         ax = g.standard_normal((n, 3)); self.ax = ax / np.linalg.norm(ax, axis=1, keepdims=True)
         self.om = g.uniform(1.2, 4.0, n) * np.where(g.random(n) < 0.5, -1, 1); self.ph = g.uniform(0, 2 * np.pi, n)
         q = g.standard_normal((n, 3)); self.a0 = q / np.linalg.norm(q, axis=1, keepdims=True)
         b = np.cross(self.a0, g.standard_normal((n, 3))); self.b0 = b / np.linalg.norm(b, axis=1, keepdims=True)
-        self.s = look['near_size'] * g.uniform(0.8, 1.3, n)
+        self.s = look['near_size'] * g.uniform(0.8, look.get('near_size_max', 1.3), n)
         me = bpy.data.meshes.new('NearSnow'); self.ob = bpy.data.objects.new('NearSnow', me)
         bpy.context.scene.collection.objects.link(self.ob)
         me.materials.append(self._material())
@@ -500,7 +512,16 @@ class NearSnow:
         em = N.new('ShaderNodeEmission'); L.new(wht.outputs[2], em.inputs['Color']); em.inputs['Strength'].default_value = self.look['near_emit']
         add = N.new('ShaderNodeAddShader'); L.new(mg.outputs[0], add.inputs[0]); L.new(em.outputs[0], add.inputs[1])
         tr = N.new('ShaderNodeBsdfTransparent')
-        fin = N.new('ShaderNodeMixShader'); L.new(tex.outputs['Alpha'], fin.inputs['Fac'])
+        # air between: the farther petals fade into the haze (the near layer is rendered without the air)
+        cd = N.new('ShaderNodeCameraData')
+        fade = N.new('ShaderNodeMapRange'); fade.clamp = True
+        fade.inputs['From Min'].default_value = self.look.get('near_fade', (20.0, 60.0))[0]
+        fade.inputs['From Max'].default_value = self.look.get('near_fade', (20.0, 60.0))[1]
+        fade.inputs['To Min'].default_value = 1.0; fade.inputs['To Max'].default_value = 0.35
+        L.new(cd.outputs['View Distance'], fade.inputs['Value'])
+        am = N.new('ShaderNodeMath'); am.operation = 'MULTIPLY'
+        L.new(tex.outputs['Alpha'], am.inputs[0]); L.new(fade.outputs['Result'], am.inputs[1])
+        fin = N.new('ShaderNodeMixShader'); L.new(am.outputs[0], fin.inputs['Fac'])
         L.new(tr.outputs[0], fin.inputs[1]); L.new(add.outputs[0], fin.inputs[2])
         L.new(fin.outputs[0], out.inputs['Surface'])
         return m
@@ -511,7 +532,9 @@ class NearSnow:
         return v * c + np.cross(k, v) * s_ + k * np.sum(k * v, 1, keepdims=True) * (1 - c)
 
     def update(self, fr, t):
-        sN = np.mod(self.s0 + self.sv * t + 1.6, 3.2) - 1.6
+        ga = self.look.get('near_gust', 0.0)
+        gust = ga * self.sv / 0.55 * (np.sin(0.55 * t + self.gp) - np.sin(self.gp))   # integrated 1 + ga*cos(0.55 t)
+        sN = np.mod(self.s0 + self.sv * t + gust + 1.6, 3.2) - 1.6
         q = sN[:, None] * self.D + self.l[:, None] * self.N
         x = q[:, 0] * self.hw; y = q[:, 1] * self.hh
         fl = self.fa * np.sin(self.fw * t + self.fp)
