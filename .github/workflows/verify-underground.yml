@@ -1,0 +1,30 @@
+name: Verify underground atlas
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  atlas:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run synthetic regression cases
+        run: node tests/underground.test.mjs
+      - name: Validate atlas and PR history
+        if: github.event_name == 'pull_request'
+        env:
+          TARGET: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          ANCESTOR=$(git merge-base "$TARGET" "$HEAD")
+          node scripts/verify-underground.mjs --target "$TARGET" --head "$HEAD" --merge-base "$ANCESTOR"
+      - name: Validate main atlas
+        if: github.event_name == 'push'
+        run: node scripts/verify-underground.mjs

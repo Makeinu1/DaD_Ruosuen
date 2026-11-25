@@ -17,4 +17,6 @@
 
 - [ベルとタッカーの演技ガイド・掛け合い集](npcs/bell-tucker-roleplay.md)：口調、7場面の会話例、即興演技早見表。
 
+- [地下地理補完台帳・セッションメモ](underground/README.md)：地図院の知識とDMの真実を分離し、プレイ済み地理を更新する。
+
 運用規約：[WORLD_POLICY.md](../WORLD_POLICY.md)。

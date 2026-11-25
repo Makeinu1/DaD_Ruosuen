@@ -19,6 +19,11 @@ If the user is a player visiting the public portal, preparing a character, or as
 - The former extensive Notion world draft remains migration/reference material for items not yet transferred, NOT a second independently maintained canonical copy.
 - **CRITICAL**: This GitHub repo is PUBLIC; excluding a file from Pages navigation does NOT make it private. Author-approved fictional DM spoilers belong in `dm/**` (not player-facing). Never put personal data, credentials, or actually confidential information here; use a permission-controlled store for those. Do not add DM materials to SECTIONS, llms.txt, public article links or player-facing assets. Keep spoiler warnings in the root README and dm/README.md.
 
+## Underground atlas (author/DM maintenance)
+
+- Before preparing or editing any underground scenario, read [the underground atlas v0.2](world/underground/README.md), [the world atlas](world/underground/atlas.json), [the DM supplement](dm/underground/README.md) and the related played-session records. Use the Institute's own NODE / SEGMENT / ROUTE / FACILITY registration identifiers; never invent a number, distance or connection to fill a gap. The named/schematic initial links are not navigable survey data.
+- After play, retain the session's observations and disclosure history separately; propose only approved geography as atlas changes via PR. Keep old IDs and reports, append change history, distinguish discovery/report/registration and world change/correction. Run `node scripts/verify-underground.mjs` and `node tests/underground.test.mjs` before review. Do not merge without author approval. No atlas data is automatically added to Pages or player-facing AI sources.
+
 ## Available project skills
 
 - [illustration-composition](.agents/skills/illustration-composition/SKILL.md): use for author-approved art direction and narrative illustration composition before image generation. The maintained shared Skill is in [Notion](https://app.notion.com/p/41b0691fc97a8121badad33bf863b210); check the current version when available. Compare distinct value thumbnails, story beats, perspective and visual hierarchy; do not generate artwork at the planning stage.
