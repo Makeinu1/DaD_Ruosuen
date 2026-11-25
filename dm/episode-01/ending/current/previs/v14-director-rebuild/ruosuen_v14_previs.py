@@ -26,7 +26,8 @@ sys.path.insert(0, str(HERE))
 import v14_world as w
 from v14_world import clamp, smooth, unit
 
-FONT_PATH = '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc'
+FONT_PATH = next((f for f in ('/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc', 'C:/Windows/Fonts/YuGothM.ttc',
+                              'C:/Windows/Fonts/meiryo.ttc') if Path(f).exists()), '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc')
 SHOTLIST = json.loads((HERE.parent.parent / 'shotlist-v14-director-rebuild.json').read_text(encoding='utf-8'))
 CUT_LABEL = {c['id']: c for c in SHOTLIST['cuts']}
 
@@ -262,6 +263,51 @@ def whale_light(tau):
     p = PATH.pos(tau)
     I = float(smooth((tau - EV['contact'] - 1.0) / 4.0)) * (1 + 0.25 * float(pulse(tau))) * (1 + 0.30 * climax(tau)) * (1 + 0.9 * flare(tau))
     return p, I
+
+# ---------------------------------------------------------------- v14.10 colour (author-approved 2026-11-25)
+# The whale is the light source: a pearl-white core with a sakura rim, and its light is sakura. Gold =
+# awakening and life: the ignition (R09) is gold, the bloom beats (R10-R12) flare gold, and every stroke
+# sends a pale-gold band head->tail (with the previs light pulse) that fades back to sakura in the glide.
+# The petals stay white snow and borrow the whale's colour by nearness, so they whiten as it leaves
+# (R15 'left behind', R17b white snow). R17: the sakura grows (the last feeling); R18: sakura -> moon white.
+PEARL_C = np.array([242, 242, 248], float)
+SAKURA_C = np.array([255, 150, 196], float)
+GOLD_C = np.array([255, 240, 206], float)          # pale gold (not amber)
+GOLD_RIM_C = np.array([255, 214, 152], float)
+LIGHT_SAKURA = np.array([255, 158, 204], float)
+LIGHT_GOLD = np.array([255, 204, 158], float)
+AIR_SAKURA = np.array([205, 165, 210], float)
+AIR_GOLD = np.array([222, 200, 160], float)
+
+def gold_band(tau, x_local):
+    """0..1 pale-gold band running head->tail after each stroke (same timing as pulse), with afterglow."""
+    xn = (w.XMAX - np.asarray(x_local, float)) / (w.XMAX - w.XMIN)
+    ug = np.mod(float(PATH.stroke_q(tau)) - 0.40 - xn * 0.30, 1.0)
+    band = np.exp(-(ug / 0.10) ** 2) + np.exp(-((ug - 1) / 0.10) ** 2)
+    return np.clip(band + 0.65 * np.where(ug < 0.45, np.exp(-ug / 0.16), 0.0), 0, 1)
+
+_XN32 = w.XMAX - np.linspace(0, 1, 32) * (w.XMAX - w.XMIN)
+
+def gold_now(tau):
+    """0..1: how gold the whale's light is in this moment (ignition, bloom beats, stroke band)."""
+    if tau < EV['contact']:
+        return 0.0
+    return float(np.clip(max(1 - opal_mix(tau), min(1.0, flare(tau)), 1.6 * float(np.mean(gold_band(tau, _XN32)))), 0, 1))
+
+def light_rgb(tau):
+    g = gold_now(tau)
+    return LIGHT_SAKURA * (1 - g) + LIGHT_GOLD * g
+
+def air_tint(tau):
+    """colour of the air the whale's light fills: sakura-violet; gold only a little (gold light in the
+    blue air reads as a muddy green-grey)."""
+    g = 0.35 * gold_now(tau) + 0.5 * (1 - opal_mix(tau))
+    return AIR_SAKURA * (1 - g) + AIR_GOLD * g
+
+def petal_tint(rgb_white, lightw, tau):
+    """white snow that borrows the whale's colour by nearness (lightw: the whale light reaching it)."""
+    tw = np.clip(np.asarray(lightw, float) / 1.0, 0, 0.8)[:, None]
+    return rgb_white[None, :] * (1 - tw) + light_rgb(tau)[None, :] * tw
 
 def glance_roll(tau):
     """The eye on the adventurers: during the last seconds of the approach the whale rolls
@@ -879,7 +925,9 @@ def make_cameras():
     # v14.9b: the gaze - the longest shot (8 s), wider (45 mm) from the adventurers' shore: the
     # whale comes out of its turn and swims across the cave sky inside its river of snow
     m14 = 0.4 * wp(TAU0['R14'] + 2.0) + 0.6 * wp(TAU0['R14'] + 6.5)
-    C['R14'] = C_static((-30.0, -58.0, GZ(-30, -58) + 1.7), m14 + np.array([0, 0, -3.0]), 55)
+    # v14.10 (author 2026-11-25): 90 mm (the v14.1 lens) - the whale ~1/3 of the width; the tail is just
+    # outside the right edge for the first ~0.5 s and the head reaches the top edge at the end
+    C['R14'] = C_static((-30.0, -58.0, GZ(-30, -58) + 1.7), m14 + np.array([0, 0, -3.0]), 90)
     # R15 (v14.6b): 'like filming a train' - someone standing ~16 m off its line, a little
     # below it: the head comes in from the right, and as it passes the camera turns its head
     # to follow (a little late, like a person), keeps the whole 24 m body in frame at the
@@ -982,16 +1030,15 @@ class Renderer:
         g = glow_level(tau, xl)
         pul = pulse(tau, xl)
         mix = opal_mix(tau)
-        # Phase 1: ice blue / silver / lavender ; Phase 2-3: pearl-opal varying along the body
-        ph1 = np.array([170, 205, 236])[None, :] * (0.5 + 0.5 * np.cos(xl * 0.35 + tau * 0.8))[:, None] + \
-              np.array([196, 182, 236])[None, :] * (0.5 - 0.5 * np.cos(xl * 0.35 + tau * 0.8))[:, None]
-        hue = (xl - w.XMIN) / (w.XMAX - w.XMIN) + 0.08 * math.sin(tau * 0.3)
-        wts = np.stack([clamp(1 - np.abs(hue - 0.85) * 3), clamp(1 - np.abs(hue - 0.55) * 3),
-                        clamp(1 - np.abs(hue - 0.30) * 3), clamp(1 - np.abs(hue - 0.08) * 4)], 1)
-        cols = np.array([[184, 216, 240], [234, 238, 242], [214, 208, 238], [228, 226, 212]], float)
-        ws = wts.sum(1, keepdims=True)
-        opal = (wts @ cols + np.array([226, 230, 236])[None, :] * clamp(1 - ws)) / np.maximum(ws, 1.0)
-        emis = ph1 * (1 - mix) + opal * mix
+        # v14.10: the light source - pearl-white core, sakura rim; gold at the ignition, the bloom beats and
+        # in a band after each stroke (see gold_band); R17 grows sakura
+        r17 = 1.0 if getattr(self, '_cid', None) == 'R17' else 0.0
+        rimk = clamp((1 - facing) * 1.4)[:, None]
+        core = PEARL_C * (1 - 0.35 * r17) + SAKURA_C * 0.35 * r17
+        sak = core[None, :] * (1 - rimk * (0.85 + 0.15 * r17)) + SAKURA_C[None, :] * rimk * (0.85 + 0.15 * r17)
+        gv = np.clip(np.maximum(1 - mix, min(1.0, flare(tau))) + 0.75 * gold_band(tau, xl), 0, 1)[:, None]
+        goldc = GOLD_C[None, :] * (1 - rimk) + GOLD_RIM_C[None, :] * rimk
+        emis = sak * (1 - gv) + goldc * gv
         sky = 0.40 * upn                                   # faint light from the night sky above
         # v14.8: R05-R06 (the emergence and the approach, before it ever glows) are the darkest
         # cuts; the 'boss?!' fear needs the huge shape to be seen, so only its edge catches more
@@ -1202,7 +1249,7 @@ class Renderer:
             if sz[0] > 1.0:
                 yy, xx = np.ogrid[:H, :W]
                 dd = np.sqrt((xx - float(sx[0])) ** 2 + (yy - float(sy[0])) ** 2) / W
-                tint = np.array([150, 175, 205], np.float32) * (1 - opal_mix(tau)) + np.array([205, 210, 222], np.float32) * opal_mix(tau)
+                tint = air_tint(tau).astype(np.float32)
                 A += (np.exp(-(dd / 0.38) ** 2) * kg * wl_I)[..., None] * tint
         # --- R10/R12: the whale itself is off-frame; its light spills in from the frame edge
         if cid in ('R10', 'R12') and wl_I > 0.05:
@@ -1210,7 +1257,7 @@ class Renderer:
             yy, xx = np.ogrid[:H, :W]
             ex_, ey_ = float(np.clip(sx[0], -0.3 * W, 1.3 * W)), float(np.clip(sy[0], -0.6 * H, 1.3 * H))
             dd = np.sqrt((xx - ex_) ** 2 + (yy - ey_) ** 2) / W
-            tint = np.array([150, 175, 205], np.float32) * (1 - opal_mix(tau)) + np.array([196, 204, 222], np.float32) * opal_mix(tau)
+            tint = air_tint(tau).astype(np.float32)
             A += (np.exp(-(dd / (0.45 if cid == 'R10' else 0.75)) ** 2) * (0.11 if cid == 'R10' else 0.26) * wl_I)[..., None] * tint      # (kept below the R15 climax)
         # --- moon beam volume and dust
         q = 4
@@ -1255,7 +1302,7 @@ class Renderer:
                         A = np.asarray(img).astype(np.float32)
                         g1 = np.asarray(wem.filter(ImageFilter.GaussianBlur(max(2, bw * 0.03)))).astype(np.float32) / 255
                         g2 = np.asarray(wem.filter(ImageFilter.GaussianBlur(max(4, bw * 0.14)))).astype(np.float32) / 255
-                        tint = np.array([150, 175, 205], np.float32) * (1 - opal_mix(tau)) + np.array([196, 204, 222], np.float32) * opal_mix(tau)
+                        tint = air_tint(tau).astype(np.float32)
                         kb = 1.0 / (1.0 + bw / (0.3 * W))         # big on screen -> less halo
                         A += (g1[..., None] * tint * 0.16 + g2[..., None] * tint * 0.26) * kb
                         img = Image.fromarray(np.clip(tone(A), 0, 255).astype(np.uint8))
@@ -1555,9 +1602,7 @@ class Renderer:
             bright = bright * w.sight_through_opening(cam.pos, P.p[idx])
         flick = np.abs(np.cos(P.spin[idx]))                      # pure: tumbling flicker
         flick = g * 1.0 + (1 - g) * (0.35 + 0.65 * flick)
-        near_opal = clamp(1 - d / 30.0)
-        pcol = (np.array([236, 238, 242])[None, :] * (1 - near_opal[:, None]) +      # v14.9b: white, not beige, in low light
-                np.array([224, 214, 236])[None, :] * near_opal[:, None])
+        pcol = petal_tint(np.array([236, 238, 242], float), lightw, tau)     # v14.10: white snow, the whale's colour by nearness
         petal_rgb = pcol * (bright * flick)[:, None] * (1 + 0.9 * g * pul)[:, None] * (1 - 0.22 * g)[:, None]
         fruit = P.fruit[idx] * (0.55 + 0.45 * g * (1 + pul)) * (bright > 0.01) * (1 + 0.55 * g)
         # v14.9: the snow that follows the whale carries warm gold (its fruit lit): the first and
@@ -1621,6 +1666,13 @@ class Renderer:
         N = {'R13': 420, 'R14': 360, 'R15': 800, 'R17': 260, 'R17b': 380}.get(cid, 0)
         # same air density whatever the lens: a long lens sees a much narrower cone of near air
         N = int(N * min(1.0, (24.0 / cam.lens) ** 2))
+        # v14.10 (author 2026-11-25): the near blizzard leads in R13-R15. Gusts carry the released petals
+        # over the lake to the adventurers' shore, so R13/R14 no longer wait for the simulation to reach
+        # the camera. R14 (90 mm, 8 s, spellbound) gets few, slow, real-size petals you can follow one by
+        # one in a deep volume (3-90 m); R15 stays the peak (more, and they surge with the whale).
+        deep = {'R14': (3.0, 90.0, 1300)}.get(cid)
+        if deep is not None:
+            N = deep[2]
         if N == 0:
             return
         # v14.8: only as much near snow as the world simulation actually brings to the camera
@@ -1629,6 +1681,8 @@ class Renderer:
         act = (tau >= P.tau_lift) & ~P.landed & ~P.gone
         n_near = int((np.sum((P.p[act] - cam.pos) ** 2, 1) < 20.0 ** 2).sum()) if act.any() else 0
         N_eff = int(round(N * float(smooth(n_near / 150.0))))
+        if cid in ('R13', 'R14'):     # v14.10: gusts bring them from the release on (no waiting)
+            N_eff = int(round(N * float(smooth((tau - TAU_LIFT) / 1.5))))
         if cid == 'R17b':
             # v14.9b: the released snow, its magic gone, has drifted over the whole cave and comes
             # down on the shore (a sparse, slow snowfall; the simulation does not carry it this far)
@@ -1638,14 +1692,22 @@ class Renderer:
         W, H = self.W, self.H
         r = np.random.default_rng(1000 + sum(map(ord, cid)))
         D = 18.0                      # near/mid air only: farther snow comes from the world simulation
+        z0 = 1.3
+        if deep is not None:
+            z0, D = deep[0], deep[1] - deep[0]
         ax = 1.15 * 18.0 / cam.lens; ay = 1.15 * 10.125 / cam.lens          # frustum half-extents (tan)
-        dep = 1.3 + D * r.random(N) ** 0.9
+        dep = z0 + D * r.random(N) ** (1.3 if deep is not None else 0.9)
         base = np.column_stack([r.uniform(-ax, ax, N) * dep, dep, r.uniform(-ay, ay, N) * dep])
         vel = np.column_stack([r.normal(-0.4, 0.9, N), r.normal(0.5, 0.9, N), r.normal(-0.55, 0.35, N)])
         if cid == 'R13':      # v14.9b: snow falling upwards - slow, rising past the lens
             vel = np.column_stack([r.normal(0.0, 0.35, N), r.normal(0.0, 0.35, N), r.normal(1.5, 0.45, N)])
         elif cid == 'R17b':   # real snow at last: slow, falling
             vel = np.column_stack([r.normal(-0.15, 0.2, N), r.normal(0.1, 0.2, N), r.normal(-0.75, 0.15, N)])
+        elif cid == 'R14':    # v14.10: a gust-borne stream, rising, drifting left toward the whale's wake;
+            c0 = self.cams[cid](T[cid][0], TAU0[cid])                  # slow ("5 cm per second")
+            dirw = -0.66 * c0.r + 0.75 * c0.u
+            sp = r.uniform(0.25, 0.7, N)
+            vel = dirw[None, :] * sp[:, None] + r.normal(0, 0.08, (N, 3))
         s0 = T[cid][0]
         cam0 = self.cams[cid](s0, TAU0[cid])
         dt = tau - TAU0[cid]          # world time: the near snow slows with the slow-motion in R15
@@ -1655,7 +1717,7 @@ class Renderer:
                  + np.column_stack([0.6 * np.sin(1.1 * dt + ph), 0.6 * np.cos(0.9 * dt + ph), 0.25 * np.sin(1.7 * dt + ph)]))
         rel = cam.cam_xyz(world)
         # wrap inside the view frustum so the density stays constant while the camera moves
-        rel[:, 2] = np.mod(rel[:, 2] - 1.3, D) + 1.3
+        rel[:, 2] = np.mod(rel[:, 2] - z0, D) + z0
         sx = np.mod(rel[:, 0] / rel[:, 2] + ax, 2 * ax) - ax
         sy = np.mod(rel[:, 1] / rel[:, 2] + ay, 2 * ay) - ay
         rel[:, 0] = sx * rel[:, 2]; rel[:, 1] = sy * rel[:, 2]
@@ -1671,9 +1733,11 @@ class Renderer:
         bright = 0.05 + wl_I * 1.6 / (1 + (d / 55.0) ** 2) + 0.32 * w.moonlit(pw, soft=7.0)
         if cid == 'R17b':
             bright = bright + 0.36                   # they catch the faint light of the opening
+        if deep is not None:
+            bright = bright + 0.40                   # v14.10: R14's blizzard catches the whale-lit air
         spin = ph[ok] + dt * r.uniform(3.0, 11.0, N)[ok] * (0.45 if cid in ('R13', 'R17b') else 1.0)
         flick = 0.35 + 0.65 * np.abs(np.cos(spin))
-        petal_rgb = np.array([236, 238, 242])[None, :] * (bright * flick)[:, None]
+        petal_rgb = petal_tint(np.array([236, 238, 242], float), wl_I * 1.6 / (1 + (d / 55.0) ** 2), tau) * (bright * flick)[:, None]
         fk = 0.45
         if cid == 'R15':      # v14.9b: in the slow moment the near petals hang and glint gold
             fk = 0.45 + 0.9 * float(_slow_window(t - T_SLOW))

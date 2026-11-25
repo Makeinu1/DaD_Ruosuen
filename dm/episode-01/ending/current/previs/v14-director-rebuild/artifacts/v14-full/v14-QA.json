@@ -101,7 +101,7 @@
     },
     "R09": {
       "min_dist_m": 34.43,
-      "mean_luma": 27.4,
+      "mean_luma": 27.9,
       "whale_width_px_start_mid_end": [
         390,
         595,
@@ -110,7 +110,7 @@
     },
     "R10": {
       "min_dist_m": 14.33,
-      "mean_luma": 43.8,
+      "mean_luma": 45.5,
       "whale_width_px_start_mid_end": [
         14641,
         37212,
@@ -119,7 +119,7 @@
     },
     "R11": {
       "min_dist_m": 37.73,
-      "mean_luma": 27.6,
+      "mean_luma": 27.5,
       "whale_width_px_start_mid_end": [
         832,
         567,
@@ -127,11 +127,11 @@
       ]
     },
     "R12": {
-      "mean_luma": 41.5
+      "mean_luma": 40.5
     },
     "R13": {
       "min_dist_m": 46.28,
-      "mean_luma": 27.6,
+      "mean_luma": 26.3,
       "whale_width_px_start_mid_end": [
         282,
         244,
@@ -140,16 +140,16 @@
     },
     "R14": {
       "min_dist_m": 151.31,
-      "mean_luma": 37.6,
+      "mean_luma": 38.1,
       "whale_width_px_start_mid_end": [
-        259,
-        242,
-        286
+        424,
+        395,
+        468
       ]
     },
     "R15": {
       "min_dist_m": 8.87,
-      "mean_luma": 60.7,
+      "mean_luma": 56.5,
       "whale_width_px_start_mid_end": [
         633,
         1079,
@@ -158,7 +158,7 @@
     },
     "R17": {
       "min_dist_m": 17.39,
-      "mean_luma": 27.5,
+      "mean_luma": 27.1,
       "whale_width_px_start_mid_end": [
         506,
         361,
