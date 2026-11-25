@@ -67,6 +67,16 @@ PALETTES = {
     'sakura': dict(light=(1.0, 0.62, 0.80), belly=(0.62, 0.46, 0.90),
                    glow=((0.08, (255, 118, 168)), (0.30, (255, 148, 192)), (0.55, (255, 186, 214)), (0.85, (255, 212, 228))),
                    petal_lit=(1.0, 0.80, 0.90), trl=(1.0, 0.70, 0.84)),
+    # v15h study (2026-11-25, author: is giving the whale and the petals the same colour right?)
+    # 'source': the whale is the light source - a pearl-white core, a sakura rim and sakura light; the
+    #   petals stay white snow and blush only where its light reaches them (title: snow falling into the sky)
+    'source': dict(light=(1.0, 0.62, 0.80), belly=(0.62, 0.46, 0.90), rim=(1.0, 0.42, 0.68),
+                   glow=((0.08, (255, 214, 228)), (0.30, (255, 228, 238)), (0.55, (250, 242, 246)), (0.85, (244, 244, 252))),
+                   petal_lit=(1.0, 0.84, 0.92), trl=(0.98, 0.93, 0.97), near_light=(1.0, 0.93, 0.96)),
+    # 'contrast': a sakura whale against cool white-silver petals
+    'contrast': dict(light=(1.0, 0.62, 0.80), belly=(0.62, 0.46, 0.90),
+                     glow=((0.08, (255, 118, 168)), (0.30, (255, 148, 192)), (0.55, (255, 186, 214)), (0.85, (255, 212, 228))),
+                     petal_lit=(0.92, 0.95, 1.0), trl=(0.86, 0.92, 1.0), near_light=(0.84, 0.91, 1.0)),
 }
 
 
@@ -331,7 +341,16 @@ class Whale:
         neg.inputs[1].default_value = -self.look['whale_belly']; L.new(sz.outputs['Z'], neg.inputs[0])
         mb = N.new('ShaderNodeMix'); mb.data_type = 'RGBA'
         L.new(neg.outputs[0], mb.inputs['Factor']); L.new(col, mb.inputs[6]); mb.inputs[7].default_value = (*pal(self.look)['belly'], 1)
-        L.new(mb.outputs[2], b.inputs['Emission Color'])
+        out_col = mb.outputs[2]
+        P_ = pal(self.look)
+        if 'rim' in P_ and self.look.get('whale_rim', 0.9) > 0:     # the light source: white core, coloured rim
+            rf = N.new('ShaderNodeMath'); rf.operation = 'MULTIPLY'; rf.use_clamp = True
+            rf.inputs[1].default_value = self.look.get('whale_rim', 0.9) * 1.6
+            L.new(lw.outputs['Facing'], rf.inputs[0])
+            mr_ = N.new('ShaderNodeMix'); mr_.data_type = 'RGBA'
+            L.new(rf.outputs[0], mr_.inputs['Factor']); L.new(out_col, mr_.inputs[6]); mr_.inputs[7].default_value = (*P_['rim'], 1)
+            out_col = mr_.outputs[2]
+        L.new(out_col, b.inputs['Emission Color'])
         lo, hi = self.look['whale_top']
         top = N.new('ShaderNodeMapRange'); top.inputs['From Min'].default_value = -1.0; top.inputs['From Max'].default_value = 1.0
         top.inputs['To Min'].default_value = lo; top.inputs['To Max'].default_value = hi
@@ -501,7 +520,7 @@ class NearSnow:
         bpy.context.scene.collection.objects.link(self.ob)
         me.materials.append(self._material())
         # the whale's light, for the near petals only (light linking): backlight + glints
-        ld = bpy.data.lights.new('NearGlint', 'POINT'); ld.color = pal(look)['light']; ld.energy = look['near_light']
+        ld = bpy.data.lights.new('NearGlint', 'POINT'); ld.color = pal(look).get('near_light', pal(look)['light']); ld.energy = look['near_light']
         try_set(ld, shadow_soft_size=8.0, use_shadow=False, volume_factor=0.0)
         self.light = bpy.data.objects.new('NearGlint', ld); bpy.context.scene.collection.objects.link(self.light)
         try:

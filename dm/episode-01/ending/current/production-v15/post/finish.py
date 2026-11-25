@@ -115,6 +115,12 @@ def frame(base, pet, matte, cv, a, near=None):
     # near blizzard: real petal shapes over everything (they are within 30 m), with a little glow
     if near is not None:
         al = near[..., 3:4] * a.near_alpha; rgb = near[..., :3]
+        if a.near_tint:                  # the whale's light colours the petals near it on screen (falls off)
+            tint = np.array([float(v) for v in a.near_tint.split(',')], np.float32)
+            dist = ndi.distance_transform_edt(matte[..., 0] < 0.5)
+            wgt = (a.near_tint_k * np.exp(-(dist / (a.near_tint_r * cv.s)) ** 2))[..., None]
+            Ln = (rgb @ LUM)[..., None]
+            rgb = rgb * (1 - wgt) + np.clip(Ln * tint * 1.15, 0, 1) * wgt
         # keep a window on the whale: petals passing in front of it are thinned (a painter's choice)
         win = np.clip(ndi.gaussian_filter(ndi.grey_dilation(matte[..., 0], size=(int(9 * cv.s),) * 2), 8 * cv.s) * 1.5, 0, 1)[..., None]
         al = al * (1 - a.whale_window * win)
@@ -153,6 +159,9 @@ def main():
     ap.add_argument('--near-glow', type=float, default=0.25)
     ap.add_argument('--near-alpha', type=float, default=0.9)
     ap.add_argument('--whale-window', type=float, default=0.6)
+    ap.add_argument('--near-tint', default='', help='r,g,b: colour of the whale light on the near petals around it')
+    ap.add_argument('--near-tint-r', type=float, default=260.0)
+    ap.add_argument('--near-tint-k', type=float, default=0.85)
     ap.add_argument('--whale-detail', type=float, default=0.6)
     ap.add_argument('--ring', type=float, default=0.5)
     ap.add_argument('--gain', type=float, default=1.12)
