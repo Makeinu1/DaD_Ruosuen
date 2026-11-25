@@ -115,6 +115,9 @@ def frame(base, pet, matte, cv, a, near=None):
     # near blizzard: real petal shapes over everything (they are within 30 m), with a little glow
     if near is not None:
         al = near[..., 3:4] * a.near_alpha; rgb = near[..., :3]
+        # keep a window on the whale: petals passing in front of it are thinned (a painter's choice)
+        win = np.clip(ndi.gaussian_filter(ndi.grey_dilation(matte[..., 0], size=(int(9 * cv.s),) * 2), 8 * cv.s) * 1.5, 0, 1)[..., None]
+        al = al * (1 - a.whale_window * win)
         x = x * (1 - al) + rgb * al
         g = ndi.gaussian_filter(rgb * al, (3 * cv.s, 3 * cv.s, 0))
         x = x + a.near_glow * g
@@ -149,6 +152,7 @@ def main():
     ap.add_argument('--sat', type=float, default=1.35)
     ap.add_argument('--near-glow', type=float, default=0.25)
     ap.add_argument('--near-alpha', type=float, default=0.9)
+    ap.add_argument('--whale-window', type=float, default=0.6)
     ap.add_argument('--whale-detail', type=float, default=0.6)
     ap.add_argument('--ring', type=float, default=0.5)
     ap.add_argument('--gain', type=float, default=1.12)
