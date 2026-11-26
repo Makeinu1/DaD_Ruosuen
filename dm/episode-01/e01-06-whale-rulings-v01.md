@@ -102,7 +102,7 @@ W影の時点から水中80ft/ラウンド、空中120ft/ラウンド上限で�
 | Tasha's Hideous Laughter | 30ft・視認・WIS+7、失敗で伏せ＋無力（集中最大1分）。ホバーで落下しないが自力で伏せを解除できず、通常飛行の続行は不可（空中で静止を卓の姿勢裁定とする）。ターン末・被ダメージ時再セーヴ（被ダメージ時有利） |
 | Sleep | 2024版はHP上限でなくWISセーヴ。5ft半径の領域が体表/占有空間に及ぶか確認。初回失敗で無力、次ターン末失敗で気絶。通常の無力だけでは移動禁止でない。気絶は伏せ・移動不可、ホバーで落下しない。終了条件に従う。旧2014版のHPロールを使わない |
 | Entangle | 地面の効果域に体が入る場合のみ。STR+9、拘束で速度0。空中で地面に接していない鯨は地面に生える蔓の作用域を確認、空中まで蔓を延長しない |
-| Command/Hold Person | Commandは理解できる言語の条件、Hold Personは人型条件。野獣で通常言語を持たない鯨には通常不可。Speak with Animalsを併用する等は実際の言語条件を確認 |
+| Command/Hold Person | Commandは60ft・視認・WIS+7、2024版は言語理解条件が削除され野獣にも有効。Haltなら次ターンに移動・アクション・ボーナスアクションなし。Approach等も指定効果を反映。Hold Personは人型限定のため不可 |
 | 光・幻術 | Light/Daylight等を月光に自動変換しない。実際の月光を反射した場合は02の光路と照射条件。幻術は各呪文の範囲・知覚・調査ルール。発光は任意に強制解除しないが有効な魔法は適用 |
 | その他 | 呪文本文優先。ホバーは墜落防止であり状態解除・速度回復・無敵ではない。効果中も世界時計を進める。実際の光路・S1を照合 |
  
@@ -128,7 +128,7 @@ FL-01：成熟花の花弁1＋小果実1が一体、1株最大5。若齢花は�
 | T01 | Vで4人静観・防御 | 20秒、判定0。通過、光・花・退場。A |
 | T02 | 4人Cで採集中 | 198ft、V頭上と描写しない。観察は可能な範囲。AまたはB |
 | T03 | V射手先手、弓合計16、8ダメージ | HP272。進路に影響なしならA、負傷記録 |
-| T04 | V剣5ft、Ready「届いたら」 | 固定Vでは概算22ft最短、トリガーなし。リアクション消費なし。移動/跳躍で実距離を変えるなら再計算 |
+| T04 | V剣5ft、Ready「届いたら」 | 固定Vの低空接近では概算22ft最短、その待機の有効時間中はトリガーなし。リアクション消費なし。移動/跳躍で実距離を変えるなら再計算 |
 | T05 | V初手Ray of Frost、合計15、5冷気 | HP275、110ft(33.5m)でV中心通過31.1mは可能。以後遅延を保持、A候補 |
 | T06 | Vで30ft以内にReadyした友好、DC13 WIS出目3+7=10 | 魅了、命令不可、進路変化なしならA |
 | T07 | 同距離で抱腹絶倒、DC13 WIS出目4+7=11 | 伏せ＋無力、ホバー静止。ターン末出目10+7=17で解除、伏せ終了後の移動コストを適用。通常光景ならA。効果継続や別経路ならC/D |
@@ -147,9 +147,10 @@ FL-01：成熟花の花弁1＋小果実1が一体、1株最大5。若齢花は�
 | T20 | 早期帰還/面会拒否 | 鯨の存在を知ったことにしない。今日の現象が自然に成立ならB、今日が不成立/確認不能で面会なしならD。依頼成果は別 |
 | T21 | 有効な呪文で速度0 | ホバー維持、移動不可。解除条件を追跡。時間を戻さず光路を再計算 |
 | T22 | 鯨の退避先が水面、S1照射なし | 開花・散布なし。採集済み花は保持。C/D |
+| T23 | VからCommand:Halt、DC13、WIS出目4+7=11 | 言語なしでも有効。次ターン移動・Action・Bonus Actionなし。ホバーで静止し1ターン遅延。次ターン以降の光路を再計算、成立すればA/B |
 検証は決め打ち出目による机上ウォークスルー、確率的プレイテストや実卓ではない。通常目標2〜5分＋上映70.5秒（未実測）、異常時は処理優先。実PC呪文・移動・地形・照明を事前照合。
 
 ## 8. 公式ルールと引継ぎ
-公式2024 [Playing the Game](https://www.dndbeyond.com/sources/dnd/br-2024/playing-the-game)、[Rules Glossary](https://www.dndbeyond.com/sources/dnd/br-2024/rules-glossary)、[Spell Descriptions](https://www.dndbeyond.com/sources/dnd/br-2024/spell-descriptions)、[Animal Friendship](https://www.dndbeyond.com/spells/2618847-animal-friendship)、[Tasha's Hideous Laughter](https://www.dndbeyond.com/spells/2619132-tashas-hideous-laughter)、[Sleep](https://www.dndbeyond.com/spells/2619064-sleep)、[Ray of Frost](https://www.dndbeyond.com/spells/2618930-ray-of-frost)。本稿の距離・HP・独自防衛・DC・散布体裁定は公式モンスター規則ではない。
+公式2024 [Playing the Game](https://www.dndbeyond.com/sources/dnd/br-2024/playing-the-game)、[Rules Glossary](https://www.dndbeyond.com/sources/dnd/br-2024/rules-glossary)、[Spell Descriptions](https://www.dndbeyond.com/sources/dnd/br-2024/spell-descriptions)、[Animal Friendship](https://www.dndbeyond.com/spells/2618847-animal-friendship)、[Tasha's Hideous Laughter](https://www.dndbeyond.com/spells/2619132-tashas-hideous-laughter)、[Sleep](https://www.dndbeyond.com/spells/2619064-sleep)、[Ray of Frost](https://www.dndbeyond.com/spells/2618930-ray-of-frost)、[Command](https://www.dndbeyond.com/spells/2618985-command)。本稿の距離・HP・独自防衛・DC・散布体裁定は公式モンスター規則ではない。
 桜井式：リスクを事前に示し、見る・退く選択を罰さない。接触は小さな発見、攻撃には実結果、映画はご褒美。強制恐怖・強制戦闘・全員の反復判定を削る。20秒は緊張のため一度だけ。ムービー中の停止とスキップ。例外は先に解決し、テンポを守るために自由を削らない。
 残課題：02の最終地形（特に入口/遮蔽/初期水中軌道/光路/地図原本）、03の情報価値、07の過去上映台詞と幸運の部分目撃条件、09のシルエット・P0・投影の視点、10のタイマーとDMキュー、11の実卓検証。鯨の感覚生態・完全な戦闘データ・CR/XP・幸運の機構は対象外。作者の確認が必要な追加値はしがみつきDC13、振りほどき/押し退けDC15、尾打撃+9/2d6+9、衝突DC13/2d6、花弁DC10、暫定移動時計。作者未承認でmainにマージしない。
