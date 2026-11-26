@@ -1,0 +1,1201 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Episode 1 Ending v5.0 — Definitive Synthesis Pill Previs (96s / 15 Cuts)</title>
+<style>
+  html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #1c2026; font-family: system-ui, sans-serif; }
+  #gl { display: block; width: 100vw; height: 100vh; }
+</style>
+</head>
+<body>
+<canvas id="gl" width="1280" height="720"></canvas>
+<script>
+(() => {
+  "use strict";
+
+  const add = (a,b) => [a[0]+b[0], a[1]+b[1], a[2]+b[2]];
+  const sub = (a,b) => [a[0]-b[0], a[1]-b[1], a[2]-b[2]];
+  const mul = (a,s) => [a[0]*s, a[1]*s, a[2]*s];
+  const dot = (a,b) => a[0]*b[0]+a[1]*b[1]+a[2]*b[2];
+  const cross = (a,b) => [a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0]];
+  const len = (a) => Math.hypot(a[0],a[1],a[2]);
+  const norm = (a) => { const l = len(a) || 1; return [a[0]/l, a[1]/l, a[2]/l]; };
+  const lerp = (a,b,t) => a + (b-a)*t;
+  const lerp3 = (a,b,t) => [lerp(a[0],b[0],t), lerp(a[1],b[1],t), lerp(a[2],b[2],t)];
+  const clamp = (x,lo,hi) => Math.max(lo, Math.min(hi, x));
+  const smoothstep = (e0,e1,x) => { const t = clamp((x-e0)/(e1-e0||1e-6),0,1); return t*t*(3-2*t); };
+  const easeInOut = (u) => { const t = clamp(u,0,1); return t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t+2,2)/2; };
+  const easeCubic = (u) => { const t = clamp(u,0,1); return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2; };
+
+  function mat4Identity() { return new Float32Array([1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1]); }
+  function mat4Mul(a, b) {
+    const o = new Float32Array(16);
+    for (let c=0;c<4;c++) for (let r=0;r<4;r++) {
+      o[c*4+r] = a[0*4+r]*b[c*4+0] + a[1*4+r]*b[c*4+1] + a[2*4+r]*b[c*4+2] + a[3*4+r]*b[c*4+3];
+    }
+    return o;
+  }
+  function mat4Perspective(fovYRad, aspect, near, far) {
+    const f = 1.0 / Math.tan(fovYRad / 2);
+    const nf = 1 / (near - far);
+    return new Float32Array([f/aspect,0,0,0, 0,f,0,0, 0,0,(far+near)*nf,-1, 0,0,2*far*near*nf,0]);
+  }
+  function mat4Ortho(l, r, b, t, n, f) {
+    return new Float32Array([2/(r-l),0,0,0, 0,2/(t-b),0,0, 0,0,-2/(f-n),0, -(r+l)/(r-l),-(t+b)/(t-b),-(f+n)/(f-n),1]);
+  }
+  function mat4LookAt(eye, target, up) {
+    const z = norm(sub(eye, target));
+    let x = cross(up, z);
+    if (len(x) < 1e-5) x = cross([0,0,1], z);
+    x = norm(x);
+    const y = cross(z, x);
+    return new Float32Array([
+      x[0], y[0], z[0], 0,
+      x[1], y[1], z[1], 0,
+      x[2], y[2], z[2], 0,
+      -dot(x,eye), -dot(y,eye), -dot(z,eye), 1
+    ]);
+  }
+  function mat4TRS(pos, rx, ry, rz, sx, sy, sz) {
+    const cx=Math.cos(rx), sxr=Math.sin(rx);
+    const cy=Math.cos(ry), syr=Math.sin(ry);
+    const cz=Math.cos(rz), szr=Math.sin(rz);
+    const m00 = cy*cz + syr*sxr*szr, m01 = cx*szr, m02 = -syr*cz + cy*sxr*szr;
+    const m10 = -cy*szr + syr*sxr*cz, m11 = cx*cz, m12 = syr*szr + cy*sxr*cz;
+    const m20 = syr*cx, m21 = -sxr, m22 = cy*cx;
+    return new Float32Array([
+      m00*sx, m01*sx, m02*sx, 0,
+      m10*sy, m11*sy, m12*sy, 0,
+      m20*sz, m21*sz, m22*sz, 0,
+      pos[0], pos[1], pos[2], 1
+    ]);
+  }
+  function mat4FromBasis(pos, right, up, forward, sx=1, sy=1, sz=1) {
+    return new Float32Array([
+      right[0]*sx, right[1]*sx, right[2]*sx, 0,
+      up[0]*sy,    up[1]*sy,    up[2]*sy,    0,
+      forward[0]*sz, forward[1]*sz, forward[2]*sz, 0,
+      pos[0], pos[1], pos[2], 1
+    ]);
+  }
+  function projectPoint(vp, p) {
+    const x = vp[0]*p[0] + vp[4]*p[1] + vp[8]*p[2] + vp[12];
+    const y = vp[1]*p[0] + vp[5]*p[1] + vp[9]*p[2] + vp[13];
+    const z = vp[2]*p[0] + vp[6]*p[1] + vp[10]*p[2] + vp[14];
+    const w = vp[3]*p[0] + vp[7]*p[1] + vp[11]*p[2] + vp[15];
+    if (w <= 0.05) return { u: -1, v: -1, visible: false, depth: w };
+    const u = (x / w) * 0.5 + 0.5;
+    const v = 0.5 - (y / w) * 0.5;
+    const visible = u >= -0.05 && u <= 1.05 && v >= -0.05 && v <= 1.05 && z / w <= 1.0;
+    return { u, v, visible, depth: w };
+  }
+
+  function sampleCatmullRom(kfs, t) {
+    if (t <= kfs[0].t) return { pos: kfs[0].pos.slice(), roll: kfs[0].roll, glow: kfs[0].glow };
+    if (t >= kfs[kfs.length-1].t) {
+      const last = kfs[kfs.length-1];
+      return { pos: last.pos.slice(), roll: last.roll, glow: last.glow };
+    }
+    let i = 0;
+    while (i < kfs.length - 2 && t > kfs[i+1].t) i++;
+    const k0 = kfs[Math.max(0, i-1)];
+    const k1 = kfs[i];
+    const k2 = kfs[i+1];
+    const k3 = kfs[Math.min(kfs.length-1, i+2)];
+    const u = (t - k1.t) / Math.max(1e-5, k2.t - k1.t);
+    const u2 = u*u, u3 = u2*u;
+    const pos = [0,1,2].map(d => {
+      const p0=k0.pos[d], p1=k1.pos[d], p2=k2.pos[d], p3=k3.pos[d];
+      return 0.5 * ((2*p1) + (-p0+p2)*u + (2*p0-5*p1+4*p2-p3)*u2 + (-p0+3*p1-3*p2+p3)*u3);
+    });
+    return { pos, roll: lerp(k1.roll, k2.roll, smoothstep(0,1,u)), glow: lerp(k1.glow, k2.glow, smoothstep(0,1,u)) };
+  }
+
+  function whaleStateAt(spec, t) {
+    const kfs = spec.whale.keyframes;
+    const s = sampleCatmullRom(kfs, t);
+    const dt = 0.14;
+    const sp = sampleCatmullRom(kfs, Math.min(spec.duration, t + dt));
+    const sm = sampleCatmullRom(kfs, Math.max(0, t - dt));
+    let fwd = sub(sp.pos, sm.pos);
+    if (len(fwd) < 1e-4) fwd = [0, 0, 1];
+    fwd = norm(fwd);
+    let upRef = Math.abs(fwd[1]) > 0.92 ? [0, 0, -1] : [0, 1, 0];
+    let right = cross(upRef, fwd);
+    if (len(right) < 1e-4) right = [1, 0, 0];
+    right = norm(right);
+    let up = norm(cross(fwd, right));
+    const cr = Math.cos(s.roll), sr = Math.sin(s.roll);
+    const r2 = add(mul(right, cr), mul(up, sr));
+    const u2 = add(mul(right, -sr), mul(up, cr));
+    const halfL = spec.whale.length * 0.5;
+    const eyeRight = add(add(s.pos, mul(fwd, 7.2)), mul(r2, -2.25));
+    const eyeLeft  = add(add(s.pos, mul(fwd, 7.2)), mul(r2,  2.25));
+    return {
+      pos: s.pos, fwd, right: r2, up: u2, roll: s.roll, glow: s.glow,
+      nose: add(s.pos, mul(fwd, halfL)),
+      tail: add(s.pos, mul(fwd, -halfL)),
+      eyeRight, eyeLeft,
+    };
+  }
+
+  function cameraAt(spec, t) {
+    let shot = spec.shots[spec.shots.length - 1];
+    for (const sh of spec.shots) {
+      if (t >= sh.start && t < sh.end) { shot = sh; break; }
+    }
+    const localT = clamp(t - shot.start, 0, shot.end - shot.start);
+    const dur = Math.max(1e-4, shot.end - shot.start);
+    const activeDur = Math.max(0.1, dur - shot.hold_in - shot.hold_out);
+    const uRaw = clamp((localT - shot.hold_in) / activeDur, 0, 1);
+    const u = easeInOut(uRaw);
+    const w = whaleStateAt(spec, t);
+
+    let pos = lerp3(shot.pos0, shot.pos1, u);
+    let look = lerp3(shot.look0, shot.look1, u);
+
+    if (shot.look_mode === "c3_headon_loom") {
+      look = [0.0, lerp(1.9, 2.35, u), lerp(10.0, 38.0, u)];
+    } else if (shot.look_mode === "c4a_nearmiss") {
+      const uPull = smoothstep(20.1, 21.5, t);
+      const aimHead = add(w.pos, mul(w.fwd, 8.5));
+      look = lerp3([0.0, 2.1, Math.min(50.0, aimHead[2])], [0.0, 4.9, 53.0], uPull);
+    } else if (shot.look_mode === "c4b_eye_pass") {
+      look = lerp3(add(w.eyeRight, [0, 0, -1.5]), add(w.eyeRight, [0, 0, 1.5]), u);
+    } else if (shot.look_mode === "c5a_whale_ignite") {
+      const p1 = smoothstep(25.2, 29.5, t);
+      look = lerp3(shot.look0, add(w.pos, [0, -1.0, 0]), p1);
+    } else if (shot.pos_mode === "c6a_freeze_to_tilt") {
+      // C6a (35-44s): Hold low across shore during 1.0s petal freeze (35.0-36.8s), then grand continuous ground-to-sky tilt reveal into the 3-layer snowstorm + ruined arch bridge + whale!
+      const uTilt = easeCubic(smoothstep(36.8, 43.4, t));
+      pos = lerp3(shot.pos0, shot.pos1, uTilt);
+      const skyAim = add(w.pos, [-8.0, -5.0, 6.0]);
+      look = lerp3(shot.look0, skyAim, uTilt);
+    } else if (shot.pos_mode === "c6b_roll_parallel") {
+      // C6b (44-52s): 35mm parallel glide tracking the 360-deg slow barrel roll cleanly ABOVE the ruined stone arch bridge breach (bridge spans lower third for strong double parallax against far misty stalactites!)
+      const uFly = easeCubic(clamp(localT / dur, 0, 1));
+      pos = [lerp(18.0, -18.0, uFly), lerp(24.0, 27.5, uFly), lerp(-10.0, -4.0, uFly)];
+      look = add(w.pos, [0, -5.8, -5.0]);
+    } else if (shot.pos_mode === "c6c_grand_abyss") {
+      // C6c (52-60s): 21mm ultra-wide grand orbit across 220m cathedral abyss framing:
+      // Midground ruined stone arch bridge + mirror reflection + far misty stalactites + 40-deg banking whale & mirrored ocean twin!
+      const uOrb = easeInOut(clamp(localT / dur, 0, 1));
+      pos = [lerp(-54.0, -14.0, uOrb), lerp(23.0, 22.0, uOrb), lerp(36.0, 60.0, uOrb)];
+      look = [lerp(-8.0, 2.0, uOrb), 21.0, -28.0];
+    } else if (shot.pos_mode === "c6d_warm_glance") {
+      // C6d (60-69s): 42mm intimate hold near shore watching whale gently cruise past, dip pectoral fin & turn 22-deg warm glance (0.6x slow-mo breath 62.5-65.5s!), then rise toward moon!
+      const uHold = easeInOut(clamp(localT / dur, 0, 1));
+      pos = lerp3(shot.pos0, shot.pos1, uHold);
+      look = add(w.pos, [0, -1.5, 0]);
+    }
+
+    const sensorH = spec.sensor_width_mm / spec.aspect;
+    const fovY = 2.0 * Math.atan(sensorH / (2.0 * shot.focal_mm));
+    return { shot, pos, look, fovY, focal_mm: shot.focal_mm, u };
+  }
+
+  function createMesh(gl, data) {
+    const vao = gl.createVertexArray();
+    gl.bindVertexArray(vao);
+    const vbo = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data.verts), gl.STATIC_DRAW);
+    const stride = 8 * 4;
+    gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 3, gl.FLOAT, false, stride, 0);
+    gl.enableVertexAttribArray(1); gl.vertexAttribPointer(1, 3, gl.FLOAT, false, stride, 12);
+    gl.enableVertexAttribArray(2); gl.vertexAttribPointer(2, 2, gl.FLOAT, false, stride, 24);
+    const ibo = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(data.indices), gl.STATIC_DRAW);
+    gl.bindVertexArray(null);
+    return { vao, count: data.indices.length };
+  }
+
+  function buildCapsule(radius=0.5, cylLen=1.0, segU=26, segV=16, taperTail=0.0, axis="y") {
+    const verts = [], indices = [];
+    const half = cylLen * 0.5;
+    for (let iv=0; iv<=segV; iv++) {
+      const v = iv / segV;
+      let ringR, dy;
+      if (v < 0.25) {
+        const th = (v / 0.25) * (Math.PI * 0.5);
+        dy = -half - Math.cos(th) * radius;
+        ringR = Math.sin(th) * radius;
+      } else if (v <= 0.75) {
+        dy = lerp(-half, half, (v - 0.25) / 0.5);
+        ringR = radius;
+      } else {
+        const th = ((v - 0.75) / 0.25) * (Math.PI * 0.5);
+        dy = half + Math.sin(th) * radius;
+        ringR = Math.cos(th) * radius;
+      }
+      const tailFactor = taperTail > 0 ? lerp(1.0 - taperTail, 1.0, smoothstep(0.0, 0.58, v)) : 1.0;
+      const rEff = ringR * tailFactor;
+      for (let iu=0; iu<=segU; iu++) {
+        const u = iu / segU;
+        const phi = u * Math.PI * 2;
+        const ca = Math.cos(phi), sa = Math.sin(phi);
+        let px, py, pz, nx, ny, nz;
+        if (axis === "z") {
+          px = ca * rEff; py = sa * rEff; pz = dy;
+          nx = ca; ny = sa; nz = (v < 0.25 ? -Math.cos((v/0.25)*Math.PI*0.5) : (v > 0.75 ? Math.sin(((v-0.75)/0.25)*Math.PI*0.5) : 0));
+        } else {
+          px = ca * rEff; py = dy; pz = sa * rEff;
+          nx = ca; ny = (v < 0.25 ? -Math.cos((v/0.25)*Math.PI*0.5) : (v > 0.75 ? Math.sin(((v-0.75)/0.25)*Math.PI*0.5) : 0)); nz = sa;
+        }
+        const nn = norm([nx, ny, nz]);
+        verts.push(px, py, pz, nn[0], nn[1], nn[2], u, v);
+      }
+    }
+    const row = segU + 1;
+    for (let iv=0; iv<segV; iv++) for (let iu=0; iu<segU; iu++) {
+      const a = iv*row+iu, b = a+1, c = a+row, d = c+1;
+      indices.push(a, c, b, b, c, d);
+    }
+    return { verts, indices };
+  }
+
+  function buildSphere(r=1.0, segU=24, segV=14) {
+    const verts = [], indices = [];
+    for (let iv=0; iv<=segV; iv++) {
+      const v = iv / segV;
+      const th = v * Math.PI;
+      const st = Math.sin(th), ct = Math.cos(th);
+      for (let iu=0; iu<=segU; iu++) {
+        const u = iu / segU;
+        const ph = u * Math.PI * 2;
+        const x = st * Math.cos(ph), y = ct, z = st * Math.sin(ph);
+        verts.push(x*r, y*r, z*r, x, y, z, u, v);
+      }
+    }
+    const row = segU + 1;
+    for (let iv=0; iv<segV; iv++) for (let iu=0; iu<segU; iu++) {
+      const a = iv*row+iu, b = a+1, c = a+row, d = c+1;
+      indices.push(a, c, b, b, c, d);
+    }
+    return { verts, indices };
+  }
+
+  function buildDisc(seg=28) {
+    const verts = [0,0,0, 0,1,0, 0.5,0.5], indices = [];
+    for (let i=0; i<=seg; i++) {
+      const a = (i/seg)*Math.PI*2;
+      verts.push(Math.cos(a), 0, Math.sin(a), 0,1,0, 0.5+0.5*Math.cos(a), 0.5+0.5*Math.sin(a));
+    }
+    for (let i=1; i<=seg; i++) indices.push(0, i+1, i);
+    return { verts, indices };
+  }
+
+  function buildFivePetalFlower() {
+    const verts = [0,0.02,0, 0,1,0, 0.5,0.5], indices = [];
+    const segs = 28;
+    for (let i=0; i<=segs; i++) {
+      const a = (i/segs)*Math.PI*2;
+      const petal = 0.42 + 0.58 * Math.pow(0.5 + 0.5*Math.cos(5.0*a), 0.85);
+      const x = Math.cos(a)*petal, z = Math.sin(a)*petal;
+      verts.push(x, 0.08*petal, z, 0,1,0, 0.5+0.5*x, 0.5+0.5*z);
+    }
+    for (let i=1; i<=segs; i++) indices.push(0, i+1, i);
+    return { verts, indices };
+  }
+
+  function buildBox(w=1, h=1, d=1) {
+    const hw=w/2, hh=h/2, hd=d/2;
+    const faces = [
+      [[0,0,1],  [[-hw,-hh,hd],[hw,-hh,hd],[hw,hh,hd],[-hw,hh,hd]]],
+      [[0,0,-1], [[hw,-hh,-hd],[-hw,-hh,-hd],[-hw,hh,-hd],[hw,hh,-hd]]],
+      [[1,0,0],  [[hw,-hh,hd],[hw,-hh,-hd],[hw,hh,-hd],[hw,hh,hd]]],
+      [[-1,0,0], [[-hw,-hh,-hd],[-hw,-hh,hd],[-hw,hh,hd],[-hw,hh,-hd]]],
+      [[0,1,0],  [[-hw,hh,hd],[hw,hh,hd],[hw,hh,-hd],[-hw,hh,-hd]]],
+      [[0,-1,0], [[-hw,-hh,-hd],[hw,-hh,-hd],[hw,-hh,hd],[-hw,-hh,hd]]],
+    ];
+    const verts = [], indices = [];
+    let off = 0;
+    for (const [n, pts] of faces) {
+      const uvs = [[0,0],[1,0],[1,1],[0,1]];
+      for (let i=0;i<4;i++) verts.push(pts[i][0],pts[i][1],pts[i][2], n[0],n[1],n[2], uvs[i][0],uvs[i][1]);
+      indices.push(off, off+1, off+2, off, off+2, off+3);
+      off += 4;
+    }
+    return { verts, indices };
+  }
+
+  // True 3D Extruded Stone Arch Bridge Span (unit X: [-0.5, +0.5], Y: [0, 1], Z: [-0.5, +0.5]) with semicircular arch opening!
+  function buildStoneArchUnit(segs=12) {
+    const verts = [], indices = [];
+    const addQuad = (p0, p1, p2, p3, n) => {
+      const off = verts.length / 8;
+      verts.push(
+        p0[0],p0[1],p0[2], n[0],n[1],n[2], 0,0,
+        p1[0],p1[1],p1[2], n[0],n[1],n[2], 1,0,
+        p2[0],p2[1],p2[2], n[0],n[1],n[2], 1,1,
+        p3[0],p3[1],p3[2], n[0],n[1],n[2], 0,1
+      );
+      indices.push(off, off+1, off+2, off, off+2, off+3);
+    };
+    const pierW = 0.14;
+    const archR = 0.5 - pierW;
+    const archCy = 0.44;
+    const hz = 0.5;
+    // Left & right vertical pier faces (front, back, inner, outer)
+    for (const [xL, xR] of [[-0.5, -0.5 + pierW], [0.5 - pierW, 0.5]]) {
+      addQuad([xL, 0, hz], [xR, 0, hz], [xR, archCy, hz], [xL, archCy, hz], [0,0,1]);
+      addQuad([xR, 0,-hz], [xL, 0,-hz], [xL, archCy,-hz], [xR, archCy,-hz], [0,0,-1]);
+      addQuad([xL, 0,-hz], [xL, 0, hz], [xL, 1.0, hz], [xL, 1.0,-hz], [-1,0,0]);
+      addQuad([xR, 0, hz], [xR, 0,-hz], [xR, 1.0,-hz], [xR, 1.0, hz], [1,0,0]);
+    }
+    // Semicircular spandrel front/back + curved underside intrados!
+    for (let k=0; k<segs; k++) {
+      const a0 = Math.PI * (1.0 - k / segs);
+      const a1 = Math.PI * (1.0 - (k + 1) / segs);
+      const ax0 = Math.cos(a0) * archR, ay0 = archCy + Math.sin(a0) * archR;
+      const ax1 = Math.cos(a1) * archR, ay1 = archCy + Math.sin(a1) * archR;
+      const tx0 = lerp(-0.5, 0.5, k / segs);
+      const tx1 = lerp(-0.5, 0.5, (k + 1) / segs);
+      // Front spandrel wall above arch curve
+      addQuad([ax0, ay0, hz], [ax1, ay1, hz], [tx1, 1.0, hz], [tx0, 1.0, hz], [0,0,1]);
+      // Back spandrel wall
+      addQuad([ax1, ay1,-hz], [ax0, ay0,-hz], [tx0, 1.0,-hz], [tx1, 1.0,-hz], [0,0,-1]);
+      // Curved arch underside (intrados)
+      const am = 0.5 * (a0 + a1);
+      addQuad([ax0, ay0,-hz], [ax0, ay0, hz], [ax1, ay1, hz], [ax1, ay1,-hz], [-Math.cos(am), -Math.sin(am), 0]);
+    }
+    // Flat deck top
+    addQuad([-0.5, 1.0, hz], [0.5, 1.0, hz], [0.5, 1.0,-hz], [-0.5, 1.0,-hz], [0,1,0]);
+    return { verts, indices };
+  }
+
+  // Tapered Natural Hourglass Limestone Stalactite-Stalagmite Pillar (far-flank cavern framing!)
+  function buildStalactiteColumn(segU=10, segV=8) {
+    const verts = [], indices = [];
+    for (let iv=0; iv<=segV; iv++) {
+      const v = iv / segV;
+      const y = v;
+      // Hourglass organic pinch in center, flared at cave roof and lake bed
+      const rad = 0.42 + 0.58 * Math.pow(Math.abs(v - 0.52) * 2.0, 1.65);
+      for (let iu=0; iu<=segU; iu++) {
+        const u = iu / segU;
+        const a = u * Math.PI * 2;
+        const wobble = 1.0 + 0.14 * Math.sin(a * 3.0 + v * 4.0) + 0.08 * Math.cos(a * 5.0 - v * 3.0);
+        const r = rad * wobble;
+        const ca = Math.cos(a), sa = Math.sin(a);
+        verts.push(ca * r, y, sa * r, ca, 0, sa, u, v);
+      }
+    }
+    const row = segU + 1;
+    for (let iv=0; iv<segV; iv++) for (let iu=0; iu<segU; iu++) {
+      const a = iv*row+iu, b = a+1, c = a+row, d = c+1;
+      indices.push(a, c, b, b, c, d);
+    }
+    return { verts, indices };
+  }
+
+  function buildCaveDome(rx=225, ry=148, rz=215, segU=36, segV=12) {
+    const verts = [], indices = [];
+    for (let iv=0; iv<=segV; iv++) {
+      const v = iv / segV;
+      const elev = lerp(-0.06, Math.PI*0.495, v);
+      const rScale = Math.cos(elev);
+      const y = Math.sin(elev) * ry;
+      for (let iu=0; iu<=segU; iu++) {
+        const u = iu / segU;
+        const a = u * Math.PI * 2;
+        const wobble = 1.0 + 0.05 * Math.sin(a * 3.0 + 0.5) + 0.03 * Math.cos(a * 5.0 - 0.6);
+        const x = Math.cos(a) * rx * rScale * wobble;
+        const z = Math.sin(a) * rz * rScale * wobble - 25.0;
+        const n = norm([-Math.cos(a)*rScale, -Math.sin(elev), -Math.sin(a)*rScale]);
+        verts.push(x, y, z, n[0], n[1], n[2], u*6.0, v*3.0);
+      }
+    }
+    const row = segU + 1;
+    for (let iv=0; iv<segV; iv++) for (let iu=0; iu<segU; iu++) {
+      const a = iv*row+iu, b = a+1, c = a+row, d = c+1;
+      indices.push(a, b, c, b, d, c);
+    }
+    return { verts, indices };
+  }
+
+  function buildCylinder(r=0.5, h=1.0, seg=12) {
+    const verts = [], indices = [];
+    for (let iy=0; iy<=1; iy++) {
+      const y = iy === 0 ? 0 : h;
+      for (let i=0; i<=seg; i++) {
+        const a = (i/seg)*Math.PI*2;
+        verts.push(Math.cos(a)*r, y, Math.sin(a)*r, Math.cos(a), 0, Math.sin(a), i/seg, iy);
+      }
+    }
+    const row = seg + 1;
+    for (let i=0; i<seg; i++) {
+      const a = i, b = i+1, c = i+row, d = c+1;
+      indices.push(a, c, b, b, c, d);
+    }
+    return { verts, indices };
+  }
+
+  const VS_SHADOW = `#version 300 es
+  layout(location=0) in vec3 aPos;
+  uniform mat4 uLightVP;
+  uniform mat4 uModel;
+  void main() { gl_Position = uLightVP * uModel * vec4(aPos, 1.0); }`;
+
+  const FS_SHADOW = `#version 300 es
+  precision highp float;
+  out vec4 o;
+  void main() { o = vec4(1.0); }`;
+
+  const VS_MAIN = `#version 300 es
+  layout(location=0) in vec3 aPos;
+  layout(location=1) in vec3 aNorm;
+  layout(location=2) in vec2 aUv;
+  uniform mat4 uVP;
+  uniform mat4 uModel;
+  uniform mat4 uLightVP;
+  uniform float uSwimAmp;
+  uniform float uSwimPhase;
+  uniform float uLocalZOffset;
+  out vec3 vWorld;
+  out vec3 vNorm;
+  out vec2 vUv;
+  out vec4 vLightPos;
+  out float vLocalZ;
+  void main() {
+    vec3 p = aPos;
+    vLocalZ = aPos.z + uLocalZOffset;
+    if (uSwimAmp > 0.0001) {
+      float tailMask = smoothstep(0.65, -1.0, p.z / 12.0);
+      p.y += sin(p.z * 0.28 + uSwimPhase) * uSwimAmp * tailMask;
+      p.x += cos(p.z * 0.20 + uSwimPhase * 0.8) * uSwimAmp * 0.25 * tailMask;
+    }
+    vec4 wp = uModel * vec4(p, 1.0);
+    vWorld = wp.xyz;
+    vNorm = normalize(mat3(uModel) * aNorm);
+    vUv = aUv;
+    vLightPos = uLightVP * wp;
+    gl_Position = uVP * wp;
+  }`;
+
+  const FS_MAIN = `#version 300 es
+  precision highp float;
+  in vec3 vWorld;
+  in vec3 vNorm;
+  in vec2 vUv;
+  in vec4 vLightPos;
+  in float vLocalZ;
+
+  uniform vec3 uCamPos;
+  uniform vec3 uBaseColor;
+  uniform vec3 uStripeColor;
+  uniform float uStripeFreq;
+  uniform float uEmissive;
+  uniform float uIsWater;
+  uniform float uFade;
+  uniform float uEclipse;
+  uniform float uRippleT;
+  uniform vec3 uRippleCenter;
+  uniform vec3 uWhalePos;
+  uniform float uWhaleGlow;
+  uniform vec3 uFissurePos;
+  uniform float uAlpha;
+  uniform float uTailDissolve;
+  uniform float uRimBoost;
+  uniform float uFogMult;
+  uniform sampler2D uShadowMap;
+
+  out vec4 fragColor;
+
+  float sampleShadow(vec4 lp) {
+    vec3 proj = lp.xyz / lp.w * 0.5 + 0.5;
+    if (proj.x < 0.0 || proj.x > 1.0 || proj.y < 0.0 || proj.y > 1.0 || proj.z > 1.0) return 1.0;
+    float d = texture(uShadowMap, proj.xy).r;
+    return (proj.z - 0.004 > d) ? 0.0 : 1.0;
+  }
+
+  void main() {
+    float dissolveBoost = 0.0;
+    float alphaOut = uAlpha;
+    // True Tail-to-Head Dissolve (vLocalZ = -12 tail -> +12 nose): tail dissolves FIRST into incandescent moonlight!
+    if (uTailDissolve > -50.0) {
+      dissolveBoost = smoothstep(uTailDissolve + 5.0, uTailDissolve - 0.5, vLocalZ);
+      float melt = smoothstep(uTailDissolve + 0.8, uTailDissolve - 2.6, vLocalZ);
+      alphaOut *= (1.0 - melt);
+      if (alphaOut < 0.01) discard;
+    }
+
+    vec3 N = normalize(vNorm);
+    vec3 L = normalize(uFissurePos - vWorld);
+    vec3 V = normalize(uCamPos - vWorld);
+
+    vec3 albedo = uBaseColor;
+    if (uStripeFreq > 0.1) {
+      float pat = fract((vUv.x * 2.0 + vUv.y * 1.4) * uStripeFreq);
+      albedo = mix(uBaseColor, uStripeColor, step(0.5, pat));
+    }
+
+    float sh = sampleShadow(vLightPos);
+    float ndl = max(dot(N, L), 0.0);
+    float hemi = 0.5 + 0.5 * N.y;
+    float eclipseDim = 1.0 - 0.68 * uEclipse;
+    vec3 lit = albedo * (mix(0.26, 0.48, hemi) * eclipseDim + 0.62 * ndl * mix(0.22, 1.0, sh) * eclipseDim);
+
+    // Subtle crisp moonlight rim on ruined stone arches (separates midground arches cleanly from far misty pillars!)
+    if (uRimBoost > 0.01) {
+      float rim = pow(1.0 - max(dot(N, V), 0.0), 2.5) * uRimBoost * eclipseDim;
+      lit += vec3(0.45, 0.52, 0.60) * rim;
+    }
+
+    if (uIsWater > 0.5) {
+      float distF = length(vWorld.xz - vec2(32.0, -52.0));
+      float skylightPatch = exp(-distF * distF / 2400.0) * 0.34 * eclipseDim;
+      float distW = length(vWorld.xz - uWhalePos.xz);
+      float whaleDark = exp(-distW * distW / 120.0) * (1.0 - smoothstep(10.0, 28.0, abs(uWhalePos.y)));
+      float whaleBright = exp(-distW * distW / 320.0) * uWhaleGlow * 0.36;
+      vec2 g = abs(fract(vWorld.xz * 0.0625 - 0.5) - 0.5) / 0.025;
+      float grid = (1.0 - min(min(g.x, g.y), 1.0)) * 0.042;
+      float rip = 0.0;
+      if (uRippleT > 0.0 && uRippleT < 4.8) {
+        float rd = length(vWorld.xz - uRippleCenter.xz);
+        float front = uRippleT * 2.2;
+        float ring = exp(-pow(rd - front, 2.0) * 2.4) * sin((rd - front) * 11.0);
+        float ring2 = exp(-pow(rd - front * 0.62, 2.0) * 3.0) * 0.65;
+        rip = (abs(ring) * 0.72 + ring2 * 0.44) * (1.0 - uRippleT / 4.8);
+      }
+      float fres = pow(1.0 - max(dot(N, V), 0.0), 3.0) * 0.14;
+      lit = vec3(0.26, 0.29, 0.34) * eclipseDim * mix(0.35, 1.0, sh)
+          + vec3(skylightPatch + fres + grid + rip + whaleBright)
+          - vec3(whaleDark * 0.34);
+    }
+
+    // Depth-Stratified Atmospheric Mist: keeps midground arches sharp while pushing far stalactites into soft blue-silver haze!
+    float dist = length(uCamPos - vWorld);
+    float fog = clamp(((dist - 52.0) / 175.0) * uFogMult, 0.0, 0.76);
+    vec3 fogCol = vec3(0.40, 0.44, 0.50) * eclipseDim;
+    vec3 col = mix(lit, fogCol, fog);
+
+    float em = clamp(uEmissive + dissolveBoost * 0.92, 0.0, 1.0);
+    col = mix(col, vec3(0.98, 0.99, 1.0), em);
+    col *= (1.0 - clamp(uFade, 0.0, 1.0));
+    fragColor = vec4(col, alphaOut);
+  }`;
+
+  function compileProgram(gl, vsSrc, fsSrc) {
+    const compile = (type, src) => {
+      const s = gl.createShader(type);
+      gl.shaderSource(s, src); gl.compileShader(s);
+      if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+      return s;
+    };
+    const p = gl.createProgram();
+    gl.attachShader(p, compile(gl.VERTEX_SHADER, vsSrc));
+    gl.attachShader(p, compile(gl.FRAGMENT_SHADER, fsSrc));
+    gl.linkProgram(p);
+    if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p));
+    return p;
+  }
+
+  function mulberry32(seed) {
+    let a = seed >>> 0;
+    return () => {
+      a |= 0; a = (a + 0x6D2B79F5) | 0;
+      let t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  let gl, progMain, progShadow, shadowFBO, shadowTex, meshes = {}, spec = null;
+  let flowerPlants = [], parapetFlowers = [], freezePetals = [], snowFar = [], snowMid = [], snowFg = [];
+
+  function initWebGL(sceneSpec) {
+    spec = sceneSpec;
+    const canvas = document.getElementById("gl");
+    gl = canvas.getContext("webgl2", { antialias: true, preserveDrawingBuffer: true });
+    if (!gl) throw new Error("WebGL2 unavailable");
+
+    progMain = compileProgram(gl, VS_MAIN, FS_MAIN);
+    progShadow = compileProgram(gl, VS_SHADOW, FS_SHADOW);
+
+    shadowTex = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, shadowTex);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.DEPTH_COMPONENT24, 512, 512, 0, gl.DEPTH_COMPONENT, gl.UNSIGNED_INT, null);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    shadowFBO = gl.createFramebuffer();
+    gl.bindFramebuffer(gl.FRAMEBUFFER, shadowFBO);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.TEXTURE_2D, shadowTex, 0);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+
+    meshes.cave = createMesh(gl, buildCaveDome(225, 148, 215, 36, 12));
+    meshes.disc = createMesh(gl, buildDisc(28));
+    meshes.sphere = createMesh(gl, buildSphere(1.0, 24, 14));
+    meshes.box = createMesh(gl, buildBox(1, 1, 1));
+    meshes.cyl = createMesh(gl, buildCylinder(0.5, 1.0, 12));
+    meshes.archSpan = createMesh(gl, buildStoneArchUnit(12));
+    meshes.stalactite = createMesh(gl, buildStalactiteColumn(10, 8));
+    meshes.pinBody = createMesh(gl, buildCapsule(0.24, 0.88, 20, 12, 0.0, "y"));
+    meshes.pinHead = createMesh(gl, buildCapsule(0.13, 0.06, 16, 10, 0.0, "y"));
+    meshes.whale = createMesh(gl, buildCapsule(2.15, 19.4, 30, 22, 0.54, "z"));
+    meshes.fin = createMesh(gl, buildCapsule(0.45, 4.2, 12, 8, 0.55, "y"));
+    meshes.flower5 = createMesh(gl, buildFivePetalFlower());
+
+    const rng = mulberry32(20261128);
+    flowerPlants = [];
+    // Dense shore flowers right underfoot for C5b 20cm ground-level wave bloom!
+    for (let i=0; i<64; i++) {
+      const x = lerp(-9.5, 11.5, rng());
+      const z = lerp(49.2, 57.2, rng());
+      if (Math.hypot(x, z - 55.2) < 1.6) continue;
+      const dWave = Math.hypot(x - 3.5, z - 54.0);
+      flowerPlants.push({ pos: [x, 0.85, z], delay: 30.2 + (dWave / 14.0) * 1.6 + rng()*0.25, yaw: rng()*Math.PI*2, scale: 0.85 + rng()*0.42 });
+    }
+    // Right mature cape S1
+    for (let i=0; i<58; i++) {
+      const x = lerp(16.0, 46.0, rng());
+      const z = lerp(24.0, 46.0, rng());
+      const dist = Math.hypot(x - 16, z - 44);
+      flowerPlants.push({ pos: [x, 0.72, z], delay: 31.2 + (dist/30)*1.9 + rng()*0.3, yaw: rng()*Math.PI*2, scale: 0.95 + rng()*0.50 });
+    }
+
+    // Blooming Kousetsuka along the mossy broken parapet of the Ruined Stone Arch Bridge!
+    parapetFlowers = [];
+    const ab = spec.world.arch_bridge;
+    for (const spans of [ab.left_spans, ab.right_spans]) {
+      for (const [x0, x1] of spans) {
+        for (let k=0; k<6; k++) {
+          const fx = lerp(x0 + 2.0, x1 - 2.0, k / 5.0);
+          parapetFlowers.push({
+            pos: [fx, ab.deck_y + 0.15, ab.z + lerp(-1.8, 1.8, rng())],
+            delay: 32.0 + Math.abs(fx) * 0.022 + rng() * 0.4,
+            yaw: rng() * Math.PI * 2,
+            scale: 1.45 + rng() * 0.65,
+          });
+        }
+      }
+    }
+
+    // C6a 1.0s Freeze-Lift petals (rising right off the shore & lake, freezing 35.6-36.6s, then billowing skyward!)
+    freezePetals = [];
+    for (let i=0; i<110; i++) {
+      freezePetals.push({
+        x: lerp(-22.0, 40.0, rng()),
+        z: lerp(14.0, 56.0, rng()),
+        hoverY: 1.3 + rng() * 2.6,
+        riseSpeed: 2.2 + rng() * 2.2,
+        phase: rng() * Math.PI * 2,
+        size: 0.22 + rng() * 0.18,
+      });
+    }
+
+    // Space-Filling 3-Layer Floral Snowstorm (fills the ENTIRE 220m cavern — not tight ropes!)
+    // Layer 1: Far mist dots across whole dome
+    snowFar = [];
+    for (let i=0; i<125; i++) {
+      snowFar.push({
+        x: lerp(-105.0, 105.0, rng()),
+        z: lerp(-110.0, 72.0, rng()),
+        y0: rng() * 115.0,
+        speed: 1.1 + rng() * 1.1,
+        fallSpeed: 1.8 + rng() * 1.5,
+        phase: rng() * Math.PI * 2,
+        size: 0.26 + rng() * 0.18,
+      });
+    }
+    // Layer 2: Mid hero swirling 5-petal snowflakes (gently stirred near whale!)
+    snowMid = [];
+    for (let i=0; i<135; i++) {
+      snowMid.push({
+        x: lerp(-68.0, 68.0, rng()),
+        z: lerp(-72.0, 66.0, rng()),
+        y0: rng() * 88.0,
+        speed: 1.5 + rng() * 1.4,
+        fallSpeed: 2.3 + rng() * 1.8,
+        phase: rng() * Math.PI * 2,
+        size: 0.30 + rng() * 0.24,
+      });
+    }
+    // Layer 3: Soft foreground parallax bokeh petals (subtle translucent depth near flight path)
+    snowFg = [];
+    for (let i=0; i<28; i++) {
+      snowFg.push({
+        offX: lerp(-14.0, 14.0, rng()),
+        offY: lerp(-6.0, 8.0, rng()),
+        offZ: lerp(5.5, 16.0, rng()),
+        phase: rng() * Math.PI * 2,
+        size: 0.28 + rng() * 0.18,
+      });
+    }
+  }
+
+  function renderAtTime(t, opts={}) {
+    const canvas = document.getElementById("gl");
+    const W = canvas.width, H = canvas.height;
+    const cam = cameraAt(spec, t);
+    const w = whaleStateAt(spec, t);
+    const fissure = spec.world.fissure.pos;
+    const moon = spec.world.moon;
+
+    const eclipse = smoothstep(20.0, 21.6, t) * (1.0 - smoothstep(24.0, 25.4, t));
+    const tailStroke = smoothstep(25.0, 26.0, t) * (1.0 - smoothstep(26.8, 28.2, t));
+    const swimCruise = smoothstep(35.0, 38.0, t) * (1.0 - smoothstep(73.0, 77.0, t));
+    // C6d 0.6x slow-mo warm-glance feel (62.5-65.5s)!
+    const slowMo = smoothstep(61.5, 62.6, t) * (1.0 - smoothstep(65.4, 66.8, t));
+    const swimAmp = (0.24 + 0.72 * tailStroke + 0.36 * swimCruise) * (1.0 - 0.38 * slowMo);
+    const swimPhase = t * (1.65 - 0.55 * slowMo);
+
+    const lightEye = [fissure[0]*0.6, fissure[1]+12.0, fissure[2]*0.6];
+    const lightVP = mat4Mul(mat4Ortho(-55, 55, -55, 55, 5.0, 230.0), mat4LookAt(lightEye, [0,0,40], [0,0,-1]));
+
+    // Subtle 22-deg warm glance head/body orientation hint during C6d (62.0-66.0s)!
+    const glanceAmt = smoothstep(61.8, 63.0, t) * (1.0 - smoothstep(65.5, 67.2, t));
+    let wFwd = w.fwd, wRight = w.right, wUp = w.up;
+    if (glanceAmt > 0.001) {
+      const ang = -0.38 * glanceAmt; // ~22 deg gentle glance toward 4 PCs / camera
+      const ca = Math.cos(ang), sa = Math.sin(ang);
+      wFwd = norm(add(mul(w.fwd, ca), mul(w.right, sa)));
+      wRight = norm(cross(w.up, wFwd));
+      wUp = norm(cross(wFwd, wRight));
+    }
+    const whaleModel = mat4FromBasis(w.pos, wRight, wUp, wFwd, 1.0, 0.88, 1.0);
+
+    // --- PASS 1: 512x512 Shadow Map ---
+    gl.bindFramebuffer(gl.FRAMEBUFFER, shadowFBO);
+    gl.viewport(0, 0, 512, 512);
+    gl.enable(gl.DEPTH_TEST);
+    gl.clear(gl.DEPTH_BUFFER_BIT);
+    gl.useProgram(progShadow);
+    gl.uniformMatrix4fv(gl.getUniformLocation(progShadow, "uLightVP"), false, lightVP);
+    const drawShadow = (mesh, model) => {
+      gl.uniformMatrix4fv(gl.getUniformLocation(progShadow, "uModel"), false, model);
+      gl.bindVertexArray(mesh.vao);
+      gl.drawElements(gl.TRIANGLES, mesh.count, gl.UNSIGNED_SHORT, 0);
+    };
+    if (w.pos[1] > -1.0 && t < 82.0) drawShadow(meshes.whale, whaleModel);
+    for (const pc of spec.world.pcs) {
+      drawShadow(meshes.pinBody, mat4TRS([pc.pos[0], pc.pos[1]+pc.height*0.42, pc.pos[2]], 0,0,0, 1, pc.height/1.72, 1));
+    }
+
+    // --- PASS 2: Main Camera Render ---
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, W, H);
+    gl.enable(gl.DEPTH_TEST);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    gl.clearColor(0.28*(1-0.62*eclipse), 0.31*(1-0.62*eclipse), 0.36*(1-0.62*eclipse), 1.0);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    const proj = mat4Perspective(cam.fovY, W / H, 0.15, 560.0);
+    const view = mat4LookAt(cam.pos, cam.look, [0, 1, 0]);
+    const vp = mat4Mul(proj, view);
+
+    gl.useProgram(progMain);
+    const uLoc = (n) => gl.getUniformLocation(progMain, n);
+    gl.uniformMatrix4fv(uLoc("uVP"), false, vp);
+    gl.uniformMatrix4fv(uLoc("uLightVP"), false, lightVP);
+    gl.uniform3fv(uLoc("uCamPos"), cam.pos);
+    gl.uniform3fv(uLoc("uFissurePos"), fissure);
+    gl.uniform3fv(uLoc("uWhalePos"), w.pos);
+    gl.uniform1f(uLoc("uWhaleGlow"), w.glow);
+    gl.uniform1f(uLoc("uEclipse"), eclipse);
+    const fade = opts.noFade ? 0.0 : smoothstep(94.6, 96.0, t);
+    gl.uniform1f(uLoc("uFade"), fade);
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, shadowTex);
+    gl.uniform1i(uLoc("uShadowMap"), 0);
+
+    // Ripples: C1 drop at t=2.4s, C8 final petal landing at t=92.0s
+    let rippleT = -1.0;
+    const p0 = spec.world.p0_flower.pos;
+    let rippleCenter = [p0[0] + 0.6, 0.0, p0[2] - 2.2];
+    if (t >= 2.4 && t < 6.5) rippleT = t - 2.4;
+    else if (t >= 92.0 && t <= 96.0) rippleT = t - 92.0;
+    gl.uniform1f(uLoc("uRippleT"), rippleT);
+    gl.uniform3fv(uLoc("uRippleCenter"), rippleCenter);
+
+    const drawObj = (mesh, model, cfg) => {
+      gl.uniformMatrix4fv(uLoc("uModel"), false, model);
+      gl.uniform3fv(uLoc("uBaseColor"), cfg.base || [0.55, 0.56, 0.54]);
+      gl.uniform3fv(uLoc("uStripeColor"), cfg.stripe || [0.1, 0.1, 0.12]);
+      gl.uniform1f(uLoc("uStripeFreq"), cfg.freq || 0.0);
+      gl.uniform1f(uLoc("uEmissive"), cfg.emissive || 0.0);
+      gl.uniform1f(uLoc("uIsWater"), cfg.isWater ? 1.0 : 0.0);
+      gl.uniform1f(uLoc("uSwimAmp"), cfg.swimAmp || 0.0);
+      gl.uniform1f(uLoc("uSwimPhase"), swimPhase);
+      gl.uniform1f(uLoc("uAlpha"), cfg.alpha !== undefined ? cfg.alpha : 1.0);
+      gl.uniform1f(uLoc("uTailDissolve"), cfg.tailDissolve !== undefined ? cfg.tailDissolve : -99.0);
+      gl.uniform1f(uLoc("uLocalZOffset"), cfg.localZOffset || 0.0);
+      gl.uniform1f(uLoc("uRimBoost"), cfg.rimBoost || 0.0);
+      gl.uniform1f(uLoc("uFogMult"), cfg.fogMult !== undefined ? cfg.fogMult : 1.0);
+      gl.bindVertexArray(mesh.vao);
+      gl.drawElements(gl.TRIANGLES, mesh.count, gl.UNSIGNED_SHORT, 0);
+    };
+
+    // 1. Vast 225m Cathedral Subterranean Dome
+    drawObj(meshes.cave, mat4Identity(), { base: [0.43, 0.46, 0.50], fogMult: 1.05 });
+
+    // 2. DEPTH-STRATIFIED LAYER 1: Far-Flank Giant Natural Stalactite Pillars (ONLY outer flanks — ZERO behind center whale or moon!)
+    if (cam.shot.id !== "C7b") {
+      const farPillars = [
+        [-148, -110, 14.5, 132],
+        [ -94, -152, 12.0, 134],
+        [ 148, -108, 14.5, 132],
+        [-168,   12, 13.0, 124],
+        [ 166,   16, 13.0, 124],
+        [-128,  108, 12.0, 114],
+        [ 128,  108, 12.0, 114],
+      ];
+      for (const [px, pz, rad, hh] of farPillars) {
+        drawObj(meshes.stalactite, mat4TRS([px, -1.0, pz], 0, (px+pz)*0.02, 0, rad, hh, rad), {
+          base: [0.36, 0.39, 0.44], fogMult: 1.35
+        });
+      }
+    }
+
+    // 3. High Ceiling Moonlight Fissure (hidden in C7b telephoto so Full Moon is 100% unobstructed!) + Perfectly Spherical Glowing FULL MOON
+    if (cam.shot.id !== "C7b") {
+      drawObj(meshes.disc, mat4TRS(fissure, Math.PI, -0.45, 0, spec.world.fissure.rx, 1, spec.world.fissure.rz), {
+        base: [0.58, 0.64, 0.72], emissive: 0.32, fogMult: 0.15
+      });
+    }
+    drawObj(meshes.sphere, mat4TRS(moon.pos, 0, 0, 0, moon.radius, moon.radius, moon.radius), {
+      base: [1, 1, 1], emissive: 1.0, fogMult: 0.0
+    });
+
+    // 4. Horizon-Wide Mirror Ocean Lake (Y=0)
+    drawObj(meshes.disc, mat4TRS([0, 0, -25], 0,0,0, 215, 1, 205), { isWater: true });
+
+    // 5. DEPTH-STRATIFIED LAYER 2: Midground Sunken Old-Kingdom Ruined Stone Arch Bridge + Mirror Reflection + Blooming Parapet Kousetsuka!
+    if (cam.shot.id !== "C7b" && cam.shot.id !== "C4b") {
+      const ab = spec.world.arch_bridge;
+      const drawBridge = (isReflection) => {
+        for (const spans of [ab.left_spans, ab.right_spans]) {
+          for (let si=0; si<spans.length; si++) {
+            const [x0, x1] = spans[si];
+            const cx = 0.5 * (x0 + x1);
+            const sw = x1 - x0;
+            const nearBreach = Math.abs(cx) < 42.0 ? -1.4 : 0.0;
+            const hh = ab.deck_y + nearBreach;
+            const model = isReflection
+              ? mat4TRS([cx, -0.05, ab.z], 0, 0, 0, sw, -hh * 0.56, ab.thickness)
+              : mat4TRS([cx, -0.4, ab.z], 0, 0, 0, sw, hh, ab.thickness);
+            drawObj(meshes.archSpan, model, isReflection
+              ? { base: [0.15, 0.19, 0.26], emissive: 0.0, alpha: 0.32, fogMult: 0.65 }
+              : { base: [0.47, 0.50, 0.54], rimBoost: 0.65, fogMult: 0.72 }
+            );
+          }
+        }
+        for (const [bx, tilt] of [[-22.5, -0.24], [24.5, 0.22]]) {
+          const m = isReflection
+            ? mat4TRS([bx, -6.0, ab.z], 0, 0, -tilt, 4.2, 12.0, ab.thickness * 0.92)
+            : mat4TRS([bx, 7.5, ab.z], 0, 0, tilt, 4.2, 15.5, ab.thickness * 0.92);
+          drawObj(meshes.box, m, isReflection
+            ? { base: [0.15, 0.19, 0.26], emissive: 0.0, alpha: 0.28, fogMult: 0.65 }
+            : { base: [0.45, 0.48, 0.52], rimBoost: 0.55, fogMult: 0.72 }
+          );
+        }
+      };
+
+      // Soft dark mirror reflection of Ruined Stone Arch Bridge in the glassy lake!
+      gl.depthMask(false);
+      gl.depthFunc(gl.ALWAYS);
+      drawBridge(true);
+      gl.depthFunc(gl.LESS);
+      gl.depthMask(true);
+
+      // Solid 3D Ruined Stone Arch Bridge standing out of the lake!
+      drawBridge(false);
+
+      // White 5-petal Kousetsuka blooming along the mossy stone bridge parapet!
+      const shedP = smoothstep(82.0, 88.0, t);
+      if (t >= 31.8 && shedP < 0.96) {
+        for (const pf of parapetFlowers) {
+          const bl = smoothstep(pf.delay, pf.delay + 1.2, t);
+          if (bl > 0.05) {
+            const rad = lerp(0.15, 0.72, bl) * (1.0 - shedP) * pf.scale;
+            drawObj(meshes.flower5, mat4TRS(pf.pos, 0.08, pf.yaw, 0, rad, rad, rad), {
+              base: [0.97, 0.98, 1.0], emissive: 0.76 * bl * (1.0 - shedP), fogMult: 0.35
+            });
+          }
+        }
+      }
+    }
+
+    // Mirrored Whale Twin on the dark ocean lake during wide shots (C6a/C6c)!
+    if (w.glow > 0.3 && w.pos[1] > 4.0 && t < 74.0 && (cam.shot.id === "C6c" || cam.shot.id === "C6a")) {
+      const mPos = [w.pos[0], -w.pos[1] * 0.42, w.pos[2]];
+      const mFwd = [wFwd[0], -wFwd[1], wFwd[2]];
+      const mUp  = [wUp[0], -wUp[1], wUp[2]];
+      const reflModel = mat4FromBasis(mPos, wRight, mUp, mFwd, 1.0, 0.88, 1.0);
+      gl.depthMask(false);
+      gl.depthFunc(gl.ALWAYS);
+      drawObj(meshes.whale, reflModel, {
+        base: [0.76, 0.86, 0.94], stripe: [0.32, 0.40, 0.48], freq: 5.5,
+        emissive: 0.48, swimAmp, alpha: 0.34, fogMult: 0.55
+      });
+      gl.depthFunc(gl.LESS);
+      gl.depthMask(true);
+    }
+
+    // 6. Shore Ledge, Flanking Capes, Lantern, P0, Ground-Level Blooming Flowers & 4 PC Pins
+    if (cam.shot.id !== "C7b") {
+      drawObj(meshes.box, mat4TRS([0.0, 0.35, 56.5], 0, 0.0, 0, 26.0, 1.0, 15.0), { base: [0.55, 0.56, 0.54] });
+      drawObj(meshes.box, mat4TRS([32.0, 0.25, 36.0], 0, -0.35, 0, 32.0, 0.95, 22.0), { base: [0.52, 0.53, 0.50] });
+      drawObj(meshes.box, mat4TRS([-36.0, 0.25, 38.0], 0,  0.35, 0, 28.0, 0.95, 20.0), { base: [0.52, 0.53, 0.50] });
+
+      const lp = spec.world.lantern.pos;
+      drawObj(meshes.cyl, mat4TRS([lp[0], lp[1], lp[2]], 0,0,0, 0.26, 0.08, 0.26), { base: [0.22, 0.23, 0.25] });
+      drawObj(meshes.cyl, mat4TRS([lp[0], lp[1]+0.08, lp[2]], 0,0,0, 0.18, 0.24, 0.18), { base: [1,1,1], emissive: 0.98 - 0.28*eclipse });
+      drawObj(meshes.cyl, mat4TRS([lp[0], lp[1]+0.32, lp[2]], 0,0,0, 0.28, 0.07, 0.28), { base: [0.22, 0.23, 0.25] });
+
+      drawObj(meshes.cyl, mat4TRS([p0[0], p0[1], p0[2]], 0.08, 0.3, 0, 0.045, 0.44, 0.045), { base: [0.46, 0.48, 0.44] });
+      drawObj(meshes.flower5, mat4TRS([p0[0], p0[1]+0.44, p0[2]], 0.15, 0.4, 0, 0.28, 0.28, 0.28), { base: [0.95,0.96,0.97], emissive: 0.38 });
+
+      if (cam.shot.id !== "C4b" && cam.shot.id !== "C6b" && cam.shot.id !== "C6c") {
+        const shed = smoothstep(82.0, 88.5, t);
+        for (const fl of flowerPlants) {
+          const bloom = smoothstep(fl.delay, fl.delay + 1.1, t);
+          const droopPitch = lerp(1.15, 0.05, bloom);
+          const stemH = lerp(0.30, 0.52, bloom) * fl.scale;
+          const stemCol = lerp3([0.42, 0.39, 0.35], [0.56, 0.58, 0.54], bloom);
+          drawObj(meshes.cyl, mat4TRS(fl.pos, droopPitch*0.45, fl.yaw, 0, 0.04*fl.scale, stemH, 0.04*fl.scale), { base: stemCol });
+          if (bloom < 0.18) {
+            drawObj(meshes.pinHead, mat4TRS([fl.pos[0]+Math.sin(fl.yaw)*0.12, fl.pos[1]+stemH*0.85, fl.pos[2]+Math.cos(fl.yaw)*0.12], droopPitch, fl.yaw, 0, 0.45*fl.scale, 0.65*fl.scale, 0.45*fl.scale), { base: [0.40, 0.37, 0.34] });
+          } else if (shed < 0.95) {
+            const rad = lerp(0.08, 0.40, bloom) * (1.0 - shed) * fl.scale;
+            drawObj(meshes.flower5, mat4TRS([fl.pos[0], fl.pos[1]+stemH, fl.pos[2]], 0.08, fl.yaw, 0, rad, rad, rad), {
+              base: [0.96, 0.97, 0.99], emissive: 0.52 * bloom * (1.0 - shed)
+            });
+          }
+        }
+      }
+
+      const lookTargetPC = t < 6.0 ? [0, 1.5, 10] : (t < 82.0 ? w.pos : fissure);
+      for (const pc of spec.world.pcs) {
+        const dx = lookTargetPC[0] - pc.pos[0], dz = lookTargetPC[2] - pc.pos[2];
+        const yaw = Math.atan2(dx, dz), hScale = pc.height / 1.72;
+        drawObj(meshes.pinBody, mat4TRS([pc.pos[0], pc.pos[1]+0.74*hScale, pc.pos[2]], 0, yaw, 0, 1.0, hScale, 0.72), {
+          base: pc.color, stripe: [0.10, 0.11, 0.13], freq: 3.5
+        });
+        const headY = pc.pos[1] + 1.52 * hScale;
+        drawObj(meshes.pinHead, mat4TRS([pc.pos[0], headY, pc.pos[2]], 0, yaw, 0, 1.0, 1.15, 1.05), {
+          base: pc.color, stripe: [0.10, 0.11, 0.13], freq: 2.2
+        });
+        drawObj(meshes.disc, mat4TRS([pc.pos[0]+Math.sin(yaw)*0.14, headY, pc.pos[2]+Math.cos(yaw)*0.14], Math.PI*0.5, yaw, 0, 0.065, 0.065, 0.065), {
+          base: [1,1,1], emissive: 0.95
+        });
+      }
+    }
+
+    // 7. Giant 24m Striped Whale Capsule + Pectoral Fins + Tail-to-Head Moon Dissolve (C7b!)
+    if (t >= 5.5 && t <= 82.0) {
+      // C7b Tail-to-Head Dissolve sweep: -13.0 (tail tip) at t=76.4s -> +13.2 (head gone cleanly inside Full Moon) at t=81.3s!
+      const tailDissolve = t >= 76.2 ? lerp(-13.0, 13.2, clamp((t - 76.4) / 4.9, 0, 1)) : -99.0;
+      const whaleCfg = {
+        base: spec.whale.stripe_color,
+        stripe: [0.11, 0.13, 0.17],
+        freq: 5.5,
+        emissive: w.glow * 0.56,
+        swimAmp,
+        tailDissolve,
+        fogMult: cam.shot.id === "C7b" ? 0.10 : 0.65,
+      };
+      drawObj(meshes.whale, whaleModel, whaleCfg);
+
+      // Pair of graceful pectoral fins (mounted at localZ = +3.5 so they dissolve AFTER tail & torso, BEFORE head!)
+      for (const sgn of [-1, 1]) {
+        const finBase = add(add(add(w.pos, mul(wFwd, 3.2)), mul(wRight, sgn * 3.1)), mul(wUp, -0.7));
+        const finAxis = norm(add(mul(wRight, sgn * 0.82), add(mul(wUp, -0.45), mul(wFwd, -0.35))));
+        const finSide = norm(cross(wFwd, finAxis));
+        const finModel = mat4FromBasis(finBase, finSide, finAxis, wFwd, 0.95, 1.0, 1.35);
+        drawObj(meshes.fin, finModel, { ...whaleCfg, swimAmp: 0.0, localZOffset: 3.2 });
+      }
+      // Tail fluke wings (mounted at localZ = -11.4 so tail tip dissolves FIRST!)
+      for (const sgn of [-1, 1]) {
+        const flBase = add(add(w.pos, mul(wFwd, -11.2)), mul(wRight, sgn * 2.1));
+        const flAxis = norm(add(mul(wRight, sgn * 0.92), mul(wFwd, -0.38)));
+        const flModel = mat4FromBasis(flBase, wUp, flAxis, wFwd, 0.42, 0.72, 1.15);
+        drawObj(meshes.fin, flModel, { ...whaleCfg, swimAmp: 0.0, localZOffset: -11.4 });
+      }
+
+      // Nose marker disc (dissolves VERY LAST at t~81.0s!)
+      const nosePos = add(w.pos, mul(wFwd, 11.75));
+      if (tailDissolve < 12.2) {
+        drawObj(meshes.disc, mat4FromBasis(nosePos, wRight, wFwd, mul(wUp, -1), 0.76, 0.76, 0.76), {
+          base: [1,1,1], emissive: 1.0, tailDissolve, localZOffset: 11.8, fogMult: 0.1
+        });
+      }
+      // Side eye glint disc for C4b 1.8s silence & C6d warm glance!
+      if ((t >= 18.0 && t <= 26.0) || (t >= 60.0 && t <= 69.0)) {
+        const eyePos = add(add(w.pos, mul(wFwd, 7.2)), mul(wRight, -2.25));
+        const eyeM = mat4FromBasis(eyePos, wFwd, mul(wRight, -1), wUp, 0.36, 0.36, 0.36);
+        drawObj(meshes.disc, eyeM, { base: [1,1,1], emissive: 1.0, fogMult: 0.1 });
+      }
+      // C3 Head-On Silver Breaching Water Spray Curtains
+      if (t >= 12.2 && t <= 19.8) {
+        const sprayVis = smoothstep(12.2, 13.5, t) * (1.0 - smoothstep(18.2, 19.8, t));
+        for (const sgn of [-1, 1]) {
+          for (let k=0; k<4; k++) {
+            const sx = w.pos[0] + sgn * (2.6 + k * 0.95);
+            const sy = Math.max(0.2, w.pos[1] * 0.55 - k * 0.15);
+            const sz = w.pos[2] + 6.5 - k * 2.2;
+            drawObj(meshes.cyl, mat4TRS([sx, 0.0, sz], 0, 0, -sgn * 0.25, 0.22, Math.max(0.8, sy + 1.8), 0.22), {
+              base: [0.92, 0.95, 0.98], emissive: 0.65, alpha: 0.42 * sprayVis
+            });
+          }
+        }
+      }
+    }
+
+    // 8. C6a 1.0s GRAVITY-FREEZE LIFT-OFF -> SKYWARD BILLOW (t=34.8-45.0s)
+    if (t >= 34.8 && t <= 45.0) {
+      for (const fp of freezePetals) {
+        const lift = smoothstep(34.8, 35.6, t);
+        // TRUE 1.0s FREEZE from 35.6s to 36.6s, then billowing smoothly upward into the cavern!
+        const dtRise = Math.max(0.0, t - 36.6);
+        const py = fp.hoverY * lift + Math.pow(dtRise, 1.25) * fp.riseSpeed;
+        const px = fp.x + Math.sin(fp.phase + dtRise * 0.6) * (0.4 + dtRise * 0.45);
+        const pz = fp.z + Math.cos(fp.phase + dtRise * 0.5) * (0.4 + dtRise * 0.45);
+        const vis = (1.0 - smoothstep(42.5, 45.0, t));
+        const dCam = Math.hypot(px - cam.pos[0], py - cam.pos[1], pz - cam.pos[2]);
+        if (vis > 0.02 && dCam > 3.8 && py < 120.0) {
+          drawObj(meshes.flower5, mat4TRS([px, py, pz], t*0.35 + fp.phase, fp.phase, 0, fp.size, fp.size, fp.size), {
+            base: [1,1,1], emissive: 0.96, alpha: vis, fogMult: 0.35
+          });
+        }
+      }
+    }
+
+    // 9. SPACE-FILLING 3-LAYER FLORAL SNOWSTORM (C6a tilt-up 37s -> C6b/C6c/C6d swimming -> C7a left-behind snow -> C7c true winter snowfall!)
+    if (t >= 36.6 && t <= 89.5 && cam.shot.id !== "C7b") {
+      const stormIn = smoothstep(36.6, 39.2, t);
+      const stormOut = 1.0 - smoothstep(87.2, 89.2, t);
+      const baseVis = stormIn * stormOut;
+
+      // Layer 1 (Far Cavern Mist Petals) + Layer 2 (Mid Space-Filling Swirling Snowflakes)
+      for (const [arr, isMid] of [[snowFar, false], [snowMid, true]]) {
+        for (const sp of arr) {
+          let px, py, pz;
+          if (t < 72.5) {
+            // Rising & swirling freely through the ENTIRE 220m space!
+            const dt = t - 36.6;
+            py = 2.0 + ((sp.y0 + dt * sp.speed) % 112.0);
+            px = sp.x + Math.sin(sp.phase + dt * 0.38) * (isMid ? 4.2 : 2.6);
+            pz = sp.z + Math.cos(sp.phase + dt * 0.32) * (isMid ? 4.2 : 2.6);
+            // Subtle organic swirl turbulence when the swimming whale glides nearby (NOT sucked into tight ropes!)
+            if (isMid) {
+              const dw = Math.hypot(px - w.pos[0], py - w.pos[1], pz - w.pos[2]);
+              if (dw < 26.0) {
+                const sw = (1.0 - dw / 26.0) * 3.8;
+                px += Math.cos(t * 1.4 + sp.phase) * sw;
+                py += Math.sin(t * 1.2 + sp.phase) * sw * 0.7;
+              }
+            }
+          } else if (t < 83.0) {
+            // C7a (72.5-75s): "Left-behind snow" gently slows & begins drifting down as the whale ascends away!
+            const dtUp = 72.5 - 36.6;
+            const dtDown = t - 72.5;
+            py = Math.max(0.5, (2.0 + ((sp.y0 + dtUp * sp.speed) % 112.0)) - dtDown * sp.fallSpeed * 0.7);
+            px = sp.x + Math.sin(sp.phase + dtDown * 0.5) * 2.5;
+            pz = sp.z + Math.cos(sp.phase + dtDown * 0.45) * 2.5;
+          } else {
+            // C7c (83-89s): True gentle winter snowfall wrapping the 4 PCs, lantern & ruined bridge!
+            const dt = t - 83.0;
+            const startY = 3.2 + ((sp.phase * 9.3) % 26.0);
+            py = Math.max(0.2, startY - dt * sp.fallSpeed);
+            px = sp.x * 0.32 + Math.sin(sp.phase + dt * 0.85) * 1.6;
+            pz = 52.0 + sp.z * 0.22 + Math.cos(sp.phase + dt * 0.75) * 1.6;
+          }
+          const dCam = Math.hypot(px - cam.pos[0], py - cam.pos[1], pz - cam.pos[2]);
+          if (baseVis > 0.02 && dCam > 4.2 && py < 128.0) {
+            drawObj(meshes.flower5, mat4TRS([px, py, pz], t*0.48 + sp.phase, sp.phase, 0, sp.size, sp.size, sp.size), {
+              base: [1,1,1], emissive: isMid ? 0.96 : 0.88, alpha: baseVis * (isMid ? 0.92 : 0.68), fogMult: isMid ? 0.32 : 0.58
+            });
+          }
+        }
+      }
+
+      // Layer 3: Soft Translucent Foreground Parallax Bokeh Petals near camera flight path (authentic 3-layer anime depth!)
+      if (t >= 39.0 && t <= 88.0) {
+        const camFwd = norm(sub(cam.look, cam.pos));
+        const camRight = norm(cross(camFwd, [0, 1, 0]));
+        const camUp = norm(cross(camRight, camFwd));
+        for (const fg of snowFg) {
+          const drift = Math.sin(t * 0.45 + fg.phase) * 1.8;
+          const vDrift = ((t * 0.75 + fg.phase * 3.0) % 12.0) - 6.0;
+          const pt = add(add(add(cam.pos, mul(camFwd, fg.offZ)), mul(camRight, fg.offX + drift)), mul(camUp, fg.offY + (t < 83.0 ? vDrift : -vDrift) * 0.45));
+          drawObj(meshes.flower5, mat4TRS(pt, t*0.35 + fg.phase, fg.phase, 0, fg.size, fg.size, fg.size), {
+            base: [1,1,1], emissive: 0.95, alpha: baseVis * 0.44, fogMult: 0.05
+          });
+        }
+      }
+    }
+
+    // Gentle moonlit snowflakes drifting across C7b telephoto frame!
+    if (cam.shot.id === "C7b") {
+      for (let i=0; i<36; i++) {
+        const sp = snowMid[i];
+        const dt = t - 75.0;
+        const px = 26.0 + ((sp.x + 68.0) / 136.0) * 32.0 + Math.sin(sp.phase + dt * 0.7) * 1.2;
+        const py = 114.0 + ((sp.y0 + dt * 1.2) % 24.0);
+        const pz = -56.0 + (sp.z / 72.0) * 12.0;
+        drawObj(meshes.flower5, mat4TRS([px, py, pz], t*0.4+sp.phase, sp.phase, 0, 0.24, 0.24, 0.24), {
+          base: [1,1,1], emissive: 0.96, alpha: 0.78, fogMult: 0.05
+        });
+      }
+    }
+
+    // 10. C8: One Final Glowing Petal drifting onto calm mirror water beside P0 (89.5 -> 92.0s)
+    if (t >= 89.2 && t <= 95.4) {
+      const uDrop = clamp((t - 89.4) / 2.6, 0, 1);
+      const easeDrop = 1.0 - Math.pow(1.0 - uDrop, 1.35);
+      const px = lerp(rippleCenter[0] + 1.4, rippleCenter[0], easeDrop) + Math.sin(uDrop * Math.PI * 3.0) * 0.22 * (1 - uDrop);
+      const py = lerp(3.2, 0.04, easeDrop);
+      const pz = lerp(rippleCenter[2] - 1.1, rippleCenter[2], easeDrop);
+      const glowFinal = 1.0 - smoothstep(93.4, 95.0, t);
+      drawObj(meshes.flower5, mat4TRS([px, py, pz], (1-uDrop)*0.6, uDrop*2.2, 0, 0.22, 0.22, 0.22), {
+        base: [1,1,1], emissive: glowFinal, alpha: glowFinal
+      });
+    }
+
+    // 11. Towering Translucent Silver Skylight Shaft from Moon Fissure (cleanly BEHIND the Z=-42 ruined stone arch bridge!)
+    if (cam.shot.id !== "C7b") {
+      gl.depthMask(false);
+      drawObj(meshes.cyl, mat4TRS([42.0, 0.5, -74.0], 0.08, 0, -0.04, 30.0, 134.0, 22.0), {
+        base: [1,1,1], emissive: 1.0, alpha: 0.052 * (1.0 - 0.80 * eclipse), fogMult: 0.1
+      });
+      gl.depthMask(true);
+    }
+
+    const pcsProj = {};
+    for (const pc of spec.world.pcs) {
+      pcsProj[pc.id] = projectPoint(vp, [pc.pos[0], pc.pos[1] + pc.height * 0.75, pc.pos[2]]);
+    }
+    const eyeRef = add(add(w.pos, mul(wFwd, 7.2)), mul(wRight, -2.25));
+    return {
+      t, shotId: cam.shot.id, shotName: cam.shot.name, focal_mm: cam.focal_mm,
+      camPos: cam.pos, camLook: cam.look,
+      whale: {
+        pos: w.pos,
+        center: projectPoint(vp, w.pos),
+        nose: projectPoint(vp, add(w.pos, mul(wFwd, 12.0))),
+        tail: projectPoint(vp, add(w.pos, mul(wFwd, -12.0))),
+        eye: projectPoint(vp, eyeRef),
+        roll: w.roll,
+      },
+      lantern: projectPoint(vp, [spec.world.lantern.pos[0], spec.world.lantern.pos[1] + 0.2, spec.world.lantern.pos[2]]),
+      p0: projectPoint(vp, [p0[0], p0[1] + 0.45, p0[2]]),
+      fissure: projectPoint(vp, moon.pos),
+      bridgeLeft: projectPoint(vp, [-48.0, 16.0, -42.0]),
+      bridgeRight: projectPoint(vp, [52.0, 16.0, -42.0]),
+      pcs: pcsProj,
+    };
+  }
+
+  window.initPillScene = initWebGL;
+  window.renderAtTime = renderAtTime;
+})();
+</script>
+</body>
+</html>
