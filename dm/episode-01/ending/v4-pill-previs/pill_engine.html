@@ -1,0 +1,934 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Episode 1 Ending v4.0 — Head-On Near-Miss &amp; 220m Abyss Wake Ribbons (90s)</title>
+<style>
+  html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #1c2026; font-family: system-ui, sans-serif; }
+  #gl { display: block; width: 100vw; height: 100vh; }
+</style>
+</head>
+<body>
+<canvas id="gl" width="1280" height="720"></canvas>
+<script>
+(() => {
+  "use strict";
+
+  const add = (a,b) => [a[0]+b[0], a[1]+b[1], a[2]+b[2]];
+  const sub = (a,b) => [a[0]-b[0], a[1]-b[1], a[2]-b[2]];
+  const mul = (a,s) => [a[0]*s, a[1]*s, a[2]*s];
+  const dot = (a,b) => a[0]*b[0]+a[1]*b[1]+a[2]*b[2];
+  const cross = (a,b) => [a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0]];
+  const len = (a) => Math.hypot(a[0],a[1],a[2]);
+  const norm = (a) => { const l = len(a) || 1; return [a[0]/l, a[1]/l, a[2]/l]; };
+  const lerp = (a,b,t) => a + (b-a)*t;
+  const lerp3 = (a,b,t) => [lerp(a[0],b[0],t), lerp(a[1],b[1],t), lerp(a[2],b[2],t)];
+  const clamp = (x,lo,hi) => Math.max(lo, Math.min(hi, x));
+  const smoothstep = (e0,e1,x) => { const t = clamp((x-e0)/(e1-e0||1e-6),0,1); return t*t*(3-2*t); };
+  const easeInOut = (u) => { const t = clamp(u,0,1); return t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t+2,2)/2; };
+  const easeCubic = (u) => { const t = clamp(u,0,1); return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2; };
+
+  function mat4Identity() { return new Float32Array([1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1]); }
+  function mat4Mul(a, b) {
+    const o = new Float32Array(16);
+    for (let c=0;c<4;c++) for (let r=0;r<4;r++) {
+      o[c*4+r] = a[0*4+r]*b[c*4+0] + a[1*4+r]*b[c*4+1] + a[2*4+r]*b[c*4+2] + a[3*4+r]*b[c*4+3];
+    }
+    return o;
+  }
+  function mat4Perspective(fovYRad, aspect, near, far) {
+    const f = 1.0 / Math.tan(fovYRad / 2);
+    const nf = 1 / (near - far);
+    return new Float32Array([f/aspect,0,0,0, 0,f,0,0, 0,0,(far+near)*nf,-1, 0,0,2*far*near*nf,0]);
+  }
+  function mat4Ortho(l, r, b, t, n, f) {
+    return new Float32Array([2/(r-l),0,0,0, 0,2/(t-b),0,0, 0,0,-2/(f-n),0, -(r+l)/(r-l),-(t+b)/(t-b),-(f+n)/(f-n),1]);
+  }
+  function mat4LookAt(eye, target, up) {
+    const z = norm(sub(eye, target));
+    let x = cross(up, z);
+    if (len(x) < 1e-5) x = cross([0,0,1], z);
+    x = norm(x);
+    const y = cross(z, x);
+    return new Float32Array([
+      x[0], y[0], z[0], 0,
+      x[1], y[1], z[1], 0,
+      x[2], y[2], z[2], 0,
+      -dot(x,eye), -dot(y,eye), -dot(z,eye), 1
+    ]);
+  }
+  function mat4TRS(pos, rx, ry, rz, sx, sy, sz) {
+    const cx=Math.cos(rx), sxr=Math.sin(rx);
+    const cy=Math.cos(ry), syr=Math.sin(ry);
+    const cz=Math.cos(rz), szr=Math.sin(rz);
+    const m00 = cy*cz + syr*sxr*szr, m01 = cx*szr, m02 = -syr*cz + cy*sxr*szr;
+    const m10 = -cy*szr + syr*sxr*cz, m11 = cx*cz, m12 = syr*szr + cy*sxr*cz;
+    const m20 = syr*cx, m21 = -sxr, m22 = cy*cx;
+    return new Float32Array([
+      m00*sx, m01*sx, m02*sx, 0,
+      m10*sy, m11*sy, m12*sy, 0,
+      m20*sz, m21*sz, m22*sz, 0,
+      pos[0], pos[1], pos[2], 1
+    ]);
+  }
+  function mat4FromBasis(pos, right, up, forward, sx=1, sy=1, sz=1) {
+    return new Float32Array([
+      right[0]*sx, right[1]*sx, right[2]*sx, 0,
+      up[0]*sy,    up[1]*sy,    up[2]*sy,    0,
+      forward[0]*sz, forward[1]*sz, forward[2]*sz, 0,
+      pos[0], pos[1], pos[2], 1
+    ]);
+  }
+  function projectPoint(vp, p) {
+    const x = vp[0]*p[0] + vp[4]*p[1] + vp[8]*p[2] + vp[12];
+    const y = vp[1]*p[0] + vp[5]*p[1] + vp[9]*p[2] + vp[13];
+    const z = vp[2]*p[0] + vp[6]*p[1] + vp[10]*p[2] + vp[14];
+    const w = vp[3]*p[0] + vp[7]*p[1] + vp[11]*p[2] + vp[15];
+    if (w <= 0.05) return { u: -1, v: -1, visible: false, depth: w };
+    const u = (x / w) * 0.5 + 0.5;
+    const v = 0.5 - (y / w) * 0.5;
+    const visible = u >= -0.05 && u <= 1.05 && v >= -0.05 && v <= 1.05 && z / w <= 1.0;
+    return { u, v, visible, depth: w };
+  }
+
+  function sampleCatmullRom(kfs, t) {
+    if (t <= kfs[0].t) return { pos: kfs[0].pos.slice(), roll: kfs[0].roll, glow: kfs[0].glow };
+    if (t >= kfs[kfs.length-1].t) {
+      const last = kfs[kfs.length-1];
+      return { pos: last.pos.slice(), roll: last.roll, glow: last.glow };
+    }
+    let i = 0;
+    while (i < kfs.length - 2 && t > kfs[i+1].t) i++;
+    const k0 = kfs[Math.max(0, i-1)];
+    const k1 = kfs[i];
+    const k2 = kfs[i+1];
+    const k3 = kfs[Math.min(kfs.length-1, i+2)];
+    const u = (t - k1.t) / Math.max(1e-5, k2.t - k1.t);
+    const u2 = u*u, u3 = u2*u;
+    const pos = [0,1,2].map(d => {
+      const p0=k0.pos[d], p1=k1.pos[d], p2=k2.pos[d], p3=k3.pos[d];
+      return 0.5 * ((2*p1) + (-p0+p2)*u + (2*p0-5*p1+4*p2-p3)*u2 + (-p0+3*p1-3*p2+p3)*u3);
+    });
+    return { pos, roll: lerp(k1.roll, k2.roll, u), glow: lerp(k1.glow, k2.glow, smoothstep(0,1,u)) };
+  }
+
+  function whaleStateAt(spec, t) {
+    const kfs = spec.whale.keyframes;
+    const s = sampleCatmullRom(kfs, t);
+    const dt = 0.14;
+    const sp = sampleCatmullRom(kfs, Math.min(spec.duration, t + dt));
+    const sm = sampleCatmullRom(kfs, Math.max(0, t - dt));
+    let fwd = sub(sp.pos, sm.pos);
+    if (len(fwd) < 1e-4) fwd = [0, 0, 1];
+    fwd = norm(fwd);
+    let upRef = Math.abs(fwd[1]) > 0.92 ? [0, 0, -1] : [0, 1, 0];
+    let right = cross(upRef, fwd);
+    if (len(right) < 1e-4) right = [1, 0, 0];
+    right = norm(right);
+    let up = norm(cross(fwd, right));
+    const cr = Math.cos(s.roll), sr = Math.sin(s.roll);
+    const r2 = add(mul(right, cr), mul(up, sr));
+    const u2 = add(mul(right, -sr), mul(up, cr));
+    const halfL = spec.whale.length * 0.5;
+    // Right-side eye marker (visible from lantern camera on +X shore side during C4b!)
+    const eyeRight = add(add(s.pos, mul(fwd, 7.2)), mul(r2, -2.25)); // -r2 is +X when fwd=+Z!
+    const eyeLeft  = add(add(s.pos, mul(fwd, 7.2)), mul(r2,  2.25));
+    return {
+      pos: s.pos, fwd, right: r2, up: u2, roll: s.roll, glow: s.glow,
+      nose: add(s.pos, mul(fwd, halfL)),
+      tail: add(s.pos, mul(fwd, -halfL)),
+      eyeRight, eyeLeft,
+    };
+  }
+
+  function cameraAt(spec, t) {
+    let shot = spec.shots[spec.shots.length - 1];
+    for (const sh of spec.shots) {
+      if (t >= sh.start && t < sh.end) { shot = sh; break; }
+    }
+    const localT = clamp(t - shot.start, 0, shot.end - shot.start);
+    const dur = Math.max(1e-4, shot.end - shot.start);
+    const activeDur = Math.max(0.1, dur - shot.hold_in - shot.hold_out);
+    const uRaw = clamp((localT - shot.hold_in) / activeDur, 0, 1);
+    const u = easeInOut(uRaw);
+    const w = whaleStateAt(spec, t);
+
+    let pos = lerp3(shot.pos0, shot.pos1, u);
+    let look = lerp3(shot.look0, shot.look1, u);
+
+    if (shot.look_mode === "c3_headon_loom") {
+      // C3 (12-18s): Dead-center symmetrical low hold looking straight down X=0 into the approaching whale brow!
+      look = [0.0, lerp(1.9, 2.35, u), lerp(10.0, 38.0, u)];
+    } else if (shot.look_mode === "c4a_nearmiss") {
+      // C4a (18-21.5s): Eye-level beside lantern! Stays level looking straight at incoming nose until final 1.1s, then tilts up as it grazes inches overhead!
+      const uPull = smoothstep(20.1, 21.5, t);
+      const aimHead = add(w.pos, mul(w.fwd, 8.5));
+      look = lerp3([0.0, 2.1, Math.min(50.0, aimHead[2])], [0.0, 4.9, 53.0], uPull);
+    } else if (shot.look_mode === "c4b_eye_pass") {
+      // C4b (21.5-25s): Tight dark side-glance holding steady as the quiet eye-glint disc glides horizontally right across center frame!
+      look = lerp3(add(w.eyeRight, [0, 0, -1.5]), add(w.eyeRight, [0, 0, 1.5]), u);
+    } else if (shot.look_mode === "c5_ignite_to_bloom") {
+      const p1 = smoothstep(25.0, 28.0, t);
+      const p2 = smoothstep(28.3, 32.2, t);
+      const whaleView = lerp3(shot.look0, add(w.pos, [0, -2.5, 0]), p1);
+      look = lerp3(whaleView, [14.0, 10.0, 28.0], p2 * 0.85);
+    } else if (shot.look_mode === "c6a_carpet_abyss") {
+      // C6a (33-39s): 21mm ultra-wide revealing BOTH the floating luminous petal carpet (bottom third) AND the vast 220m abyss + glowing whale!
+      const wAim = add(w.pos, [-4.0, -9.5, 10.0]);
+      look = lerp3([18.0, 9.0, 8.0], wAim, smoothstep(0.0, 0.75, localT / dur));
+    } else if (shot.pos_mode === "c6b_wake_parallel") {
+      // C6b (39-47s): 35mm intimate 3/4 broadside parallel glide right beside the whale & its twin glowing petal wake ribbons!
+      const uFly = easeCubic(clamp(localT / dur, 0, 1));
+      const side = mul(w.right, -28.0);
+      const along = mul(w.fwd, lerp(-10.0, 8.0, uFly));
+      pos = add(add(w.pos, side), along);
+      pos[1] = lerp(22.0, 31.0, uFly);
+      // Aim slightly aft of whale center so BOTH the whale (right-center) AND its twin glowing petal wake ribbons (left-center) fill the frame!
+      look = add(w.pos, mul(w.fwd, lerp(-4.5, -2.5, uFly)));
+    } else if (shot.pos_mode === "c6c_grand_abyss") {
+      // C6c (47-56s): 21mm ultra-wide grand orbit across the 220m cathedral abyss showing vast negative space, sky whale + wake ribbon (upper third), AND mirrored ocean twin (lower third)!
+      const uOrb = easeInOut(clamp(localT / dur, 0, 1));
+      const ang = lerp(2.58, 1.72, uOrb);
+      const rad = 82.0;
+      pos = [Math.cos(ang) * rad, lerp(24.0, 27.0, uOrb), -12.0 + Math.sin(ang) * rad];
+      look = [w.pos[0] * 0.65, 19.5, w.pos[2] * 0.65 - 8.0];
+    }
+
+    const sensorH = spec.sensor_width_mm / spec.aspect;
+    const fovY = 2.0 * Math.atan(sensorH / (2.0 * shot.focal_mm));
+    return { shot, pos, look, fovY, focal_mm: shot.focal_mm, u };
+  }
+
+  function createMesh(gl, data) {
+    const vao = gl.createVertexArray();
+    gl.bindVertexArray(vao);
+    const vbo = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data.verts), gl.STATIC_DRAW);
+    const stride = 8 * 4;
+    gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 3, gl.FLOAT, false, stride, 0);
+    gl.enableVertexAttribArray(1); gl.vertexAttribPointer(1, 3, gl.FLOAT, false, stride, 12);
+    gl.enableVertexAttribArray(2); gl.vertexAttribPointer(2, 2, gl.FLOAT, false, stride, 24);
+    const ibo = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(data.indices), gl.STATIC_DRAW);
+    gl.bindVertexArray(null);
+    return { vao, count: data.indices.length };
+  }
+
+  function buildCapsule(radius=0.5, cylLen=1.0, segU=26, segV=16, taperTail=0.0, axis="y") {
+    const verts = [], indices = [];
+    const half = cylLen * 0.5;
+    for (let iv=0; iv<=segV; iv++) {
+      const v = iv / segV;
+      let ringR, dy;
+      if (v < 0.25) {
+        const th = (v / 0.25) * (Math.PI * 0.5);
+        dy = -half - Math.cos(th) * radius;
+        ringR = Math.sin(th) * radius;
+      } else if (v <= 0.75) {
+        dy = lerp(-half, half, (v - 0.25) / 0.5);
+        ringR = radius;
+      } else {
+        const th = ((v - 0.75) / 0.25) * (Math.PI * 0.5);
+        dy = half + Math.sin(th) * radius;
+        ringR = Math.cos(th) * radius;
+      }
+      const tailFactor = taperTail > 0 ? lerp(1.0 - taperTail, 1.0, smoothstep(0.0, 0.58, v)) : 1.0;
+      const rEff = ringR * tailFactor;
+      for (let iu=0; iu<=segU; iu++) {
+        const u = iu / segU;
+        const phi = u * Math.PI * 2;
+        const ca = Math.cos(phi), sa = Math.sin(phi);
+        let px, py, pz, nx, ny, nz;
+        if (axis === "z") {
+          px = ca * rEff; py = sa * rEff; pz = dy;
+          nx = ca; ny = sa; nz = (v < 0.25 ? -Math.cos((v/0.25)*Math.PI*0.5) : (v > 0.75 ? Math.sin(((v-0.75)/0.25)*Math.PI*0.5) : 0));
+        } else {
+          px = ca * rEff; py = dy; pz = sa * rEff;
+          nx = ca; ny = (v < 0.25 ? -Math.cos((v/0.25)*Math.PI*0.5) : (v > 0.75 ? Math.sin(((v-0.75)/0.25)*Math.PI*0.5) : 0)); nz = sa;
+        }
+        const nn = norm([nx, ny, nz]);
+        verts.push(px, py, pz, nn[0], nn[1], nn[2], u, v);
+      }
+    }
+    const row = segU + 1;
+    for (let iv=0; iv<segV; iv++) for (let iu=0; iu<segU; iu++) {
+      const a = iv*row+iu, b = a+1, c = a+row, d = c+1;
+      indices.push(a, c, b, b, c, d);
+    }
+    return { verts, indices };
+  }
+
+  function buildDisc(seg=28) {
+    const verts = [0,0,0, 0,1,0, 0.5,0.5], indices = [];
+    for (let i=0; i<=seg; i++) {
+      const a = (i/seg)*Math.PI*2;
+      verts.push(Math.cos(a), 0, Math.sin(a), 0,1,0, 0.5+0.5*Math.cos(a), 0.5+0.5*Math.sin(a));
+    }
+    for (let i=1; i<=seg; i++) indices.push(0, i+1, i);
+    return { verts, indices };
+  }
+
+  function buildFivePetalFlower() {
+    const verts = [0,0.02,0, 0,1,0, 0.5,0.5], indices = [];
+    const segs = 28;
+    for (let i=0; i<=segs; i++) {
+      const a = (i/segs)*Math.PI*2;
+      const petal = 0.42 + 0.58 * Math.pow(0.5 + 0.5*Math.cos(5.0*a), 0.85);
+      const x = Math.cos(a)*petal, z = Math.sin(a)*petal;
+      verts.push(x, 0.08*petal, z, 0,1,0, 0.5+0.5*x, 0.5+0.5*z);
+    }
+    for (let i=1; i<=segs; i++) indices.push(0, i+1, i);
+    return { verts, indices };
+  }
+
+  function buildBox(w=1, h=1, d=1) {
+    const hw=w/2, hh=h/2, hd=d/2;
+    const faces = [
+      [[0,0,1],  [[-hw,-hh,hd],[hw,-hh,hd],[hw,hh,hd],[-hw,hh,hd]]],
+      [[0,0,-1], [[hw,-hh,-hd],[-hw,-hh,-hd],[-hw,hh,-hd],[hw,hh,-hd]]],
+      [[1,0,0],  [[hw,-hh,hd],[hw,-hh,-hd],[hw,hh,-hd],[hw,hh,hd]]],
+      [[-1,0,0], [[-hw,-hh,-hd],[-hw,-hh,hd],[-hw,hh,hd],[-hw,hh,-hd]]],
+      [[0,1,0],  [[-hw,hh,hd],[hw,hh,hd],[hw,hh,-hd],[-hw,hh,-hd]]],
+      [[0,-1,0], [[-hw,-hh,-hd],[hw,-hh,-hd],[hw,-hh,hd],[-hw,-hh,hd]]],
+    ];
+    const verts = [], indices = [];
+    let off = 0;
+    for (const [n, pts] of faces) {
+      const uvs = [[0,0],[1,0],[1,1],[0,1]];
+      for (let i=0;i<4;i++) verts.push(pts[i][0],pts[i][1],pts[i][2], n[0],n[1],n[2], uvs[i][0],uvs[i][1]);
+      indices.push(off, off+1, off+2, off, off+2, off+3);
+      off += 4;
+    }
+    return { verts, indices };
+  }
+
+  function buildCaveDome(rx=225, ry=128, rz=215, segU=36, segV=12) {
+    const verts = [], indices = [];
+    for (let iv=0; iv<=segV; iv++) {
+      const v = iv / segV;
+      const elev = lerp(-0.06, Math.PI*0.495, v);
+      const rScale = Math.cos(elev);
+      const y = Math.sin(elev) * ry;
+      for (let iu=0; iu<=segU; iu++) {
+        const u = iu / segU;
+        const a = u * Math.PI * 2;
+        const wobble = 1.0 + 0.05 * Math.sin(a * 3.0 + 0.5) + 0.03 * Math.cos(a * 5.0 - 0.6);
+        const x = Math.cos(a) * rx * rScale * wobble;
+        const z = Math.sin(a) * rz * rScale * wobble - 25.0;
+        const n = norm([-Math.cos(a)*rScale, -Math.sin(elev), -Math.sin(a)*rScale]);
+        verts.push(x, y, z, n[0], n[1], n[2], u*6.0, v*3.0);
+      }
+    }
+    const row = segU + 1;
+    for (let iv=0; iv<segV; iv++) for (let iu=0; iu<segU; iu++) {
+      const a = iv*row+iu, b = a+1, c = a+row, d = c+1;
+      indices.push(a, b, c, b, d, c);
+    }
+    return { verts, indices };
+  }
+
+  function buildCylinder(r=0.5, h=1.0, seg=12) {
+    const verts = [], indices = [];
+    for (let iy=0; iy<=1; iy++) {
+      const y = iy === 0 ? 0 : h;
+      for (let i=0; i<=seg; i++) {
+        const a = (i/seg)*Math.PI*2;
+        verts.push(Math.cos(a)*r, y, Math.sin(a)*r, Math.cos(a), 0, Math.sin(a), i/seg, iy);
+      }
+    }
+    const row = seg + 1;
+    for (let i=0; i<seg; i++) {
+      const a = i, b = i+1, c = i+row, d = c+1;
+      indices.push(a, c, b, b, c, d);
+    }
+    return { verts, indices };
+  }
+
+  const VS_SHADOW = `#version 300 es
+  layout(location=0) in vec3 aPos;
+  uniform mat4 uLightVP;
+  uniform mat4 uModel;
+  void main() { gl_Position = uLightVP * uModel * vec4(aPos, 1.0); }`;
+
+  const FS_SHADOW = `#version 300 es
+  precision highp float;
+  out vec4 o;
+  void main() { o = vec4(1.0); }`;
+
+  const VS_MAIN = `#version 300 es
+  layout(location=0) in vec3 aPos;
+  layout(location=1) in vec3 aNorm;
+  layout(location=2) in vec2 aUv;
+  uniform mat4 uVP;
+  uniform mat4 uModel;
+  uniform mat4 uLightVP;
+  uniform float uSwimAmp;
+  uniform float uSwimPhase;
+  out vec3 vWorld;
+  out vec3 vNorm;
+  out vec2 vUv;
+  out vec4 vLightPos;
+  void main() {
+    vec3 p = aPos;
+    if (uSwimAmp > 0.0001) {
+      float tailMask = smoothstep(0.65, -1.0, p.z / 12.0);
+      p.y += sin(p.z * 0.28 + uSwimPhase) * uSwimAmp * tailMask;
+      p.x += cos(p.z * 0.20 + uSwimPhase * 0.8) * uSwimAmp * 0.25 * tailMask;
+    }
+    vec4 wp = uModel * vec4(p, 1.0);
+    vWorld = wp.xyz;
+    vNorm = normalize(mat3(uModel) * aNorm);
+    vUv = aUv;
+    vLightPos = uLightVP * wp;
+    gl_Position = uVP * wp;
+  }`;
+
+  const FS_MAIN = `#version 300 es
+  precision highp float;
+  in vec3 vWorld;
+  in vec3 vNorm;
+  in vec2 vUv;
+  in vec4 vLightPos;
+
+  uniform vec3 uCamPos;
+  uniform vec3 uBaseColor;
+  uniform vec3 uStripeColor;
+  uniform float uStripeFreq;
+  uniform float uEmissive;
+  uniform float uIsWater;
+  uniform float uFade;
+  uniform float uEclipse;
+  uniform float uRippleT;
+  uniform vec3 uRippleCenter;
+  uniform vec3 uWhalePos;
+  uniform float uWhaleGlow;
+  uniform vec3 uFissurePos;
+  uniform float uAlpha;
+  uniform float uDissolveY;
+  uniform sampler2D uShadowMap;
+
+  out vec4 fragColor;
+
+  float sampleShadow(vec4 lp) {
+    vec3 proj = lp.xyz / lp.w * 0.5 + 0.5;
+    if (proj.x < 0.0 || proj.x > 1.0 || proj.y < 0.0 || proj.y > 1.0 || proj.z > 1.0) return 1.0;
+    float d = texture(uShadowMap, proj.xy).r;
+    return (proj.z - 0.004 > d) ? 0.0 : 1.0;
+  }
+
+  void main() {
+    float dissolveBoost = 0.0;
+    float alphaOut = uAlpha;
+    if (uDissolveY > 1.0) {
+      float dy = vWorld.y - uDissolveY;
+      dissolveBoost = smoothstep(-5.0, 2.5, dy);
+      float melt = smoothstep(0.5, 6.5, dy);
+      alphaOut *= (1.0 - melt);
+      if (alphaOut < 0.01) discard;
+    }
+
+    vec3 N = normalize(vNorm);
+    vec3 L = normalize(uFissurePos - vWorld);
+    vec3 V = normalize(uCamPos - vWorld);
+
+    vec3 albedo = uBaseColor;
+    if (uStripeFreq > 0.1) {
+      float pat = fract((vUv.x * 2.0 + vUv.y * 1.4) * uStripeFreq);
+      albedo = mix(uBaseColor, uStripeColor, step(0.5, pat));
+    }
+
+    float sh = sampleShadow(vLightPos);
+    float ndl = max(dot(N, L), 0.0);
+    float hemi = 0.5 + 0.5 * N.y;
+    float eclipseDim = 1.0 - 0.68 * uEclipse;
+    vec3 lit = albedo * (mix(0.26, 0.48, hemi) * eclipseDim + 0.62 * ndl * mix(0.22, 1.0, sh) * eclipseDim);
+
+    if (uIsWater > 0.5) {
+      float distF = length(vWorld.xz - vec2(32.0, -52.0));
+      float skylightPatch = exp(-distF * distF / 2400.0) * 0.34 * eclipseDim;
+      float distW = length(vWorld.xz - uWhalePos.xz);
+      float whaleDark = exp(-distW * distW / 120.0) * (1.0 - smoothstep(10.0, 28.0, abs(uWhalePos.y)));
+      float whaleBright = exp(-distW * distW / 320.0) * uWhaleGlow * 0.36;
+      vec2 g = abs(fract(vWorld.xz * 0.0625 - 0.5) - 0.5) / 0.025;
+      float grid = (1.0 - min(min(g.x, g.y), 1.0)) * 0.045;
+      float rip = 0.0;
+      if (uRippleT > 0.0 && uRippleT < 4.8) {
+        float rd = length(vWorld.xz - uRippleCenter.xz);
+        float front = uRippleT * 2.2;
+        float ring = exp(-pow(rd - front, 2.0) * 2.4) * sin((rd - front) * 11.0);
+        float ring2 = exp(-pow(rd - front * 0.62, 2.0) * 3.0) * 0.65;
+        rip = (abs(ring) * 0.72 + ring2 * 0.44) * (1.0 - uRippleT / 4.8);
+      }
+      float fres = pow(1.0 - max(dot(N, V), 0.0), 3.0) * 0.14;
+      lit = vec3(0.28, 0.31, 0.35) * eclipseDim * mix(0.35, 1.0, sh)
+          + vec3(skylightPatch + fres + grid + rip + whaleBright)
+          - vec3(whaleDark * 0.34);
+    }
+
+    // Vast 220m Abyss atmospheric depth mist (soft neutral slate fading distant walls into infinity!)
+    float dist = length(uCamPos - vWorld);
+    float fog = clamp((dist - 48.0) / 195.0, 0.0, 0.58);
+    vec3 fogCol = vec3(0.42, 0.45, 0.48) * eclipseDim;
+    vec3 col = mix(lit, fogCol, fog);
+
+    float em = clamp(uEmissive + dissolveBoost * 0.85, 0.0, 1.0);
+    col = mix(col, vec3(0.98, 0.99, 1.0), em);
+    col *= (1.0 - clamp(uFade, 0.0, 1.0));
+    fragColor = vec4(col, alphaOut);
+  }`;
+
+  function compileProgram(gl, vsSrc, fsSrc) {
+    const compile = (type, src) => {
+      const s = gl.createShader(type);
+      gl.shaderSource(s, src); gl.compileShader(s);
+      if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+      return s;
+    };
+    const p = gl.createProgram();
+    gl.attachShader(p, compile(gl.VERTEX_SHADER, vsSrc));
+    gl.attachShader(p, compile(gl.FRAGMENT_SHADER, fsSrc));
+    gl.linkProgram(p);
+    if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p));
+    return p;
+  }
+
+  function mulberry32(seed) {
+    let a = seed >>> 0;
+    return () => {
+      a |= 0; a = (a + 0x6D2B79F5) | 0;
+      let t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  let gl, progMain, progShadow, shadowFBO, shadowTex, meshes = {}, spec = null;
+  let flowerPlants = [], ambientPetals = [], carpetPetals = [];
+
+  function initWebGL(sceneSpec) {
+    spec = sceneSpec;
+    const canvas = document.getElementById("gl");
+    gl = canvas.getContext("webgl2", { antialias: true, preserveDrawingBuffer: true });
+    if (!gl) throw new Error("WebGL2 unavailable");
+
+    progMain = compileProgram(gl, VS_MAIN, FS_MAIN);
+    progShadow = compileProgram(gl, VS_SHADOW, FS_SHADOW);
+
+    shadowTex = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, shadowTex);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.DEPTH_COMPONENT24, 512, 512, 0, gl.DEPTH_COMPONENT, gl.UNSIGNED_INT, null);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    shadowFBO = gl.createFramebuffer();
+    gl.bindFramebuffer(gl.FRAMEBUFFER, shadowFBO);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.TEXTURE_2D, shadowTex, 0);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+
+    meshes.cave = createMesh(gl, buildCaveDome(225, 128, 215, 36, 12));
+    meshes.disc = createMesh(gl, buildDisc(28));
+    meshes.box = createMesh(gl, buildBox(1, 1, 1));
+    meshes.cyl = createMesh(gl, buildCylinder(0.5, 1.0, 12));
+    meshes.pinBody = createMesh(gl, buildCapsule(0.24, 0.88, 20, 12, 0.0, "y"));
+    meshes.pinHead = createMesh(gl, buildCapsule(0.13, 0.06, 16, 10, 0.0, "y"));
+    meshes.whale = createMesh(gl, buildCapsule(2.15, 19.4, 30, 22, 0.54, "z"));
+    meshes.flower5 = createMesh(gl, buildFivePetalFlower());
+
+    const rng = mulberry32(20261127);
+    flowerPlants = [];
+    // Shore flowers around 4 PCs & lantern
+    for (let i=0; i<44; i++) {
+      const x = lerp(-9.5, 10.5, rng());
+      const z = lerp(50.2, 57.5, rng());
+      if (Math.hypot(x, z - 55.2) < 1.8) continue;
+      flowerPlants.push({ pos: [x, 0.85, z], delay: 27.5 + rng()*1.3, yaw: rng()*Math.PI*2, scale: 0.85 + rng()*0.40 });
+    }
+    // Right mature cape S1
+    for (let i=0; i<62; i++) {
+      const x = lerp(16.0, 46.0, rng());
+      const z = lerp(24.0, 46.0, rng());
+      const dist = Math.hypot(x - 16, z - 44);
+      flowerPlants.push({ pos: [x, 0.72, z], delay: 28.0 + (dist/30)*2.4 + rng()*0.4, yaw: rng()*Math.PI*2, scale: 0.95 + rng()*0.50 });
+    }
+
+    // Floating luminous carpet petals (C6a 1.5s gravity-freeze hovering over dark lake!)
+    carpetPetals = [];
+    for (let i=0; i<95; i++) {
+      carpetPetals.push({
+        x: lerp(-24.0, 44.0, rng()),
+        z: lerp(10.0, 48.0, rng()),
+        hoverY: 1.5 + rng() * 2.2,
+        riseSpeed: 1.4 + rng() * 1.4,
+        phase: rng() * Math.PI * 2,
+        size: 0.24 + rng() * 0.20,
+      });
+    }
+
+    // Sparse ambient vertical snow (provides 3D parallax across the 220m abyss without cluttering!)
+    ambientPetals = [];
+    for (let i=0; i<90; i++) {
+      ambientPetals.push({
+        x: lerp(-65.0, 65.0, rng()),
+        z: lerp(-75.0, 68.0, rng()),
+        y0: rng() * 95.0,
+        speed: 1.2 + rng() * 1.3,
+        fallSpeed: 2.2 + rng() * 1.8,
+        phase: rng() * Math.PI * 2,
+        size: 0.22 + rng() * 0.22,
+      });
+    }
+  }
+
+  function renderAtTime(t, opts={}) {
+    const canvas = document.getElementById("gl");
+    const W = canvas.width, H = canvas.height;
+    const cam = cameraAt(spec, t);
+    const w = whaleStateAt(spec, t);
+    const fissure = spec.world.fissure.pos;
+    const moon = spec.world.moon;
+
+    // Overhead eclipse darkness peaking during C4a pull-up & C4b eye-pass (20.4 - 24.8s)!
+    const eclipse = smoothstep(20.0, 21.6, t) * (1.0 - smoothstep(24.0, 25.4, t));
+    const tailStroke = smoothstep(25.0, 26.0, t) * (1.0 - smoothstep(26.8, 28.2, t));
+    const swimCruise = smoothstep(33.0, 36.0, t) * (1.0 - smoothstep(61.0, 65.0, t));
+    const swimAmp = 0.24 + 0.72 * tailStroke + 0.36 * swimCruise;
+    const swimPhase = t * 1.65;
+
+    const lightEye = [fissure[0]*0.6, fissure[1]+12.0, fissure[2]*0.6];
+    const lightVP = mat4Mul(mat4Ortho(-55, 55, -55, 55, 5.0, 210.0), mat4LookAt(lightEye, [0,0,40], [0,0,-1]));
+    const whaleModel = mat4FromBasis(w.pos, w.right, w.up, w.fwd, 1.0, 0.88, 1.0);
+
+    // --- PASS 1: 512x512 Shadow Map ---
+    gl.bindFramebuffer(gl.FRAMEBUFFER, shadowFBO);
+    gl.viewport(0, 0, 512, 512);
+    gl.enable(gl.DEPTH_TEST);
+    gl.clear(gl.DEPTH_BUFFER_BIT);
+    gl.useProgram(progShadow);
+    gl.uniformMatrix4fv(gl.getUniformLocation(progShadow, "uLightVP"), false, lightVP);
+    const drawShadow = (mesh, model) => {
+      gl.uniformMatrix4fv(gl.getUniformLocation(progShadow, "uModel"), false, model);
+      gl.bindVertexArray(mesh.vao);
+      gl.drawElements(gl.TRIANGLES, mesh.count, gl.UNSIGNED_SHORT, 0);
+    };
+    if (w.pos[1] > -1.0 && t < 70.5) drawShadow(meshes.whale, whaleModel);
+    for (const pc of spec.world.pcs) {
+      drawShadow(meshes.pinBody, mat4TRS([pc.pos[0], pc.pos[1]+pc.height*0.42, pc.pos[2]], 0,0,0, 1, pc.height/1.72, 1));
+    }
+
+    // --- PASS 2: Main Camera Render ---
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, W, H);
+    gl.enable(gl.DEPTH_TEST);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    gl.clearColor(0.30*(1-0.62*eclipse), 0.32*(1-0.62*eclipse), 0.35*(1-0.62*eclipse), 1.0);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    const proj = mat4Perspective(cam.fovY, W / H, 0.15, 520.0);
+    const view = mat4LookAt(cam.pos, cam.look, [0, 1, 0]);
+    const vp = mat4Mul(proj, view);
+
+    gl.useProgram(progMain);
+    const uLoc = (n) => gl.getUniformLocation(progMain, n);
+    gl.uniformMatrix4fv(uLoc("uVP"), false, vp);
+    gl.uniformMatrix4fv(uLoc("uLightVP"), false, lightVP);
+    gl.uniform3fv(uLoc("uCamPos"), cam.pos);
+    gl.uniform3fv(uLoc("uFissurePos"), fissure);
+    gl.uniform3fv(uLoc("uWhalePos"), w.pos);
+    gl.uniform1f(uLoc("uWhaleGlow"), w.glow);
+    gl.uniform1f(uLoc("uEclipse"), eclipse);
+    const fade = opts.noFade ? 0.0 : smoothstep(88.8, 90.0, t);
+    gl.uniform1f(uLoc("uFade"), fade);
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, shadowTex);
+    gl.uniform1i(uLoc("uShadowMap"), 0);
+
+    // Ripples: C1 drop at t=2.4s, C8 final petal landing at t=85.2s
+    let rippleT = -1.0;
+    const p0 = spec.world.p0_flower.pos;
+    let rippleCenter = [p0[0] + 0.6, 0.0, p0[2] - 2.2];
+    if (t >= 2.4 && t < 6.5) rippleT = t - 2.4;
+    else if (t >= 85.2 && t <= 90.0) rippleT = t - 85.2;
+    gl.uniform1f(uLoc("uRippleT"), rippleT);
+    gl.uniform3fv(uLoc("uRippleCenter"), rippleCenter);
+
+    const drawObj = (mesh, model, cfg) => {
+      gl.uniformMatrix4fv(uLoc("uModel"), false, model);
+      gl.uniform3fv(uLoc("uBaseColor"), cfg.base || [0.55, 0.56, 0.54]);
+      gl.uniform3fv(uLoc("uStripeColor"), cfg.stripe || [0.1, 0.1, 0.12]);
+      gl.uniform1f(uLoc("uStripeFreq"), cfg.freq || 0.0);
+      gl.uniform1f(uLoc("uEmissive"), cfg.emissive || 0.0);
+      gl.uniform1f(uLoc("uIsWater"), cfg.isWater ? 1.0 : 0.0);
+      gl.uniform1f(uLoc("uSwimAmp"), cfg.swimAmp || 0.0);
+      gl.uniform1f(uLoc("uSwimPhase"), swimPhase);
+      gl.uniform1f(uLoc("uAlpha"), cfg.alpha !== undefined ? cfg.alpha : 1.0);
+      gl.uniform1f(uLoc("uDissolveY"), cfg.dissolveY || 0.0);
+      gl.bindVertexArray(mesh.vao);
+      gl.drawElements(gl.TRIANGLES, mesh.count, gl.UNSIGNED_SHORT, 0);
+    };
+
+    // 1. Vast 220m Cathedral Subterranean Dome & 6 Distant Monumental Buttress Columns
+    drawObj(meshes.cave, mat4Identity(), { base: [0.46, 0.48, 0.50] });
+    for (const [px,py,pz,sx,sy,sz] of [
+      [-145, 58, -95, 14, 124, 14], [148, 58, -85, 14, 124, 14],
+      [-165, 52,  10, 12, 114, 12], [162, 52,  18, 12, 114, 12],
+      [-125, 48, 105, 12, 104, 12], [125, 48, 105, 12, 104, 12],
+    ]) {
+      drawObj(meshes.box, mat4TRS([px,py,pz], 0, 0.4, 0, sx, sy, sz), { base: [0.42, 0.44, 0.46] });
+    }
+
+    // 2. High Ceiling Moonlight Fissure + Crisp Glowing Round FULL MOON Disc
+    drawObj(meshes.disc, mat4TRS(fissure, Math.PI, -0.45, 0, spec.world.fissure.rx, 1, spec.world.fissure.rz), {
+      base: [0.60, 0.65, 0.70], emissive: 0.34
+    });
+    drawObj(meshes.disc, mat4TRS(moon.pos, Math.PI * 0.74, -0.55, 0, moon.radius, 1, moon.radius), {
+      base: [1, 1, 1], emissive: 1.0
+    });
+
+    // 3. Horizon-Wide Mirror Ocean Lake (Y=0) + Clean Mirrored Whale in C6c open lake!
+    drawObj(meshes.disc, mat4TRS([0, 0, -25], 0,0,0, 215, 1, 205), { isWater: true });
+    if (w.glow > 0.3 && w.pos[1] > 4.0 && t < 66.0 && cam.shot.id === "C6c") {
+      const mPos = [w.pos[0], -w.pos[1] * 0.44, w.pos[2]];
+      const mFwd = [w.fwd[0], -w.fwd[1], w.fwd[2]];
+      const mUp  = [w.up[0], -w.up[1], w.up[2]];
+      const reflModel = mat4FromBasis(mPos, w.right, mUp, mFwd, 1.0, 0.88, 1.0);
+      gl.depthMask(false);
+      gl.depthFunc(gl.ALWAYS);
+      drawObj(meshes.whale, reflModel, {
+        base: [0.76, 0.86, 0.94], stripe: [0.32, 0.40, 0.48], freq: 5.5,
+        emissive: 0.48, swimAmp, alpha: 0.34
+      });
+      gl.depthFunc(gl.LESS);
+      gl.depthMask(true);
+    }
+
+    // 4. Shore Ledge, Flanking Capes, Lantern, P0, Flowers & 4 PC Pins (culled in high-sky C7b & tight C4b!)
+    if (cam.shot.id !== "C7b") {
+      drawObj(meshes.box, mat4TRS([0.0, 0.35, 56.5], 0, 0.0, 0, 26.0, 1.0, 15.0), { base: [0.55, 0.56, 0.54] });
+      drawObj(meshes.box, mat4TRS([32.0, 0.25, 36.0], 0, -0.35, 0, 32.0, 0.95, 22.0), { base: [0.52, 0.53, 0.50] });
+      drawObj(meshes.box, mat4TRS([-36.0, 0.25, 38.0], 0,  0.35, 0, 28.0, 0.95, 20.0), { base: [0.52, 0.53, 0.50] });
+
+      const lp = spec.world.lantern.pos;
+      drawObj(meshes.cyl, mat4TRS([lp[0], lp[1], lp[2]], 0,0,0, 0.26, 0.08, 0.26), { base: [0.22, 0.23, 0.25] });
+      drawObj(meshes.cyl, mat4TRS([lp[0], lp[1]+0.08, lp[2]], 0,0,0, 0.18, 0.24, 0.18), { base: [1,1,1], emissive: 0.98 - 0.28*eclipse });
+      drawObj(meshes.cyl, mat4TRS([lp[0], lp[1]+0.32, lp[2]], 0,0,0, 0.28, 0.07, 0.28), { base: [0.22, 0.23, 0.25] });
+
+      drawObj(meshes.cyl, mat4TRS([p0[0], p0[1], p0[2]], 0.08, 0.3, 0, 0.045, 0.44, 0.045), { base: [0.46, 0.48, 0.44] });
+      drawObj(meshes.flower5, mat4TRS([p0[0], p0[1]+0.44, p0[2]], 0.15, 0.4, 0, 0.28, 0.28, 0.28), { base: [0.95,0.96,0.97], emissive: 0.38 });
+
+      if (cam.shot.id !== "C4b" && cam.shot.id !== "C6b" && cam.shot.id !== "C6c") {
+        const shed = smoothstep(70.0, 77.0, t);
+        for (const fl of flowerPlants) {
+          const bloom = smoothstep(fl.delay, fl.delay + 1.2, t);
+          const droopPitch = lerp(1.15, 0.06, bloom);
+          const stemH = lerp(0.32, 0.52, bloom) * fl.scale;
+          const stemCol = lerp3([0.42, 0.39, 0.35], [0.56, 0.58, 0.54], bloom);
+          drawObj(meshes.cyl, mat4TRS(fl.pos, droopPitch*0.45, fl.yaw, 0, 0.04*fl.scale, stemH, 0.04*fl.scale), { base: stemCol });
+          if (bloom < 0.18) {
+            drawObj(meshes.pinHead, mat4TRS([fl.pos[0]+Math.sin(fl.yaw)*0.12, fl.pos[1]+stemH*0.85, fl.pos[2]+Math.cos(fl.yaw)*0.12], droopPitch, fl.yaw, 0, 0.45*fl.scale, 0.65*fl.scale, 0.45*fl.scale), { base: [0.40, 0.37, 0.34] });
+          } else if (shed < 0.95) {
+            const rad = lerp(0.08, 0.38, bloom) * (1.0 - shed) * fl.scale;
+            drawObj(meshes.flower5, mat4TRS([fl.pos[0], fl.pos[1]+stemH, fl.pos[2]], 0.08, fl.yaw, 0, rad, rad, rad), {
+              base: [0.96, 0.97, 0.98], emissive: 0.46 * bloom * (1.0 - shed)
+            });
+          }
+        }
+      }
+
+      // 4 PC Stand-in Striped Pins (centered on X=0 facing the approaching whale!)
+      const lookTargetPC = t < 6.0 ? [0, 1.5, 10] : (t < 71.0 ? w.pos : fissure);
+      for (const pc of spec.world.pcs) {
+        const dx = lookTargetPC[0] - pc.pos[0], dz = lookTargetPC[2] - pc.pos[2];
+        const yaw = Math.atan2(dx, dz), hScale = pc.height / 1.72;
+        drawObj(meshes.pinBody, mat4TRS([pc.pos[0], pc.pos[1]+0.74*hScale, pc.pos[2]], 0, yaw, 0, 1.0, hScale, 0.72), {
+          base: pc.color, stripe: [0.10, 0.11, 0.13], freq: 3.5
+        });
+        const headY = pc.pos[1] + 1.52 * hScale;
+        drawObj(meshes.pinHead, mat4TRS([pc.pos[0], headY, pc.pos[2]], 0, yaw, 0, 1.0, 1.15, 1.05), {
+          base: pc.color, stripe: [0.10, 0.11, 0.13], freq: 2.2
+        });
+        drawObj(meshes.disc, mat4TRS([pc.pos[0]+Math.sin(yaw)*0.14, headY, pc.pos[2]+Math.cos(yaw)*0.14], Math.PI*0.5, yaw, 0, 0.065, 0.065, 0.065), {
+          base: [1,1,1], emissive: 0.95
+        });
+      }
+    }
+
+    // 5. Giant 24m Striped Whale Capsule + Nose Disc + Side Eye Glint Disc (C4b!)
+    if (t >= 5.5 && t <= 71.2) {
+      const dissolveY = t >= 61.0 ? spec.whale.dissolve_y : 0.0;
+      drawObj(meshes.whale, whaleModel, {
+        base: spec.whale.stripe_color,
+        stripe: [0.11, 0.13, 0.17],
+        freq: 5.5,
+        emissive: w.glow * 0.54,
+        swimAmp,
+        dissolveY
+      });
+      const nosePos = add(w.pos, mul(w.fwd, 11.75));
+      if (dissolveY === 0.0 || nosePos[1] < dissolveY + 4.5) {
+        drawObj(meshes.disc, mat4FromBasis(nosePos, w.right, w.fwd, mul(w.up, -1), 0.76, 0.76, 0.76), { base: [1,1,1], emissive: 1.0, dissolveY });
+      }
+      // Side eye glint disc (clearly visible passing horizontally in C4b's 1.8s silence!)
+      if (t >= 18.0 && t <= 26.0) {
+        const eyeM = mat4FromBasis(w.eyeRight, w.fwd, mul(w.right, -1), w.up, 0.34, 0.34, 0.34);
+        drawObj(meshes.disc, eyeM, { base: [1,1,1], emissive: 1.0 });
+      }
+      // C3 Head-On Silver Breaching Water Spray Curtains bursting left & right off the flanks!
+      if (t >= 12.2 && t <= 19.8) {
+        const sprayVis = smoothstep(12.2, 13.5, t) * (1.0 - smoothstep(18.2, 19.8, t));
+        for (const sgn of [-1, 1]) {
+          for (let k=0; k<4; k++) {
+            const sx = w.pos[0] + sgn * (2.6 + k * 0.95);
+            const sy = Math.max(0.2, w.pos[1] * 0.55 - k * 0.15);
+            const sz = w.pos[2] + 6.5 - k * 2.2;
+            drawObj(meshes.cyl, mat4TRS([sx, 0.0, sz], 0, 0, -sgn * 0.25, 0.22, Math.max(0.8, sy + 1.8), 0.22), {
+              base: [0.92, 0.95, 0.98], emissive: 0.65, alpha: 0.42 * sprayVis
+            });
+          }
+        }
+      }
+    }
+
+    // 6. C6a FLOATING LUMINOUS CARPET (1.5s gravity-freeze hovering over dark lake, t=33.0-42.0s)
+    if (t >= 32.8 && t <= 42.0) {
+      for (const cp of carpetPetals) {
+        const lift = smoothstep(32.8, 33.4, t);
+        const dtRise = Math.max(0.0, t - 34.8);
+        const py = cp.hoverY * lift + dtRise * cp.riseSpeed;
+        const px = cp.x + Math.sin(cp.phase + dtRise * 0.5) * 1.4;
+        const pz = cp.z + Math.cos(cp.phase + dtRise * 0.4) * 1.4;
+        const vis = (1.0 - smoothstep(39.0, 42.0, t));
+        const dCam = Math.hypot(px - cam.pos[0], py - cam.pos[1], pz - cam.pos[2]);
+        if (vis > 0.02 && dCam > 4.5) {
+          drawObj(meshes.flower5, mat4TRS([px, py, pz], t*0.4 + cp.phase, cp.phase, 0, cp.size, cp.size, cp.size), {
+            base: [1,1,1], emissive: 0.96, alpha: vis
+          });
+        }
+      }
+    }
+
+    // 7. TRUE 3D TWIN-VORTEX PETAL WAKE RIBBONS (trailing 60m behind swimming whale in C6b/C6c/C7a/C7b!)
+    if (t >= 34.5 && t <= 71.2) {
+      const wakeFade = smoothstep(34.5, 37.0, t) * (1.0 - smoothstep(69.5, 71.2, t));
+      const dissolveY = t >= 61.0 ? spec.whale.dissolve_y : 0.0;
+      const samples = 44; // 44 x 2 twin vortex strands = 88 crisp trailing wake petals!
+      for (let i = 1; i <= samples; i++) {
+        const age = i * 0.30; // 0.3s -> 13.2s trailing behind whale!
+        const tp = t - age;
+        if (tp < 33.0) continue;
+        const ws = whaleStateAt(spec, tp);
+        const spread = 1.0 + age * 0.24;
+        const lifeAlpha = (1.0 - age / 13.8) * wakeFade;
+        for (const sgn of [-1, 1]) {
+          // Twin helical wingtip/fluke vortex ribbons spiraling gracefully behind the whale!
+          const twist = age * 1.35 + (sgn > 0 ? 0 : Math.PI);
+          const offR = sgn * (2.6 * spread) + Math.cos(twist) * (0.9 * spread);
+          const offU = Math.sin(twist) * (0.85 * spread) + age * 0.18;
+          const pt = add(add(add(ws.pos, mul(ws.fwd, -7.5)), mul(ws.right, offR)), mul(ws.up, offU));
+          if (pt[1] < 1.0 || pt[1] > 124.0) continue;
+          const dCam = Math.hypot(pt[0] - cam.pos[0], pt[1] - cam.pos[1], pt[2] - cam.pos[2]);
+          if (dCam < 4.5) continue;
+          const sz = lerp(0.42, 0.24, age / 13.5);
+          drawObj(meshes.flower5, mat4TRS(pt, twist, age, sgn, sz, sz, sz), {
+            base: [1,1,1], emissive: 0.96, alpha: lifeAlpha, dissolveY
+          });
+          // Mirrored wake ribbon reflection on the dark ocean lake in C6c!
+          if (cam.shot.id === "C6c" && i % 2 === 0 && pt[1] > 5.0) {
+            gl.depthMask(false);
+            gl.depthFunc(gl.ALWAYS);
+            drawObj(meshes.flower5, mat4TRS([pt[0], -pt[1] * 0.44, pt[2]], twist, age, sgn, sz*0.9, sz*0.9, sz*0.9), {
+              base: [0.9, 0.94, 1.0], emissive: 0.72, alpha: lifeAlpha * 0.30
+            });
+            gl.depthFunc(gl.LESS);
+            gl.depthMask(true);
+          }
+        }
+      }
+    }
+
+    // 8. Sparse Ambient Vertical Snow (3D parallax across 220m abyss) -> Falling Real Snow in C7c (71-79s)!
+    if (t >= 35.0 && t <= 79.5) {
+      for (const ap of ambientPetals) {
+        let px, py, pz, vis = 0.85;
+        if (t < 71.0) {
+          const dt = t - 35.0;
+          py = 2.0 + ((ap.y0 + dt * ap.speed) % 108.0);
+          px = ap.x + Math.sin(ap.phase + dt * 0.35) * 3.0;
+          pz = ap.z + Math.cos(ap.phase + dt * 0.30) * 3.0;
+        } else {
+          // C7c (71-79s): Gentle winter snow falling softly around the 4 PCs & lantern!
+          const dt = t - 71.0;
+          const startY = 3.5 + ((ap.phase * 8.1) % 24.0);
+          py = Math.max(0.2, startY - dt * ap.fallSpeed);
+          px = ap.x * 0.28 + Math.sin(ap.phase + dt * 0.85) * 1.5;
+          pz = 52.0 + ap.z * 0.18 + Math.cos(ap.phase + dt * 0.75) * 1.5;
+          vis = 1.0 - smoothstep(77.2, 79.2, t);
+        }
+        const dCam = Math.hypot(px - cam.pos[0], py - cam.pos[1], pz - cam.pos[2]);
+        if (vis > 0.02 && dCam > 4.5 && py < 122.0) {
+          drawObj(meshes.flower5, mat4TRS([px, py, pz], t*0.5+ap.phase, ap.phase, 0, ap.size, ap.size, ap.size), {
+            base: [1,1,1], emissive: 0.92, alpha: vis
+          });
+        }
+      }
+    }
+
+    // 9. C8: One Final Glowing Petal drifting down onto calm mirror water beside P0 (81.5 -> 85.2s)
+    if (t >= 81.3 && t <= 88.8) {
+      const uDrop = clamp((t - 81.5) / 3.7, 0, 1);
+      const easeDrop = 1.0 - Math.pow(1.0 - uDrop, 1.35);
+      const px = lerp(rippleCenter[0] + 1.5, rippleCenter[0], easeDrop) + Math.sin(uDrop * Math.PI * 3.0) * 0.24 * (1 - uDrop);
+      const py = lerp(3.4, 0.04, easeDrop);
+      const pz = lerp(rippleCenter[2] - 1.2, rippleCenter[2], easeDrop);
+      const glowFinal = 1.0 - smoothstep(86.6, 88.4, t);
+      drawObj(meshes.flower5, mat4TRS([px, py, pz], (1-uDrop)*0.6, uDrop*2.2, 0, 0.22, 0.22, 0.22), {
+        base: [1,1,1], emissive: glowFinal, alpha: glowFinal
+      });
+    }
+
+    // 10. Towering Translucent Silver Skylight Shaft from Moon Fissure
+    gl.depthMask(false);
+    drawObj(meshes.cyl, mat4TRS([34.0, 0.5, -58.0], 0.14, 0, -0.08, 28.0, 120.0, 20.0), {
+      base: [1,1,1], emissive: 1.0, alpha: 0.055 * (1.0 - 0.80 * eclipse)
+    });
+    gl.depthMask(true);
+
+    const pcsProj = {};
+    for (const pc of spec.world.pcs) {
+      pcsProj[pc.id] = projectPoint(vp, [pc.pos[0], pc.pos[1] + pc.height + 0.18, pc.pos[2]]);
+    }
+    const lp = spec.world.lantern.pos;
+    return {
+      t,
+      shotId: cam.shot.id,
+      shotName: cam.shot.name,
+      cameraMove: cam.shot.camera_move,
+      focal_mm: cam.focal_mm,
+      camPos: cam.pos,
+      camLook: cam.look,
+      eclipse,
+      whale: {
+        pos: w.pos,
+        glow: w.glow,
+        center: projectPoint(vp, w.pos),
+        nose: projectPoint(vp, w.nose),
+        tail: projectPoint(vp, w.tail),
+        eye: projectPoint(vp, w.eyeRight),
+      },
+      lantern: projectPoint(vp, [lp[0], lp[1] + 0.5, lp[2]]),
+      p0: projectPoint(vp, [p0[0], p0[1] + 0.6, p0[2]]),
+      fissure: projectPoint(vp, moon.pos),
+      pcs: pcsProj,
+    };
+  }
+
+  window.initPillScene = initWebGL;
+  window.renderAtTime = renderAtTime;
+})();
+</script>
+</body>
+</html>
