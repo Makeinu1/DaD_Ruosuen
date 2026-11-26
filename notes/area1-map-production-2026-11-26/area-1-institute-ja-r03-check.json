@@ -1,0 +1,33 @@
+{
+  "source": "previs12 OBJ, route samples and candidate geometry",
+  "known_nodes": 28,
+  "routes": 12,
+  "observed_trails": 7,
+  "registered_terrain_keys": [
+    "massif",
+    "pillar",
+    "shaft",
+    "cliff_upper",
+    "cliff_lower",
+    "river",
+    "pool",
+    "growth"
+  ],
+  "candidate_features": [
+    "outline",
+    "floor relief",
+    "HOME/PORT locations",
+    "terminal rock",
+    "rail alignments",
+    "portal landform"
+  ],
+  "label_overlaps": [],
+  "rail_cartographic_offset_m": 22,
+  "draft_only": false,
+  "names_provisional": false,
+  "lighting_layer": false,
+  "ceiling_fissure_on_handout": false,
+  "dm_destination_in_map": false,
+  "render_style": "mesh-derived engraved relief, cut rock boundary, serif place names, outlined main road",
+  "geometry_changed": false
+}
