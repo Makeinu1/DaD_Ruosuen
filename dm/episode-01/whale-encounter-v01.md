@@ -109,6 +109,30 @@
 
 ルール参照（2024）：[Playing the Game](https://www.dndbeyond.com/sources/dnd/br-2024/playing-the-game)、[DM's Toolbox](https://www.dndbeyond.com/sources/dnd/br-2024/dms-toolbox)、[Rules Glossary](https://www.dndbeyond.com/sources/dnd/br-2024/rules-glossary)。上記の数値は公式モンスターデータではなく卓用の提案。
 
+## 4.2 鯨の格とステータス比較 v0.4（2026-11-26検討試案、未承認）
+
+推奨は伝説級の巨大な自然生物。竜に匹敵する生命力を持つが、攻撃魔法・言語・神格・人間への使命は付与しない。竜に勝つ戦闘力を意味しない。既存WH-01の24m、空中遊泳、光、幸運の採用設定を維持し、生息域・来歴・知性・希少性の定量・幸運の機構は未決。
+
+比較：2024ルール系Monster Manual（2025刊）の公式D&D Beyond。Killer Whale CR3/AC12/HP90、Giant Shark CR5/AC13/HP92、Mammoth CR6/AC13/HP126、Roc CR11/AC15/HP248（STR28、飛行120ft）、Adult White Dragon CR13/AC18/HP200。HPだけでは戦闘難易度を表せない。ロック鳥を身体能力と移動の目安にし、白竜成体を生命力の比較対象とする。
+
+| 項目 | 推奨候補（旧v0.3からの変更含む） |
+|---|---|
+| サイズ／種別 | Gargantuan・Beast（自然生物としての提案。Monstrosityなら異質な起源、Celestialなら上方次元との関係を検討する必要がある。どちらも未確定） |
+| AC | 14（厚い体表と巨体の動き。装甲・鱗なし） |
+| HP | 280（16d20+112、CON24の+7×16） |
+| 移動 | 飛行120ft（ホバリング）、水泳80ft、地上0ft |
+| STR / DEX / CON | 28 (+9) / 12 (+1) / 24 (+7) |
+| INT / WIS / CHA | 6 (−2) / 16 (+3) / 12 (+1)（知性・感覚・存在感の暫定解釈） |
+| セーヴ | STR+9、DEX+1、CON+11、INT−2、WIS+7、CHA+1（CON/WISのみ+4の暫定習熟） |
+| 感覚 | 擬似視覚120ft候補（シャチを参考にした反響定位案。地下空間での感覚生態は未決） |
+| 防御 | 特殊な完全耐性・伝説的抵抗・魔法抵抗を足さない案。低レベルの攻撃が命中し、ダメージ・状態変化は有効。種別・サイズ等の通常の対象制限を適用 |
+| 攻撃 | 通常はなし、回避・離脱が優先。自己防衛時の尾の打撃や接触の裁定は別途決定。光は攻撃・回復・強制魅了の能力にしない |
+| CR/XP | 未設定。攻撃能力・防御能力・全戦闘行動が揃っていないため、HPからCR11や13と断定しない |
+
+v0.3のAC13/HP210案も成立する。上記は比較に基づく上位案であり、作者が選ぶまでv0.3の例を置き換えない。PCの実シート・具体的呪文・映像との整合は未検証。第一話の上映を守るためだけの無敵化や罰則は採用しない。
+
+公式参照：[Killer Whale](https://www.dndbeyond.com/monsters/5195095-killer-whale)、[Giant Shark](https://www.dndbeyond.com/monsters/5195027-giant-shark)、[Mammoth](https://www.dndbeyond.com/monsters/5195112-mammoth)、[Roc](https://www.dndbeyond.com/monsters/5195184-roc)、[Adult White Dragon](https://www.dndbeyond.com/monsters/5194877-adult-white-dragon)、[How to Use a Monster](https://www.dndbeyond.com/sources/dnd/br-2024/how-to-use-a-monster)。
+
 ## 5. 上映の切替
 
 推奨ポイントは鯨が頭上を通り過ぎ、月光の方へ向かう直後（R08相当）。PCが「どうするか」を選べた後であり、後半の発光・S1一斉開花は初めて見ることができる。台詞候補：「鯨は、そのまま月光の方へ向かっていきます」。卓外に「ここからは、この光景を映像でも見てもらいます。前半は今の出来事の再現です」と短く説明する案。暗転→全編上映→少し間→「湖は再び静かになります。どうしますか？」。映画の冒頭を飛ばさない。70秒は実卓の上映尺であり、作中時間の正確な経過秒数に固定しない。鯨が光ること・花雪の全貌は上映前に口頭で先取りしない。
