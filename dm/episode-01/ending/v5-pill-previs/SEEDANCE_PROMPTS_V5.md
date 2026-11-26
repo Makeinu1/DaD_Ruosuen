@@ -1,19 +1,26 @@
-# 第一話エンディング『空に降る雪』v5.0 決定版（96秒・全15カット・6クリップ）— Seedance 2.0 / Flow 用プロンプトパック
+# 第一話エンディング『空に降る雪』v5.0 決定版（96秒・全15カット・6クリップ）— Seedance 2.0 本番投入キット
 
 > **DM専用・ネタバレあり。GitHub Pages / `SECTIONS` / `llms.txt` には掲載しない。**
-> **共通美術参照 `@Image1`**：`unified_art_board.png` ＋ `background_1plus3_fusion_test.png`（遠近レイヤー分離 1+3融合リファレンス）
+> **共通美術参照 `@Image1`**：`unified_art_board_v5.png`（v5.0 専用 4絵統合・OKLCH/Rec.709 パレット付）
 > **全クリップ25秒以下**（12s / 13s / 19s / 25s / 14s / 13s — Seedance の 29秒上限に対して安全な余裕あり）
-> **v5.0 決定版の核心**：
-> 1. **導入・突進（v4.0継承）**：正面直進膨張（C3）→ ランタン脇すれすれ引き上げ（C4a）→ 闇と眼の1.8秒無音（C4b）
-> 2. **開花〜大花吹雪の自然接続（v14.9b復活 R10→R12→R13）**：地表20cm超低空の一斉開花ウェーブ（C5b）→ 離陸1秒重力静止 → 地上から空へ連続大チルトで **空間を満たす3層大花吹雪** へ解放（C6a）
-> 3. **背景美術（1+3 遠近レイヤー融合）**：中景に **水没した旧時代の崩れた石造アーチ橋（苔上の開花＋鏡面対称反射）**、霧のベールを挟んだ最遠景左右外枠に **巨大な天然鍾乳石柱**（中央の白鯨＆満月の抜けは完全無柱）
-> 4. **大空間の遊び芝居（v14.9b×v4.0融合）**：360°緩やかバレルロール＆石橋くぐり二重視差（C6b）→ 220m大空洞×40°遊びバンク大旋回（C6c）→ 22°優しい一瞥＆0.6xスローの間（C6d）
-> 5. **別れ・満月への溶解（v14.9b復活 R17b→R18）**：残された雪の降り始め（C7a）→ **85mm真横望遠** で巨大な満月の前を滑空しながら **尾びれ→胴体→胸びれ→最後に頭部** が銀白光へ滑らかに溶け還る（C7b）→ 本物の雪（C7c）→ C1同一構図の最後の一枚（C8）
+
+## 本番投入対応表（そのまま Seedance 2.0 へドラッグ＆ドロップ）
+
+| Clip | 尺 | `@Video1`（動き・カメラ・尺ロック） | `@Image1`（共通スタイル） | `@Image2`（シーン専用キーフレーム） | 出力ファイル名 |
+| :--- | :---: | :--- | :--- | :--- | :--- |
+| **Clip 1** | 12s | `seedance_v5_clip1_C1_C2_omen_and_shadow_12s.mp4` | `unified_art_board_v5.png` | `v5_keyframe_01_c1_shore_omen.jpg` | `final_clip1.mp4` |
+| **Clip 2** | 13s | `seedance_v5_clip2_C3_C4ab_headon_nearmiss_13s.mp4` | `unified_art_board_v5.png` | `v5_keyframe_02_c3_headon_rush.jpg` | `final_clip2.mp4` |
+| **Clip 3** | 19s | `seedance_v5_clip3_C5ab_C6a_bloom_to_snowstorm_19s.mp4` | `unified_art_board_v5.png` | `v5_keyframe_03_c6c_1plus3_master.jpg` | `final_clip3.mp4` |
+| **Clip 4** | 25s | `seedance_v5_clip4_C6bcd_playful_abyss_arch_25s.mp4` | `unified_art_board_v5.png` | `v5_keyframe_03_c6c_1plus3_master.jpg` | `final_clip4.mp4` |
+| **Clip 5** | 14s | `seedance_v5_clip5_C7ab_ascent_and_moon_dissolve_14s.mp4` | `unified_art_board_v5.png` | `v5_keyframe_04_c7b_moon_dissolve.jpg` | `final_clip5.mp4` |
+| **Clip 6** | 13s | `seedance_v5_clip6_C7c_C8_true_snow_and_petal_13s.mp4` | `unified_art_board_v5.png` | `v5_keyframe_01_c1_shore_omen.jpg` | `final_clip6.mp4` |
+
+- **最終結合＆音響合成（ワンコマンド）**：6本が揃ったら `final_clips/final_clip1.mp4`〜`final_clip6.mp4` に置いて `python3 dm/episode-01/ending/v5-pill-previs/assemble_final_screening.py` を実行すると、**1080p 24fps / Rec.709 タグ付 / -14 LUFS 音響合成済み（`kousetsuka_v5_master_audio_96s.wav`）** の 2026-12-23 上映マスターが完成します。
 
 ---
 
 ## Clip 1（0–12s｜C1 + C2：安堵と予兆 → 湖底の不穏な巨影｜12秒）
-- 入力：`seedance_v5_clip1_C1_C2_omen_and_shadow_12s.mp4` + `unified_art_board.png`
+- 入力：`seedance_v5_clip1_C1_C2_omen_and_shadow_12s.mp4` + `unified_art_board_v5.png` + `v5_keyframe_01_c1_shore_omen.jpg`
 
 ```text
 【Generation Goal】
