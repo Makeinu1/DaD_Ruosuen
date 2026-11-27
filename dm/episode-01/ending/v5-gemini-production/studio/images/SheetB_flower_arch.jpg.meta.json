@@ -1,0 +1,30 @@
+{
+  "timestamp_utc": "2026-11-26T22:51:48.103202+00:00",
+  "media_type": "image",
+  "surface": "antigravity-generate-image",
+  "model": "antigravity-standard-image",
+  "prompt": "Sheet B: Kousetsuka botanical turnaround (drooping grey-brown bud + strict 5-petal white flower + 3 floating single petals with tiny champagne-gold seeds) + weathered stone aqueduct arch bridge (moss & blooming broken end) + far misty limestone stalactites.",
+  "references": [
+    {
+      "path": "dm/episode-01/ending/images/adopted/CUT03_KEY_flower.png",
+      "sha256": "4cc883ebf68319340826dd3322a185c55760b858d80326f278a235b744e9544c"
+    },
+    {
+      "path": "dm/episode-01/ending/images/adopted/CUT09_KEY_climax.png",
+      "sha256": "83cfc7e9eb4cc54651170a5b15d53e06b6069db9f02567f7c265606f47c0ca3e"
+    }
+  ],
+  "output_path": "/home/antigravity/Makeinu1/DaD_Ruosuen/dm/episode-01/ending/v5-gemini-production/studio/images/SheetB_flower_arch.jpg",
+  "output_sha256": "3b5f487046586b8f3e80b8bce43f674b0d7fce5be2876bb11b51838e3d915397",
+  "output_bytes": 514637,
+  "media_meta": {
+    "width": 1376,
+    "height": 768,
+    "format": "JPEG",
+    "mode": "RGB"
+  },
+  "flow_credits_spent": 0,
+  "extra_spend_jpy": 0,
+  "qa_status": "approved",
+  "notes": "Antigravity built-in generate_image test (0 JPY extra spend); strict 5 petals, champagne-gold seeds, chiseled masonry."
+}

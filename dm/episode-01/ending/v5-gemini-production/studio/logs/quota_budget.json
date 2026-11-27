@@ -1,0 +1,12 @@
+{
+  "plan": "Google AI Pro (0 JPY extra spend)",
+  "monthly_flow_credits_limit": 1000,
+  "daily_flow_credits_limit": 50,
+  "daily_nano_banana_pro_images_limit": 100,
+  "monthly_flow_credits_used": 0,
+  "daily_flow_credits_used": 0,
+  "daily_nano_banana_pro_images_used": 0,
+  "last_daily_reset_utc": "2026-11-26",
+  "allow_paid_topup": false,
+  "allow_paid_api": false
+}

@@ -1,0 +1,100 @@
+[
+  {
+    "id": "G1_C1_C2_omen_shadow_12s",
+    "file": "gemini_previs_G1_C1_C2_omen_shadow_12s.mp4",
+    "duration_s": 12.0,
+    "frames": 288,
+    "cuts": "C1+C2 (0-12s)",
+    "layout_frames": [
+      "previs_G1_start.png",
+      "previs_G1_C2.png"
+    ]
+  },
+  {
+    "id": "G2_C3_C4ab_headon_13s",
+    "file": "gemini_previs_G2_C3_C4ab_headon_13s.mp4",
+    "duration_s": 13.0,
+    "frames": 312,
+    "cuts": "C3+C4a+C4b (12-25s)",
+    "layout_frames": [
+      "previs_G2_start.png",
+      "previs_G2_C4a.png",
+      "previs_G2_C4b.png"
+    ]
+  },
+  {
+    "id": "G3_C5ab_ignite_bloom_10s",
+    "file": "gemini_previs_G3_C5ab_ignite_bloom_10s.mp4",
+    "duration_s": 10.0,
+    "frames": 240,
+    "cuts": "C5a+C5b (25-35s)",
+    "layout_frames": [
+      "previs_G3_start.png",
+      "previs_G3_C5b.png"
+    ]
+  },
+  {
+    "id": "G4_C6a_freeze_tilt_9s",
+    "file": "gemini_previs_G4_C6a_freeze_tilt_9s.mp4",
+    "duration_s": 9.0,
+    "frames": 216,
+    "cuts": "C6a (35-44s)",
+    "layout_frames": [
+      "previs_G4_start.png",
+      "previs_G4_end.png"
+    ]
+  },
+  {
+    "id": "G5_C6b_barrel_roll_8s",
+    "file": "gemini_previs_G5_C6b_barrel_roll_8s.mp4",
+    "duration_s": 8.0,
+    "frames": 192,
+    "cuts": "C6b (44-52s)",
+    "layout_frames": [
+      "previs_G5_start.png",
+      "previs_G5_mid.png"
+    ]
+  },
+  {
+    "id": "G6_C6c_abyss_1plus3_8s",
+    "file": "gemini_previs_G6_C6c_abyss_1plus3_8s.mp4",
+    "duration_s": 8.0,
+    "frames": 192,
+    "cuts": "C6c (52-60s)",
+    "layout_frames": [
+      "previs_G6_start.png"
+    ]
+  },
+  {
+    "id": "G7_C6d_warm_glance_9s",
+    "file": "gemini_previs_G7_C6d_warm_glance_9s.mp4",
+    "duration_s": 9.0,
+    "frames": 216,
+    "cuts": "C6d (60-69s)",
+    "layout_frames": [
+      "previs_G7_start.png"
+    ]
+  },
+  {
+    "id": "G8_C7ab_moon_dissolve_14s",
+    "file": "gemini_previs_G8_C7ab_moon_dissolve_14s.mp4",
+    "duration_s": 14.0,
+    "frames": 336,
+    "cuts": "C7a+C7b (69-83s)",
+    "layout_frames": [
+      "previs_G8_start.png",
+      "previs_G8_C7b_mid.png"
+    ]
+  },
+  {
+    "id": "G9_C7c_C8_true_snow_13s",
+    "file": "gemini_previs_G9_C7c_C8_true_snow_13s.mp4",
+    "duration_s": 13.0,
+    "frames": 312,
+    "cuts": "C7c+C8 (83-96s)",
+    "layout_frames": [
+      "previs_G9_start.png",
+      "previs_G9_C8.png"
+    ]
+  }
+]
