@@ -1,8 +1,8 @@
 # ベル・タッカーの vector-avator 制作（PR #66）
-2026-11-28：作者が個別Aポーズ2枚を確定。旧共同シートは世界設定の参考として保持し、今回のアニメーション原画は個別PNGを優先する。原画ファイルはローカルで検証済みだがGitHubへのバイナリ転送は未完了。アップロード予定先：world/npcs/art/avatar-fronts/。approved-fronts.json は照合用であり、登録済みを意味しない。
+2026-11-28：作者が個別Aポーズ2枚を確定。旧共同シートは世界設定の参考として保持し、今回のアニメーション原画は個別PNGを優先する。原画PNG2枚は GitHub の本PRブランチ world/npcs/art/avatar-fronts/ に登録済み。ローカル原本のSHA-256とGit Blob SHA-1を算出し、create_blobの返却SHAおよび独立取得したリモートtreeのパス・サイズ・SHA-1の一致を確認済み。リモート実バイトの独立再取得SHA-256は未実施。
 
 ## 作業順
-1. 原本ZIPを既存の tools/github-original-transfer/github_originals.py の upload コマンドで既存PR #66 のブランチに転送し、独立再取得でSHA-256を照合。ZIP内のmanifestも同時に検証する。旧画像の上書き・マージは不要。
+1. 原本PNGの転送・tree照合は完了。独立したGitHub実バイト再取得SHA-256照合を追加で行う。旧画像の上書き・マージは不要。
 2. Node22、Python3.10+、Git、npmを用意し、リポジトリルートで python3 tools/vector-avator/bootstrap.py を実行。上流7357ccae4271fed46482a63c87c480457b9afd61を固定、npm ci/test/build、Python依存とChromiumを導入。個別原画を変更せず別途1024×1536の参照画像に余白付き縮尺変換する。既存の参照画像がある場合は上書きしないため内容を目視確認する。
 3. 正面Aポーズは作者採用済みのため再生成不要。ただしタッカーの顔がわずかに斜めを向いていること、ベルの開口笑顔はニュートラルな顔差分で補うことを確認。上流 .claude/skills/vector-avator/SKILL.md に従い、各キャラの4面図・手4種・顔差分（開/半/閉、無音と母音、通常/笑顔/驚き/困り）を作成し、目視レビュー。2〜2.5頭身への強制変換は禁止。上流の虹彩の単色化は部品化段階で検証し原画を上書きしない。
 4. var/vector/<id>/pending-character.json を data/characters/<id>.json にコピーし、Fable 5.2 サブエージェントで塗りのみのSVG部品を生成し vector.json を作る。Fable 5.2 が使えなければ実装未着手として扱う。耳・尾・鞄・コート・腕で隠れる部分を補完し、時計・鎖は独立部品として検討する。標準レンダラーだけで手持ち時計を扱えるか未検証。
@@ -10,4 +10,4 @@
 6. 原画・キャラ定義・テスト結果をレビュー後、作者がマージ判断する。コードMIT、サンプル素材別ライセンス。
 
 ## 現時点
-ローカル原本SHA-256確認のみ完了。PNG転送、エンジン実行、4面図、顔差分、SVG、実動作は未完。現在の実行環境ではGitHub DNS解決不可・gh/Codex/Claude/resvg未導入。既存のPRを継続し、新規の正本・重複PRは作成しない。
+PNG原本転送・リモートtree照合は完了。独立再取得SHA-256、エンジン実行、4面図、顔差分、SVG、実動作は未完。現在の実行環境ではGitHub DNS解決不可・gh/Codex/Claude/resvg未導入。既存のPRを継続し、新規の正本・重複PRは作成しない。
