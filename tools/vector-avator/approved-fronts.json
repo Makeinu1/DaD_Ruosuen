@@ -1,0 +1,17 @@
+{
+  "assets": [
+    {
+      "path": "bell-front.png",
+      "bytes": 2670740,
+      "sha256": "63ed44c1adc298f3427f4b013b4153e9f907ab2a02cec82ac74fb0bca3995566",
+      "git_blob_sha1": "61035228756d108748cb065c512e9d0f7215e776"
+    },
+    {
+      "path": "tucker-front.png",
+      "bytes": 2413717,
+      "sha256": "0106eb797fef3cde5892a3bcf3b5ad876e543805eb275f09ef90eb69edfe1cf3",
+      "git_blob_sha1": "2538a6e8edae8c16242ef4de893554942ac09452"
+    }
+  ],
+  "variants": []
+}

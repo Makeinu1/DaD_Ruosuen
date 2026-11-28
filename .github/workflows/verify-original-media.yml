@@ -4,6 +4,9 @@ on:
   pull_request:
     paths:
       - 'dm/episode-01/ending/v8/keyframe-test/results/**'
+      - 'world/npcs/art/avatar-fronts/**'
+      - 'tools/vector-avator/approved-fronts.json'
+      - 'tools/github-original-transfer/connector_packet.py'
       - 'tools/github-original-transfer/audit_repository_media.py'
       - 'tools/github-original-transfer/verify_originals_manifest.py'
       - '.github/workflows/verify-original-media.yml'
@@ -11,6 +14,9 @@ on:
     branches: [main]
     paths:
       - 'dm/episode-01/ending/v8/keyframe-test/results/**'
+      - 'world/npcs/art/avatar-fronts/**'
+      - 'tools/vector-avator/approved-fronts.json'
+      - 'tools/github-original-transfer/connector_packet.py'
       - 'tools/github-original-transfer/audit_repository_media.py'
       - 'tools/github-original-transfer/verify_originals_manifest.py'
       - '.github/workflows/verify-original-media.yml'
@@ -38,6 +44,25 @@ jobs:
             --repo-root . \
             --manifest dm/episode-01/ending/v8/keyframe-test/results/C01-C16-2026-11-22/manifest.json \
             --output new-original-media-audit.json
+      - name: Independently verify author-approved avatar PNGs
+        if: ${{ hashFiles('tools/vector-avator/approved-fronts.json') != '' }}
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, pathlib, subprocess
+          manifest = json.loads(pathlib.Path('tools/vector-avator/approved-fronts.json').read_text())
+          entries = manifest['assets']
+          assert {a['path'] for a in entries} == {'bell-front.png', 'tucker-front.png'} and len(entries) == 2
+          for a in entries:
+              path = pathlib.Path('world/npcs/art/avatar-fronts') / a['path']
+              raw = path.read_bytes()
+              assert raw.startswith(b'\x89PNG\r\n\x1a\n'), str(path)
+              assert len(raw) == a['bytes'], str(path)
+              assert hashlib.sha256(raw).hexdigest() == a['sha256'], str(path)
+              assert hashlib.sha1(b'blob ' + str(len(raw)).encode('ascii') + b'\0' + raw).hexdigest() == a['git_blob_sha1'], str(path)
+              assert subprocess.check_output(['git', 'hash-object', str(path)], text=True).strip() == a['git_blob_sha1'], str(path)
+              print(f"PASS {path} {len(raw)} bytes SHA-256={a['sha256']}")
+          PY
       - name: Preserve verification report
         if: always()
         uses: actions/upload-artifact@v4
