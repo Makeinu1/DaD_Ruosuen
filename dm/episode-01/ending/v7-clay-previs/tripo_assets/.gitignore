@@ -1,0 +1,7 @@
+*.blend
+*.blend1
+raw/
+exports/
+renders/*.png
+!renders/*_review*.jpg
+.DS_Store
