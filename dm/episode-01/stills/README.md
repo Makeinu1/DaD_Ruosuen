@@ -1,6 +1,6 @@
 # E01-08A 投影静止画制作ハブ
 > DM専用・SPOILER WARNING。Public GitHubでありアクセス制御ではない。Pages・プレイヤー向けAIの導線には追加しない。
-2026-11-28 v0.3／作者合意の制作対象を整理した設計案。今回のタスクは **E01-08A-A00（制作仕様・管理基盤の登録）**。本PRのマージ・基準原画採用は別の作者判断。新規画像制作は本PRの対象外。
+2026-11-28 v0.4／作者合意の制作対象を整理した設計案。今回のタスクは **E01-08A-A00（制作仕様・管理基盤の登録）**。本PRのマージ・基準原画採用は別の作者判断。新規画像制作は本PRの対象外。
 
 ## 読む順番
 1. [style.md](style.md) — 変更してはいけない画風・色・構図・投影規約。
@@ -13,6 +13,8 @@
 
 目的は第一話の体験を強めること。紙の探索地図・戦闘マップ・動くNPC・映像・カードは別工程。画像を増やしても卓上の切替を強制しない。
 参照基準: main `434b17847b78c953703fcd175d9d853f5efa307a`（2026-11-28）。[世界規約](../../../WORLD_POLICY.md)、[既存美術規約](../../../DESIGN.md)、[第一話](../README.md)、[導入](../e01-04-town-preparation-v01.md)、[街道](../road-encounters.md)、[洞窟](../cave-dungeon-v01.md)、[湖](../lake-exploration-v01.md)、[鯨](../e01-06-whale-rulings-v01.md)、[終幕](../epilogue-v01.md)、[花](../ending/flower.md)、[映像現行入口](../ending/current/README.md)、[地下地理](../../../world/underground/README.md)。
+
+ターミナル最新正本（PR #69）：[world/underground/terminal-geography.md](https://github.com/Makeinu1/DaD_Ruosuen/blob/8899462088c7d6cd2b0924567c60ab98c1f30653/world/underground/terminal-geography.md)、[dm/episode-01/terminal-art-handoff.md](https://github.com/Makeinu1/DaD_Ruosuen/blob/8899462088c7d6cd2b0924567c60ab98c1f30653/dm/episode-01/terminal-art-handoff.md)。素材ID・総数は維持、023の順を65へ変更。
 
 ## 台帳の見方
 27素材枠（新規25・差分2）。作者指定により、既存画・映像フレームを直接投影する流用は廃止し、旧素材は参照専用とする。同じ画像を別用途で使う場合もIDは安定させる。直前の会話で合意した001〜022を維持し、補完023〜027を追番。投影順はIDでなく order。P0=体験の核、P1=場面を補強、P2=時間があれば。いずれも採用前。
@@ -32,9 +34,9 @@
 |E01-ST-022|41|伽藍の塔 研究・閲覧室|P1|new|planned|pending|
 |E01-ST-027|50|年末市場|P2|new|planned|pending|
 |E01-ST-003|60|HOME 地下への降下|P0|new|planned|pending|
+|E01-ST-023|65|ファーストライト大空洞|P0|new|planned|pending|
 |E01-ST-024|70|ターミナル 活動圏|P1|new|planned|pending|
 |E01-ST-004|80|GATE 探索の出入口|P0|new|planned|pending|
-|E01-ST-023|90|ファーストライト大空洞|P0|new|planned|pending|
 |E01-ST-005|100|アルデン大街道 R3|P0|new|planned|pending|
 |E01-ST-006|110|R65 前半 人通りの減少|P0|new|planned|pending|
 |E01-ST-025|120|R65 後半 文明の外縁|P0|new|planned|pending|
