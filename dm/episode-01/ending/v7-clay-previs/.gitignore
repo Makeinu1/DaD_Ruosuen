@@ -1,0 +1,15 @@
+out/*
+!out/review/
+out/review/*
+!out/review/v9_0/
+out/review/v9_0/*
+!out/review/v9_0/qa_v9_0_report.json
+!out/review/v9_0/v9_0_one_per_shot_4x4.jpg
+*.blend
+*.blend1
+*.mp4
+*.mov
+*.wav
+__pycache__/
+*.pyc
+.DS_Store

@@ -1,0 +1,6 @@
+out/
+*.blend
+*.blend1
+*.mp4
+*.mov
+__pycache__/

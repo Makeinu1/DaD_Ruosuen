@@ -13,13 +13,17 @@ import datetime as dt
 import hashlib
 import json
 import shutil
+import subprocess
 from pathlib import Path
 
 try:
     import av
 except ImportError:
     av = None
-from PIL import Image
+try:
+    from PIL import Image
+except ImportError:
+    Image = None
 
 STUDIO_ROOT = Path(__file__).resolve().parent
 IMAGES_DIR = STUDIO_ROOT / "images"
@@ -106,10 +110,52 @@ def consume_budget(b: dict, media_type: str, credits_cost: int, model: str):
     save_budget(b)
 
 
+def _probe_with_ffprobe(path: Path, media_type: str) -> dict | None:
+    ffprobe = shutil.which("ffprobe")
+    if not ffprobe:
+        return None
+    try:
+        out = subprocess.check_output(
+            [ffprobe, "-v", "quiet", "-print_format", "json", "-show_format", "-show_streams", str(path)],
+            text=True,
+        )
+        data = json.loads(out)
+        streams = data.get("streams", [])
+        v = next((s for s in streams if s.get("codec_type") == "video"), None)
+        if not v:
+            return None
+        if media_type == "image":
+            return {
+                "width": int(v.get("width", 0)),
+                "height": int(v.get("height", 0)),
+                "format": (v.get("codec_name") or path.suffix.lstrip(".")).upper(),
+                "mode": v.get("pix_fmt", "unknown"),
+            }
+        rate_str = v.get("avg_frame_rate") or v.get("r_frame_rate") or "0/1"
+        num, _, den = rate_str.partition("/")
+        fps = float(num) / float(den) if den and float(den) != 0 else 0.0
+        dur = float(data.get("format", {}).get("duration") or v.get("duration") or 0.0)
+        return {
+            "width": int(v.get("width", 0)),
+            "height": int(v.get("height", 0)),
+            "fps": round(fps, 3),
+            "duration_s": round(dur, 3),
+            "codec": v.get("codec_name", "unknown"),
+            "has_audio": any(s.get("codec_type") == "audio" for s in streams),
+        }
+    except Exception:
+        return None
+
+
 def inspect_media(path: Path, media_type: str) -> dict:
     if media_type == "image":
-        with Image.open(path) as im:
-            return {"width": im.width, "height": im.height, "format": im.format, "mode": im.mode}
+        if Image is not None:
+            with Image.open(path) as im:
+                return {"width": im.width, "height": im.height, "format": im.format, "mode": im.mode}
+        probed = _probe_with_ffprobe(path, "image")
+        if probed:
+            return probed
+        return {"bytes": path.stat().st_size, "format": path.suffix.lstrip(".").upper()}
     if av is not None:
         c = av.open(str(path))
         v = c.streams.video[0]
@@ -124,6 +170,9 @@ def inspect_media(path: Path, media_type: str) -> dict:
         }
         c.close()
         return info
+    probed = _probe_with_ffprobe(path, "video")
+    if probed:
+        return probed
     return {"bytes": path.stat().st_size}
 
 

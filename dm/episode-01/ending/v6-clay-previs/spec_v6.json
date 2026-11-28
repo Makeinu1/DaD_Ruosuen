@@ -1,0 +1,237 @@
+{
+  "title": "Episode 1 Ending v6.2 — Director's Cut Clay Previs (Adventurer POV / Head-to-Tail Ignition / Zero-Jitter Spline / Ascending Moon Absorption)",
+  "version": "6.2",
+  "fps": 24,
+  "duration": 96.0,
+  "shutter": 0.5,
+  "sensor_width_mm": 36.0,
+  "resolution": [1280, 720],
+  "seed": 20261223,
+  "world": {
+    "lake_z": 0.0,
+    "shore_z": 0.85,
+    "shore_y_front": -50.5,
+    "shore_y_back": -72.0,
+    "cave_radius": 225.0,
+    "cave_height": 148.0,
+    "show_lantern": false,
+    "moon": { "pos": [43.5, 78.0, 131.5], "radius": 14.5 },
+    "fissure": { "pos": [43.5, 78.0, 136.0], "rx": 24.0, "ry": 12.0 },
+    "lantern": { "pos": [3.0, -53.5, 0.85] },
+    "p0_flower": { "pos": [4.0, -52.4, 0.85] },
+    "arch_bridge": {
+      "y": 42.0,
+      "deck_z": 21.5,
+      "thickness": 5.5,
+      "left_spans": [[-96.0, -72.0], [-72.0, -48.0], [-48.0, -24.0]],
+      "right_spans": [[26.0, 52.0], [52.0, 78.0], [78.0, 104.0]]
+    },
+    "far_pillars": [
+      { "x": -118.0, "y": 108.0, "r_base": 11.5, "r_top": 7.0, "h": 145.0 },
+      { "x":  -96.0, "y": 135.0, "r_base":  9.5, "r_top": 6.0, "h": 148.0 },
+      { "x":  108.0, "y": 115.0, "r_base": 11.0, "r_top": 6.8, "h": 146.0 },
+      { "x":  130.0, "y": 132.0, "r_base": 12.5, "r_top": 7.5, "h": 148.0 }
+    ],
+    "pcs": [
+      { "id": "PC1", "pos": [-2.25, -55.4, 0.85], "height": 1.76, "shoulder_w": 0.48, "coat_len": 1.15 },
+      { "id": "PC2", "pos": [-0.75, -55.0, 0.85], "height": 1.66, "shoulder_w": 0.44, "coat_len": 1.05 },
+      { "id": "PC3", "pos": [ 0.75, -55.1, 0.85], "height": 1.80, "shoulder_w": 0.50, "coat_len": 1.20 },
+      { "id": "PC4", "pos": [ 2.20, -55.5, 0.85], "height": 1.70, "shoulder_w": 0.45, "coat_len": 1.00 }
+    ]
+  },
+  "whale": {
+    "length": 24.0,
+    "max_width": 4.4,
+    "max_height": 3.9,
+    "keyframes": [
+      { "t":  0.0, "pos": [-18.0,  32.0,  -9.0], "roll":  0.00, "glow": 0.0, "ignite": 0.0, "dissolve": 0.0 },
+      { "t":  6.0, "pos": [-15.0,  24.0,  -1.6], "roll":  0.00, "glow": 0.0, "ignite": 0.0, "dissolve": 0.0 },
+      { "t":  9.5, "pos": [ -4.5,   9.0,  -1.2], "roll":  0.00, "glow": 0.0, "ignite": 0.0, "dissolve": 0.0 },
+      { "t": 12.0, "pos": [  0.0,  -4.0,  -0.4], "roll":  0.00, "glow": 0.0, "ignite": 0.0, "dissolve": 0.0 },
+      { "t": 15.0, "pos": [  0.0, -21.0,   1.8], "roll":  0.00, "glow": 0.0, "ignite": 0.0, "dissolve": 0.0 },
+      { "t": 18.0, "pos": [  0.0, -37.5,   2.8], "roll":  0.00, "glow": 0.0, "ignite": 0.0, "dissolve": 0.0 },
+      { "t": 20.0, "pos": [  0.0, -47.0,   4.8], "roll":  0.00, "glow": 0.0, "ignite": 0.0, "dissolve": 0.0 },
+      { "t": 21.5, "pos": [  0.0, -54.0,   6.0], "roll":  0.00, "glow": 0.0, "ignite": 0.0, "dissolve": 0.0 },
+      { "t": 23.25,"pos": [  0.2, -59.5,   6.3], "roll": -0.02, "glow": 0.0, "ignite": 0.0, "dissolve": 0.0 },
+      { "t": 24.99,"pos": [  0.4, -65.0,   6.6], "roll": -0.04, "glow": 0.0, "ignite": 0.0, "dissolve": 0.0 },
+      { "t": 25.0, "pos": [ -4.0, -34.0,  10.0], "roll": -0.18, "glow": 0.0, "ignite": 0.0, "dissolve": 0.0 },
+      { "t": 26.5, "pos": [  8.0, -28.0,  14.0], "roll": -0.22, "glow": 0.2, "ignite": 0.12,"dissolve": 0.0 },
+      { "t": 28.0, "pos": [ 20.0, -22.0,  18.5], "roll": -0.22, "glow": 0.9, "ignite": 0.65,"dissolve": 0.0 },
+      { "t": 30.0, "pos": [ 34.0, -10.0,  24.5], "roll": -0.18, "glow": 1.0, "ignite": 1.0, "dissolve": 0.0 },
+      { "t": 35.0, "pos": [ 48.0,  16.0,  34.5], "roll": -0.12, "glow": 1.0, "ignite": 1.0, "dissolve": 0.0 },
+      { "t": 39.5, "pos": [ 36.0,  34.0,  34.0], "roll": -0.06, "glow": 1.0, "ignite": 1.0, "dissolve": 0.0 },
+      { "t": 44.0, "pos": [ 18.0,  42.0,  33.0], "roll":  0.00, "glow": 1.0, "ignite": 1.0, "dissolve": 0.0 },
+      { "t": 46.5, "pos": [  4.0,  43.0,  33.4], "roll":  2.10, "glow": 1.0, "ignite": 1.0, "dissolve": 0.0 },
+      { "t": 49.0, "pos": [-11.5,  42.0,  33.4], "roll":  4.35, "glow": 1.0, "ignite": 1.0, "dissolve": 0.0 },
+      { "t": 51.5, "pos": [-26.0,  35.0,  32.6], "roll":  6.283,"glow": 1.0, "ignite": 1.0, "dissolve": 0.0 },
+      { "t": 55.5, "pos": [-27.0,  14.0,  31.2], "roll":  6.95, "glow": 1.0, "ignite": 1.0, "dissolve": 0.0 },
+      { "t": 60.0, "pos": [-11.0, -10.0,  29.8], "roll":  6.85, "glow": 1.0, "ignite": 1.0, "dissolve": 0.0 },
+      { "t": 63.0, "pos": [  2.0, -14.0,  29.2], "roll":  6.42, "glow": 1.0, "ignite": 1.0, "dissolve": 0.0 },
+      { "t": 66.0, "pos": [ 12.0,  -9.0,  31.8], "roll":  6.283,"glow": 1.0, "ignite": 1.0, "dissolve": 0.0 },
+      { "t": 69.0, "pos": [ 18.5,  12.0,  44.0], "roll":  6.283,"glow": 1.0, "ignite": 1.0, "dissolve": 0.0 },
+      { "t": 72.5, "pos": [ 26.0,  46.0,  84.0], "roll":  6.283,"glow": 1.0, "ignite": 1.0, "dissolve": 0.0 },
+      { "t": 75.0, "pos": [ 34.0,  62.0, 120.0], "roll":  6.283,"glow": 1.0, "ignite": 1.0, "dissolve": 0.0 },
+      { "t": 83.0, "pos": [ 43.5,  76.0, 131.5], "roll":  6.283,"glow": 0.0, "ignite": 1.0, "dissolve": 1.0 },
+      { "t": 96.0, "pos": [ 43.5,  80.0, 134.0], "roll":  6.283,"glow": 0.0, "ignite": 1.0, "dissolve": 1.0 }
+    ]
+  },
+  "clips": [
+    { "id": "C1",   "start":  0.0, "end":  6.0, "cuts": ["C1"],         "mode": "frame_or_previs" },
+    { "id": "C2",   "start":  6.0, "end": 12.0, "cuts": ["C2"],         "mode": "previs" },
+    { "id": "C3",   "start": 12.0, "end": 18.0, "cuts": ["C3"],         "mode": "previs" },
+    { "id": "C4ab", "start": 18.0, "end": 25.0, "cuts": ["C4a", "C4b"], "mode": "previs" },
+    { "id": "C5a",  "start": 25.0, "end": 30.0, "cuts": ["C5a"],        "mode": "previs" },
+    { "id": "C5b",  "start": 30.0, "end": 35.0, "cuts": ["C5b"],        "mode": "previs" },
+    { "id": "C6a",  "start": 35.0, "end": 44.0, "cuts": ["C6a"],        "mode": "previs" },
+    { "id": "C6b",  "start": 44.0, "end": 52.0, "cuts": ["C6b"],        "mode": "previs" },
+    { "id": "C6c",  "start": 52.0, "end": 60.0, "cuts": ["C6c"],        "mode": "previs" },
+    { "id": "C6d",  "start": 60.0, "end": 69.0, "cuts": ["C6d"],        "mode": "previs" },
+    { "id": "C7a",  "start": 69.0, "end": 75.0, "cuts": ["C7a"],        "mode": "previs" },
+    { "id": "C7b",  "start": 75.0, "end": 83.0, "cuts": ["C7b"],        "mode": "previs" },
+    { "id": "C7c",  "start": 83.0, "end": 89.0, "cuts": ["C7c"],        "mode": "frame_or_previs" },
+    { "id": "C8",   "start": 89.0, "end": 96.0, "cuts": ["C8"],         "mode": "frame_or_previs" }
+  ],
+  "shots": [
+    {
+      "id": "C1",
+      "name": "安堵と予兆（ランタンなし・1軸スロードリーイン：P0の一輪と2.4秒波紋）",
+      "rig": "dolly_track",
+      "start": 0.0, "end": 6.0, "focal_mm": 32.0, "hold_in": 0.8, "hold_out": 0.8,
+      "pos0": [4.65, -56.6, 1.85], "pos1": [4.65, -55.7, 1.85],
+      "look0": [4.35, -50.2, 1.08], "look1": [4.35, -50.2, 1.08],
+      "subjects": ["p0"]
+    },
+    {
+      "id": "C2",
+      "name": "不穏な巨影（冒険者肩越しアイレベルOTS：湖底の影がこちらへ向き直る）",
+      "rig": "ots_dolly",
+      "start": 6.0, "end": 12.0, "focal_mm": 35.0, "hold_in": 0.6, "hold_out": 0.6,
+      "pos0": [0.05, -56.8, 2.38], "pos1": [0.05, -56.0, 2.38],
+      "look0": [-1.5, -18.0, 1.4], "look1": [0.0, -18.0, 1.4],
+      "subjects": ["whale"]
+    },
+    {
+      "id": "C3",
+      "name": "正面突進・冒険者一人称POV（24mm水際完全固定三脚：黒い巨壁が視界を飲み込む）",
+      "rig": "locked_tripod",
+      "start": 12.0, "end": 18.0, "focal_mm": 24.0, "hold_in": 0.0, "hold_out": 0.0,
+      "pos0": [0.0, -53.8, 2.35], "pos1": [0.0, -53.8, 2.35],
+      "look0": [0.0, -24.0, 2.55], "look1": [0.0, -24.0, 2.55],
+      "subjects": ["whale"]
+    },
+    {
+      "id": "C4a",
+      "name": "頭上通過・冒険者しゃがみ見上げPOV（21mm仰角1軸チルト：巨大な腹が真上を覆う）",
+      "rig": "pov_tilt_up",
+      "start": 18.0, "end": 21.5, "focal_mm": 21.0, "hold_in": 0.4, "hold_out": 0.4,
+      "pos0": [0.4, -53.8, 1.75], "pos1": [0.4, -53.8, 1.75],
+      "look0": [0.0, -40.0, 5.2], "look1": [0.0, -44.0, 9.0],
+      "subjects": ["whale"]
+    },
+    {
+      "id": "C4b",
+      "name": "闇と静かな眼（冒険者見上げ完全固定三脚・1.8秒無音：眼が静かに横切る）",
+      "rig": "locked_tripod",
+      "start": 21.5, "end": 25.0, "focal_mm": 50.0, "hold_in": 0.0, "hold_out": 0.0,
+      "pos0": [8.6, -65.2, 5.2], "pos1": [8.6, -65.2, 5.2],
+      "look0": [1.8, -65.2, 6.2], "look1": [1.8, -65.2, 6.2],
+      "subjects": ["whale"]
+    },
+    {
+      "id": "C5a",
+      "name": "月光覚醒・冒険者見上げPOV（34mm側面3/4：月光柱へ突入し頭→尾へ銀光が走る！）",
+      "rig": "ots_tilt_up",
+      "start": 25.0, "end": 30.0, "focal_mm": 34.0, "hold_in": 0.5, "hold_out": 0.5,
+      "pos0": [-2.0, -56.4, 2.20], "pos1": [-2.0, -56.4, 2.20],
+      "look0": [10.0, -28.0, 14.5], "look1": [26.0, -14.0, 22.5],
+      "subjects": ["whale"]
+    },
+    {
+      "id": "C5b",
+      "name": "地表24cm超低空・一斉開花ウェーブ→終盤に最初の花弁がそっと離陸（ランタンなし）",
+      "rig": "low_slider",
+      "start": 30.0, "end": 35.0, "focal_mm": 28.0, "hold_in": 0.5, "hold_out": 0.6,
+      "pos0": [3.55, -55.8, 1.09], "pos1": [3.95, -52.9, 1.14],
+      "look0": [14.0, 42.0, 5.2], "look1": [16.5, 42.0, 12.2],
+      "subjects": ["p0", "bridge"]
+    },
+    {
+      "id": "C6a",
+      "name": "花弁離陸→1秒完全静止ロック→クレーン上昇＆大チルト（大きめの白鯨を劇的開示）",
+      "rig": "crane_reveal",
+      "start": 35.0, "end": 44.0, "focal_mm": 32.0, "hold_in": 1.8, "hold_out": 0.8,
+      "pos_mode": "c6a_freeze_tilt",
+      "pos0": [2.2, -53.8, 1.40], "pos1": [4.5, -45.5, 11.5],
+      "look0": [8.5, -34.0, 0.75], "look1": [22.0, 42.0, 33.5],
+      "subjects": ["whale", "bridge"]
+    },
+    {
+      "id": "C6b",
+      "name": "360°緩やかバレルロール × 石橋並走（34mm近接1軸平行トラック：大きくブレない白鯨＋石橋）",
+      "rig": "tracking_rig",
+      "start": 44.0, "end": 52.0, "focal_mm": 34.0, "hold_in": 0.5, "hold_out": 0.5,
+      "pos0": [19.0, -10.0, 22.5], "pos1": [-21.0, -10.0, 22.5],
+      "look0": [16.0, 42.0, 24.5], "look1": [-21.0, 42.0, 24.5],
+      "subjects": ["whale", "bridge"]
+    },
+    {
+      "id": "C6c",
+      "name": "1+3融合・220m大空洞決定画（26mm近接楕円オービット弧：大きく堂々たる白鯨＆鏡面）",
+      "rig": "orbital_arc",
+      "start": 52.0, "end": 60.0, "focal_mm": 26.0, "hold_in": 0.6, "hold_out": 0.6,
+      "pos_mode": "c6c_orbit",
+      "orbit_center": [-6.0, 16.0, 23.0],
+      "orbit_rx": 48.0, "orbit_ry": 64.0,
+      "orbit_deg0": -130.0, "orbit_deg1": -96.0,
+      "pos0": [-36.9, -33.0, 23.0], "pos1": [-11.0, -47.6, 23.0],
+      "look0": [-10.0, 20.0, 22.0], "look1": [-6.0, 20.0, 22.0],
+      "subjects": ["whale", "bridge"]
+    },
+    {
+      "id": "C6d",
+      "name": "22°優しい一瞥（42mm近接・0.6xスローの間で静かに減速→上空への針路）",
+      "rig": "tracking_rig",
+      "start": 60.0, "end": 69.0, "focal_mm": 42.0, "hold_in": 0.6, "hold_out": 0.6,
+      "pos_mode": "c6d_slow_glance",
+      "pos0": [-6.0, -42.0, 22.0], "pos1": [6.0, -42.0, 22.0],
+      "look0": [-2.0, -11.0, 29.5], "look1": [15.0, 10.0, 40.0],
+      "subjects": ["whale"]
+    },
+    {
+      "id": "C7a",
+      "name": "冒険者見上げPOVで見送り（24mm固定位置1軸チルトアップ：月光柱を昇り満月へ向かう）",
+      "rig": "pov_tilt_up",
+      "start": 69.0, "end": 75.0, "focal_mm": 24.0, "hold_in": 0.6, "hold_out": 0.6,
+      "pos0": [0.0, -54.0, 2.35], "pos1": [0.0, -54.0, 2.35],
+      "look0": [15.0, 16.0, 28.0], "look1": [34.0, 62.0, 96.0],
+      "subjects": ["whale"]
+    },
+    {
+      "id": "C7b",
+      "name": "55mm完全固定三脚・満月へ昇り奥へ吸い込まれるように溶け還る（横通過を廃止！）",
+      "rig": "locked_tripod",
+      "start": 75.0, "end": 83.0, "focal_mm": 55.0, "hold_in": 0.0, "hold_out": 0.0,
+      "pos0": [43.5, -24.0, 128.5], "pos1": [43.5, -24.0, 128.5],
+      "look0": [43.5, 78.0, 131.5], "look1": [43.5, 78.0, 131.5],
+      "subjects": ["moon", "whale"]
+    },
+    {
+      "id": "C7c",
+      "name": "本物の雪の祝福（冒険者なし・24mm静かな大空洞：石橋と湖面と花々を包む降雪）",
+      "rig": "dolly_track",
+      "start": 83.0, "end": 89.0, "focal_mm": 24.0, "hold_in": 0.6, "hold_out": 0.6,
+      "pos0": [0.0, -53.2, 2.15], "pos1": [0.0, -54.8, 2.15],
+      "look0": [2.0, 12.0, 9.5], "look1": [2.0, 12.0, 9.5],
+      "subjects": ["bridge"]
+    },
+    {
+      "id": "C8",
+      "name": "余韻・最後の一枚と波紋（冒険者なし・ランタンなし・C1終点完全対称＋フェードアウト）",
+      "rig": "locked_tripod",
+      "start": 89.0, "end": 96.0, "focal_mm": 32.0, "hold_in": 1.0, "hold_out": 1.0,
+      "pos0": [4.65, -55.7, 1.85], "pos1": [4.65, -55.7, 1.85],
+      "look0": [4.35, -50.2, 1.08], "look1": [4.35, -50.2, 1.08],
+      "subjects": ["p0"]
+    }
+  ]
+}

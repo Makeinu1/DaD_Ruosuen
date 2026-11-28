@@ -1,0 +1,592 @@
+{
+  "version": "9.0",
+  "status": "PASS",
+  "fails": [],
+  "hero_flowers": 140,
+  "colony_flowers": 310,
+  "bridge_blooms": 180,
+  "snow_petals_total": 2020,
+  "checks": [
+    {
+      "label": "ground_contact:PC1",
+      "ok": true,
+      "min_z": 0.85
+    },
+    {
+      "label": "ground_contact:PC2",
+      "ok": true,
+      "min_z": 0.85
+    },
+    {
+      "label": "ground_contact:PC3",
+      "ok": true,
+      "min_z": 0.85
+    },
+    {
+      "label": "ground_contact:PC4",
+      "ok": true,
+      "min_z": 0.85
+    },
+    {
+      "label": "C1_zero_whale_leak",
+      "ok": true
+    },
+    {
+      "label": "C4b_eye_centered",
+      "ok": true,
+      "uv": [
+        0.608,
+        0.645
+      ],
+      "dist_m": 10.89
+    },
+    {
+      "label": "C6b_top_headroom",
+      "ok": true,
+      "max_v": 0.77
+    },
+    {
+      "label": "C6c_mirror_symmetry",
+      "ok": true,
+      "sky_v": 0.735,
+      "ref_v": 0.138
+    },
+    {
+      "label": "C7a_zero_snow_teleport",
+      "ok": true,
+      "max_1frame_jump_m": 0.0509
+    },
+    {
+      "label": "C8_true_petal_shedding",
+      "ok": true,
+      "shed_ratio": 0.886,
+      "p0_intact": true
+    },
+    {
+      "label": "whale_unbroken_spline",
+      "ok": true,
+      "max_m_per_f": 0.668,
+      "max_deg_per_f": 2.774
+    },
+    {
+      "shot": "C1",
+      "beat": "IN",
+      "t": 0.3,
+      "focal_mm": 32.0
+    },
+    {
+      "shot": "C1",
+      "beat": "MID",
+      "t": 3.0,
+      "focal_mm": 32.0
+    },
+    {
+      "shot": "C1",
+      "beat": "OUT",
+      "t": 5.7,
+      "focal_mm": 32.0
+    },
+    {
+      "shot": "C2",
+      "beat": "IN",
+      "t": 6.3,
+      "focal_mm": 35.0,
+      "whale_uv": [
+        0.445,
+        0.44
+      ],
+      "whale_depth_m": 85.6
+    },
+    {
+      "shot": "C2",
+      "beat": "MID",
+      "t": 9.0,
+      "focal_mm": 35.0,
+      "whale_uv": [
+        0.431,
+        0.454
+      ],
+      "whale_depth_m": 72.05
+    },
+    {
+      "shot": "C2",
+      "beat": "OUT",
+      "t": 11.7,
+      "focal_mm": 35.0,
+      "whale_uv": [
+        0.413,
+        0.482
+      ],
+      "whale_depth_m": 56.98
+    },
+    {
+      "shot": "C3",
+      "beat": "IN",
+      "t": 12.3,
+      "focal_mm": 28.0,
+      "whale_uv": [
+        0.517,
+        0.454
+      ],
+      "whale_depth_m": 51.59
+    },
+    {
+      "shot": "C3",
+      "beat": "MID",
+      "t": 15.0,
+      "focal_mm": 28.0,
+      "whale_uv": [
+        0.469,
+        0.482
+      ],
+      "whale_depth_m": 37.14
+    },
+    {
+      "shot": "C3",
+      "beat": "OUT",
+      "t": 17.7,
+      "focal_mm": 28.0,
+      "whale_uv": [
+        0.373,
+        0.553
+      ],
+      "whale_depth_m": 23.45
+    },
+    {
+      "shot": "C4a",
+      "beat": "IN",
+      "t": 18.3,
+      "focal_mm": 21.0,
+      "whale_uv": [
+        0.478,
+        0.432
+      ],
+      "whale_depth_m": 16.94
+    },
+    {
+      "shot": "C4a",
+      "beat": "MID",
+      "t": 19.75,
+      "focal_mm": 21.0,
+      "whale_uv": [
+        0.426,
+        0.4
+      ],
+      "whale_depth_m": 10.44
+    },
+    {
+      "shot": "C4a",
+      "beat": "OUT",
+      "t": 21.2,
+      "focal_mm": 21.0,
+      "whale_uv": [
+        0.462,
+        0.432
+      ],
+      "whale_depth_m": 7.33
+    },
+    {
+      "shot": "C4b",
+      "beat": "IN",
+      "t": 21.8,
+      "focal_mm": 45.0,
+      "whale_uv": [
+        -0.794,
+        0.421
+      ],
+      "whale_depth_m": 9.18
+    },
+    {
+      "shot": "C4b",
+      "beat": "MID",
+      "t": 23.25,
+      "focal_mm": 45.0,
+      "whale_uv": [
+        -0.193,
+        0.532
+      ],
+      "whale_depth_m": 10.12
+    },
+    {
+      "shot": "C4b",
+      "beat": "OUT",
+      "t": 24.7,
+      "focal_mm": 45.0,
+      "whale_uv": [
+        0.422,
+        0.434
+      ],
+      "whale_depth_m": 13.89
+    },
+    {
+      "shot": "C5a",
+      "beat": "IN",
+      "t": 25.3,
+      "focal_mm": 34.0,
+      "whale_uv": [
+        0.244,
+        0.424
+      ],
+      "whale_depth_m": 21.93
+    },
+    {
+      "shot": "C5a",
+      "beat": "MID",
+      "t": 27.5,
+      "focal_mm": 34.0,
+      "whale_uv": [
+        0.426,
+        0.495
+      ],
+      "whale_depth_m": 28.06
+    },
+    {
+      "shot": "C5a",
+      "beat": "OUT",
+      "t": 29.7,
+      "focal_mm": 34.0,
+      "whale_uv": [
+        0.578,
+        0.504
+      ],
+      "whale_depth_m": 39.84
+    },
+    {
+      "shot": "C5b",
+      "beat": "IN",
+      "t": 30.3,
+      "focal_mm": 28.0
+    },
+    {
+      "shot": "C5b",
+      "beat": "MID",
+      "t": 32.5,
+      "focal_mm": 28.0
+    },
+    {
+      "shot": "C5b",
+      "beat": "OUT",
+      "t": 34.7,
+      "focal_mm": 28.0
+    },
+    {
+      "shot": "C6a",
+      "beat": "IN",
+      "t": 35.3,
+      "focal_mm": 32.0,
+      "whale_uv": [
+        0.738,
+        1.176
+      ],
+      "whale_depth_m": 78.72
+    },
+    {
+      "shot": "C6a",
+      "beat": "MID",
+      "t": 39.5,
+      "focal_mm": 32.0,
+      "whale_uv": [
+        0.619,
+        0.682
+      ],
+      "whale_depth_m": 91.48
+    },
+    {
+      "shot": "C6a",
+      "beat": "OUT",
+      "t": 43.7,
+      "focal_mm": 32.0,
+      "whale_uv": [
+        0.475,
+        0.485
+      ],
+      "whale_depth_m": 90.03
+    },
+    {
+      "shot": "C6b",
+      "beat": "IN",
+      "t": 44.3,
+      "focal_mm": 30.0,
+      "whale_uv": [
+        0.51,
+        0.552
+      ],
+      "whale_depth_m": 54.4
+    },
+    {
+      "shot": "C6b",
+      "beat": "MID",
+      "t": 48.0,
+      "focal_mm": 30.0,
+      "whale_uv": [
+        0.455,
+        0.563
+      ],
+      "whale_depth_m": 54.94
+    },
+    {
+      "shot": "C6b",
+      "beat": "OUT",
+      "t": 51.7,
+      "focal_mm": 30.0,
+      "whale_uv": [
+        0.447,
+        0.528
+      ],
+      "whale_depth_m": 48.1
+    },
+    {
+      "shot": "C6c",
+      "beat": "IN",
+      "t": 52.3,
+      "focal_mm": 20.0,
+      "whale_uv": [
+        0.349,
+        0.789
+      ],
+      "whale_depth_m": 81.22
+    },
+    {
+      "shot": "C6c",
+      "beat": "MID",
+      "t": 56.0,
+      "focal_mm": 20.0,
+      "whale_uv": [
+        0.415,
+        0.735
+      ],
+      "whale_depth_m": 70.52
+    },
+    {
+      "shot": "C6c",
+      "beat": "OUT",
+      "t": 59.7,
+      "focal_mm": 20.0,
+      "whale_uv": [
+        0.428,
+        0.854
+      ],
+      "whale_depth_m": 54.98
+    },
+    {
+      "shot": "C6d",
+      "beat": "IN",
+      "t": 60.3,
+      "focal_mm": 42.0,
+      "whale_uv": [
+        0.468,
+        0.551
+      ],
+      "whale_depth_m": 29.53
+    },
+    {
+      "shot": "C6d",
+      "beat": "MID",
+      "t": 64.5,
+      "focal_mm": 42.0,
+      "whale_uv": [
+        0.484,
+        0.564
+      ],
+      "whale_depth_m": 28.54
+    },
+    {
+      "shot": "C6d",
+      "beat": "OUT",
+      "t": 68.7,
+      "focal_mm": 42.0,
+      "whale_uv": [
+        0.485,
+        0.553
+      ],
+      "whale_depth_m": 56.63
+    },
+    {
+      "shot": "C7a",
+      "beat": "IN",
+      "t": 69.3,
+      "focal_mm": 24.0,
+      "whale_uv": [
+        0.551,
+        0.804
+      ],
+      "whale_depth_m": 85.73
+    },
+    {
+      "shot": "C7a",
+      "beat": "MID",
+      "t": 72.0,
+      "focal_mm": 24.0,
+      "whale_uv": [
+        0.513,
+        0.648
+      ],
+      "whale_depth_m": 124.41
+    },
+    {
+      "shot": "C7a",
+      "beat": "OUT",
+      "t": 74.7,
+      "focal_mm": 24.0,
+      "whale_uv": [
+        0.501,
+        0.627
+      ],
+      "whale_depth_m": 163.69
+    },
+    {
+      "shot": "C7b",
+      "beat": "IN",
+      "t": 75.3,
+      "focal_mm": 55.0,
+      "whale_uv": [
+        0.277,
+        0.075
+      ],
+      "whale_depth_m": 51.03
+    },
+    {
+      "shot": "C7b",
+      "beat": "MID",
+      "t": 79.0,
+      "focal_mm": 55.0,
+      "whale_uv": [
+        0.463,
+        0.466
+      ],
+      "whale_depth_m": 83.87
+    },
+    {
+      "shot": "C7b",
+      "beat": "OUT",
+      "t": 82.7,
+      "focal_mm": 55.0
+    },
+    {
+      "shot": "C7c",
+      "beat": "IN",
+      "t": 83.3,
+      "focal_mm": 24.0
+    },
+    {
+      "shot": "C7c",
+      "beat": "MID",
+      "t": 86.0,
+      "focal_mm": 24.0
+    },
+    {
+      "shot": "C7c",
+      "beat": "OUT",
+      "t": 88.7,
+      "focal_mm": 24.0
+    },
+    {
+      "shot": "C8",
+      "beat": "IN",
+      "t": 89.3,
+      "focal_mm": 32.0
+    },
+    {
+      "shot": "C8",
+      "beat": "MID",
+      "t": 92.5,
+      "focal_mm": 32.0
+    },
+    {
+      "shot": "C8",
+      "beat": "OUT",
+      "t": 95.7,
+      "focal_mm": 32.0
+    },
+    {
+      "label": "cam_clearance:C1",
+      "ok": true,
+      "hit_obj": null,
+      "dist_m": 3.275
+    },
+    {
+      "label": "cam_clearance:C2",
+      "ok": true,
+      "hit_obj": null,
+      "dist_m": 227.907
+    },
+    {
+      "label": "cam_clearance:C3",
+      "ok": true,
+      "hit_obj": null,
+      "dist_m": 30.36
+    },
+    {
+      "label": "cam_clearance:C4a",
+      "ok": true,
+      "hit_obj": null,
+      "dist_m": 4.933
+    },
+    {
+      "label": "cam_clearance:C4b",
+      "ok": true,
+      "hit_obj": null,
+      "dist_m": 9.7
+    },
+    {
+      "label": "cam_clearance:C5a",
+      "ok": true,
+      "hit_obj": null,
+      "dist_m": 26.522
+    },
+    {
+      "label": "cam_clearance:C5b",
+      "ok": true,
+      "hit_obj": null,
+      "dist_m": 1.23
+    },
+    {
+      "label": "cam_clearance:C6a",
+      "ok": true,
+      "hit_obj": null,
+      "dist_m": 13.396
+    },
+    {
+      "label": "cam_clearance:C6b",
+      "ok": true,
+      "hit_obj": null,
+      "dist_m": 187.628
+    },
+    {
+      "label": "cam_clearance:C6c",
+      "ok": true,
+      "hit_obj": null,
+      "dist_m": 53.522
+    },
+    {
+      "label": "cam_clearance:C6d",
+      "ok": true,
+      "hit_obj": null,
+      "dist_m": 26.084
+    },
+    {
+      "label": "cam_clearance:C7a",
+      "ok": true,
+      "hit_obj": null,
+      "dist_m": 34.521
+    },
+    {
+      "label": "cam_clearance:C7b",
+      "ok": true,
+      "hit_obj": null,
+      "dist_m": 83.744
+    },
+    {
+      "label": "cam_clearance:C7c",
+      "ok": true,
+      "hit_obj": null,
+      "dist_m": 230.017
+    },
+    {
+      "label": "cam_clearance:C8",
+      "ok": true,
+      "hit_obj": null,
+      "dist_m": 2.841
+    }
+  ]
+}
