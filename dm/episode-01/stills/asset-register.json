@@ -1,0 +1,740 @@
+{
+  "schema_version": "1.0",
+  "base_commit": "434b17847b78c953703fcd175d9d853f5efa307a",
+  "style_version": "0.4",
+  "entries": [
+    {
+      "id": "E01-ST-001",
+      "order": 10,
+      "title": "年の瀬のルオスエン",
+      "priority": "P0",
+      "mode": "new",
+      "status": "draft-unregistered",
+      "task": "E01-08A-A01",
+      "trigger": "開始前〜導入",
+      "references": [
+        "DESIGN.md",
+        "assets/reuna-turn-10.webp",
+        "assets/ruosuen-first-adventure-b.webp",
+        "world/02_マナ・魔石・迷宮と社会.md",
+        "notes/ルオスエン地方地図_第一ラフ作図仕様_2026-11-22.md",
+        "notes/maps/ruosuen-regional-map-20261122-v1.webp",
+        "world/underground/terminal-geography.md",
+        "dm/episode-01/terminal-art-handoff.md"
+      ],
+      "brief": "生活の終わりと旅の始まり。既存の都市昼夜対と同じ建物・橋の配置を優先。目線高の街路、手前に荷造りと店じまい、中景に橋、遠景に断裂両岸の家。冬の日中。屋外の街灯は消灯し、必要な室内・日陰の作業灯のみ。厚手の外套、帰郷客、荷造り・店じまい、冬の淡い日差し。積雪・祭礼は未承認。試作は未登録・未採用。 001/016の基準構図は西岸の旧市街側から東岸へ斜めに望む案を優先。石造アーチ橋は両岸に接続し、遠景には東岸の摩天楼を識別可能なシルエットで置く案。塔の正確な高さ・様式・位置は未決。滝と河港は同じ地理に属するが実際の視野に入る場合のみ。広域図を一枚の風景に詰め込まない。 海を市街の直下に描かない。川の全量を断裂へ落とさない。地上の日常的な魔導船飛行、地上河港と地下PORTの同高度化、伽藍の塔を地上の高塔とする描写を禁止。地図の正確な縮尺・橋数・街区境界・塔の詳細・地下水系を確定しない。 地表の裂け目幅約150m、東西各一基のHOME（地上乗降場）を基本配置。滝は主要街区北側寄り、昇降路・船の航行空間から離す。正確な座標・外形・機構は未決。 VIEW-01。西HOMEを中景候補、対岸HOMEは視野内のみ。地下全貌は温存。",
+      "approval": "pending",
+      "original": null,
+      "projection": null,
+      "sha256": null,
+      "revision": 0,
+      "location_id": "LOC-01",
+      "prop_ids": [
+        "PR-01",
+        "PR-02",
+        "PR-03",
+        "PR-04",
+        "PR-09"
+      ]
+    },
+    {
+      "id": "E01-ST-002",
+      "order": 20,
+      "title": "モグラの寝床 内観",
+      "priority": "P0",
+      "mode": "new",
+      "status": "planned",
+      "task": "E01-08A-A01",
+      "trigger": "PCが店内で開始／ベルとの会話",
+      "references": [
+        "assets/ruosuen-walk-mole-inn-20261117.webp",
+        "dm/episode-01/e01-04-town-preparation-v01.md"
+      ],
+      "brief": "木梁・石壁・暖炉・食卓、帰省支度。既存画の空間と生活感を参照し、今回の美術ラインで新規制作。掲示板は文字なし、ベル・タッカーは別素材。会話を邪魔しない焦点と明度。",
+      "approval": "pending",
+      "original": null,
+      "projection": null,
+      "sha256": null,
+      "revision": 0,
+      "location_id": "LOC-02",
+      "prop_ids": [
+        "PR-02",
+        "PR-05",
+        "PR-06"
+      ]
+    },
+    {
+      "id": "E01-ST-019",
+      "order": 30,
+      "title": "王立地図院 内部全景",
+      "priority": "P1",
+      "mode": "new",
+      "status": "planned",
+      "task": "E01-08A-A02",
+      "trigger": "訪問した場合、入室時",
+      "references": [
+        "world/05_ルオスエンの主要組織.md",
+        "assets/ruosuen-walk-maps-20261117.webp"
+      ],
+      "brief": "受付から見える広い作業室、石造アーチ、収納棚、測量道具。公共性・地道な仕事を見せ、豪華宮殿や新紋章にしない。020と同じ建物キット。",
+      "approval": "pending",
+      "original": null,
+      "projection": null,
+      "sha256": null,
+      "revision": 0,
+      "location_id": "LOC-03",
+      "prop_ids": [
+        "PR-02",
+        "PR-07"
+      ]
+    },
+    {
+      "id": "E01-ST-020",
+      "order": 31,
+      "title": "地図院 閲覧・作業空間",
+      "priority": "P1",
+      "mode": "new",
+      "status": "planned",
+      "task": "E01-08A-A02",
+      "trigger": "資料を実際に閲覧する時",
+      "references": [
+        "assets/ruosuen-walk-maps-20261117.webp",
+        "dm/episode-01/e01-04-town-preparation-v01.md"
+      ],
+      "brief": "既存画の机・地図・職員・測量器具を形状と生活感の参照として新規制作。紙地図の正本を置き換えず、読める偽地図や文字を手掛かりにしない。019と同じ建築・器具。",
+      "approval": "pending",
+      "original": null,
+      "projection": null,
+      "sha256": null,
+      "revision": 0,
+      "location_id": "LOC-03",
+      "prop_ids": [
+        "PR-02",
+        "PR-07"
+      ]
+    },
+    {
+      "id": "E01-ST-021",
+      "order": 40,
+      "title": "伽藍の塔 導入景",
+      "priority": "P1",
+      "mode": "new",
+      "status": "planned",
+      "task": "E01-08A-A02",
+      "trigger": "塔に立ち寄った場合",
+      "references": [
+        "assets/ruosuen-walk-tower-20261117.webp",
+        "world/05_ルオスエンの主要組織.md",
+        "world/02_マナ・魔石・迷宮と社会.md",
+        "notes/ルオスエン地方地図_第一ラフ作図仕様_2026-11-22.md",
+        "notes/maps/ruosuen-regional-map-20261122-v1.webp"
+      ],
+      "brief": "既存画の巨大な下方へ延びる研究施設、橋・棚・骨格標本などを空間参照とし、新規制作。眺望位置と現行設定を照合。022と建築キットを共有。 地上の摩天楼（東岸・上へ）と伽藍の塔（地下・下へ）を混同しない。",
+      "approval": "pending",
+      "original": null,
+      "projection": null,
+      "sha256": null,
+      "revision": 0,
+      "location_id": "LOC-04",
+      "prop_ids": [
+        "PR-02",
+        "PR-08"
+      ]
+    },
+    {
+      "id": "E01-ST-022",
+      "order": 41,
+      "title": "伽藍の塔 研究・閲覧室",
+      "priority": "P1",
+      "mode": "new",
+      "status": "planned",
+      "task": "E01-08A-A02",
+      "trigger": "閲覧契約・調査時",
+      "references": [
+        "dm/episode-01/e01-04-town-preparation-v01.md",
+        "assets/ruosuen-walk-tower-20261117.webp"
+      ],
+      "brief": "書棚・標本棚・研究机、暖灯と地下の冷光。職業的な研究の場。空雪花の閉蕾・月光の答え・鯨を先に見せない。標本は具体的な情報開示に従う。",
+      "approval": "pending",
+      "original": null,
+      "projection": null,
+      "sha256": null,
+      "revision": 0,
+      "location_id": "LOC-04",
+      "prop_ids": [
+        "PR-02",
+        "PR-08"
+      ]
+    },
+    {
+      "id": "E01-ST-027",
+      "order": 50,
+      "title": "年末市場",
+      "priority": "P2",
+      "mode": "new",
+      "status": "planned",
+      "task": "E01-08A-A02",
+      "trigger": "買物希望時のみ",
+      "references": [
+        "assets/ruosuen-street-market-gouache.webp",
+        "dm/episode-01/e01-04-town-preparation-v01.md",
+        "world/02_マナ・魔石・迷宮と社会.md",
+        "notes/ルオスエン地方地図_第一ラフ作図仕様_2026-11-22.md",
+        "notes/maps/ruosuen-regional-map-20261122-v1.webp",
+        "world/underground/terminal-geography.md",
+        "dm/episode-01/terminal-art-handoff.md"
+      ],
+      "brief": "既存市場画の店・荷車・生活物資を参照し年末の荷造り・店じまいの新規画を制作。月視薬完成品の存在を示さない。未承認の祭礼・降雪を描かない。 西岸旧市街・河港と東岸工房街の位置関係を参照し、地上に海や飛行魔導船を描かない。市場の厳密な場所は未決。 冬の日中。屋外の街灯は消灯し、必要な室内・日陰の作業灯のみ。厚手の外套、帰郷客、荷造り・店じまい、冬の淡い日差し。積雪・祭礼は未承認。",
+      "approval": "pending",
+      "original": null,
+      "projection": null,
+      "sha256": null,
+      "revision": 0,
+      "location_id": "LOC-01",
+      "prop_ids": [
+        "PR-01",
+        "PR-02",
+        "PR-03",
+        "PR-04",
+        "PR-09"
+      ]
+    },
+    {
+      "id": "E01-ST-003",
+      "order": 60,
+      "title": "HOME 地下への降下",
+      "priority": "P0",
+      "mode": "new",
+      "status": "planned",
+      "task": "E01-08A-A03",
+      "trigger": "実際に昇降機に乗った時",
+      "references": [
+        "world/02_マナ・魔石・迷宮と社会.md",
+        "world/underground/README.md",
+        "notes/ルオスエン地方地図_第一ラフ作図仕様_2026-11-22.md",
+        "notes/maps/ruosuen-regional-map-20261122-v1.webp",
+        "world/underground/terminal-geography.md",
+        "dm/episode-01/terminal-art-handoff.md"
+      ],
+      "brief": "VIEW-02：HOME下降中、狭い裂け目から広がる不規則な空洞へ視界が開く。手前の手すり・人・荷、岩壁から伸びる板状床版と上方の浮羽。広場-150mへ到着。駆動詳細は未決。",
+      "approval": "pending",
+      "original": null,
+      "projection": null,
+      "sha256": null,
+      "revision": 0,
+      "location_id": "LOC-05",
+      "prop_ids": [
+        "PR-02",
+        "PR-09",
+        "PR-10",
+        "PR-11"
+      ]
+    },
+    {
+      "id": "E01-ST-023",
+      "order": 65,
+      "title": "ファーストライト大空洞",
+      "priority": "P0",
+      "mode": "new",
+      "status": "planned",
+      "task": "E01-08A-A03",
+      "trigger": "HOME下降終盤〜広場到着で大空洞を視認した時",
+      "references": [
+        "assets/ruosuen-walk-labyrinth-panorama-20261117.webp",
+        "world/underground/README.md",
+        "DESIGN.md",
+        "world/02_マナ・魔石・迷宮と社会.md",
+        "notes/ルオスエン地方地図_第一ラフ作図仕様_2026-11-22.md",
+        "notes/maps/ruosuen-regional-map-20261122-v1.webp",
+        "world/underground/terminal-geography.md",
+        "dm/episode-01/terminal-art-handoff.md"
+      ],
+      "brief": "VIEW-02/03間：下降終盤または広場到着直前の全景。局所空洞最大幅約500m・南北約900m、TREEと部分結合の広場、下層PORT桟橋・係留船・開放空域を視野内で描く。上方の浮羽、自然光と人工灯。AREA1全体を局所空洞と同一視しない。地上船・湖の光柱なし。",
+      "approval": "pending",
+      "original": null,
+      "projection": null,
+      "sha256": null,
+      "revision": 0,
+      "location_id": "LOC-05",
+      "prop_ids": [
+        "PR-02",
+        "PR-09",
+        "PR-10",
+        "PR-11"
+      ]
+    },
+    {
+      "id": "E01-ST-024",
+      "order": 70,
+      "title": "ターミナル 活動圏",
+      "priority": "P1",
+      "mode": "new",
+      "status": "planned",
+      "task": "E01-08A-A03",
+      "trigger": "広場層に降車して中央広場を視認した時",
+      "references": [
+        "world/02_マナ・魔石・迷宮と社会.md",
+        "assets/ruosuen-walk-labyrinth-panorama-20261117.webp",
+        "world/underground/terminal-geography.md",
+        "dm/episode-01/terminal-art-handoff.md"
+      ],
+      "brief": "VIEW-03：広場層-150mの歩行者目線。中央最大結合部とROUTE ZERO記念碑。待ち合わせ、乗換、積荷整理、帰郷客・船員。岩壁側の補給店・食堂・酒場、開放側の通路。現代駅・観光市場・一般住宅にしない。刻字が見える場合だけ正確にROUTE ZERO（物理的刻字のみ）。PORTは遠景のみ、立寄り不要。",
+      "approval": "pending",
+      "original": null,
+      "projection": null,
+      "sha256": null,
+      "revision": 0,
+      "location_id": "LOC-05",
+      "prop_ids": [
+        "PR-02",
+        "PR-09",
+        "PR-10",
+        "PR-11"
+      ]
+    },
+    {
+      "id": "E01-ST-004",
+      "order": 80,
+      "title": "GATE 探索の出入口",
+      "priority": "P0",
+      "mode": "new",
+      "status": "planned",
+      "task": "E01-08A-A03",
+      "trigger": "GATE層から別の下行昇降機でNODE:GATEに到着した時",
+      "references": [
+        "world/underground/README.md",
+        "world/02_マナ・魔石・迷宮と社会.md",
+        "dm/episode-01/e01-04-town-preparation-v01.md",
+        "world/underground/terminal-geography.md",
+        "dm/episode-01/terminal-art-handoff.md"
+      ],
+      "brief": "VIEW-05：GATE層-265mの待機場から別の下行昇降機で80m下のNODE:GATE -345mへ。画の主視点は下側NODE:GATE、R3/R7共通端点と徒歩の閾。上側待機場は見える範囲のみ。巨大封印扉、新通行資格、番号文字なし。",
+      "approval": "pending",
+      "original": null,
+      "projection": null,
+      "sha256": null,
+      "revision": 0,
+      "location_id": "LOC-05",
+      "prop_ids": [
+        "PR-02",
+        "PR-09",
+        "PR-10",
+        "PR-11"
+      ]
+    },
+    {
+      "id": "E01-ST-005",
+      "order": 100,
+      "title": "アルデン大街道 R3",
+      "priority": "P0",
+      "mode": "new",
+      "status": "planned",
+      "task": "E01-08A-A04",
+      "trigger": "R3を歩き始めた時",
+      "references": [
+        "dm/episode-01/road-encounters.md",
+        "world/05_ルオスエンの主要組織.md",
+        "world/underground/atlas.json"
+      ],
+      "brief": "広い歩行路、灯守が整えた路肩の光苔・光草、分岐や橋の補助灯、遠くの往来。地面から見た自然と施工の対比。線路を全域に敷かない。",
+      "approval": "pending",
+      "original": null,
+      "projection": null,
+      "sha256": null,
+      "revision": 0,
+      "location_id": "LOC-06",
+      "prop_ids": [
+        "PR-02",
+        "PR-10",
+        "PR-12"
+      ]
+    },
+    {
+      "id": "E01-ST-006",
+      "order": 110,
+      "title": "R65 前半 人通りの減少",
+      "priority": "P0",
+      "mode": "new",
+      "status": "planned",
+      "task": "E01-08A-A04",
+      "trigger": "R65 S11に進んだ時",
+      "references": [
+        "dm/episode-01/road-encounters.md",
+        "world/underground/atlas.json"
+      ],
+      "brief": "整備された路面を維持しつつ人影・灯具を減らす。自然岩壁が近づく。R3と同じ道路素材・灯火の形。無人未踏路にしない。",
+      "approval": "pending",
+      "original": null,
+      "projection": null,
+      "sha256": null,
+      "revision": 0,
+      "location_id": "LOC-06",
+      "prop_ids": [
+        "PR-02",
+        "PR-10",
+        "PR-12"
+      ]
+    },
+    {
+      "id": "E01-ST-025",
+      "order": 120,
+      "title": "R65 後半 文明の外縁",
+      "priority": "P0",
+      "mode": "new",
+      "status": "planned",
+      "task": "E01-08A-A04",
+      "trigger": "R65 S12を進んだ時",
+      "references": [
+        "dm/episode-01/road-encounters.md",
+        "world/underground/atlas.json"
+      ],
+      "brief": "整備は続くが下りと岩壁が強まり人影は少ない。遠景の人工灯は点在。S34への分岐を絵だけで正解に誘導しない。地形の詳細は台帳以上に固定しない。",
+      "approval": "pending",
+      "original": null,
+      "projection": null,
+      "sha256": null,
+      "revision": 0,
+      "location_id": "LOC-06",
+      "prop_ids": [
+        "PR-02",
+        "PR-10",
+        "PR-12"
+      ]
+    },
+    {
+      "id": "E01-ST-007",
+      "order": 130,
+      "title": "未整備横道の先の洞窟入口",
+      "priority": "P0",
+      "mode": "new",
+      "status": "planned",
+      "task": "E01-08A-A05",
+      "trigger": "S34候補の先で実際に開口を確認",
+      "references": [
+        "dm/episode-01/cave-dungeon-v01.md",
+        "dm/episode-01/road-encounters.md"
+      ],
+      "brief": "整備の終わった岩の道と自然開口、天井2〜3mのAを想定。歩いて入れる幅・緩い下り。接続は候補のため周囲の固有地形を断定しない。",
+      "approval": "pending",
+      "original": null,
+      "projection": null,
+      "sha256": null,
+      "revision": 0,
+      "location_id": "LOC-07",
+      "prop_ids": [
+        "PR-13"
+      ]
+    },
+    {
+      "id": "E01-ST-008",
+      "order": 140,
+      "title": "洞窟内の狭い接近通路",
+      "priority": "P0",
+      "mode": "new",
+      "status": "planned",
+      "task": "E01-08A-A05",
+      "trigger": "Bで痕跡を認識できる時",
+      "references": [
+        "dm/episode-01/cave-dungeon-v01.md"
+      ],
+      "brief": "低い目線の狭い通路、天井3〜4m、毛や骨は認識条件に従い控えめに。狼本体は描かない。携行光は実際のPCの光源条件に従い、暗部を完全黒にしない。",
+      "approval": "pending",
+      "original": null,
+      "projection": null,
+      "sha256": null,
+      "revision": 0,
+      "location_id": "LOC-07",
+      "prop_ids": [
+        "PR-13"
+      ]
+    },
+    {
+      "id": "E01-ST-009",
+      "order": 150,
+      "title": "はぐれ狼の棲む広間",
+      "priority": "P1",
+      "mode": "new",
+      "status": "planned",
+      "task": "E01-08A-A05",
+      "trigger": "C広間を視認／戦闘に入った時",
+      "references": [
+        "dm/episode-01/cave-dungeon-v01.md",
+        "dm/episode-01/cave-battle-player-v02.svg"
+      ],
+      "brief": "約80×70ft・天井6〜9m、岩柱・瓦礫・出口の位置関係はE01-01を参照。固定狼・魔石・PCを描かない環境背景。戦闘位置を静止画で裁定しない。",
+      "approval": "pending",
+      "original": null,
+      "projection": null,
+      "sha256": null,
+      "revision": 0,
+      "location_id": "LOC-07",
+      "prop_ids": [
+        "PR-13"
+      ]
+    },
+    {
+      "id": "E01-ST-010",
+      "order": 160,
+      "title": "地底湖 到着時全景",
+      "priority": "P0",
+      "mode": "new",
+      "status": "blocked",
+      "task": "E01-08A-A06",
+      "trigger": "湖岸に出て視認できた時",
+      "references": [
+        "dm/episode-01/lake-exploration-v01.md",
+        "dm/episode-01/ending/current/README.md"
+      ],
+      "brief": "閉塞から解放。入口から見える岸と水面、暗い奥行き、閉花株を自然に配置。最終映画と同じ地形を参照。白花の大群落や鯨は見せない。",
+      "approval": "pending",
+      "original": null,
+      "projection": null,
+      "sha256": null,
+      "revision": 0,
+      "location_id": "LOC-08",
+      "prop_ids": [
+        "PR-13",
+        "PR-14"
+      ]
+    },
+    {
+      "id": "E01-ST-011",
+      "order": 170,
+      "title": "A 最初の一輪",
+      "priority": "P0",
+      "mode": "new",
+      "status": "blocked",
+      "task": "E01-08A-A06",
+      "trigger": "Aを探索し開花株を発見",
+      "references": [
+        "dm/episode-01/lake-exploration-v01.md",
+        "dm/episode-01/ending/flower.md"
+      ],
+      "brief": "若齢の白五弁・淡金中心、青緑の葉と岩。接写だが葉と周囲を覚えられる構図。花は自発光しない。早着・遅着は実際の状態優先。",
+      "approval": "pending",
+      "original": null,
+      "projection": null,
+      "sha256": null,
+      "revision": 0,
+      "location_id": "LOC-08",
+      "prop_ids": [
+        "PR-13",
+        "PR-14"
+      ]
+    },
+    {
+      "id": "E01-ST-012",
+      "order": 180,
+      "title": "B 閉じた蕾",
+      "priority": "P0",
+      "mode": "new",
+      "status": "blocked",
+      "task": "E01-08A-A06",
+      "trigger": "Bを観察し閉蕾が見える時",
+      "references": [
+        "dm/episode-01/lake-exploration-v01.md",
+        "dm/episode-01/ending/flower.md"
+      ],
+      "brief": "平たい岩を目印、灰褐色のうつむく蕾とAに似た葉。岩の形・株数・固定カメラ・地形を013に固定。白い蕾や矢印なし。",
+      "approval": "pending",
+      "original": null,
+      "projection": null,
+      "sha256": null,
+      "revision": 0,
+      "location_id": "LOC-08",
+      "prop_ids": [
+        "PR-13",
+        "PR-14"
+      ]
+    },
+    {
+      "id": "E01-ST-013",
+      "order": 190,
+      "title": "B 同構図の開花後",
+      "priority": "P0",
+      "mode": "delta",
+      "status": "blocked",
+      "task": "E01-08A-A06",
+      "trigger": "開花時刻後にBを再視認した時",
+      "references": [
+        "dm/episode-01/lake-exploration-v01.md",
+        "dm/episode-01/ending/flower.md"
+      ],
+      "brief": "012の母版から該当若齢花の茎・萼・花弁と物理的な照明変化だけ編集。岩・背景・株の根元・画角を維持。未観察なら『さっきと違う』と強制しない。",
+      "approval": "pending",
+      "original": null,
+      "projection": null,
+      "sha256": null,
+      "revision": 0,
+      "location_id": "LOC-08",
+      "prop_ids": [
+        "PR-13",
+        "PR-14"
+      ]
+    },
+    {
+      "id": "E01-ST-014",
+      "order": 200,
+      "title": "C 月光が届く直前",
+      "priority": "P0",
+      "mode": "new",
+      "status": "blocked",
+      "task": "E01-08A-A06",
+      "trigger": "Cで実際に照射前を観察",
+      "references": [
+        "dm/episode-01/lake-exploration-v01.md",
+        "dm/episode-01/ending/flower.md"
+      ],
+      "brief": "影の移動、月光の縁と閉蕾。原因を説明する記号なし。026との固定母版。S1成熟群落の開花を描かない。",
+      "approval": "pending",
+      "original": null,
+      "projection": null,
+      "sha256": null,
+      "revision": 0,
+      "location_id": "LOC-08",
+      "prop_ids": [
+        "PR-13",
+        "PR-14"
+      ]
+    },
+    {
+      "id": "E01-ST-026",
+      "order": 210,
+      "title": "C 月光で開いた若齢花",
+      "priority": "P0",
+      "mode": "delta",
+      "status": "blocked",
+      "task": "E01-08A-A06",
+      "trigger": "C照射後、開花を視認した時",
+      "references": [
+        "dm/episode-01/lake-exploration-v01.md",
+        "dm/episode-01/ending/flower.md"
+      ],
+      "brief": "014の同構図で自然開花を示す。変えるのは実際に照射された株と光・影のみ。粒子・発光・広範囲一斉開花なし。採集量を絵で固定しない。",
+      "approval": "pending",
+      "original": null,
+      "projection": null,
+      "sha256": null,
+      "revision": 0,
+      "location_id": "LOC-08",
+      "prop_ids": [
+        "PR-13",
+        "PR-14"
+      ]
+    },
+    {
+      "id": "E01-ST-015",
+      "order": 220,
+      "title": "鯨が去った後の湖",
+      "priority": "P0",
+      "mode": "new",
+      "status": "blocked",
+      "task": "E01-08A-A06",
+      "trigger": "今日の鯨の退場を実際に経験し、余韻を描写する時",
+      "references": [
+        "dm/episode-01/return-journey-v01.md",
+        "dm/episode-01/e01-06-whale-rulings-v01.md",
+        "dm/episode-01/ending/current/README.md"
+      ],
+      "brief": "最終映像の静かな終端フレームを空間・光・状態の参照とし、今回の静止画の筆致で新規制作。花の残存は実際の結果に従い、今日の現象不成立の場合は010等を使用。過去上映C/Dを現在の現象と混同しない。",
+      "approval": "pending",
+      "original": null,
+      "projection": null,
+      "sha256": null,
+      "revision": 0,
+      "location_id": "LOC-08",
+      "prop_ids": [
+        "PR-13",
+        "PR-14"
+      ]
+    },
+    {
+      "id": "E01-ST-016",
+      "order": 230,
+      "title": "地上への帰還",
+      "priority": "P1",
+      "mode": "new",
+      "status": "planned",
+      "task": "E01-08A-A01",
+      "trigger": "地上に戻った時",
+      "references": [
+        "assets/ruosuen-street-night-oil.webp",
+        "assets/reuna-turn-10.webp",
+        "dm/episode-01/return-journey-v01.md",
+        "world/02_マナ・魔石・迷宮と社会.md",
+        "notes/ルオスエン地方地図_第一ラフ作図仕様_2026-11-22.md",
+        "notes/maps/ruosuen-regional-map-20261122-v1.webp",
+        "world/underground/terminal-geography.md",
+        "dm/episode-01/terminal-art-handoff.md"
+      ],
+      "brief": "既存の同一視点の昼夜対を都市形状の参考にして新規制作。001と建築配置を揃える。帰還時刻が未確定なら時間帯を断定せず、必要に応じ同母版の光差分を別途作者承認。時刻が合わない場合は002へ直行して省略。 001/016の基準構図は西岸の旧市街側から東岸へ斜めに望む案を優先。石造アーチ橋は両岸に接続し、遠景には東岸の摩天楼を識別可能なシルエットで置く案。塔の正確な高さ・様式・位置は未決。滝と河港は同じ地理に属するが実際の視野に入る場合のみ。広域図を一枚の風景に詰め込まない。 海を市街の直下に描かない。川の全量を断裂へ落とさない。地上の日常的な魔導船飛行、地上河港と地下PORTの同高度化、伽藍の塔を地上の高塔とする描写を禁止。地図の正確な縮尺・橋数・街区境界・塔の詳細・地下水系を確定しない。 地表の裂け目幅約150m、東西各一基のHOME（地上乗降場）を基本配置。滝は主要街区北側寄り、昇降路・船の航行空間から離す。正確な座標・外形・機構は未決。 冬の帰還。実際の時間で点灯を調整、001とHOME外形・位置を維持。",
+      "approval": "pending",
+      "original": null,
+      "projection": null,
+      "sha256": null,
+      "revision": 0,
+      "location_id": "LOC-01",
+      "prop_ids": [
+        "PR-01",
+        "PR-02",
+        "PR-03",
+        "PR-04",
+        "PR-09"
+      ]
+    },
+    {
+      "id": "E01-ST-017",
+      "order": 240,
+      "title": "ラウルの製本工房兼自宅",
+      "priority": "P0",
+      "mode": "new",
+      "status": "planned",
+      "task": "E01-08A-A07",
+      "trigger": "訪問して入室した時",
+      "references": [
+        "dm/episode-01/epilogue-v01.md",
+        "assets/ruosuen-walk-mole-inn-20261117.webp"
+      ],
+      "brief": "こぢんまりした暖かな工房。製本プレス・紙・糸・本、古い背嚢と手紙、机に三通の封筒。魔石工房の流用禁止。ラウルは別の人物演技で、背景に固定しない。",
+      "approval": "pending",
+      "original": null,
+      "projection": null,
+      "sha256": null,
+      "revision": 0,
+      "location_id": "LOC-09",
+      "prop_ids": [
+        "PR-02",
+        "PR-15",
+        "PR-16",
+        "PR-17"
+      ]
+    },
+    {
+      "id": "E01-ST-018",
+      "order": 250,
+      "title": "花便りの作業机",
+      "priority": "P2",
+      "mode": "new",
+      "status": "planned",
+      "task": "E01-08A-A07",
+      "trigger": "実際に便りを準備する場面だけ",
+      "references": [
+        "dm/episode-01/epilogue-v01.md"
+      ],
+      "brief": "017と同じ机・三通の封筒・道具の位置。花は受け取った事実と量に合う場合のみ、基本は花なしの机。実物カード配布を優先し不要なら017を保持。",
+      "approval": "pending",
+      "original": null,
+      "projection": null,
+      "sha256": null,
+      "revision": 0,
+      "location_id": "LOC-09",
+      "prop_ids": [
+        "PR-02",
+        "PR-15",
+        "PR-16",
+        "PR-17"
+      ]
+    }
+  ],
+  "terminal_canon_commit": "8899462088c7d6cd2b0924567c60ab98c1f30653"
+}
