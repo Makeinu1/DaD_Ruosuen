@@ -4,8 +4,8 @@
 - P0／new／draft-unregistered／投影順 10／E01-08A-A01
 - 美術設定：LOC-01／PR-01、PR-02、PR-03、PR-04（[背景美術設定](environment-bible.md)）
 - 表示条件：開始前〜導入
-- 作画指示：生活の終わりと旅の始まり。既存の都市昼夜対と同じ建物・橋の配置を優先。目線高の街路、手前に荷造りと店じまい、中景に橋、遠景に断裂両岸の家。穏やかな自然光と暖灯。積雪・祭礼・時刻の断定なし。試作は未登録・未採用。
-- 参照：[DESIGN.md](../../../DESIGN.md)、[assets/reuna-turn-10.webp](../../../assets/reuna-turn-10.webp)、[assets/ruosuen-first-adventure-b.webp](../../../assets/ruosuen-first-adventure-b.webp)
+- 作画指示：生活の終わりと旅の始まり。既存の都市昼夜対と同じ建物・橋の配置を優先。目線高の街路、手前に荷造りと店じまい、中景に橋、遠景に断裂両岸の家。穏やかな自然光と暖灯。積雪・祭礼・時刻の断定なし。試作は未登録・未採用。 001/016の基準構図は西岸の旧市街側から東岸へ斜めに望む案を優先。石造アーチ橋は両岸に接続し、遠景には東岸の摩天楼を識別可能なシルエットで置く案。塔の正確な高さ・様式・位置は未決。滝と河港は同じ地理に属するが実際の視野に入る場合のみ。広域図を一枚の風景に詰め込まない。 海を市街の直下に描かない。川の全量を断裂へ落とさない。地上の日常的な魔導船飛行、地上河港と地下PORTの同高度化、伽藍の塔を地上の高塔とする描写を禁止。地図の正確な縮尺・橋数・街区境界・塔の詳細・地下水系を確定しない。
+- 参照：[DESIGN.md](../../../DESIGN.md)、[assets/reuna-turn-10.webp](../../../assets/reuna-turn-10.webp)、[assets/ruosuen-first-adventure-b.webp](../../../assets/ruosuen-first-adventure-b.webp)、[world/02_マナ・魔石・迷宮と社会.md](../../../world/02_マナ・魔石・迷宮と社会.md)、[notes/ルオスエン地方地図_第一ラフ作図仕様_2026-11-22.md](../../../notes/ルオスエン地方地図_第一ラフ作図仕様_2026-11-22.md)、[notes/maps/ruosuen-regional-map-20261122-v1.webp](../../../notes/maps/ruosuen-regional-map-20261122-v1.webp)
 - 合格条件：共通style・表示条件・上記ロックに適合し、前後の場面と対比または連続性が読める。未決の地理・設備は担当資料を優先。
 
 ## E01-ST-002 — モグラの寝床 内観
@@ -36,8 +36,8 @@
 - P1／new／planned／投影順 40／E01-08A-A02
 - 美術設定：LOC-04／PR-02、PR-08（[背景美術設定](environment-bible.md)）
 - 表示条件：塔に立ち寄った場合
-- 作画指示：既存画の巨大な下方へ延びる研究施設、橋・棚・骨格標本などを空間参照とし、新規制作。眺望位置と現行設定を照合。022と建築キットを共有。
-- 参照：[assets/ruosuen-walk-tower-20261117.webp](../../../assets/ruosuen-walk-tower-20261117.webp)、[world/05_ルオスエンの主要組織.md](../../../world/05_ルオスエンの主要組織.md)
+- 作画指示：既存画の巨大な下方へ延びる研究施設、橋・棚・骨格標本などを空間参照とし、新規制作。眺望位置と現行設定を照合。022と建築キットを共有。 地上の摩天楼（東岸・上へ）と伽藍の塔（地下・下へ）を混同しない。
+- 参照：[assets/ruosuen-walk-tower-20261117.webp](../../../assets/ruosuen-walk-tower-20261117.webp)、[world/05_ルオスエンの主要組織.md](../../../world/05_ルオスエンの主要組織.md)、[world/02_マナ・魔石・迷宮と社会.md](../../../world/02_マナ・魔石・迷宮と社会.md)、[notes/ルオスエン地方地図_第一ラフ作図仕様_2026-11-22.md](../../../notes/ルオスエン地方地図_第一ラフ作図仕様_2026-11-22.md)、[notes/maps/ruosuen-regional-map-20261122-v1.webp](../../../notes/maps/ruosuen-regional-map-20261122-v1.webp)
 - 合格条件：共通style・表示条件・上記ロックに適合し、前後の場面と対比または連続性が読める。未決の地理・設備は担当資料を優先。
 
 ## E01-ST-022 — 伽藍の塔 研究・閲覧室
@@ -52,16 +52,16 @@
 - P2／new／planned／投影順 50／E01-08A-A02
 - 美術設定：LOC-01／PR-01、PR-02、PR-03、PR-04（[背景美術設定](environment-bible.md)）
 - 表示条件：買物希望時のみ
-- 作画指示：既存市場画の店・荷車・生活物資を参照し年末の荷造り・店じまいの新規画を制作。月視薬完成品の存在を示さない。未承認の祭礼・降雪を描かない。
-- 参照：[assets/ruosuen-street-market-gouache.webp](../../../assets/ruosuen-street-market-gouache.webp)、[dm/episode-01/e01-04-town-preparation-v01.md](../../../dm/episode-01/e01-04-town-preparation-v01.md)
+- 作画指示：既存市場画の店・荷車・生活物資を参照し年末の荷造り・店じまいの新規画を制作。月視薬完成品の存在を示さない。未承認の祭礼・降雪を描かない。 西岸旧市街・河港と東岸工房街の位置関係を参照し、地上に海や飛行魔導船を描かない。市場の厳密な場所は未決。
+- 参照：[assets/ruosuen-street-market-gouache.webp](../../../assets/ruosuen-street-market-gouache.webp)、[dm/episode-01/e01-04-town-preparation-v01.md](../../../dm/episode-01/e01-04-town-preparation-v01.md)、[world/02_マナ・魔石・迷宮と社会.md](../../../world/02_マナ・魔石・迷宮と社会.md)、[notes/ルオスエン地方地図_第一ラフ作図仕様_2026-11-22.md](../../../notes/ルオスエン地方地図_第一ラフ作図仕様_2026-11-22.md)、[notes/maps/ruosuen-regional-map-20261122-v1.webp](../../../notes/maps/ruosuen-regional-map-20261122-v1.webp)
 - 合格条件：共通style・表示条件・上記ロックに適合し、前後の場面と対比または連続性が読める。未決の地理・設備は担当資料を優先。
 
 ## E01-ST-003 — HOME 地下への降下
 - P0／new／planned／投影順 60／E01-08A-A03
 - 美術設定：LOC-05／PR-02、PR-09、PR-10、PR-11（[背景美術設定](environment-bible.md)）
 - 表示条件：実際に昇降機に乗った時
-- 作画指示：昇降機の内側から巨大な岩壁・遠い足場を見下ろす。手すりと人・荷で尺度。HOMEは昇降機そのもの。停止階・駆動装置・距離は確定しない。004/024/023とキット統一。
-- 参照：[world/02_マナ・魔石・迷宮と社会.md](../../../world/02_マナ・魔石・迷宮と社会.md)、[world/underground/README.md](../../../world/underground/README.md)
+- 作画指示：昇降機の内側から巨大な岩壁・遠い足場を見下ろす。手すりと人・荷で尺度。HOMEは昇降機そのもの。停止階・駆動装置・距離は確定しない。004/024/023とキット統一。 地上河港と地下PORTを同一高度・同一施設として描かない。
+- 参照：[world/02_マナ・魔石・迷宮と社会.md](../../../world/02_マナ・魔石・迷宮と社会.md)、[world/underground/README.md](../../../world/underground/README.md)、[notes/ルオスエン地方地図_第一ラフ作図仕様_2026-11-22.md](../../../notes/ルオスエン地方地図_第一ラフ作図仕様_2026-11-22.md)、[notes/maps/ruosuen-regional-map-20261122-v1.webp](../../../notes/maps/ruosuen-regional-map-20261122-v1.webp)
 - 合格条件：共通style・表示条件・上記ロックに適合し、前後の場面と対比または連続性が読める。未決の地理・設備は担当資料を優先。
 
 ## E01-ST-024 — ターミナル 活動圏
@@ -84,8 +84,8 @@
 - P0／new／planned／投影順 90／E01-08A-A03
 - 美術設定：LOC-05／PR-02、PR-09、PR-10、PR-11（[背景美術設定](environment-bible.md)）
 - 表示条件：GATEから大空洞の広がりを見た時
-- 作画指示：視界が開け、岩盤・橋・人工灯の遠近。既存パノラマは尺度と建築の参照のみ、現行地理に照合して新規制作。地上光は時間と遮蔽に応じ、巨大な光柱で湖の山場を先取りしない。
-- 参照：[assets/ruosuen-walk-labyrinth-panorama-20261117.webp](../../../assets/ruosuen-walk-labyrinth-panorama-20261117.webp)、[world/underground/README.md](../../../world/underground/README.md)、[DESIGN.md](../../../DESIGN.md)
+- 作画指示：視界が開け、岩盤・橋・人工灯の遠近。既存パノラマは尺度と建築の参照のみ、現行地理に照合して新規制作。地上光は時間と遮蔽に応じ、巨大な光柱で湖の山場を先取りしない。 地上河港と地下PORTを同一高度・同一施設として描かない。
+- 参照：[assets/ruosuen-walk-labyrinth-panorama-20261117.webp](../../../assets/ruosuen-walk-labyrinth-panorama-20261117.webp)、[world/underground/README.md](../../../world/underground/README.md)、[DESIGN.md](../../../DESIGN.md)、[world/02_マナ・魔石・迷宮と社会.md](../../../world/02_マナ・魔石・迷宮と社会.md)、[notes/ルオスエン地方地図_第一ラフ作図仕様_2026-11-22.md](../../../notes/ルオスエン地方地図_第一ラフ作図仕様_2026-11-22.md)、[notes/maps/ruosuen-regional-map-20261122-v1.webp](../../../notes/maps/ruosuen-regional-map-20261122-v1.webp)
 - 合格条件：共通style・表示条件・上記ロックに適合し、前後の場面と対比または連続性が読める。未決の地理・設備は担当資料を優先。
 
 ## E01-ST-005 — アルデン大街道 R3
@@ -196,8 +196,8 @@
 - P1／new／planned／投影順 230／E01-08A-A01
 - 美術設定：LOC-01／PR-01、PR-02、PR-03、PR-04（[背景美術設定](environment-bible.md)）
 - 表示条件：地上に戻った時
-- 作画指示：既存の同一視点の昼夜対を都市形状の参考にして新規制作。001と建築配置を揃える。帰還時刻が未確定なら時間帯を断定せず、必要に応じ同母版の光差分を別途作者承認。時刻が合わない場合は002へ直行して省略。
-- 参照：[assets/ruosuen-street-night-oil.webp](../../../assets/ruosuen-street-night-oil.webp)、[assets/reuna-turn-10.webp](../../../assets/reuna-turn-10.webp)、[dm/episode-01/return-journey-v01.md](../../../dm/episode-01/return-journey-v01.md)
+- 作画指示：既存の同一視点の昼夜対を都市形状の参考にして新規制作。001と建築配置を揃える。帰還時刻が未確定なら時間帯を断定せず、必要に応じ同母版の光差分を別途作者承認。時刻が合わない場合は002へ直行して省略。 001/016の基準構図は西岸の旧市街側から東岸へ斜めに望む案を優先。石造アーチ橋は両岸に接続し、遠景には東岸の摩天楼を識別可能なシルエットで置く案。塔の正確な高さ・様式・位置は未決。滝と河港は同じ地理に属するが実際の視野に入る場合のみ。広域図を一枚の風景に詰め込まない。 海を市街の直下に描かない。川の全量を断裂へ落とさない。地上の日常的な魔導船飛行、地上河港と地下PORTの同高度化、伽藍の塔を地上の高塔とする描写を禁止。地図の正確な縮尺・橋数・街区境界・塔の詳細・地下水系を確定しない。
+- 参照：[assets/ruosuen-street-night-oil.webp](../../../assets/ruosuen-street-night-oil.webp)、[assets/reuna-turn-10.webp](../../../assets/reuna-turn-10.webp)、[dm/episode-01/return-journey-v01.md](../../../dm/episode-01/return-journey-v01.md)、[world/02_マナ・魔石・迷宮と社会.md](../../../world/02_マナ・魔石・迷宮と社会.md)、[notes/ルオスエン地方地図_第一ラフ作図仕様_2026-11-22.md](../../../notes/ルオスエン地方地図_第一ラフ作図仕様_2026-11-22.md)、[notes/maps/ruosuen-regional-map-20261122-v1.webp](../../../notes/maps/ruosuen-regional-map-20261122-v1.webp)
 - 合格条件：共通style・表示条件・上記ロックに適合し、前後の場面と対比または連続性が読める。未決の地理・設備は担当資料を優先。
 
 ## E01-ST-017 — ラウルの製本工房兼自宅
