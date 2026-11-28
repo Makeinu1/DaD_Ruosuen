@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "base_commit": "434b17847b78c953703fcd175d9d853f5efa307a",
-  "style_version": "0.2",
+  "style_version": "0.3",
   "entries": [
     {
       "id": "E01-ST-001",
@@ -22,7 +22,14 @@
       "original": null,
       "projection": null,
       "sha256": null,
-      "revision": 0
+      "revision": 0,
+      "location_id": "LOC-01",
+      "prop_ids": [
+        "PR-01",
+        "PR-02",
+        "PR-03",
+        "PR-04"
+      ]
     },
     {
       "id": "E01-ST-002",
@@ -42,7 +49,13 @@
       "original": null,
       "projection": null,
       "sha256": null,
-      "revision": 0
+      "revision": 0,
+      "location_id": "LOC-02",
+      "prop_ids": [
+        "PR-02",
+        "PR-05",
+        "PR-06"
+      ]
     },
     {
       "id": "E01-ST-019",
@@ -62,7 +75,12 @@
       "original": null,
       "projection": null,
       "sha256": null,
-      "revision": 0
+      "revision": 0,
+      "location_id": "LOC-03",
+      "prop_ids": [
+        "PR-02",
+        "PR-07"
+      ]
     },
     {
       "id": "E01-ST-020",
@@ -82,7 +100,12 @@
       "original": null,
       "projection": null,
       "sha256": null,
-      "revision": 0
+      "revision": 0,
+      "location_id": "LOC-03",
+      "prop_ids": [
+        "PR-02",
+        "PR-07"
+      ]
     },
     {
       "id": "E01-ST-021",
@@ -102,7 +125,12 @@
       "original": null,
       "projection": null,
       "sha256": null,
-      "revision": 0
+      "revision": 0,
+      "location_id": "LOC-04",
+      "prop_ids": [
+        "PR-02",
+        "PR-08"
+      ]
     },
     {
       "id": "E01-ST-022",
@@ -122,7 +150,12 @@
       "original": null,
       "projection": null,
       "sha256": null,
-      "revision": 0
+      "revision": 0,
+      "location_id": "LOC-04",
+      "prop_ids": [
+        "PR-02",
+        "PR-08"
+      ]
     },
     {
       "id": "E01-ST-027",
@@ -142,7 +175,14 @@
       "original": null,
       "projection": null,
       "sha256": null,
-      "revision": 0
+      "revision": 0,
+      "location_id": "LOC-01",
+      "prop_ids": [
+        "PR-01",
+        "PR-02",
+        "PR-03",
+        "PR-04"
+      ]
     },
     {
       "id": "E01-ST-003",
@@ -162,7 +202,14 @@
       "original": null,
       "projection": null,
       "sha256": null,
-      "revision": 0
+      "revision": 0,
+      "location_id": "LOC-05",
+      "prop_ids": [
+        "PR-02",
+        "PR-09",
+        "PR-10",
+        "PR-11"
+      ]
     },
     {
       "id": "E01-ST-024",
@@ -182,7 +229,14 @@
       "original": null,
       "projection": null,
       "sha256": null,
-      "revision": 0
+      "revision": 0,
+      "location_id": "LOC-05",
+      "prop_ids": [
+        "PR-02",
+        "PR-09",
+        "PR-10",
+        "PR-11"
+      ]
     },
     {
       "id": "E01-ST-004",
@@ -203,7 +257,14 @@
       "original": null,
       "projection": null,
       "sha256": null,
-      "revision": 0
+      "revision": 0,
+      "location_id": "LOC-05",
+      "prop_ids": [
+        "PR-02",
+        "PR-09",
+        "PR-10",
+        "PR-11"
+      ]
     },
     {
       "id": "E01-ST-023",
@@ -224,7 +285,14 @@
       "original": null,
       "projection": null,
       "sha256": null,
-      "revision": 0
+      "revision": 0,
+      "location_id": "LOC-05",
+      "prop_ids": [
+        "PR-02",
+        "PR-09",
+        "PR-10",
+        "PR-11"
+      ]
     },
     {
       "id": "E01-ST-005",
@@ -245,7 +313,13 @@
       "original": null,
       "projection": null,
       "sha256": null,
-      "revision": 0
+      "revision": 0,
+      "location_id": "LOC-06",
+      "prop_ids": [
+        "PR-02",
+        "PR-10",
+        "PR-12"
+      ]
     },
     {
       "id": "E01-ST-006",
@@ -265,7 +339,13 @@
       "original": null,
       "projection": null,
       "sha256": null,
-      "revision": 0
+      "revision": 0,
+      "location_id": "LOC-06",
+      "prop_ids": [
+        "PR-02",
+        "PR-10",
+        "PR-12"
+      ]
     },
     {
       "id": "E01-ST-025",
@@ -285,7 +365,13 @@
       "original": null,
       "projection": null,
       "sha256": null,
-      "revision": 0
+      "revision": 0,
+      "location_id": "LOC-06",
+      "prop_ids": [
+        "PR-02",
+        "PR-10",
+        "PR-12"
+      ]
     },
     {
       "id": "E01-ST-007",
@@ -305,7 +391,11 @@
       "original": null,
       "projection": null,
       "sha256": null,
-      "revision": 0
+      "revision": 0,
+      "location_id": "LOC-07",
+      "prop_ids": [
+        "PR-13"
+      ]
     },
     {
       "id": "E01-ST-008",
@@ -324,7 +414,11 @@
       "original": null,
       "projection": null,
       "sha256": null,
-      "revision": 0
+      "revision": 0,
+      "location_id": "LOC-07",
+      "prop_ids": [
+        "PR-13"
+      ]
     },
     {
       "id": "E01-ST-009",
@@ -344,7 +438,11 @@
       "original": null,
       "projection": null,
       "sha256": null,
-      "revision": 0
+      "revision": 0,
+      "location_id": "LOC-07",
+      "prop_ids": [
+        "PR-13"
+      ]
     },
     {
       "id": "E01-ST-010",
@@ -364,7 +462,12 @@
       "original": null,
       "projection": null,
       "sha256": null,
-      "revision": 0
+      "revision": 0,
+      "location_id": "LOC-08",
+      "prop_ids": [
+        "PR-13",
+        "PR-14"
+      ]
     },
     {
       "id": "E01-ST-011",
@@ -384,7 +487,12 @@
       "original": null,
       "projection": null,
       "sha256": null,
-      "revision": 0
+      "revision": 0,
+      "location_id": "LOC-08",
+      "prop_ids": [
+        "PR-13",
+        "PR-14"
+      ]
     },
     {
       "id": "E01-ST-012",
@@ -404,7 +512,12 @@
       "original": null,
       "projection": null,
       "sha256": null,
-      "revision": 0
+      "revision": 0,
+      "location_id": "LOC-08",
+      "prop_ids": [
+        "PR-13",
+        "PR-14"
+      ]
     },
     {
       "id": "E01-ST-013",
@@ -424,7 +537,12 @@
       "original": null,
       "projection": null,
       "sha256": null,
-      "revision": 0
+      "revision": 0,
+      "location_id": "LOC-08",
+      "prop_ids": [
+        "PR-13",
+        "PR-14"
+      ]
     },
     {
       "id": "E01-ST-014",
@@ -444,7 +562,12 @@
       "original": null,
       "projection": null,
       "sha256": null,
-      "revision": 0
+      "revision": 0,
+      "location_id": "LOC-08",
+      "prop_ids": [
+        "PR-13",
+        "PR-14"
+      ]
     },
     {
       "id": "E01-ST-026",
@@ -464,7 +587,12 @@
       "original": null,
       "projection": null,
       "sha256": null,
-      "revision": 0
+      "revision": 0,
+      "location_id": "LOC-08",
+      "prop_ids": [
+        "PR-13",
+        "PR-14"
+      ]
     },
     {
       "id": "E01-ST-015",
@@ -485,7 +613,12 @@
       "original": null,
       "projection": null,
       "sha256": null,
-      "revision": 0
+      "revision": 0,
+      "location_id": "LOC-08",
+      "prop_ids": [
+        "PR-13",
+        "PR-14"
+      ]
     },
     {
       "id": "E01-ST-016",
@@ -506,7 +639,14 @@
       "original": null,
       "projection": null,
       "sha256": null,
-      "revision": 0
+      "revision": 0,
+      "location_id": "LOC-01",
+      "prop_ids": [
+        "PR-01",
+        "PR-02",
+        "PR-03",
+        "PR-04"
+      ]
     },
     {
       "id": "E01-ST-017",
@@ -526,7 +666,14 @@
       "original": null,
       "projection": null,
       "sha256": null,
-      "revision": 0
+      "revision": 0,
+      "location_id": "LOC-09",
+      "prop_ids": [
+        "PR-02",
+        "PR-15",
+        "PR-16",
+        "PR-17"
+      ]
     },
     {
       "id": "E01-ST-018",
@@ -545,7 +692,14 @@
       "original": null,
       "projection": null,
       "sha256": null,
-      "revision": 0
+      "revision": 0,
+      "location_id": "LOC-09",
+      "prop_ids": [
+        "PR-02",
+        "PR-15",
+        "PR-16",
+        "PR-17"
+      ]
     }
   ]
 }

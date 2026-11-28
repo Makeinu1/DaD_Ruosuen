@@ -1,0 +1,430 @@
+{
+  "version": "0.1",
+  "status": "proposal",
+  "locations": [
+    {
+      "id": "LOC-01",
+      "name": "地上・断裂都市",
+      "scenes": [
+        "E01-ST-001",
+        "E01-ST-016",
+        "E01-ST-027"
+      ],
+      "props": [
+        "PR-01",
+        "PR-02",
+        "PR-03",
+        "PR-04"
+      ],
+      "canon": "大断裂両岸に石造の街、複数層の橋。地上の自然光と日常の往来。",
+      "proposed_visual_locks": "既存昼夜対の街路・手すり・対岸とアーチ橋の配置を基に同一のランドマークを固定。石灰色・黄土の石、鈍い赤褐色の布、木・鉄。屋根形状は既存参照に基づく。",
+      "mutable": "時刻、影、店の営業、荷造り、通行人は可変。001と016の画角を可能なら固定、帰還時刻に応じる。027は同じ材質の別視点。",
+      "unknown": "地上の港の位置、固定の季節・積雪、実在する紋章の新設、建物の正確な寸法は決めない。",
+      "references": [
+        "assets/reuna-turn-10.webp",
+        "assets/ruosuen-street-night-oil.webp",
+        "assets/ruosuen-street-market-gouache.webp"
+      ],
+      "sheet": "街路の断面、欄干と橋、窓・屋根・石壁の材質、荷造り・通行人の尺度を一枚の設定資料で比較。",
+      "status": "planned",
+      "approved_reference": null
+    },
+    {
+      "id": "LOC-02",
+      "name": "モグラの寝床",
+      "scenes": [
+        "E01-ST-002"
+      ],
+      "props": [
+        "PR-02",
+        "PR-05",
+        "PR-06"
+      ],
+      "canon": "依頼の出会い、食事と帰省支度。チクタク掲示板。",
+      "proposed_visual_locks": "梁・石アーチ・長卓・暖炉、掲示板を同じ空間内の別領域に置く。室内は焦げ茶と黄土。人が歩く通路と会話用の余白を確保。",
+      "mutable": "食器・客数・荷物、掲示板の紙の枚数。NPCは別素材、前景を占有しない。",
+      "unknown": "客の身元や固定PC、掲示板の読める依頼内容、内部階数や宿の位置は未確定。",
+      "references": [
+        "assets/ruosuen-walk-mole-inn-20261117.webp",
+        "dm/episode-01/e01-04-town-preparation-v01.md"
+      ],
+      "sheet": "室内の主要な壁・梁・炉・掲示板・机を配置した簡易レイアウト、素材の接合と照明位置。",
+      "status": "planned",
+      "approved_reference": null
+    },
+    {
+      "id": "LOC-03",
+      "name": "王立地図院",
+      "scenes": [
+        "E01-ST-019",
+        "E01-ST-020"
+      ],
+      "props": [
+        "PR-02",
+        "PR-07"
+      ],
+      "canon": "測量・記録・主要道の開拓。公共性と仕事の継承。",
+      "proposed_visual_locks": "石造・木の作業机、整然とした巻図と書棚。使い込まれた器具。受付または閲覧室への動線。豪華な王宮でなく長年使う実務機関。",
+      "mutable": "職員・開いている図・作業途中の道具。019は空間、020は調査の作業距離。",
+      "unknown": "法的権限・紋章・具体的な設置階・秘蔵図の内容を創作しない。",
+      "references": [
+        "assets/ruosuen-walk-maps-20261117.webp",
+        "world/05_ルオスエンの主要組織.md"
+      ],
+      "sheet": "同じアーチ・机・棚の断面、器具の尺度、019/020の視点と接続。",
+      "status": "planned",
+      "approved_reference": null
+    },
+    {
+      "id": "LOC-04",
+      "name": "伽藍の塔",
+      "scenes": [
+        "E01-ST-021",
+        "E01-ST-022"
+      ],
+      "props": [
+        "PR-02",
+        "PR-08"
+      ],
+      "canon": "地下へ日々伸びる逆さの塔。魔術・生態系の研究。",
+      "proposed_visual_locks": "垂直方向の構造と層状のアーチ、実務の研究机、標本の保管。大景では塔の縦の伸び、内部は書棚・容器・観察道具を主役に。地図院とは縦方向・研究物で差別化。",
+      "mutable": "研究者・開いた書物・照明。022の可視標本は04の開示条件に従う。",
+      "unknown": "伸長原理・速度・高さ、立地、閉蕾と月光の答え、鯨を明示しない。",
+      "references": [
+        "assets/ruosuen-walk-tower-20261117.webp",
+        "world/05_ルオスエンの主要組織.md"
+      ],
+      "sheet": "外部シルエットと内部アーチの共通要素、棚・標本容器、光源位置。",
+      "status": "planned",
+      "approved_reference": null
+    },
+    {
+      "id": "LOC-05",
+      "name": "HOME・ターミナル・GATE・大空洞",
+      "scenes": [
+        "E01-ST-003",
+        "E01-ST-024",
+        "E01-ST-004",
+        "E01-ST-023"
+      ],
+      "props": [
+        "PR-02",
+        "PR-09",
+        "PR-10",
+        "PR-11"
+      ],
+      "canon": "HOME=大昇降機。ターミナル=活動圏。GATE=徒歩探索の出入口。AREA1の地上光とPORTの別高度。",
+      "proposed_visual_locks": "崖・岩盤に支えられた足場、増築された木と石の接合、手すり、人工灯を共通化。大きな岩壁を先に決め、人や扉・荷を尺度として置く。003は乗った目線、024は生活、004は閾、023は視界が開く体験。",
+      "mutable": "照明、遠くの荷捌き、人の往来。船・PORTは実際の視野内なら遠景に限る。",
+      "unknown": "昇降機の駆動・階数・停止位置、厳密な施設接続、未承認の飛行船数・鉄道網・巨大扉を決めない。",
+      "references": [
+        "assets/ruosuen-walk-labyrinth-panorama-20261117.webp",
+        "world/02_マナ・魔石・迷宮と社会.md",
+        "world/underground/README.md"
+      ],
+      "sheet": "人尺度付きHOME手すり/足場/GATEの形状案、俯瞰ブロックアウトは採用済み地理だけを参照。",
+      "status": "planned",
+      "approved_reference": null
+    },
+    {
+      "id": "LOC-06",
+      "name": "地下街道 R3/R65",
+      "scenes": [
+        "E01-ST-005",
+        "E01-ST-006",
+        "E01-ST-025"
+      ],
+      "props": [
+        "PR-02",
+        "PR-10",
+        "PR-12"
+      ],
+      "canon": "灯守の道づくり、R3→R65前半→後半はいずれも整備済み。光苔・光草は景観の試作方針。",
+      "proposed_visual_locks": "同じ石・補修痕・路肩の植物・分岐や橋の補助灯。舗装は均一な近代道路にせず地形に馴染ませる。進むごとに自然岩壁と地形が画面を占める。",
+      "mutable": "005は人・往来、006は人がまばら、025は少数または遠景のみ。幅や明度の変化は連続的、光苔は道の縁の柔らかな光。",
+      "unknown": "R65を未整備・廃道にしない。R65の番号表示を絵の文字にしない。軌道は採用位置以外に描かない。S34への正解を露骨に示さない。",
+      "references": [
+        "world/05_ルオスエンの主要組織.md",
+        "world/underground/atlas.json",
+        "dm/episode-01/road-encounters.md"
+      ],
+      "sheet": "路面・路肩・灯具の三面見本、3区間の明暗/人工物密度の小さな比較図。",
+      "status": "planned",
+      "approved_reference": null
+    },
+    {
+      "id": "LOC-07",
+      "name": "洞窟 A/B/C",
+      "scenes": [
+        "E01-ST-007",
+        "E01-ST-008",
+        "E01-ST-009"
+      ],
+      "props": [
+        "PR-13"
+      ],
+      "canon": "A入口天井2〜3m、B接近3〜4m、C広間6〜9m、単一路で緩い下り。",
+      "proposed_visual_locks": "同じ岩質・割れ目・湿度感を保つ。Aは外縁から自然開口、Bは狭い視野、Cは広間と岩柱。視点は実際に立てる位置。",
+      "mutable": "PC光源による見える範囲、痕跡の開示、戦闘中の表示。光は画面全域を均一に照らさない。",
+      "unknown": "別ルート・旧クモ・採掘横穴なし。狼の位置・討伐報酬・湖への具体接続を固定しない。",
+      "references": [
+        "dm/episode-01/cave-dungeon-v01.md",
+        "dm/episode-01/cave-battle-player-v02.svg"
+      ],
+      "sheet": "A/B/C断面と岩質の見本、広間の岩柱の配置照合。地図の新規制作は対象外。",
+      "status": "planned",
+      "approved_reference": null
+    },
+    {
+      "id": "LOC-08",
+      "name": "地底湖",
+      "scenes": [
+        "E01-ST-010",
+        "E01-ST-011",
+        "E01-ST-012",
+        "E01-ST-013",
+        "E01-ST-014",
+        "E01-ST-026",
+        "E01-ST-015"
+      ],
+      "props": [
+        "PR-13",
+        "PR-14"
+      ],
+      "canon": "FL-01、湖探索台本。若齢花と成熟S1を区別。E01-09→E01-02の確定後のみ実制作。",
+      "proposed_visual_locks": "最終映像・確定湖地形・同じ岩と葉の形を優先。B/ Cの母版はカメラと株位置を固定。青灰の水・岩・白い花。",
+      "mutable": "採集、閉蕾・開花、実際の月光・影・残花。012→013、014→026の状態差は別々の対。",
+      "unknown": "湖の形状、座標、照射、距離をここで確定しない。鯨、花雪、発光を先に見せない。",
+      "references": [
+        "dm/episode-01/lake-exploration-v01.md",
+        "dm/episode-01/ending/flower.md",
+        "dm/episode-01/ending/current/README.md"
+      ],
+      "sheet": "依存確定後、実形状とFL-01設定画を取得、カメラ投影と変化マスクを作成。現時点では保留。",
+      "status": "blocked",
+      "approved_reference": null
+    },
+    {
+      "id": "LOC-09",
+      "name": "ラウルの家",
+      "scenes": [
+        "E01-ST-017",
+        "E01-ST-018"
+      ],
+      "props": [
+        "PR-02",
+        "PR-15",
+        "PR-16",
+        "PR-17"
+      ],
+      "canon": "58歳の製本・紙製品の職人、古い背嚢、昔の仲間の手紙、三通の封筒。",
+      "proposed_visual_locks": "小さく整えられた仕事場。木机・紙・製本道具・本・背嚢。机に三通の封筒、同じ机を018で近くから見る。落ち着いた暖灯。",
+      "mutable": "紙の状態、花の有無と数、手紙を書く段階、ラウルの在室は演技に委ねる。",
+      "unknown": "魔石加工場ではない。仲間の名や容姿、宛名を読める文字、未取得の花を先に描かない。",
+      "references": [
+        "dm/episode-01/epilogue-v01.md",
+        "assets/ruosuen-walk-mole-inn-20261117.webp"
+      ],
+      "sheet": "机と棚の簡易配置・封筒三通・製本の道具・背嚢、017/018の画面上の対応。",
+      "status": "planned",
+      "approved_reference": null
+    }
+  ],
+  "props": [
+    {
+      "id": "PR-01",
+      "name": "地上の石壁・橋・欄干",
+      "proposed_visual_locks": "石の積み方と橋のアーチ、欄干の笠石の形",
+      "mutable": "汚れ・影・植物、補修跡",
+      "locations": [
+        "LOC-01"
+      ],
+      "status": "planned",
+      "approved_reference": null
+    },
+    {
+      "id": "PR-02",
+      "name": "木と鉄の一般照明",
+      "proposed_visual_locks": "可視の灯具本体・支持・光の回り方。温かい一般灯と冷光の魔石灯は別の参考形",
+      "mutable": "点灯・消灯、強さ。動力は断定しない",
+      "locations": [
+        "LOC-01",
+        "LOC-02",
+        "LOC-03",
+        "LOC-04",
+        "LOC-05",
+        "LOC-06",
+        "LOC-09"
+      ],
+      "status": "planned",
+      "approved_reference": null
+    },
+    {
+      "id": "PR-03",
+      "name": "地上の窓・屋根・布庇",
+      "proposed_visual_locks": "既存の石造と木の建具、鈍い色の布",
+      "mutable": "営業時間、庇の巻き上げ、影",
+      "locations": [
+        "LOC-01"
+      ],
+      "status": "planned",
+      "approved_reference": null
+    },
+    {
+      "id": "PR-04",
+      "name": "荷造りの小物",
+      "proposed_visual_locks": "木箱・布袋・紐・包みの構造と人尺度",
+      "mutable": "個数・位置・荷車",
+      "locations": [
+        "LOC-01"
+      ],
+      "status": "planned",
+      "approved_reference": null
+    },
+    {
+      "id": "PR-05",
+      "name": "宿の長卓・食器・炉",
+      "proposed_visual_locks": "使用感のある木、金属杯、素朴な食器、炉の位置",
+      "mutable": "食事・人数",
+      "locations": [
+        "LOC-02"
+      ],
+      "status": "planned",
+      "approved_reference": null
+    },
+    {
+      "id": "PR-06",
+      "name": "チクタク掲示板",
+      "proposed_visual_locks": "掲示板であることと紙を留める箇所。仕掛けの詳細は未決",
+      "mutable": "依頼票の残数、剥がした跡。文字なし",
+      "locations": [
+        "LOC-02"
+      ],
+      "status": "planned",
+      "approved_reference": null
+    },
+    {
+      "id": "PR-07",
+      "name": "地図院の測量・記録道具",
+      "proposed_visual_locks": "定規・コンパス様道具・巻図・平机の候補。既存画の材質",
+      "mutable": "紙の位置、作業状態。測量方式は未決",
+      "locations": [
+        "LOC-03"
+      ],
+      "status": "planned",
+      "approved_reference": null
+    },
+    {
+      "id": "PR-08",
+      "name": "塔の研究・標本道具",
+      "proposed_visual_locks": "棚・容器・研究机・書物の形。花の形態はFL-01のみ",
+      "mutable": "閲覧・保管状態、開示条件",
+      "locations": [
+        "LOC-04"
+      ],
+      "status": "planned",
+      "approved_reference": null
+    },
+    {
+      "id": "PR-09",
+      "name": "昇降機の可視部",
+      "proposed_visual_locks": "乗客の立つ床、手すり、支持部の候補。駆動機構は隠す",
+      "mutable": "位置、乗客、荷",
+      "locations": [
+        "LOC-05"
+      ],
+      "status": "planned",
+      "approved_reference": null
+    },
+    {
+      "id": "PR-10",
+      "name": "地下の足場・道標・補助灯",
+      "proposed_visual_locks": "同系統の石・木・鉄の接合、歩行者の尺度。読める文字なし",
+      "mutable": "配置は台帳と視野に従う",
+      "locations": [
+        "LOC-05",
+        "LOC-06"
+      ],
+      "status": "planned",
+      "approved_reference": null
+    },
+    {
+      "id": "PR-11",
+      "name": "GATEの閾",
+      "proposed_visual_locks": "探索に出る側の人工的な境界、歩行路との接続",
+      "mutable": "通行者、光、見え方。門形式は作者承認待ち",
+      "locations": [
+        "LOC-05"
+      ],
+      "status": "planned",
+      "approved_reference": null
+    },
+    {
+      "id": "PR-12",
+      "name": "街道路肩の光苔・光草",
+      "proposed_visual_locks": "低く地表に沿うシルエット、控えめな発光の試作案。強烈なネオンや巨大結晶なし",
+      "mutable": "密度、可視光。生態・照度は未確定",
+      "locations": [
+        "LOC-06"
+      ],
+      "status": "planned",
+      "approved_reference": null
+    },
+    {
+      "id": "PR-13",
+      "name": "自然岩・岩柱",
+      "proposed_visual_locks": "地域ごとの岩質、割れ目・重力方向。洞窟と湖は別ロック",
+      "mutable": "水濡れ、影、視認。地質は確定しない",
+      "locations": [
+        "LOC-07",
+        "LOC-08"
+      ],
+      "status": "planned",
+      "approved_reference": null
+    },
+    {
+      "id": "PR-14",
+      "name": "空雪花 FL-01",
+      "proposed_visual_locks": "白五弁・淡金中心・青緑の葉、閉蕾の灰褐色、若齢は非発光・非散布。詳細はFL-01正本",
+      "mutable": "閉蕾/開花/採集。成熟群落と混同不可",
+      "locations": [
+        "LOC-08"
+      ],
+      "status": "blocked",
+      "approved_reference": null
+    },
+    {
+      "id": "PR-15",
+      "name": "製本道具",
+      "proposed_visual_locks": "木の圧締具・糸・針・紙束・本・へらの候補。職業が読める配置",
+      "mutable": "使用途中の状態",
+      "locations": [
+        "LOC-09"
+      ],
+      "status": "planned",
+      "approved_reference": null
+    },
+    {
+      "id": "PR-16",
+      "name": "三通の封筒と机",
+      "proposed_visual_locks": "三通・同じ机の位置関係、紙・木の質感。書かれた宛名は画面で判読不能",
+      "mutable": "開封・花の有無、実際の進行",
+      "locations": [
+        "LOC-09"
+      ],
+      "status": "planned",
+      "approved_reference": null
+    },
+    {
+      "id": "PR-17",
+      "name": "古い背嚢と手紙",
+      "proposed_visual_locks": "使い込まれた革/布の背嚢、保管された手紙。仲間の姿は描かない",
+      "mutable": "机や壁の配置は017の承認時に固定",
+      "locations": [
+        "LOC-09"
+      ],
+      "status": "planned",
+      "approved_reference": null
+    }
+  ]
+}
