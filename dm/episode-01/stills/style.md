@@ -1,4 +1,4 @@
-# 投影美術デザインライン v0.1
+# 投影美術デザインライン v0.2
 > 作者承認待ち。世界設定を新たに決定しない。既存DESIGN.mdの古典的幻想画と11/17街歩きシリーズを卓用に適用する。色値は作画用目安で世界設定や測光値ではない。
 
 ## 1. 美術の核
@@ -6,11 +6,11 @@
 ### 固定スタイルブロック（全プロンプトの冒頭に同文で挿入、v0.1）
 > Classical hand-painted fantasy environment illustration, opaque gouache and restrained ink-like brushwork, believable stone, timber, fabric and organic forms, selective detail, atmospheric depth with clear foreground, middle ground and distant masses. Human-scale eye-level staging unless the approved shot requires otherwise. Muted earth and slate tones, warm amber practical lights against cool natural shadows; source-motivated illumination, readable midtones, no crushed blacks. Full-bleed landscape 16:9, no captions, UI, logos, decorative border, excessive bloom, generic floating particles, glossy CGI or photoreal finish. Preserve the approved reference identities and scene-specific locks; do not invent new canon.
 
-日本語補足：画面全体を均一に精密にせず、面の筆致と主題の選択的描写。人・建築・動植物の構造と接地は自然に。既存の淡彩・夜景の特性を尊重し、既存画を無理に再生成しない。スタイルブロック変更は版を上げ、全採用素材への影響を確認。
+日本語補足：画面全体を均一に精密にせず、面の筆致と主題の選択的描写。人・建築・動植物の構造と接地は自然に。既存の淡彩・夜景の特性を尊重し、既存画は参照専用。投影採用版はすべて今回の共通ラインで新規作画または母版差分制作する。旧画や動画フレームを直接採用しない。スタイルブロック変更は版を上げ、全採用素材への影響を確認。
 
 ## 2. 基準原画・参照階層
 - 画風候補：assets/ruosuen-walk-mole-inn-20261117.webp（温暖室内、筆致）、assets/ruosuen-walk-labyrinth-panorama-20261117.webp（地下の尺度、空気遠近）、assets/reuna-turn-10.webp（地上、都市構造）、assets/ruosuen-street-night-oil.webp（同一都市の昼夜対）、assets/ruosuen-first-adventure-b.webp（年末の生活とガッシュ/インク）。
-- A01/A04/A07で001・005・017を順次基準原画候補にし、三枚を並べて作者が画風をロックする（生成前の暫定規約と最終承認を分ける）。既存の基準を優先して1枚ずつ進める。
+- A01/A03/A04/A07で001→002→023→005→017を順次基準原画候補にし、五枚を並べて作者が画風をロックする（生成前の暫定規約と最終承認を分ける）。既存の基準を優先して1枚ずつ進める。
 - 参照画像は「画風」「形状・空間」「構図」「編集母版」の役割を明示する。画像名だけでなくリポジトリ相対パス、コミット、必要ならハッシュを記録。古い原画の採用歴は現行カメラ・地形の承認と同一ではない。
 - 環境キット（A01〜A07で必要なものだけ先行承認）：街の石壁・屋根・橋・灯具、地図院の机と器具、塔のアーチ・標本棚、HOME/GATE/TERMINALの共通工法、街道の路面・光苔・補助灯、洞窟の岩質、湖の岩/葉/FL-01、ラウルの製本道具と机。反復する建築は簡単な形状図・材質見本・人尺度をセットにする。未知の機構は描かず隠す。地図・映像が必要な場合はその担当の形状を参照し、こちらで公式化しない。
 
@@ -32,4 +32,4 @@
 
 ## 5. 画像の禁止事項・技術仕様
 文字・透かし・ロゴ・UI・枠・誤認しやすい文字地図なし。既存の紋章は既存参照の範囲のみ。未承認の祭礼・降雪・鉄道網・機構・地形・NPC/PC外見・敵の位置・未発見の手掛かり・鯨/花雪の先出しは禁止。描いたものを新設定として扱わない。
-原則16:9、原本は生成時の解像度・形式・バイトを保持。投影版は1920×1080 sRGB PNGを目標（機材に応じた派生は別ファイル、アップスケールを原本と呼ばない）。既存3:2の無理な切抜き禁止、必要なら構図を確認し余白処理または新作。プロジェクターの実機で暗部、色、階調、文字なしの状態、客席から主題が判別できるか検査。画面に余分な光源・粒子を入れず映画との差を作る。
+原則16:9、原本は生成時の解像度・形式・バイトを保持。投影版は1920×1080 sRGB PNGを目標（機材に応じた派生は別ファイル、アップスケールを原本と呼ばない）。既存3:2画は構図参照に限定し、新規16:9画として制作。プロジェクターの実機で暗部、色、階調、文字なしの状態、客席から主題が判別できるか検査。画面に余分な光源・粒子を入れず映画との差を作る。
